@@ -112,9 +112,9 @@ in
       desktopManager.xfce.enable = true;
       windowManager.bspwm = {
         enable = true;
-        configFile = builtins.getEnv "HOME" + "/flake/config/bspwm/bspwmrc";
+        configFile = builtins.getEnv "HOME" + "/nixcfg/config/bspwm/bspwmrc";
         sxhkd = {
-          configFile = builtins.getEnv "HOME" + "/flake/config/sxhkd/sxhkdrc";
+          configFile = builtins.getEnv "HOME" + "/nixcfg/config/sxhkd/sxhkdrc";
         };
       };
       #windowManager.dwm.enable = true;
