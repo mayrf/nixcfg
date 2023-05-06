@@ -86,6 +86,10 @@ super + Return
 super + w
 	$BROWSER
 
+# browser
+super + e
+	$EDITOR
+
 #super + {g, o, v, s}
 #	{gimp, obs, olive-editor, spotify}
 

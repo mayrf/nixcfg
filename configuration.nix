@@ -112,10 +112,12 @@ in
       desktopManager.xfce.enable = true;
       windowManager.bspwm = {
         enable = true;
-        configFile = builtins.getEnv "HOME" + "/nixcfg/config/bspwm/bspwmrc";
-        sxhkd = {
-          configFile = builtins.getEnv "HOME" + "/nixcfg/config/sxhkd/sxhkdrc";
-        };
+        #configFile = ./config/bspwm/bspwmrc;
+        #configFile = builtins.getEnv "HOME" + "/nixcfg/config/bspwm/bspwmrc";
+        #sxhkd = {
+          #configFile = builtins.getEnv "HOME" + "/nixcfg/config/sxhkd/sxhkdrc";
+          #configFile = ./config/sxhkd/sxhkdrc;
+        #};
       };
       #windowManager.dwm.enable = true;
     };
@@ -172,6 +174,7 @@ in
      st 
      rofi
      polybar
+     xclip
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
