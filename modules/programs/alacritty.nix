@@ -16,23 +16,23 @@
           multiplier = 3;
         };
         font = {
-          normal = {
-            family = "iMWritingMonoS Nerd Font"; 
-            style = "Regular";
-          };
-          bold = {
-            family = "iMWritingMonoS Nerd Font"; 
-            style = "Bold";
-          };
-          italic = {
-            family = "iMWritingMonoS Nerd Font"; 
-            style = "Italic";
-          };
-          bold_italic = {
-            family = "iMWritingMonoS Nerd Font"; 
-            style = "Bold Italic";
-          };
-          size = 16;
+          #normal = {
+          #  family = "iMWritingMonoS Nerd Font"; 
+          #  style = "Regular";
+          #};
+          #bold = {
+          #  family = "iMWritingMonoS Nerd Font"; 
+          #  style = "Bold";
+          #};
+          #italic = {
+          #  family = "iMWritingMonoS Nerd Font"; 
+          #  style = "Italic";
+          #};
+          #bold_italic = {
+          #  family = "iMWritingMonoS Nerd Font"; 
+          #  style = "Bold Italic";
+          #};
+          size = 9;
         };
         key_bindings = [ 
           { 
@@ -135,5 +135,5 @@
       };
     };
   };
-};
+}
 

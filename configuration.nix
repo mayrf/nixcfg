@@ -18,7 +18,7 @@ in
     enable = true;
     version = 2;
     configurationLimit = 5;
-    device = "/dev/vda"; # or "nodev" for efi only
+    device = "/dev/sda"; # or "nodev" for efi only
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -32,7 +32,7 @@ in
   networking.hostName = "nixBox"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.  # 
   time.timeZone = "Europe/Berlin";

@@ -1,26 +1,22 @@
-#
-# Keyboard shortcuts
-#
-
-#{ config, lib, pkgs, ... }:
 { pkgs, ... }:
 {
-  #config = lib.mkIf (config.xsession.enable) {                  # Only evaluate code if using X11 
     services = {
       sxhkd = {
         enable = true;
         keybindings = {
           # Apps
-          "super + Return" = "alacritty";                       # Open Terminal
-          "super + space" = "rofi -show drun";                  # Open Rofi (custom theme " -theme theme.rasi")
+          "super + Return" = "$TERMINAL";                       # Open Terminal
+          "super + d" = "rofi -show drun";                  # Open Rofi (custom theme " -theme theme.rasi")
+          "super + w" = "$BROWSER";                  # Open Browser 
           #"super + e" = "pcmanfm";                              # File Manager
 
           #"Print" = "flameshot gui";                            # Start flameshot gui
 
           # Bspwm
           "super + {q,k}" = "bspc node -{c,k}";                 # Close or Kill
-          "super + Escape" = "bspc quit";                       # Exit WM
+          "super + alt + q" = "bspc quit";                       # Exit WM
           "super + r" = "bspc wm -r";                           # Reload WM
+          "super + shift + r" = "pkill -usr1 -x sxhkd";                           # Reload WM
 
           # Super - Nodes
           "super + {_,shift +}{Left,Right,Up,Down}" = "bspc node -{f,s} {west,east,north,south}";  # Focus or move node in given direction
@@ -49,12 +45,12 @@
             #"control + shift + {Left,Right,Up,Down}" = "bspc node -z { right -20 0,left 20 0,bottom 0 -20,top 0 20}"; # Contract window by moving one of its sides inwards
 
           # XF86 Keys
-          #"XF86AudioMute" = "pactl list sinks | grep -q Mute:.no && pactl set-sink-mute 0 1 || pactl set-sink-mute 0 0";  # Toggle mute audio
-         # "XF86AudioRaiseVolume" = "pactl -- set-sink-volume 0 +10%";   # Raise volume
-         # "XF86AudioLowerVolume" = "pactl -- set-sink-volume 0 -10%";   # Lower volume
-         # "XF86AudioMicMute" = "pactl set-source-mute 1 toggle";        # Toggle mute mic audio
-         # "XF86MonBrightnessDown" = "light -U  5"; #"xrandr --output eDP-1 --brightness 0.3"; #"xbacklight -dec 10%";     # Brightness down
-         # "XF86MonBrightnessUp" = "light -A 5"; #"xrandr --output eDP-1 --brightness 1.0 "; #"xbacklight -inc 10%";       # Brightness up
+          "XF86AudioMute" = "pactl list sinks | grep -q Mute:.no && pactl set-sink-mute 0 1 || pactl set-sink-mute 0 0";  # Toggle mute audio
+          "XF86AudioRaiseVolume" = "pactl -- set-sink-volume 0 +10%";   # Raise volume
+          "XF86AudioLowerVolume" = "pactl -- set-sink-volume 0 -10%";   # Lower volume
+          "XF86AudioMicMute" = "pactl set-source-mute 1 toggle";        # Toggle mute mic audio
+          "XF86MonBrightnessDown" = "light -U  5"; #"xrandr --output eDP-1 --brightness 0.3"; #"xbacklight -dec 10%";     # Brightness down
+          "XF86MonBrightnessUp" = "light -A 5"; #"xrandr --output eDP-1 --brightness 1.0 "; #"xbacklight -inc 10%";       # Brightness up
         };
       };
     };
