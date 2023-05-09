@@ -11,11 +11,8 @@
       bspc config gapless_monocle true
     '';
     extraConfig = ''
-      #killall eww
-      #eww daemon &
-      #eww open lemon &
       pkill polybar 
-      polybar main &
+      polybar &
       #feh --bg-fill $HOME/.background-image &
       #xsetroot -cursor_name left_ptr &
     '';

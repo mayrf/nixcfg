@@ -21,7 +21,7 @@
     keepassxc
     signal-desktop
     tree
-    ipscan
+    calibre
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
   ];
   home.stateVersion = "22.11";

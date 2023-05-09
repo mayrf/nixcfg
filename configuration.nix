@@ -103,6 +103,10 @@ in
       displayManager = {
         lightdm.enable = true;
         defaultSession = "none+bspwm";
+        sessionCommands = ''
+  ${pkgs.bspwm}/bin/bspc wm -r &
+  source $HOME/.config/bspwm/bspwmrc
+'';
       };
       windowManager.bspwm.enable = true;
       desktopManager.xfce.enable = true;
@@ -139,10 +143,6 @@ in
      isNormalUser = true;
      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
      initialPassword = "password";
-  #   packages = with pkgs; [
-  #     firefox
-  #     thunderbird
-  #   ];
   };
 
   # List packages installed in system profile. To search, run:
