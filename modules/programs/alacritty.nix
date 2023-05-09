@@ -16,22 +16,22 @@
           multiplier = 3;
         };
         font = {
-          #normal = {
-          #  family = "iMWritingMonoS Nerd Font"; 
-          #  style = "Regular";
-          #};
-          #bold = {
-          #  family = "iMWritingMonoS Nerd Font"; 
-          #  style = "Bold";
-          #};
-          #italic = {
-          #  family = "iMWritingMonoS Nerd Font"; 
-          #  style = "Italic";
-          #};
-          #bold_italic = {
-          #  family = "iMWritingMonoS Nerd Font"; 
-          #  style = "Bold Italic";
-          #};
+          normal = {
+	    family = "JetBrainsMono Nerd Font";
+            #style = "Regular";
+          };
+          bold = {
+	    family = "JetBrainsMono Nerd Font";
+            #style = "Bold";
+          };
+          italic = {
+	    family = "JetBrainsMono Nerd Font";
+            #style = "Italic";
+          };
+          bold_italic = {
+	    family = "JetBrainsMono Nerd Font";
+            #style = "Bold Italic";
+          };
           size = 9;
         };
         key_bindings = [ 

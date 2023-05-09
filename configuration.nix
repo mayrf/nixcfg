@@ -31,7 +31,7 @@ in
 
   networking.hostName = "nixBox"; # Define your hostname.
   # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.  # 
@@ -49,11 +49,6 @@ in
      useXkbConfig = true; # use xkbOptions in tty.
    };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-
-  # Enable the GNOME Desktop Environment.
   services = {
     keyd = {
       enable = true;
@@ -109,17 +104,8 @@ in
         lightdm.enable = true;
         defaultSession = "none+bspwm";
       };
+      windowManager.bspwm.enable = true;
       desktopManager.xfce.enable = true;
-      windowManager.bspwm = {
-        enable = true;
-        #configFile = ./config/bspwm/bspwmrc;
-        #configFile = builtins.getEnv "HOME" + "/nixcfg/config/bspwm/bspwmrc";
-        #sxhkd = {
-          #configFile = builtins.getEnv "HOME" + "/nixcfg/config/sxhkd/sxhkdrc";
-          #configFile = ./config/sxhkd/sxhkdrc;
-        #};
-      };
-      #windowManager.dwm.enable = true;
     };
   }; 
   environment = {
@@ -137,11 +123,6 @@ in
        y = 1080;
      }
    ];
-   #services.xserver.xkbOptions = "caps:escape"; # map caps to escape.
-   # services.xserver.xkbOptions = {
-   #  "eurosign:e";
-   #  "caps:escape" # map caps to escape.
-   #};
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -167,7 +148,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
    environment.systemPackages = with pkgs; [
-     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+     vim 
      wget
      firefox
      dmenu

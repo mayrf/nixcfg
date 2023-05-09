@@ -19,23 +19,23 @@
           "super + shift + r" = "pkill -usr1 -x sxhkd";                           # Reload WM
 
           # Super - Nodes
-          "super + {_,shift +}{Left,Right,Up,Down}" = "bspc node -{f,s} {west,east,north,south}";  # Focus or move node in given direction
+          "super + {_,shift +}{h,l,k,j}" = "bspc node -{f,s} {west,east,north,south}";  # Focus or move node in given direction
           "super + m" = "bspc desktop -l next";                 # Alternate between the tiled and monocle layout
           "super + {t,h,f}" = "bspc node -t '~{tiled,floating,fullscreen}'"; # Toggle between initial state and new state
             #"super + t" = "bspc node -t tiled";                   # Put node in tiled ( t is for tiled )
             #"super + h" = "bspc node -t floating";                # Put node in floating ( h is for hover )
             #"super + f" = "bspc node -t fullscreen";              # Toggle fullscreen ( f is for fullscreen )
-          "super + g" = "bspc node -s biggest.window";          # Swap current node and the biggest window
+          "super + space" = "bspc node -s biggest.window";          # Swap current node and the biggest window
 
           # Alt - Move workspaces
-          "alt + {Left,Right}" = "bspc desktop -f {prev,next}.local"; # Focus the next/previous desktop in the current monitor
-          "alt + {_,shift +}{1-9,0}" = "bspc {desktop -f,node -d} '{1-9,10}'";
-          "alt + shift + {Left,Right}" = "bspc node -d {prev,next}.local --follow"; # Send and follow to previous or next desktop
+          "super + {p,n}" = "bspc desktop -f {prev,next}.local"; # Focus the next/previous desktop in the current monitor
+          "super + {_,shift +}{1-9,0}" = "bspc {desktop -f,node -d} '^{1-9,10}'";
+          "super + shift + {Left,Right}" = "bspc node -d {prev,next}.local --follow"; # Send and follow to previous or next desktop
             #"alt + {_,shift +}{ampersand,eacute,quotedbl,apostrophe,parenleft,section,egrave,exclam,ccedilla,agrave}" = "bspc {desktop -f,node -d} '{1-9,10}'"; # Focus or send to the given desktop for azerty
 
 
           # Control - Resize
-          "control + {Left,Down,Up,Right}" = ''
+          "super + {Left,Down,Up,Right}" = ''
             bspc node -z {left -20 0 || bspc node -z right -20 0, \
                           bottom 0 20 || bspc node -z top 0 20,\
                           top 0 -20 || bspc node -z bottom 0 -20,\
