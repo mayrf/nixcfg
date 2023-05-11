@@ -1,5 +1,7 @@
 { config, pkgs, ... }: {
-  xsession.windowManager.bspwm = {
+  xsession = {
+    enable = true;
+    windowManager.bspwm = {
     enable = true;
     extraConfigEarly = ''
       bspc monitor -d I II III IV V VI VII VIII IX X
@@ -16,5 +18,6 @@
       #feh --bg-fill $HOME/.background-image &
       #xsetroot -cursor_name left_ptr &
     '';
+  };
   };
 }

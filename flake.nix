@@ -17,6 +17,7 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        config.pulseaudio.enable = true;
       };
       lib = nixpkgs.lib;
     in {

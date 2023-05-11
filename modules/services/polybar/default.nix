@@ -1,14 +1,21 @@
 { config, pkgs, ... }: 
-{
   #imports = [
   #  ./colors.nix
   #  ./modules.nix
   #];
+  let
+    mypolybar = pkgs.polybar.override {             # Extra packages to run polybar (mostly sound atm)
+      alsaSupport = true;
+      pulseSupport = true;
+    };
+  in
+{
   services.polybar = {
     enable = true;
     script = ''
       polybar main &
     '';
+    package = mypolybar;
     config = {
       "colors" = {
 	background = "#00";
@@ -56,8 +63,12 @@
 	format-unmounted-prefix = "";
 	label-unmounted         = "%mountpoint%: not mounted";
       };
+      
+
+
       "module/pulseaudio" = {
         type = "internal/pulseaudio";
+	use-ui-max = true;
 	interval = 5;
 	click-right = "pavucontrol";
 	format-volume = "<ramp-volume> <label-volume>";
@@ -129,4 +140,29 @@
       #};
     };
   };
+      home.file.".config/polybar/script/mic.sh" = {               # Custom script: Mic mute
+      text = ''
+      #!/bin/sh
+
+      case $1 in
+          "status")
+          #MUTED=$(pacmd list-sources | awk '/\*/,EOF {print}' | awk '/muted/ {print $2; exit}')
+          #if [[ $MUTED = "no" ]]; then
+          MUTED=$(awk -F"[][]" '/Left:/ { print $4 }' <(amixer sget Capture))
+          if [[ $MUTED = "on" ]]; then
+              echo ''
+          else
+              echo ''
+          fi
+          ;;
+          "toggle")
+          #ID=$(pacmd list-sources | grep "*\ index:" | cut -d' ' -f5)
+          #pactl set-source-mute $ID toggle
+          ${pkgs.alsa-utils}/bin/amixer set Capture toggle
+          ;;
+      esac
+      '';
+      executable = true;
+    };
+
 }

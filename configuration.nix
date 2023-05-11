@@ -21,6 +21,7 @@ in
     device = "/dev/sda"; # or "nodev" for efi only
   };
 
+
   security.sudo.wheelNeedsPassword = false;
 
   # boot.loader.grub.efiSupport = true;
@@ -88,6 +89,7 @@ in
         };
       };
     };
+    blueman.enable = true;
     picom = {
       enable = true;
       settings = {
@@ -103,10 +105,6 @@ in
       displayManager = {
         lightdm.enable = true;
         defaultSession = "none+bspwm";
-        sessionCommands = ''
-  ${pkgs.bspwm}/bin/bspc wm -r &
-  source $HOME/.config/bspwm/bspwmrc
-'';
       };
       windowManager.bspwm.enable = true;
       desktopManager.xfce.enable = true;
@@ -129,11 +127,18 @@ in
    ];
 
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
   # Enable sound.
    sound.enable = true;
    hardware.pulseaudio.enable = true;
+   hardware.bluetooth.enable = true;
+   hardware.bluetooth.settings = {
+  General = {
+    Enable = "Source,Sink,Media,Socket";
+  };
+};
+   hardware.pulseaudio.package = pkgs.pulseaudioFull;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;

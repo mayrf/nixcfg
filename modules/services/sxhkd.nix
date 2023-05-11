@@ -15,7 +15,8 @@
           # Bspwm
           "super + {q,k}" = "bspc node -{c,k}";                 # Close or Kill
           "super + alt + q" = "bspc quit";                       # Exit WM
-          "super + r" = "bspc wm -r && source $HOME/.config/bspwm/bspwmrc";                           # Reload WM
+          "super + r" = "bspc wm -r";                           # Reload WM
+          #"super + r" = "bspc wm -r && source $HOME/.config/bspwm/bspwmrc";                           # Reload WM
           "super + shift + r" = "pkill -usr1 -x sxhkd";                           # Reload WM
 
           # Super - Nodes
