@@ -25,6 +25,7 @@
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
   ];
   home.stateVersion = "22.11";
+  services.emacs.client.enable = true;
   programs = {
     gpg = {
       enable = true;  
