@@ -12,6 +12,11 @@ in {
     ./modules/editors/emacs/doom-emacs
   ];
 
+  # Configure Swapfile.
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 16 * 1024;
+  }];
   # Use the GRUB 2 boot loader.
   boot.loader.grub = {
     enable = true;
