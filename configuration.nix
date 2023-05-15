@@ -24,7 +24,7 @@ in {
     configurationLimit = 5;
     device = "/dev/sda"; # or "nodev" for efi only
   };
-
+  boot.supportedFilesystems = [ "ntfs" ];
   security.sudo.wheelNeedsPassword = false;
 
   # boot.loader.grub.efiSupport = true;
@@ -38,7 +38,16 @@ in {
   #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
-
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      # Not sure if I need all these...
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
   # Set your time zone.  #
   time.timeZone = "Europe/Berlin";
 
@@ -112,6 +121,7 @@ in {
   };
   environment = {
     variables = {
+      MACHINE = "mayrf";
       TERMINAL = "alacritty";
       BROWSER = "librewolf";
       EDIOR = "nvim";
@@ -162,7 +172,6 @@ in {
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
-  programs.zsh.enable = true;
   # programs.mtr.enable = true;
   # programs.gnupg.agent = {
   #   enable = true;
