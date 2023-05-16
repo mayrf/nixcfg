@@ -22,10 +22,23 @@
       lib = nixpkgs.lib;
     in {
          nixosConfigurations = {
-	   ${user} = lib.nixosSystem {
+	   vm = lib.nixosSystem {
              inherit system;
              modules = [ 
-               ./configuration.nix 
+               ./hosts/vm  
+               home-manager.nixosModules.home-manager {
+                 home-manager.useGlobalPkgs = true;
+                 home-manager.useUserPackages = true;
+                 home-manager.users.${user} = {
+                   imports = [ ./home.nix ];
+                 }; 
+               }
+             ];
+           };
+	   x220 = lib.nixosSystem {
+             inherit system;
+             modules = [ 
+               ./hosts/x220 
                home-manager.nixosModules.home-manager {
                  home-manager.useGlobalPkgs = true;
                  home-manager.useUserPackages = true;
