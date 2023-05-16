@@ -18,7 +18,6 @@ in {
   # Use the GRUB 2 boot loader.
   boot.loader.grub = {
     enable = true;
-    version = 2;
     configurationLimit = 5;
     device = "/dev/vda"; # or "nodev" for efi only
   };
