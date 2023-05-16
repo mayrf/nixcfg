@@ -5,12 +5,12 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = github:nix-community/home-manager;
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager }: 
+  outputs = { self, nixpkgs, home-manager }:
     let
       user = "mayrf";
       system = "x86-64-linux";
@@ -21,33 +21,31 @@
       };
       lib = nixpkgs.lib;
     in {
-         nixosConfigurations = {
-	   vm = lib.nixosSystem {
-             inherit system;
-             modules = [ 
-               ./hosts/vm  
-               home-manager.nixosModules.home-manager {
-                 home-manager.useGlobalPkgs = true;
-                 home-manager.useUserPackages = true;
-                 home-manager.users.${user} = {
-                   imports = [ ./home.nix ];
-                 }; 
-               }
-             ];
-           };
-	   x220 = lib.nixosSystem {
-             inherit system;
-             modules = [ 
-               ./hosts/x220 
-               home-manager.nixosModules.home-manager {
-                 home-manager.useGlobalPkgs = true;
-                 home-manager.useUserPackages = true;
-                 home-manager.users.${user} = {
-                   imports = [ ./home.nix ];
-                 }; 
-               }
-             ];
-           };
-         };
+      nixosConfigurations = {
+        vm = lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./hosts/vm
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${user} = { imports = [ ./home.nix ]; };
+            }
+          ];
+        };
+        x220 = lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./hosts/x220
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${user} = { imports = [ ./home.nix ]; };
+            }
+          ];
+        };
+      };
     };
 }

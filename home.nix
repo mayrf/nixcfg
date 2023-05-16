@@ -11,6 +11,12 @@
     [ "graphical-session.target" ];
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
+
+    rsync # Syncer - $ rsync -r dir1/ dir2/
+    unzip # Zip Files
+    #unrar # Rar Files
+    zip # Zip
+
     gnome.nautilus
     gnome.sushi
     onlyoffice-bin
