@@ -1,10 +1,10 @@
-
 { config, pkgs, ... }:
 
 let user = "mayrf";
 in {
   imports = [ # Include the results of the hardware scan.
     ../editors/emacs/doom-emacs
+    ../services/keyboard
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
@@ -37,42 +37,6 @@ in {
   };
 
   services = {
-    keyd = {
-      enable = true;
-      settings = {
-        main = { capslock = "overload(caps_layer, esc)"; };
-        caps_layer = {
-          j = "down";
-          k = "up";
-          h = "left";
-          l = "right";
-        };
-        altgr = {
-          a = "ä";
-          q = "á";
-
-          j = "ű";
-          u = "ü";
-          y = "ú";
-
-          l = "ő";
-          o = "ö";
-          p = "ó";
-        };
-        "altgr+shift" = {
-          A = "Ä";
-          Q = "Á";
-
-          J = "Ű";
-          U = "Ü";
-          Y = "Ú";
-
-          L = "Ő";
-          O = "Ö";
-          P = "Ó";
-        };
-      };
-    };
     blueman.enable = true;
     picom = {
       enable = true;
@@ -81,6 +45,7 @@ in {
     xserver = {
       layout = "us";
       xkbVariant = "altgr-intl";
+      xkbOptions = "compose:menu";
       autoRepeatDelay = 250;
       autoRepeatInterval = 1000 / 60;
       enable = true;
@@ -139,7 +104,6 @@ in {
   ];
 
   system.stateVersion = "22.11"; # Did you read the comment?
-
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
