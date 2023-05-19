@@ -5,6 +5,7 @@ in {
   imports = [ # Include the results of the hardware scan.
     ../editors/emacs/doom-emacs
     ../services/keyboard
+    ../services/picom
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
@@ -37,11 +38,9 @@ in {
   };
 
   services = {
+    locate.enable = true;
     blueman.enable = true;
-    picom = {
-      enable = true;
-      settings = { corner-radius = 10; };
-    };
+
     xserver = {
       layout = "us";
       xkbVariant = "altgr-intl";
