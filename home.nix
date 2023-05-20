@@ -17,7 +17,7 @@
     zip # Zip
     feh # Image Viewer
     sxiv
-
+    nextcloud-client
     gnome.nautilus
     gnome.sushi
     onlyoffice-bin

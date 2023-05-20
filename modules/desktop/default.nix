@@ -36,11 +36,11 @@ in {
     # keyMap = "us";
     useXkbConfig = true; # use xkbOptions in tty.
   };
-
   services = {
     locate.enable = true;
     blueman.enable = true;
-
+    gnome.gnome-keyring.enable =
+      true; # Gnome Keyring, store keys for apps like nextcloud client
     xserver = {
       layout = "us";
       xkbVariant = "altgr-intl";
