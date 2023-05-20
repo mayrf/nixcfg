@@ -15,6 +15,8 @@
     unzip # Zip Files
     #unrar # Rar Files
     zip # Zip
+    feh # Image Viewer
+    sxiv
 
     gnome.nautilus
     gnome.sushi
