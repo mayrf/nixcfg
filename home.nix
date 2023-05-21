@@ -41,9 +41,13 @@
   programs = {
     zsh = {
       enable = true;
+
       shellAliases = {
-        "rbs" = "sudo nixos-rebuild switch --flake $HOME/nixcfg/.#mayrf";
+        "rbs" = "sudo nixos-rebuild switch --flake $HOME/nixcfg/.#$MACHINE";
       };
+      initExtra = ''
+        PROMPT="%F{cyan}[%f%n%F{red}@%f%M%F{cyan}]%f  %B%F{84}%~%f%b "
+      '';
     };
     gpg = { enable = true; };
     git = {
