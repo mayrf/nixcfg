@@ -14,9 +14,13 @@
           "95:class_g = 'Alacritty' && focused"
           "70:class_g = 'Alacritty' && !focused"
         ];
-        blue-method = "dual-kawasse";
+        blur-backgroud = true;
+        blur-size = 12;
+        blur-deviation = false;
+        blur-strength = 5;
+        # blur-method = "dual-kawasse";
         blur-background-exclude = [
-          # "window_type = 'dock'"
+          "window_type = 'dock'"
           # "window_type = 'desktop'"
           # "class_g = 'Rofi'"
           # "_GTK_FRAME_EXTENTS@:c"
