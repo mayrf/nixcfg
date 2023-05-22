@@ -40,6 +40,9 @@
   ];
   home.stateVersion = "22.11";
   services.emacs.client.enable = true;
+
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
   programs = {
     zsh = {
       enable = true;
@@ -49,6 +52,8 @@
       };
       initExtra = ''
         PROMPT="%F{cyan}[%f%n%F{red}@%f%M%F{cyan}]%f  %B%F{84}%~%f%b "
+
+        eval "$(direnv hook zsh)"
       '';
     };
     gpg = { enable = true; };
