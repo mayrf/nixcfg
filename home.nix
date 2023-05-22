@@ -35,6 +35,8 @@
     libreoffice-fresh
     jdk17
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
+    anki-bin
+    tipp10
   ];
   home.stateVersion = "22.11";
   services.emacs.client.enable = true;
