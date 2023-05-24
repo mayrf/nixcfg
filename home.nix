@@ -37,6 +37,8 @@
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
     anki-bin
     tipp10
+    borgbackup
+    borgmatic
   ];
   home.stateVersion = "22.11";
   services.emacs.client.enable = true;
@@ -44,6 +46,22 @@
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
   programs = {
+    lf = {
+      enable = true;
+      settings = {
+        color256 = true;
+        drawbox = true;
+        hidden = true;
+        ignorecase = true;
+        number = true;
+        preview = true;
+        ratios = "2:4:3";
+        relativenumber = true;
+        scrolloff = 10;
+        dirfirst = true;
+        # sortby = "";
+      };
+    };
     zsh = {
       enable = true;
 
