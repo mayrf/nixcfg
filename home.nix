@@ -2,6 +2,8 @@
 
 {
   imports = [
+    # ./modules/programs
+    ./modules/programs/lf
     ./modules/programs/alacritty.nix
     ./modules/services/sxhkd.nix
     ./modules/services/bspwm.nix
@@ -37,6 +39,8 @@
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
     anki-bin
     tipp10
+    ipscan
+    trash-cli
     borgbackup
     borgmatic
   ];
@@ -46,27 +50,18 @@
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
   programs = {
-    lf = {
-      enable = true;
-      settings = {
-        color256 = true;
-        drawbox = true;
-        hidden = true;
-        ignorecase = true;
-        number = true;
-        preview = true;
-        ratios = "2:4:3";
-        relativenumber = true;
-        scrolloff = 10;
-        dirfirst = true;
-        # sortby = "";
-      };
-    };
     zsh = {
       enable = true;
 
       shellAliases = {
         "rbs" = "sudo nixos-rebuild switch --flake $HOME/nixcfg/.#$MACHINE";
+
+      };
+      autocd = true;
+      historySubstringSearch.enable = true;
+      history = {
+        ignoreDups = true;
+        size = 100000;
       };
       initExtra = ''
         PROMPT="%F{cyan}[%f%n%F{red}@%f%M%F{cyan}]%f  %B%F{84}%~%f%b "
