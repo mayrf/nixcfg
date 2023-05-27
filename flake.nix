@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "My personal nixOs flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -8,44 +8,31 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wlroots = {
+      url = "gitlab:wlroots/wlroots?host=gitlab.freedesktop.org";
+      flake = false;
+    };
+
+    hyprland-protocols = {
+      url = "github:hyprwm/hyprland-protocols";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    xdph = {
+      url = "github:hyprwm/xdg-desktop-portal-hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprland-protocols.follows = "hyprland-protocols";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager }:
-    let
-      user = "mayrf";
-      system = "x86-64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        config.pulseaudio.enable = true;
-      };
-      lib = nixpkgs.lib;
+  outputs = { self, nixpkgs, home-manager, wlroots, hyprland-protocols, xdph }:
+    let user = "mayrf";
     in {
-      nixosConfigurations = {
-        vm = lib.nixosSystem {
-          inherit system;
-          modules = [
-            ./hosts/vm
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${user} = { imports = [ ./home.nix ]; };
-            }
-          ];
-        };
-        x220 = lib.nixosSystem {
-          inherit system;
-          modules = [
-            ./hosts/x220
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${user} = { imports = [ ./home.nix ]; };
-            }
-          ];
-        };
-      };
+      nixosConfigurations = ( # NixOS configurations
+        import ./hosts { # Imports ./hosts/default.nix
+          inherit nixpkgs user home-manager wlroots hyprland-protocols
+            xdph; # Also inherit home-manager so it does not need to be defined here.
+        });
     };
 }
