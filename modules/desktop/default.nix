@@ -1,11 +1,10 @@
-{ config, pkgs, ... }:
-
-let user = "mayrf";
-in {
+{ config, pkgs, user, hyprland, system, ... }: {
   imports = [ # Include the results of the hardware scan.
+    ../hyprland
     ../editors/emacs/doom-emacs
     ../services/keyboard
     ../services/picom
+    ../x11
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
@@ -25,10 +24,6 @@ in {
     ];
   };
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
@@ -39,22 +34,8 @@ in {
   services = {
     locate.enable = true;
     blueman.enable = true;
-    gnome.gnome-keyring.enable =
-      true; # Gnome Keyring, store keys for apps like nextcloud client
-    xserver = {
-      layout = "us";
-      xkbVariant = "altgr-intl";
-      xkbOptions = "compose:menu";
-      autoRepeatDelay = 250;
-      autoRepeatInterval = 1000 / 60;
-      enable = true;
-      displayManager = {
-        lightdm.enable = true;
-        defaultSession = "none+bspwm";
-      };
-      windowManager.bspwm.enable = true;
-      desktopManager.xfce.enable = true;
-    };
+    # Gnome Keyring, store keys for apps like nextcloud client
+    gnome.gnome-keyring.enable = true;
   };
   environment = {
     variables = {
@@ -77,9 +58,6 @@ in {
     General = { Enable = "Source,Sink,Media,Socket"; };
   };
   hardware.pulseaudio.package = pkgs.pulseaudioFull;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   programs.zsh.enable = true;

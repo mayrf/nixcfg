@@ -1,4 +1,4 @@
-{ nixpkgs, home-manager, user, ... }:
+{ nixpkgs, home-manager, user, hyprland, ... }:
 let
   system = "x86-64-linux";
   pkgs = import nixpkgs {
@@ -10,6 +10,7 @@ let
 in {
   vm = lib.nixosSystem {
     inherit system;
+    specialArgs = { inherit system user hyprland; };
     modules = [
       ./vm
       home-manager.nixosModules.home-manager
@@ -22,6 +23,7 @@ in {
   };
   x220 = lib.nixosSystem {
     inherit system;
+    specialArgs = { inherit system user hyprland; };
     modules = [
       ./x220
       home-manager.nixosModules.home-manager
