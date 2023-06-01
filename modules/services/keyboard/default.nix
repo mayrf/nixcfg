@@ -21,31 +21,32 @@
           h = "left";
           l = "right";
         };
-        altgr = {
-          a = ''macro(compose a ")'';
-          q = "macro(compose a ')";
+        # altgr = {
+        # a = "ä";
+        #   a = ''macro(compose a ")'';
+        #   q = "macro(compose a ')";
 
-          u = ''macro(compose u ")'';
-          y = "macro(compose u ')";
-          j = "macro(compose u u)";
+        #   u = ''macro(compose u ")'';
+        #   y = "macro(compose u ')";
+        #   j = "macro(compose u u)";
 
-          o = ''macro(compose o ")'';
-          p = "macro(compose o ')";
-          l = "macro(compose o o)";
-        };
-        "altgr+shift" = {
+        #   o = ''macro(compose o ")'';
+        #   p = "macro(compose o ')";
+        #   l = "macro(compose o o)";
+        # };
+        # "altgr+shift" = {
 
-          a = ''macro(compose A ")'';
-          q = "macro(compose A ')";
+        #   a = ''macro(compose A ")'';
+        #   q = "macro(compose A ')";
 
-          u = ''macro(compose U ")'';
-          y = "macro(compose U ')";
-          j = "macro(compose U U)";
+        #   u = ''macro(compose U ")'';
+        #   y = "macro(compose U ')";
+        #   j = "macro(compose U U)";
 
-          o = ''macro(compose O ")'';
-          p = "macro(compose O ')";
-          l = "macro(compose O O)";
-        };
+        #   o = ''macro(compose O ")'';
+        #   p = "macro(compose O ')";
+        #   l = "macro(compose O O)";
+        # };
       };
     };
   };

@@ -8,6 +8,7 @@
     ./modules/services/sxhkd.nix
     ./modules/services/bspwm.nix
     ./modules/services/polybar
+    ./modules/hyprland/home.nix
   ];
   systemd.user.services.polybar.Install.WantedBy =
     [ "graphical-session.target" ];
@@ -43,6 +44,16 @@
     trash-cli
     borgbackup
     borgmatic
+    hugo
+    sshfs
+
+    # lf dependencies
+    ctpv
+    ueberzugpp
+    ffmpeg_6-full
+    jq
+    poppler_utils
+    bat
   ];
   home.stateVersion = "22.11";
   services.emacs.client.enable = true;
@@ -50,6 +61,11 @@
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
   programs = {
+    starship = {
+      enableZshIntegration = true;
+      enable = true;
+    };
+    wofi = { enable = true; };
     zsh = {
       enable = true;
 
@@ -64,10 +80,12 @@
         size = 100000;
       };
       initExtra = ''
-        PROMPT="%F{cyan}[%f%n%F{red}@%f%M%F{cyan}]%f  %B%F{84}%~%f%b "
-
         eval "$(direnv hook zsh)"
       '';
+    };
+    foot = {
+      enable = true;
+      server.enable = true;
     };
     gpg = { enable = true; };
     git = {
