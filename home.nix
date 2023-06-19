@@ -46,6 +46,10 @@
     borgmatic
     hugo
     sshfs
+    riseup-vpn
+
+    qemu
+    virt-manager
 
     # lf dependencies
     ctpv
