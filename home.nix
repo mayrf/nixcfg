@@ -54,16 +54,51 @@
     jq
     poppler_utils
     bat
+    # dev packages
+    rnix-lsp
+    vimgolf
+    swt
+    # node2nix
+    texlive.combined.scheme-full
+    urbit
   ];
-  home.stateVersion = "22.11";
+  home.stateVersion = "23.05";
   services.emacs.client.enable = true;
 
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscodium;
+    extensions = with pkgs.vscode-extensions; [
+      vscodevim.vim
+      ms-python.python
+      # goessner.mdmath
+      matklad.rust-analyzer
+      eamodio.gitlens
+    ];
+    mutableExtensionsDir = true;
+    userSettings = {
+      "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
+      "git.autofetch" = true;
+      "security.workspace.trust.untrustedFiles" = "open";
+      "vim.useSystemClipboard" = true;
+      "extensions.autoCheckUpdates" = false;
+      "extensions.autoUpdate" = false;
+      "notebook.experimental.useMarkdownRenderer" = true;
+    };
+  };
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
   programs = {
+    zathura = {
+      enable = true;
+      options = {
+        "selection-clipboard" = "clipboard";
+      };
+    };
     starship = {
       enableZshIntegration = true;
       enable = true;
+      settings = { add_newline = false; };
     };
     wofi = { enable = true; };
     zsh = {

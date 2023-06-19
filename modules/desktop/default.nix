@@ -65,12 +65,19 @@
   environment.shells = with pkgs; [ zsh ];
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "libvirtd" ]; # Enable ‘sudo’ for the user.
     initialPassword = "password";
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  # get virtual maschines
+  virtualisation.libvirtd.enable = true;
+  programs.dconf.enable = true;
+  xdg.mime.defaultApplications = {
+    # "application/pdf" = "org.pwmt.zathura.desktop";
+    "application/pdf" = "org.pwmt.zathura.desktop";
+  };
   environment.systemPackages = with pkgs; [
     vim
     nixfmt
@@ -81,6 +88,8 @@
     rofi
     polybar
     xclip
+    xdotool
+    xorg.xwininfo
   ];
 
   system.stateVersion = "22.11"; # Did you read the comment?
