@@ -1,5 +1,11 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
+;;;
+
+;; These packages attempt to build native C code at runtime. Prefer copies
+;; installed by Nix if they exist to avoid having to make GCC globally
+;; available.
+(package! emacsql-sqlite3 :built-in 'prefer)
 
 ;; To install a package with Doom you must declare them here and run 'doom sync'
 ;; on the command line, then restart Emacs for the changes to take effect -- or

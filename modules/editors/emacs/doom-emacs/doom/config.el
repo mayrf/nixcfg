@@ -1,7 +1,7 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "Fritz Mayr"
+      user-mail-address "70516376+mayrf@users.noreply.github.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -26,16 +26,88 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-one)
+(setq doom-theme 'doom-gruvbox)
+;; (setq doom-theme 'doom-manegarm)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+(after! lsp-ui
+(setq lsp-ui-doc-show-with-cursor t)
+  (setq lsp-ui-doc-enable t)
+  (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-ui-doc-use-webkite t))
+  (setq lsp-ui-doc-delay 0.5))
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+(setq org-roam-directory (file-truename "~/org/RoamNotes"))
+;; default roam template adds extra #+title:
+;; (setq org-roam-capture-templates
+;;    '(("d" "default" plain
+;;       "%?"
+;;       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:${title}\n")
+;;       :unnarrowed t)))
+(setq projectile-project-search-path '("~/code" ))
 
+(setq org-agenda-custom-commands
+      '(("v" "Better Agenda" (
+          (tags "@computer"
+                ((org-agenda-overriding-header "@computer")))
+          (tags "@home"
+                ((org-agenda-overriding-header "@home")))
+          (tags "@work"
+                ((org-agenda-overriding-header "@work")))
+          (tags "@telephone"
+                ((org-agenda-overriding-header "@telephone")))
+          (agenda "")
+          (alltodo "")))
+        ("c" "@computer" (
+          (tags "@computer"
+                ((org-agenda-overriding-header "@computer")))))
+        ("h" "@home" (
+          (tags "@home"
+                ((org-agenda-overriding-header "@home")))))
+        ("w" "@work" (
+          (tags "@work"
+                ((org-agenda-overriding-header "@work")))))
+        ("p" "@phone" (
+          (tags "@telephone"
+                ((org-agenda-overriding-header "@telephone")))))
+        ))
+
+(after! org
+  ;; (setq org-archive-reversed-order t)
+  (setq org-agenda-files '("~/org/gtd/inbox.org"
+                           "~/org/gtd/inbox_phone.org"
+                           "~/org/gtd/next.org"
+                           "~/org/gtd/tickler.org"))
+
+  ;; setting up inbox captures
+  (add-to-list 'org-capture-templates
+               '("t" "Todo" entry
+                 (file+headline "~/org/gtd/inbox.org" "TASKS")
+                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n"))
+
+  (add-to-list 'org-capture-templates
+               '("b" "book [inbox]" entry
+                 (file+headline "~/org/gtd/inbox.org" "Books")
+                 "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?"))
+  (add-to-list 'org-capture-templates
+               '("T" "Tickler" entry
+                 (file+headline "~/org/gtd/tickler.org" "Tickler")
+                 "* %i%? \n %U"))
+
+  (setq org-refile-targets '(("~/org/gtd/next.org" :maxlevel . 1)
+                             ("~/org/gtd/someday.org" :maxlevel . 1)
+                             ("~/org/gtd/agenda.org" :maxlevel . 1)
+                             ("~/org/gtd/read-review.org" :maxlevel . 1)
+                             ("~/org/gtd/tickler.org" :maxlevel . 1)))
+  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (setq org-log-done 'time))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
