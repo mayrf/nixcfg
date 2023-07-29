@@ -30,16 +30,73 @@
 (setq doom-theme 'doom-gruvbox)
 ;; (setq doom-theme 'doom-manegarm)
 
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
+
+  (map! :leader
+        :prefix "w"
+      "i" #'window-toggle-split-direction)
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-(after! lsp-ui
-(setq lsp-ui-doc-show-with-cursor t)
-  (setq lsp-ui-doc-enable t)
-  (setq lsp-eldoc-hook nil)
+;; (defun tdr/fix-centaur-tabs ()
+;; (centaur-tabs-mode -1)
+;; (centaur-tabs-mode)
+;; (centaur-tabs-headline-match)
+;; )
+
+;; (if (daemonp)
+;;     (add-hook 'after-make-frame-functions
+;;               (lambda (frame)
+;;                 (with-selected-frame frame
+;;                   (tdr/fix-centaur-tabs)))
+;;               (tdr/fix-centaur-tabs))
+;; )
+
+(setq company-idle-delay 0.1)
+(setq company-box-doc-delay 0.2)
+(setq company-box-doc-no-wrap t)
+
+;; (after! lsp-ui
+;; (setq lsp-ui-doc-show-with-cursor t)
+  ;; (setq lsp-ui-doc-enable t)
+  ;; (setq lsp-eldoc-hook nil)
   ;; (setq lsp-ui-doc-use-webkite t))
-  (setq lsp-ui-doc-delay 0.5))
+  ;; (setq lsp-ui-doc-delay 0))
+
+(map! :after lsp-mode
+      :leader
+      :prefix "l"
+      "g g" #'lsp-find-definition
+      "g r" #'lsp-find-references)
+
+(setq
+    org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
+)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -87,19 +144,36 @@
                            "~/org/gtd/tickler.org"))
 
   ;; setting up inbox captures
-  (add-to-list 'org-capture-templates
-               '("t" "Todo" entry
-                 (file+headline "~/org/gtd/inbox.org" "TASKS")
-                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n"))
+  (setq org-capture-templates '(
+               ("t" "Todo" entry
+                 (file "~/org/gtd/inbox.org")
+                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
 
-  (add-to-list 'org-capture-templates
-               '("b" "book [inbox]" entry
+               ("b" "book [inbox]" entry
                  (file+headline "~/org/gtd/inbox.org" "Books")
-                 "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?"))
-  (add-to-list 'org-capture-templates
-               '("T" "Tickler" entry
+                 "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?")
+
+               '("W" "Weekly Review" entry
+                 (file+olp+datetree "~/org/gtd/weekly-review.org" )
+                 (file  "~/org/gtd/templates/weekly_review.txt"))
+
+               ("T" "Tickler" entry
                  (file+headline "~/org/gtd/tickler.org" "Tickler")
-                 "* %i%? \n %U"))
+                 "* %i%? \n %U")
+                                  ))
+  ;; (add-to-list 'org-capture-templates
+  ;;              '("t" "Todo" entry
+  ;;                (file+headline "~/org/gtd/inbox.org" "TASKS")
+  ;;                "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n"))
+
+  ;; (add-to-list 'org-capture-templates
+  ;;              '("b" "book [inbox]" entry
+  ;;                (file+headline "~/org/gtd/inbox.org" "Books")
+  ;;                "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?"))
+  ;; (add-to-list 'org-capture-templates
+  ;;              '("T" "Tickler" entry
+  ;;                (file+headline "~/org/gtd/tickler.org" "Tickler")
+  ;;                "* %i%? \n %U"))
 
   (setq org-refile-targets '(("~/org/gtd/next.org" :maxlevel . 1)
                              ("~/org/gtd/someday.org" :maxlevel . 1)
