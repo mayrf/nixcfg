@@ -1,38 +1,139 @@
 {
-  description = "My personal nixOs flake";
+  description = "My personal NixOs configuration";
 
   inputs = {
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     hyprland.url = "github:hyprwm/Hyprland";
 
-    # wlroots = {
-    #   url = "gitlab:wlroots/wlroots?host=gitlab.freedesktop.org";
-    #   flake = false;
-    # };
+    nix-colors.url = "github:misterio77/nix-colors";
 
-    # hyprland-protocols = {
-    #   url = "github:hyprwm/hyprland-protocols";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    # xdph = {
-    #   url = "github:hyprwm/xdg-desktop-portal-hyprland";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    #   inputs.hyprland-protocols.follows = "hyprland-protocols";
-    # };
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland }:
-    let user = "mayrf";
-    in {
-      nixosConfigurations = ( # NixOS configurations
-        import ./hosts { # Imports ./hosts/default.nix
-          inherit nixpkgs user home-manager
-            hyprland; # Also inherit home-manager so it does not need to be defined here.
-        });
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+    let
+      inherit (self) outputs;
+      lib = nixpkgs.lib // home-manager.lib;
+      # lib = nixpkgs.lib;
+      systems = [ "x86_64-linux" "aarch64-linux" ];
+      system = [ "x86_64-linux" "aarch64-linux" ];
+
+      pkgsFor = nixpkgs.legacyPackages;
+      forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
+    in
+    {
+      inherit lib;
+
+      homeManagerModules = import ./modules/home-manager;
+
+      overlays = import ./overlays { inherit inputs outputs; };
+      wallpapers = import ./home/mayrf/wallpapers;
+
+      # sudo nixos-rebuild switch --flake .#${host}
+      nixosConfigurations =
+        {
+          # Personal laptop
+          helium = lib.nixosSystem {
+            modules = [
+              ./hosts/helium
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.extraSpecialArgs = {
+                  user = "mayrf";
+                  host = "helium";
+                  inherit inputs outputs;
+                };
+                home-manager.users.mayrf = {
+                  imports = [
+                    ./home/mayrf/helium.nix
+                  ];
+                };
+              }
+            ];
+            specialArgs =
+              let
+                user = "mayrf";
+                host = "helium";
+              in
+              { inherit inputs outputs user host; };
+          };
+
+          # Work
+          tellur = lib.nixosSystem {
+            modules = [
+              ./hosts/tellur
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.extraSpecialArgs = {
+                  user = "mayrf";
+                  host = "tellur";
+                  inherit inputs outputs;
+                };
+                home-manager.users.mayrf = {
+                  imports = [
+                    ./home/mayrf/tellur.nix
+                  ];
+                };
+              }
+            ];
+            specialArgs =
+              let
+                user = "mayrf";
+                host = "tellur";
+              in
+              { inherit inputs outputs user host; };
+          };
+        };
+
+      # home-manager switch --flake .#mayrf@helium
+      homeConfigurations =
+        {
+          "mayrf@helium" = lib.homeManagerConfiguration {
+            modules = [
+              ./home/mayrf/helium.nix
+            ];
+            pkgs = pkgsFor.x86_64-linux;
+            extraSpecialArgs =
+              let
+                user = "mayrf";
+                host = "helium";
+              in
+              { inherit inputs outputs user host; };
+          };
+
+          "mayrf@tellur" = lib.homeManagerConfiguration {
+            modules = [
+              ./home/mayrf/tellur.nix
+            ];
+            pkgs = pkgsFor.x86_64-linux;
+            extraSpecialArgs =
+              let
+                user = "mayrf";
+                host = "tellur";
+              in
+              { inherit inputs outputs user host; };
+          };
+        };
     };
 }
