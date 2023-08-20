@@ -46,6 +46,7 @@
     fd
     sqlite
     gcc
+    emacs-all-the-icons-fonts
 
     # other dependencies
     hunspell

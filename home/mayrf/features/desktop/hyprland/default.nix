@@ -162,8 +162,8 @@
           "SUPER,w,exec,${browser}"
           "SUPERSHIFT, R, exec,${hyprctl} reload"
           # Brightness control (only works if the system has lightd)
-          ",XF86MonBrightnessUp,exec,brightnessctl set 10%+"
-          ",XF86MonBrightnessDown,exec,brightnessctl set 10%-"
+          ",XF86MonBrightnessUp,exec,brightnessctl set 5%+"
+          ",XF86MonBrightnessDown,exec,brightnessctl set 5%-"
           # Volume
           ",XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
           ",XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
