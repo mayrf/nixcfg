@@ -41,12 +41,19 @@
 
   home.packages = with pkgs; [
     # Doom emacs dependencies
-    ripgrep
-    coreutils
-    fd
-    sqlite
+    git
+    (ripgrep.override { withPCRE2 = true; })
+    gnutls # for TLS connectivity    coreutils
+    fd # faster projectile indexing
+    imagemagick # for image-dired    sqlite
     gcc
     emacs-all-the-icons-fonts
+
+    zstd # for undo-fu-session/undo-tree compression
+
+
+    # :tools editorconfig
+    editorconfig-core-c # per-project style config
 
     # other dependencies
     hunspell
@@ -57,4 +64,5 @@
     hunspellDicts.es_ES
     hunspellDicts.en_GB-ize
   ];
+  home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
 }

@@ -76,6 +76,7 @@
     tor-browser-bundle-bin
     vlc
     brave
+    firefox
     feh # Image Viewer
     sxiv
     urbit
@@ -83,8 +84,10 @@
     # Productivity
     nextcloud-client
     onlyoffice-bin
+    libreoffice
     keepassxc
     calibre
+    drawio
 
     # Learning
     anki-bin

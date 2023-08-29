@@ -85,7 +85,6 @@ in
   fonts.fontconfig.enable = true;
 
   services = {
-    dunst = { enable = true; };
     nextcloud-client = {
       enable = true;
       startInBackground = true;

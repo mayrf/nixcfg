@@ -14,16 +14,13 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   boot.loader = {
-    systemd-boot.enable = true;
+    systemd-boot = {
+      configurationLimit = 10;
+      enable = true;
+    };
     efi = {
       canTouchEfiVariables = true;
-      #      efiSysMountPoint = "/boot/efi";
     };
-    #    grub = {
-    #      enable = true;
-    #      devices = [ "nodev" ];
-    #      efiSupport = true;
-    #    };
   };
 
   fileSystems."/" =

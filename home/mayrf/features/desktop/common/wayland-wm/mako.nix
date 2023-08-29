@@ -1,6 +1,7 @@
 { config, ... }:
 let inherit (config.colorscheme) colors kind;
-in {
+in
+{
   services.mako = {
     enable = true;
     iconPath =
@@ -10,7 +11,7 @@ in {
         "${config.gtk.iconTheme.package}/share/icons/Papirus-Light";
     font = "${config.fontProfiles.regular.family} 12";
     padding = "10,20";
-    anchor = "top-center";
+    anchor = "top-left";
     width = 400;
     height = 150;
     borderSize = 2;

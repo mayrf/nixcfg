@@ -23,6 +23,9 @@
       "notebook.experimental.useMarkdownRenderer" = true;
       "editor.formatOnSave" = true;
       "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      "typescript.preferences.importModuleSpecifier" = "relative";
+      "typescript.updateImportsOnFileMove.enabled" = "always";
+      "explorer.confirmDragAndDrop" = false;
       "[javascript]" = {
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };

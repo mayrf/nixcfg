@@ -151,6 +151,7 @@
           # editor = defaultApp "text/plain";
           terminal = "${pkgs.foot}/bin/foot";
           browser = "${pkgs.librewolf}/bin/librewolf";
+          brave = "${pkgs.brave}/bin/brave";
           editor = "${pkgs.emacs}/bin/emacsclient -c";
           hyprctl = "${pkgs.hyprland}/bin/hyprctl";
 
@@ -160,6 +161,7 @@
           "SUPER,Return,exec,${terminal}"
           "SUPER,e,exec,${editor}"
           "SUPER,w,exec,${browser}"
+          "SUPERSHIFT,w,exec,${brave}"
           "SUPERSHIFT, R, exec,${hyprctl} reload"
           # Brightness control (only works if the system has lightd)
           ",XF86MonBrightnessUp,exec,brightnessctl set 5%+"
