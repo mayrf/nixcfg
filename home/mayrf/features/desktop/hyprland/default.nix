@@ -205,7 +205,8 @@
         # Launcher
         (lib.optionals config.programs.wofi.enable [
           "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
-          "SUPER,d,exec,${wofi} -S run"
+          "SUPER,d,exec,${wofi} -S drun"
+          "SUPERSHIFT,d,exec,${wofi} -S drun"
           "SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
         ]
           # ++ (lib.optionals config.programs.password-store.enable [

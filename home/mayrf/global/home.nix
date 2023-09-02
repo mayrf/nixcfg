@@ -39,11 +39,6 @@
     librewolf.enable = true;
   };
   home.packages = with pkgs; [
-    # Testing
-    # TODO packages not working when only available projectwise
-    # nodePackages.eslint
-    nodePackages.prettier
-    # nodePackages.typescript-language-server**
 
     # Cli tools
     img2pdf

@@ -24,7 +24,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15 :weight 'semi-light))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
@@ -120,7 +120,6 @@
   ;; (setq lsp-ui-doc-use-webkite t))
   ;; (setq lsp-ui-doc-delay 0))
 #+end_src
-
 ** Keymaps
 #+begin_src emacs-lisp :tangle yes
 (map! :after lsp-mode
