@@ -5,6 +5,7 @@
     ./global
     ./features/lf
     ./features/terminal/alacritty.nix
+    ./features/terminal/foot.nix
     ./features/desktop/hyprland
     ./features/editors/emacs/doom-emacs
     ./features/editors/vscode.nix

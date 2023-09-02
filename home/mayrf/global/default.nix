@@ -5,8 +5,8 @@ let
 in
 {
   imports = [
-    # inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.nix-colors.homeManagerModule
+    ./git
     ./home.nix
     ./shell.nix
     ./mimeApps.nix
@@ -18,11 +18,6 @@ in
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
-      # FIXME
-      # permittedInsecurePackages = [
-      #   "openssl-1.1.1u"
-      # ];
-      #
       permittedInsecurePackages = [
         "electron-12.2.3"
       ];

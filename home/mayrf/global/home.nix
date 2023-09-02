@@ -9,35 +9,10 @@
       };
     };
     wofi = { enable = true; };
-    foot = {
-      enable = true;
-      server.enable = true;
-      settings = {
-        main = {
-          term = "xterm-256color";
-
-          font = "JetBrainsMono Nerd Font:size=10";
-          dpi-aware = "yes";
-        };
-        mouse = {
-          hide-when-typing = "yes";
-        };
-      };
-    };
     gpg = { enable = true; };
-    git = {
-      enable = true;
-      userName = "mayrf";
-      userEmail = "70516376+mayrf@users.noreply.github.com";
-      # config = {
-      #   commit = {
-      #     template = ./commitMsg.txt;
-      #   };
-      # };
-
-    };
     librewolf.enable = true;
   };
+
   home.packages = with pkgs; [
 
     # Cli tools
@@ -106,7 +81,5 @@
     sshfs
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
-
-
   ];
 }
