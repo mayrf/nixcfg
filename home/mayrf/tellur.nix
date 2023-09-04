@@ -4,8 +4,10 @@
   imports = [
     ./global
     ./features/lf
+    ./features/teams.nix
     ./features/terminal/alacritty.nix
     ./features/terminal/foot.nix
+    ./features/terminal/kitty.nix
     ./features/desktop/hyprland
     ./features/editors/emacs/doom-emacs
     ./features/editors/vscode.nix

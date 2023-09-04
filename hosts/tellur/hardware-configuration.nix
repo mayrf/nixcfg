@@ -25,7 +25,7 @@
 
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/cd2ede4e-e71e-45b0-bf83-858c42c9c9c3";
+      device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
 
@@ -33,7 +33,7 @@
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/A868-124D";
+      device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
 

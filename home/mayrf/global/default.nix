@@ -7,7 +7,7 @@ in
   imports = [
     inputs.nix-colors.homeManagerModule
     ./git
-    ./home.nix
+    ./programs.nix
     ./shell.nix
     ./mimeApps.nix
     ../features/editors/nvim.nix

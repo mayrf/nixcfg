@@ -50,6 +50,7 @@
     feh # Image Viewer
     sxiv
     urbit
+    minitube
 
     # Productivity
     nextcloud-client
