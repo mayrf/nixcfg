@@ -30,6 +30,7 @@
     # Social
     signal-desktop
     schildichat-desktop
+    hexchat
 
     # Dev tools
     docker-compose
