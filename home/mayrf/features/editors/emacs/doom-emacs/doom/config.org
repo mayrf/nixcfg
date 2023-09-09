@@ -120,6 +120,11 @@
   ;; (setq lsp-ui-doc-use-webkite t))
   ;; (setq lsp-ui-doc-delay 0))
 #+end_src
+** Typescript/Javascript
+*** Set relative import (actually bad practice)
+#+begin_src emacs-lisp :tangle yes
+(setq-default tide-user-preferences '(:importModuleSpecifierPreference "relative" :includeCompletionsForModuleExports t :includeCompletionsWithInsertText t :allowTextChangesInNewFiles t))
+#+end_src
 ** Keymaps
 #+begin_src emacs-lisp :tangle yes
 (map! :after lsp-mode

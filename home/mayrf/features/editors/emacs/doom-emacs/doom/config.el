@@ -88,6 +88,8 @@
   ;; (setq lsp-ui-doc-use-webkite t))
   ;; (setq lsp-ui-doc-delay 0))
 
+(setq-default tide-user-preferences '(:importModuleSpecifierPreference "relative" :includeCompletionsForModuleExports t :includeCompletionsWithInsertText t :allowTextChangesInNewFiles t))
+
 (map! :after lsp-mode
       :leader
       :prefix "l"
