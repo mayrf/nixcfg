@@ -103,6 +103,32 @@
               in
               { inherit inputs outputs user host; };
           };
+
+          #desktop
+          yttrium = lib.nixosSystem {
+            modules = [
+              ./hosts/yttrium
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.extraSpecialArgs = {
+                  user = "mayrf";
+                  host = "tellur";
+                  inherit inputs outputs;
+                };
+                home-manager.users.mayrf = {
+                  imports = [
+                    ./home/mayrf/yttrium.nix
+                  ];
+                };
+              }
+            ];
+            specialArgs =
+              let
+                user = "mayrf";
+                host = "yttrium";
+              in
+              { inherit inputs outputs user host; };
+          };
         };
 
       # home-manager switch --flake .#mayrf@helium
