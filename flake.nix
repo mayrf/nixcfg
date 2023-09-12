@@ -53,82 +53,79 @@
       nixosConfigurations =
         {
           # Personal laptop
-          helium = lib.nixosSystem {
-            modules = [
-              ./hosts/helium
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.extraSpecialArgs = {
-                  user = "mayrf";
-                  host = "helium";
-                  inherit inputs outputs;
-                };
-                home-manager.users.mayrf = {
-                  imports = [
-                    ./home/mayrf/helium.nix
-                  ];
-                };
-              }
-            ];
-            specialArgs =
-              let
-                user = "mayrf";
-                host = "helium";
-              in
-              { inherit inputs outputs user host; };
-          };
+          helium =
+            let
+              user = "mayrf";
+              host = "helium";
+            in
+            lib.nixosSystem {
+              modules = [
+                ./hosts/helium
+                home-manager.nixosModules.home-manager
+                {
+                  home-manager.extraSpecialArgs = {
+                    inherit inputs outputs user host;
+                  };
+                  home-manager.users.mayrf = {
+                    imports = [
+                      ./home/mayrf/helium.nix
+                    ];
+                  };
+                }
+              ];
+              specialArgs =
+                { inherit inputs outputs user host; };
+            };
 
           # Work
-          tellur = lib.nixosSystem {
-            modules = [
-              ./hosts/tellur
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.extraSpecialArgs = {
-                  user = "mayrf";
-                  host = "tellur";
-                  inherit inputs outputs;
-                };
-                home-manager.users.mayrf = {
-                  imports = [
-                    ./home/mayrf/tellur.nix
-                  ];
-                };
-              }
-            ];
-            specialArgs =
-              let
-                user = "mayrf";
-                host = "tellur";
-              in
-              { inherit inputs outputs user host; };
-          };
+          tellur =
+            let
+              user = "mayrf";
+              host = "tellur";
+            in
+            lib.nixosSystem {
+              modules = [
+                ./hosts/tellur
+                home-manager.nixosModules.home-manager
+                {
+                  home-manager.extraSpecialArgs = {
+                    inherit inputs outputs user host;
+                  };
+                  home-manager.users.mayrf = {
+                    imports = [
+                      ./home/mayrf/tellur.nix
+                    ];
+                  };
+                }
+              ];
+              specialArgs =
+                { inherit inputs outputs user host; };
+            };
 
           #desktop
-          yttrium = lib.nixosSystem {
-            modules = [
-              ./hosts/yttrium
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.extraSpecialArgs = {
-                  user = "mayrf";
-                  host = "tellur";
-                  inherit inputs outputs;
-                };
-                home-manager.users.mayrf = {
-                  imports = [
-                    ./home/mayrf/yttrium.nix
-                  ];
-                };
-              }
-            ];
-            specialArgs =
-              let
-                user = "mayrf";
-                host = "yttrium";
-              in
-              { inherit inputs outputs user host; };
-          };
+          yttrium =
+            let
+              user = "mayrf";
+              host = "yttrium";
+            in
+            lib.nixosSystem {
+              modules = [
+                ./hosts/yttrium
+                home-manager.nixosModules.home-manager
+                {
+                  home-manager.extraSpecialArgs = {
+                    inherit inputs outputs user host;
+                  };
+                  home-manager.users.mayrf = {
+                    imports = [
+                      ./home/mayrf/yttrium.nix
+                    ];
+                  };
+                }
+              ];
+              specialArgs =
+                { inherit inputs outputs user host; };
+            };
         };
 
       # home-manager switch --flake .#mayrf@helium
