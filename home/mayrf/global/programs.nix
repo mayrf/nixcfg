@@ -26,6 +26,9 @@
     git
     git-crypt
     tree
+    # TODO add Scripts like:
+    # pandoc -f markdown -t org -o ${md%.*}.org ${md};
+    pandoc
 
     # Social
     signal-desktop
@@ -60,6 +63,7 @@
     keepassxc
     calibre
     drawio
+    thunderbird
 
     # Learning
     anki-bin
@@ -71,7 +75,7 @@
     gnome.nautilus
     gnome.sushi # A quick previewer for Nautilus
     gnupg
-    pinentry_qt # GnuPG’s interface to passphrase input
+    pinentry-qt # GnuPG’s interface to passphrase input
     ipscan
     riseup-vpn
     qemu

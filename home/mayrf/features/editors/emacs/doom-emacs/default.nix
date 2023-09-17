@@ -31,7 +31,7 @@
                 DOOM="${config.home.homeDirectory}/.config/doom"
                 if [ ! -d "$EMACS" ]; then
                   ${pkgs.git}/bin/git clone https://github.com/hlissner/doom-emacs.git $EMACS
-                  yes | $EMACS/bin/doom install
+                #  yes | $EMACS/bin/doom install
                   rm $HOME/.config/doom
                 fi
 
@@ -39,7 +39,7 @@
                   ln -s ${config.home.homeDirectory}/.config/nixcfg/home/mayrf/features/editors/emacs/doom-emacs/doom $HOME/.config/doom
                 fi
 
-        #        $EMACS/bin/doom sync
+                # $EMACS/bin/doom sync
                 # TODO find a way to make this work (Error: failed to run Emacs with command 'emacs'
                 # Are you sure Emacs is installed and in your $PATH?
                 # if [ -x "/home/mayrf/.config/emacs/bin/doom" ]; then

@@ -15,7 +15,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15 :weight 'semi-light))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14 :weight 'semi-light))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
@@ -55,8 +55,8 @@
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
 
-  (map! :leader
-        :prefix "w"
+(map! :leader
+      :prefix "w"
       "i" #'window-toggle-split-direction)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -83,10 +83,10 @@
 
 ;; (after! lsp-ui
 ;; (setq lsp-ui-doc-show-with-cursor t)
-  ;; (setq lsp-ui-doc-enable t)
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-ui-doc-use-webkite t))
-  ;; (setq lsp-ui-doc-delay 0))
+;; (setq lsp-ui-doc-enable t)
+;; (setq lsp-eldoc-hook nil)
+;; (setq lsp-ui-doc-use-webkite t))
+;; (setq lsp-ui-doc-delay 0))
 
 (setq-default tide-user-preferences '(:importModuleSpecifierPreference "relative" :includeCompletionsForModuleExports t :includeCompletionsWithInsertText t :allowTextChangesInNewFiles t))
 
@@ -101,9 +101,9 @@
        :desc "Open dired" "d" #'dired
        :desc "Dired jump to current" "j" #'dired-jump)
       (:after dired
-       (:map dired-mode-map
-        :desc "Peep-dired image previews" "d p" #'peep-dired
-        :desc "Dired view file"           "d v" #'dired-view-file)))
+              (:map dired-mode-map
+               :desc "Peep-dired image previews" "d p" #'peep-dired
+               :desc "Dired view file"           "d v" #'dired-view-file)))
 
 (evil-define-key 'normal dired-mode-map
   (kbd "M-RET") 'dired-display-file
@@ -133,7 +133,6 @@
   (kbd "; d") 'epa-dired-do-decrypt
   (kbd "; e") 'epa-dired-do-encrypt)
 ;; Get file icons in dired
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 ;; With dired-open plugin, you can launch external programs for certain extensions
 ;; For example, I set all .png files to open in 'sxiv' and all .mp4 files to open in 'mpv'
 (setq dired-open-extensions '(("gif" . "sxiv")
@@ -151,8 +150,8 @@
       trash-directory "~/.local/share/Trash/files/")
 
 (setq
-    org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
-)
+ org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
+
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -164,40 +163,40 @@
 ;;       "%?"
 ;;       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:${title}\n")
 ;;       :unnarrowed t)))
-(setq projectile-project-search-path '("~/code" ))
+(setq projectile-project-search-path '("~/code"))
 
 (setq org-agenda-custom-commands
       '(("v" "Better Agenda" (
-          (agenda "")
-          (tags "@computer"
-                ((org-agenda-overriding-header "@computer")))
-          (tags "@home"
-                ((org-agenda-overriding-header "@home")))
-          (tags "@work"
-                ((org-agenda-overriding-header "@work")))
-          (tags "@telephone"
-                ((org-agenda-overriding-header "@telephone")))
-          (alltodo "")))
+                              (agenda "")
+                              (tags "@computer"
+                                    ((org-agenda-overriding-header "@computer")))
+                              (tags "@home"
+                                    ((org-agenda-overriding-header "@home")))
+                              (tags "@work"
+                                    ((org-agenda-overriding-header "@work")))
+                              (tags "@telephone"
+                                    ((org-agenda-overriding-header "@telephone")))
+                              (alltodo "")))
         ("c" "@computer" (
-          (tags "@computer"
-                ((org-agenda-overriding-header "@computer")))))
+                          (tags "@computer"
+                                ((org-agenda-overriding-header "@computer")))))
         ("h" "@home" (
-          (tags "@home"
-                ((org-agenda-overriding-header "@home")))))
+                      (tags "@home"
+                            ((org-agenda-overriding-header "@home")))))
         ("w" "@work" (
-          (tags "@work"
-                ((org-agenda-overriding-header "@work")))))
+                      (tags "@work"
+                            ((org-agenda-overriding-header "@work")))))
         ("p" "@phone" (
-          (tags "@telephone"
-                ((org-agenda-overriding-header "@telephone")))))
-        ))
+                       (tags "@telephone"
+                             ((org-agenda-overriding-header "@telephone")))))))
+
 
 (setq-default org-reverse-datetree-level-formats
               '("%Y"                    ; year
                 (lambda (time) (format-time-string "%Y-%m %B" (org-reverse-datetree-monday time))) ; month
                 "%Y W%W"                ; week
-                "%Y-%m-%d %A"           ; date
-                ))
+                "%Y-%m-%d %A"))           ; date
+
 
 (setq org-caldav-url "https://yemenroad.duckdns.org/remote.php/dav/calendars/Ostpol")
 
@@ -210,29 +209,29 @@
 
   ;; setting up inbox captures
   (setq org-capture-templates '(
-               ("t" "Todo" entry
-                 (file "~/org/gtd/inbox.org")
-                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
+                                ("t" "Todo" entry
+                                 (file "~/org/gtd/inbox.org")
+                                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
 
-               ("b" "book [inbox]" entry
-                 (file+headline "~/org/gtd/inbox.org" "Books")
-                 "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?")
+                                ("b" "book [inbox]" entry
+                                 (file+headline "~/org/gtd/inbox.org" "Books")
+                                 "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?")
 
-               ;; ("j" "Journal" plain
-               ;;   (file+datetree "~/org/gtd/journal.org")
-               ;;   "" :empty-lines-after 1)
-               ("z" "Journal test" plain
-                    (file+function "~/org/gtd/journal.org" org-reverse-datetree-goto-date-in-file)
-                    "%?" :empty-lines 1 :append nil)
+                                ;; ("j" "Journal" plain
+                                ;;   (file+datetree "~/org/gtd/journal.org")
+                                ;;   "" :empty-lines-after 1)
+                                ("z" "Journal test" plain
+                                 (file+function "~/org/gtd/journal.org" org-reverse-datetree-goto-date-in-file)
+                                 "%?" :empty-lines 1 :append nil)
 
-               ("W" "Weekly Review" entry
-                 (file+olp+datetree "~/org/gtd/weekly-review.org")
-                 (file "~/org/gtd/templates/weekly_review.txt"))
+                                ("W" "Weekly Review" entry
+                                 (file+olp+datetree "~/org/gtd/weekly-review.org")
+                                 (file "~/org/gtd/templates/weekly_review.txt"))
 
-               ("T" "Tickler" entry
-                 (file+headline "~/org/gtd/tickler.org" "Tickler")
-                 "* %i%? \n %U")
-                                  ))
+                                ("T" "Tickler" entry
+                                 (file+headline "~/org/gtd/tickler.org" "Tickler")
+                                 "* %i%? \n %U")))
+
   ;; (add-to-list 'org-capture-templates
   ;;              '("t" "Todo" entry
   ;;                (file+headline "~/org/gtd/inbox.org" "TASKS")
