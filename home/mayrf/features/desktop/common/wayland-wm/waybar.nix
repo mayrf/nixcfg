@@ -26,23 +26,27 @@ let
   wofi = "${pkgs.wofi}/bin/wofi";
 
   # Function to simplify making waybar outputs
-  jsonOutput = name: { pre ? "", text ? "", tooltip ? "", alt ? "", class ? "", percentage ? "" }: "${pkgs.writeShellScriptBin "waybar-${name}" ''
-    set -euo pipefail
-    ${pre}
-    ${jq} -cn \
-      --arg text "${text}" \
-      --arg tooltip "${tooltip}" \
-      --arg alt "${alt}" \
-      --arg class "${class}" \
-      --arg percentage "${percentage}" \
-      '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
-  ''}/bin/waybar-${name}";
-in
-{
+  jsonOutput = name:
+    { pre ? "", text ? "", tooltip ? "", alt ? "", class ? "", percentage ? ""
+    }:
+    "${
+      pkgs.writeShellScriptBin "waybar-${name}" ''
+        set -euo pipefail
+        ${pre}
+        ${jq} -cn \
+          --arg text "${text}" \
+          --arg tooltip "${tooltip}" \
+          --arg alt "${alt}" \
+          --arg class "${class}" \
+          --arg percentage "${percentage}" \
+          '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
+      ''
+    }/bin/waybar-${name}";
+in {
   programs.waybar = {
     enable = true;
     package = pkgs.waybar.overrideAttrs (oa: {
-      mesonFlags = (oa.mesonFlags or  [ ]) ++ [ "-Dexperimental=true" ];
+      mesonFlags = (oa.mesonFlags or [ ]) ++ [ "-Dexperimental=true" ];
     });
     systemd.enable = true;
     settings = {
@@ -69,10 +73,11 @@ in
       primary = {
         mode = "dock";
         layer = "top";
-        height = 30;
+        height = 12;
         margin = "6";
         position = "top";
-        output = builtins.map (m: m.name) (builtins.filter (m: ! m.noBar) config.monitors);
+        output = builtins.map (m: m.name)
+          (builtins.filter (m: !m.noBar) config.monitors);
         modules-left = [
           "custom/menu"
           "custom/currentplayer"
@@ -104,9 +109,7 @@ in
           "custom/hostname"
         ];
 
-        "wlr/workspaces" = {
-          on-click = "activate";
-        };
+        "wlr/workspaces" = { on-click = "activate"; };
 
         clock = {
           format = "{:%d/%m %H:%M}";
@@ -114,9 +117,7 @@ in
             <big>{:%Y %B}</big>
             <tt><small>{calendar}</small></tt>'';
         };
-        cpu = {
-          format = "   {usage}%";
-        };
+        cpu = { format = "   {usage}%"; };
         "custom/gpu" = {
           interval = 5;
           return-type = "json";
@@ -156,9 +157,7 @@ in
           format-charging = "󰂄 {capacity}%";
           onclick = "";
         };
-        "sway/window" = {
-          max-length = 20;
-        };
+        "sway/window" = { max-length = 20; };
         network = {
           interval = 3;
           format-wifi = "   {essid}";
@@ -174,26 +173,25 @@ in
         "custom/tailscale-ping" = {
           interval = 2;
           return-type = "json";
-          exec =
-            let
-              inherit (builtins) concatStringsSep attrNames;
-              hosts = attrNames outputs.nixosConfigurations;
-              homeMachine = "merope";
-              remoteMachine = "alcyone";
-            in
-            jsonOutput "tailscale-ping" {
-              # Build variables for each host
-              pre = ''
-                set -o pipefail
-                ${concatStringsSep "\n" (map (host: ''
-                  ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
-                '') hosts)}
-              '';
-              # Access a remote machine's and a home machine's ping
-              text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
-              # Show pings from all machines
-              tooltip = concatStringsSep "\n" (map (host: "${host}: $ping_${host}") hosts);
-            };
+          exec = let
+            inherit (builtins) concatStringsSep attrNames;
+            hosts = attrNames outputs.nixosConfigurations;
+            homeMachine = "merope";
+            remoteMachine = "alcyone";
+          in jsonOutput "tailscale-ping" {
+            # Build variables for each host
+            pre = ''
+              set -o pipefail
+              ${concatStringsSep "\n" (map (host: ''
+                ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
+              '') hosts)}
+            '';
+            # Access a remote machine's and a home machine's ping
+            text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
+            # Show pings from all machines
+            tooltip = concatStringsSep "\n"
+              (map (host: "${host}: $ping_${host}") hosts);
+          };
           format = "{}";
           on-click = "";
         };
@@ -201,13 +199,12 @@ in
           return-type = "json";
           exec = jsonOutput "menu" {
             text = "";
-            tooltip = ''$(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
+            tooltip = ''
+              $(${cat} /etc/os-release | ${grep} PRETTY_NAME | ${cut} -d '"' -f2)'';
           };
           on-click = "${wofi} -S drun -x 10 -y 10 -W 25% -H 60%";
         };
-        "custom/hostname" = {
-          exec = "echo $USER@$HOSTNAME";
-        };
+        "custom/hostname" = { exec = "echo $USER@$HOSTNAME"; };
         "custom/unread-mail" = {
           interval = 5;
           return-type = "json";
@@ -243,9 +240,7 @@ in
           exec-if = "${gamemoded} --status | ${grep} 'is active' -q";
           interval = 2;
           return-type = "json";
-          exec = jsonOutput "gamemode" {
-            tooltip = "Gamemode is active";
-          };
+          exec = jsonOutput "gamemode" { tooltip = "Gamemode is active"; };
           format = " ";
         };
         "custom/gammastep" = {
@@ -276,7 +271,8 @@ in
             "active (Transition (Day)" = " ";
             "active (Transition (Daytime)" = " ";
           };
-          on-click = "${systemctl} --user is-active gammastep && ${systemctl} --user stop gammastep || ${systemctl} --user start gammastep";
+          on-click =
+            "${systemctl} --user is-active gammastep && ${systemctl} --user stop gammastep || ${systemctl} --user start gammastep";
         };
         "custom/currentplayer" = {
           interval = 2;
@@ -312,7 +308,8 @@ in
         };
         "custom/player" = {
           exec-if = "${playerctl} status";
-          exec = ''${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
+          exec = ''
+            ${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
           return-type = "json";
           interval = 2;
           max-length = 30;
@@ -332,11 +329,14 @@ in
     # x y -> vertical, horizontal
     # x y z -> top, horizontal, bottom
     # w x y z -> top, right, bottom, left
-    style = let inherit (config.colorscheme) colors; in /* css */ ''
+    style = let
+      inherit (config.colorscheme) colors;
+      # css
+    in ''
       * {
         font-family: ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
-        font-size: 12pt;
-        padding: 0 8px;
+        font-size: 11pt;
+        padding: 0 3px;
       }
 
       .modules-right {

@@ -1,12 +1,9 @@
-{ config, lib, pkgs, user, host, ... }:
-{
+{ config, lib, pkgs, user, host, ... }: {
 
   programs = {
     zathura = {
       enable = true;
-      options = {
-        "selection-clipboard" = "clipboard";
-      };
+      options = { "selection-clipboard" = "clipboard"; };
     };
     wofi = { enable = true; };
     gpg = { enable = true; };
@@ -29,6 +26,7 @@
     # TODO add Scripts like:
     # pandoc -f markdown -t org -o ${md%.*}.org ${md};
     pandoc
+    sparrow
 
     # Social
     signal-desktop

@@ -1,5 +1,4 @@
-{ config, pkgs, inputs, user, ... }:
-{
+{ config, pkgs, inputs, user, ... }: {
   imports = [
     #   ./sops.nix
     ./keyd.nix

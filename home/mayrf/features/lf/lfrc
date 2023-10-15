@@ -75,5 +75,6 @@ map mp mkimg2pdf
 
 # Movement
 map gtr cd ~/.local/share/Trash/files
-map gm pushd ~/mnt/datacloud/data
-map gv pushd ~/video
+map gr cd ~/cloud
+# map gm pushd ~/mnt/datacloud/data
+# map gv pushd ~/video

@@ -9,7 +9,6 @@
     ./systemd-fixes.nix
   ];
 
-
   xdg.configFile."xkb/rules/evdev".text = ''
     ! option = symbols
       hungarian_letters:huletters    = +hungarian_letters(huletters)
@@ -55,9 +54,9 @@
     settings = {
       general = {
         layout = "master";
-        gaps_in = 5;
-        gaps_out = 10;
-        border_size = 2.7;
+        gaps_in = 2;
+        gaps_out = 2;
+        border_size = 2;
         cursor_inactive_timeout = 4;
         # "col.active_border" = "rgba (33 ccffee) rgba (00 ff99ee) 45 deg";
         # "col.inactive_border" = "rgba(595959aa)";
@@ -83,18 +82,18 @@
         active_opacity = 0.94;
         inactive_opacity = 0.84;
         fullscreen_opacity = 1.0;
-        rounding = 5;
+        rounding = 4;
         blur = {
           size = 5;
           passes = 3;
           new_optimizations = true;
           ignore_opacity = true;
         };
-        drop_shadow = true;
-        shadow_range = 12;
-        shadow_offset = "3 3";
-        "col.shadow" = "0x44000000";
-        "col.shadow_inactive" = "0x66000000";
+        # drop_shadow = true;
+        # shadow_range = 12;
+        # shadow_offset = "3 3";
+        # "col.shadow" = "0x44000000";
+        # "col.shadow_inactive" = "0x66000000";
       };
       animations = {
         enabled = true;
@@ -119,118 +118,112 @@
         ];
       };
 
-      exec = [
-        "${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill"
-      ];
+      exec = [ "${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill" ];
 
       exec-once = [
-        "wl-paste --type text --watch cliphist store" #Stores only text data
-        "wl-paste --type image --watch cliphist store" #Stores only image data
+        "wl-paste --type text --watch cliphist store" # Stores only text data
+        "wl-paste --type image --watch cliphist store" # Stores only image data
       ];
 
-      bind =
-        let
-          swaylock = "${config.programs.swaylock.package}/bin/swaylock";
-          playerctl = "${config.services.playerctld.package}/bin/playerctl";
-          playerctld = "${config.services.playerctld.package}/bin/playerctld";
-          # makoctl = "${config.services.mako.package}/bin/makoctl";
-          wofi = "${config.programs.wofi.package}/bin/wofi";
-          # pass-wofi = "${pkgs.pass-wofi.override {
-          # pass = config.programs.password-store.package;
-          # }}/bin/pass-wofi";
+      bind = let
+        swaylock = "${config.programs.swaylock.package}/bin/swaylock";
+        playerctl = "${config.services.playerctld.package}/bin/playerctl";
+        playerctld = "${config.services.playerctld.package}/bin/playerctld";
+        # makoctl = "${config.services.mako.package}/bin/makoctl";
+        wofi = "${config.programs.wofi.package}/bin/wofi";
+        # pass-wofi = "${pkgs.pass-wofi.override {
+        # pass = config.programs.password-store.package;
+        # }}/bin/pass-wofi";
 
-          grimblast = "${inputs.hyprland-contrib.packages.x86_64-linux.grimblast}/bin/grimblast";
-          pactl = "${pkgs.pulseaudio}/bin/pactl";
+        grimblast =
+          "${inputs.hyprland-contrib.packages.x86_64-linux.grimblast}/bin/grimblast";
+        pactl = "${pkgs.pulseaudio}/bin/pactl";
 
-          gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
-          xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
-          defaultApp = type: "${gtk-launch} $(${xdg-mime} query default ${type})";
+        gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
+        xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
+        defaultApp = type: "${gtk-launch} $(${xdg-mime} query default ${type})";
 
-          # terminal = config.home.sessionVariables.TERMINAL;
-          # browser = defaultApp "x-scheme-handler/https";
-          # editor = defaultApp "text/plain";
-          terminal = "${pkgs.foot}/bin/foot";
-          browser = "${pkgs.librewolf}/bin/librewolf";
-          brave = "${pkgs.brave}/bin/brave";
-          editor = "${pkgs.emacs}/bin/emacsclient -c";
-          hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+        # terminal = config.home.sessionVariables.TERMINAL;
+        # browser = defaultApp "x-scheme-handler/https";
+        # editor = defaultApp "text/plain";
+        terminal = "${pkgs.kitty}/bin/kitty";
+        browser = "${pkgs.librewolf}/bin/librewolf";
+        brave = "${pkgs.brave}/bin/brave";
+        editor = "${pkgs.emacs}/bin/emacsclient -c";
+        hyprctl = "${pkgs.hyprland}/bin/hyprctl";
 
-        in
-        [
-          # Program bindings
-          "SUPER,Return,exec,${terminal}"
-          "SUPER,e,exec,${editor}"
-          "SUPER,w,exec,${browser}"
-          "SUPERSHIFT,w,exec,${brave}"
-          "SUPERSHIFT, R, exec,${hyprctl} reload"
-          # Brightness control (only works if the system has lightd)
-          ",XF86MonBrightnessUp,exec,brightnessctl set 5%+"
-          ",XF86MonBrightnessDown,exec,brightnessctl set 5%-"
-          # Volume
-          ",XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
-          ",XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
-          ",XF86AudioMute,exec,${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
-          "SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
-          ",XF86AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
-          # Screenshotting
-          ",Print,exec,${grimblast} --notify copy output"
-          "SHIFT,Print,exec,${grimblast} --notify copy active"
-          "CONTROL,Print,exec,${grimblast} --notify copy screen"
-          "SUPER,Print,exec,${grimblast} --notify copy window"
-          "ALT,Print,exec,${grimblast} --freeze --notify copy area"
-          "SUPERSHIFT,p,exec,${grimblast} --freeze --notify copy area"
-        ] ++
+      in [
+        # Program bindings
+        "SUPER,Return,exec,${terminal}"
+        "SUPER,e,exec,${editor}"
+        "SUPER,w,exec,${browser}"
+        "SUPERSHIFT,w,exec,${brave}"
+        "SUPERSHIFT, R, exec,${hyprctl} reload"
+        # Brightness control (only works if the system has lightd)
+        ",XF86MonBrightnessUp,exec,brightnessctl set 5%+"
+        ",XF86MonBrightnessDown,exec,brightnessctl set 5%-"
+        # Volume
+        ",XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
+        ",XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
+        ",XF86AudioMute,exec,${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
+        "SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+        ",XF86AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+        # Screenshotting
+        ",Print,exec,${grimblast} --notify copy output"
+        "SHIFT,Print,exec,${grimblast} --notify copy active"
+        "CONTROL,Print,exec,${grimblast} --notify copy screen"
+        "SUPER,Print,exec,${grimblast} --notify copy window"
+        "ALT,Print,exec,${grimblast} --freeze --notify copy area"
+        "SUPERSHIFT,p,exec,${grimblast} --freeze --notify copy area"
+      ] ++
 
-        (lib.optionals config.services.playerctld.enable [
-          # Media control
-          ",XF86AudioNext,exec,${playerctl} next"
-          ",XF86AudioPrev,exec,${playerctl} previous"
-          ",XF86AudioPlay,exec,${playerctl} play-pause"
-          ",XF86AudioStop,exec,${playerctl} stop"
-          "ALT,XF86AudioNext,exec,${playerctld} shift"
-          "ALT,XF86AudioPrev,exec,${playerctld} unshift"
-          "ALT,XF86AudioPlay,exec,systemctl --user restart playerctld"
-        ]) ++
-        # Screen lock
-        (lib.optionals config.programs.swaylock.enable [
-          ",XF86Launch5,exec,${swaylock} -S"
-          ",XF86Launch4,exec,${swaylock} -S"
-          "SUPER,backspace,exec,${swaylock} -S"
-        ]) ++
-        # Notification manager
-        # (lib.optionals config.services.mako.enable [
-        #   "SUPER,w,exec,${makoctl} dismiss"
-        # ]) ++
+      (lib.optionals config.services.playerctld.enable [
+        # Media control
+        ",XF86AudioNext,exec,${playerctl} next"
+        ",XF86AudioPrev,exec,${playerctl} previous"
+        ",XF86AudioPlay,exec,${playerctl} play-pause"
+        ",XF86AudioStop,exec,${playerctl} stop"
+        "ALT,XF86AudioNext,exec,${playerctld} shift"
+        "ALT,XF86AudioPrev,exec,${playerctld} unshift"
+        "ALT,XF86AudioPlay,exec,systemctl --user restart playerctld"
+      ]) ++
+      # Screen lock
+      (lib.optionals config.programs.swaylock.enable [
+        ",XF86Launch5,exec,${swaylock} -S"
+        ",XF86Launch4,exec,${swaylock} -S"
+        "SUPER,backspace,exec,${swaylock} -S"
+      ]) ++
+      # Notification manager
+      # (lib.optionals config.services.mako.enable [
+      #   "SUPER,w,exec,${makoctl} dismiss"
+      # ]) ++
 
-        # Launcher
-        (lib.optionals config.programs.wofi.enable [
-          "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
-          "SUPER,d,exec,${wofi} -S drun"
-          "SUPERSHIFT,d,exec,${wofi} -S drun"
-          "SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
-        ]
-          # ++ (lib.optionals config.programs.password-store.enable [
-          #   ",Scroll_Lock,exec,${pass-wofi}" # fn+k
-          #   ",XF86Calculator,exec,${pass-wofi}" # fn+f12
-          #   "SUPER,semicolon,exec,pass-wofi"
-          # ])
-        );
+      # Launcher
+      (lib.optionals config.programs.wofi.enable [
+        "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
+        "SUPER,d,exec,${wofi} -S drun"
+        "SUPERSHIFT,d,exec,${wofi} -S drun"
+        "SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
+      ]
+      # ++ (lib.optionals config.programs.password-store.enable [
+      #   ",Scroll_Lock,exec,${pass-wofi}" # fn+k
+      #   ",XF86Calculator,exec,${pass-wofi}" # fn+f12
+      #   "SUPER,semicolon,exec,pass-wofi"
+      # ])
+      );
 
       #monitor = ",preferred,auto,1";
-      monitor = map
-        (m:
-          let
-            resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
-            position = "${toString m.x}x${toString m.y}";
-          in
-          "${m.name},${if m.enabled then "${resolution},${position},1" else "disable"}"
-        )
-        (config.monitors);
+      monitor = map (m:
+        let
+          resolution = "${toString m.width}x${toString m.height}@${
+              toString m.refreshRate
+            }";
+          position = "${toString m.x}x${toString m.y}";
+        in "${m.name},${
+          if m.enabled then "${resolution},${position},1" else "disable"
+        }") (config.monitors);
 
-      workspace = map
-        (m:
-          "${m.name},${m.workspace}"
-        )
+      workspace = map (m: "${m.name},${m.workspace}")
         (lib.filter (m: m.enabled && m.workspace != null) config.monitors);
 
     };
