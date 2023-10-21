@@ -8,11 +8,15 @@
     wofi = { enable = true; };
     gpg = { enable = true; };
     librewolf.enable = true;
+    borgmatic = {
+      enable = true;
+    };
   };
 
   home.packages = with pkgs; [
 
     # Cli tools
+    steam
     img2pdf
     tldr
     rsync # Syncer - $ rsync -r dir1/ dir2/
@@ -75,7 +79,6 @@
     gnupg
     pinentry-qt # GnuPG’s interface to passphrase input
     ipscan
-    riseup-vpn
     qemu
     virt-manager
     offlineimap
@@ -83,6 +86,8 @@
     borgbackup
     borgmatic
     sshfs
+
+
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
   ];

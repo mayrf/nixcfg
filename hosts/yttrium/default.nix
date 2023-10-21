@@ -9,7 +9,7 @@
     ../common/users/mayrf
     ../common/optional/docker.nix
     ../common/optional/pipewire.nix
-
+    ../common/optional/lutris.nix
   ];
 
 
@@ -21,6 +21,7 @@
   networking = {
     hostName = host; # Define your hostname.
   };
+  hardware.ledger.enable = true;
 
 
   system.stateVersion = "23.05"; # Did you read the comment?

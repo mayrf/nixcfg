@@ -11,6 +11,7 @@ in
       "wheel"
       "video"
       "audio"
+      "plugdev"
     ] ++ ifTheyExist [
       "network"
       "docker"

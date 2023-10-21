@@ -22,6 +22,16 @@
     ];
   };
 
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = (_: true);
+      # permittedInsecurePackages = [
+      #   "electron-12.2.3"
+      # ];
+    };
+  };
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
@@ -63,6 +73,10 @@
     wireguard-tools
     nixfmt
     wget
+
+    riseup-vpn
+    libsForQt5.qt5.qtwayland
+
   ];
 
   nix = {

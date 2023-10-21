@@ -5,16 +5,23 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
   boot.loader = {
+    # grub = {
+    #   enable = true;
+    #   device = "nodev";
+    #   # useOSProber = true;
+    #   configurationLimit = 10;
+    # };
     systemd-boot = {
-      configurationLimit = 10;
+      configurationLimit = 6;
       enable = true;
     };
     efi = {
@@ -23,14 +30,16 @@
   };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/672d5f5b-6a5c-457f-8389-5d1ab9826ec7";
+    {
+      device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
 
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/67b692b5-68aa-4b4d-bab8-86eda9f7bb87";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/ACA8-5062";
+    {
+      device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
 
@@ -48,4 +57,5 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.opengl.driSupport32Bit = true;
 }
