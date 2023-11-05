@@ -13,6 +13,7 @@
   home.packages = with pkgs; [
 
     # Cli tools
+    ollama
     steam
     img2pdf
     tldr
