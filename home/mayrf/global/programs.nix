@@ -8,9 +8,6 @@
     wofi = { enable = true; };
     gpg = { enable = true; };
     librewolf.enable = true;
-    borgmatic = {
-      enable = true;
-    };
   };
 
   home.packages = with pkgs; [
@@ -86,7 +83,6 @@
     borgbackup
     borgmatic
     sshfs
-
 
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
