@@ -16,7 +16,6 @@
   '';
   xdg.configFile."xkb/symbols/hungarian_letters".text = ''
     xkb_symbols "huletters" {
-
         //ä on alt+a
         key <AC01> { [     a,   A, adiaeresis,  Adiaeresis      ]   };
         //á on alt+q
@@ -62,8 +61,8 @@
         # "col.inactive_border" = "rgba(595959aa)";
         "col.active_border" = "0xff${config.colorscheme.colors.base0C}";
         "col.inactive_border" = "0xff${config.colorscheme.colors.base02}";
-        "col.group_border_active" = "0xff${config.colorscheme.colors.base0B}";
-        "col.group_border" = "0xff${config.colorscheme.colors.base04}";
+        # "col.group_border_active" = "0xff${config.colorscheme.colors.base0B}";
+        # "col.group_border" = "0xff${config.colorscheme.colors.base04}";
       };
       input = {
         # touchpad.disable_while_typing = false;
