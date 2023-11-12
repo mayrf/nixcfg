@@ -37,10 +37,10 @@
 
     # Dev tools
     docker-compose
-    awscli2
     dbeaver
-    hugo
     rnix-lsp
+    nodePackages_latest.bash-language-server
+
     texlive.combined.scheme-full
 
     # Media
@@ -64,6 +64,8 @@
     calibre
     drawio
     thunderbird
+    protonmail-bridge
+    armcord
 
     # Learning
     anki-bin

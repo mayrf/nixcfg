@@ -72,10 +72,10 @@ in {
 
       primary = {
         mode = "dock";
-        layer = "top";
-        height = 12;
+        layer = "bottom";
+        height = 14;
         margin = "6";
-        position = "top";
+        position = "bottom";
         output = builtins.map (m: m.name)
           (builtins.filter (m: !m.noBar) config.monitors);
         modules-left = [
@@ -368,7 +368,7 @@ in {
       #workspaces button {
         background-color: #${colors.base01};
         color: #${colors.base05};
-        margin: 4px;
+        margin: 7px;
       }
       #workspaces button.hidden {
         background-color: #${colors.base00};

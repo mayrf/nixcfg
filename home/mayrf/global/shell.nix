@@ -17,8 +17,10 @@
     zsh = {
       enable = true;
       shellAliases = {
-        "rbs" = "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
-        "hms" = "home-manager switch --flake $HOME/nixcfg/.#${config.home.username}@${host}";
+        "rbs" =
+          "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
+        "nfp" = "nix flake update /home/mayrf/.config/nixcfg";
+        "emacs" = "emacsclient -c";
       };
       autocd = true;
       historySubstringSearch.enable = true;
