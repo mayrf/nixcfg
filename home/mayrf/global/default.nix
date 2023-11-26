@@ -1,9 +1,9 @@
 { inputs, lib, pkgs, config, outputs, ... }:
 let
   inherit (inputs.nix-colors) colorSchemes;
-  inherit (inputs.nix-colors.lib-contrib { inherit pkgs; }) colorschemeFromPicture nixWallpaperFromScheme;
-in
-{
+  inherit (inputs.nix-colors.lib-contrib { inherit pkgs; })
+    colorschemeFromPicture nixWallpaperFromScheme;
+in {
   imports = [
     inputs.nix-colors.homeManagerModule
     ./git
@@ -18,9 +18,7 @@ in
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [
-        "electron-12.2.3"
-      ];
+      permittedInsecurePackages = [ "electron-12.2.3" ];
     };
   };
 
@@ -30,8 +28,25 @@ in
       experimental-features = [ "nix-command" "flakes" "repl-flake" ];
       warn-dirty = false;
     };
-  };
 
+    registry = {
+      "mytemplates" = {
+        from = {
+          # type = "path";
+          # path = "~/.config/nixcfg";
+          # id = "nixpkgs";
+          id = "mytemplates";
+          type = "indirect";
+        };
+        to = {
+          # path = "/home/mayrf/.config/nixcfg";
+          path = "${config.xdg.configHome}/nixcfg";
+          type = "path";
+        };
+      };
+    };
+
+  };
 
   systemd.user.startServices = "sd-switch";
 
@@ -61,19 +76,16 @@ in
   };
 
   colorscheme = lib.mkDefault colorSchemes.dracula;
-  wallpaper =
-    let
-      largest = f: xs: builtins.head (builtins.sort (a: b: a > b) (map f xs));
-      largestWidth = largest (x: x.width) config.monitors;
-      largestHeight = largest (x: x.height) config.monitors;
-    in
-    lib.mkDefault (nixWallpaperFromScheme
-      {
-        scheme = config.colorscheme;
-        width = largestWidth;
-        height = largestHeight;
-        logoScale = 4;
-      });
+  wallpaper = let
+    largest = f: xs: builtins.head (builtins.sort (a: b: a > b) (map f xs));
+    largestWidth = largest (x: x.width) config.monitors;
+    largestHeight = largest (x: x.height) config.monitors;
+  in lib.mkDefault (nixWallpaperFromScheme {
+    scheme = config.colorscheme;
+    width = largestWidth;
+    height = largestHeight;
+    logoScale = 4;
+  });
 
   home.file.".colorscheme".text = config.colorscheme.slug;
 

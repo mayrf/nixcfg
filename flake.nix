@@ -44,7 +44,6 @@
       inherit lib;
 
       homeManagerModules = import ./modules/home-manager;
-
       templates = import ./templates;
       overlays = import ./overlays { inherit inputs outputs; };
       wallpapers = import ./home/mayrf/wallpapers;

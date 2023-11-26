@@ -11,7 +11,8 @@
   };
 
   home.packages = with pkgs; [
-
+    bisq-desktop
+    # lutris
     # Cli tools
     ollama
     steam
