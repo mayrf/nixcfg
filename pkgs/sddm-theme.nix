@@ -6,10 +6,9 @@ let
 
   image = pkgs.fetchurl {
     url = imgLink;
-    sha256 = "sha256-6A34obGpDh9vHwodRVZYOwsCo01XRv9ZZPUcy7zHe58=";
+    sha256 = "sha256-VcKWlLRImYHOFKG9NKvKcFhQPxOGAnJI39L1HU8GLbg=";
   };
-in
-pkgs.stdenv.mkDerivation {
+in pkgs.stdenv.mkDerivation {
   name = "sddm-theme";
   src = pkgs.fetchFromGitHub {
     owner = "MarianArlt";

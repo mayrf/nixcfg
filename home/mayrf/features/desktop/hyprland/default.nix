@@ -64,6 +64,7 @@
         # "col.group_border_active" = "0xff${config.colorscheme.colors.base0B}";
         # "col.group_border" = "0xff${config.colorscheme.colors.base04}";
       };
+      misc = { focus_on_activate = true; };
       input = {
         # touchpad.disable_while_typing = false;
         kb_layout = "us";

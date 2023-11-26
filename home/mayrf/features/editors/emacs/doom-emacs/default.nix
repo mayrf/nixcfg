@@ -24,34 +24,33 @@
   # };
   # systemd.user.services.emacs.Install.WantedBy = [ "default.target" ];
 
-  home.activation =
-    {
-      doomEmacsActivationAction = lib.hm.dag.entryAfter [ "writeBoundry" ] ''
-                EMACS="${config.home.homeDirectory}/.config/emacs"
-                DOOM="${config.home.homeDirectory}/.config/doom"
-                if [ ! -d "$EMACS" ]; then
-                  ${pkgs.git}/bin/git clone https://github.com/hlissner/doom-emacs.git $EMACS
-                #  yes | $EMACS/bin/doom install
-                  rm $HOME/.config/doom
-                fi
+  home.activation = {
+    doomEmacsActivationAction = lib.hm.dag.entryAfter [ "writeBoundry" ] ''
+      EMACS="${config.home.homeDirectory}/.config/emacs"
+      DOOM="${config.home.homeDirectory}/.config/doom"
+      if [ ! -d "$EMACS" ]; then
+        ${pkgs.git}/bin/git clone https://github.com/hlissner/doom-emacs.git $EMACS
+      #  yes | $EMACS/bin/doom install
+        rm $HOME/.config/doom
+      fi
 
-                if [ ! -d "$DOOM" ]; then
-                  ln -s ${config.home.homeDirectory}/.config/nixcfg/home/mayrf/features/editors/emacs/doom-emacs/doom $HOME/.config/doom
-                fi
+      if [ ! -d "$DOOM" ]; then
+        ln -s ${config.home.homeDirectory}/.config/nixcfg/home/mayrf/features/editors/emacs/doom-emacs/doom $HOME/.config/doom
+      fi
 
-                # $EMACS/bin/doom sync
-                # TODO find a way to make this work (Error: failed to run Emacs with command 'emacs'
-                # Are you sure Emacs is installed and in your $PATH?
-                # if [ -x "/home/mayrf/.config/emacs/bin/doom" ]; then
-                #   /home/mayrf/.config/emacs/bin/doom sync
-                # fi
-      ''; # It will always sync when rebuild is done. So changes will always be applied.
+      # $EMACS/bin/doom sync
+      # TODO find a way to make this work (Error: failed to run Emacs with command 'emacs'
+      # Are you sure Emacs is installed and in your $PATH?
+      # if [ -x "/home/mayrf/.config/emacs/bin/doom" ]; then
+      #   /home/mayrf/.config/emacs/bin/doom sync
+      # fi
+    ''; # It will always sync when rebuild is done. So changes will always be applied.
 
-      #   doomEmacsSyncAction = lib.hm.dag.entryAfter [ "installPackages" ] ''
-      #        EMACS="${config.home.homeDirectory}/.config/emacs"
-      #        $EMACS/bin/doom sync
-      #'';
-    };
+    #   doomEmacsSyncAction = lib.hm.dag.entryAfter [ "installPackages" ] ''
+    #        EMACS="${config.home.homeDirectory}/.config/emacs"
+    #        $EMACS/bin/doom sync
+    #'';
+  };
 
   home.packages = with pkgs; [
     # Doom emacs dependencies
@@ -67,7 +66,6 @@
     emacs-all-the-icons-fonts
 
     zstd # for undo-fu-session/undo-tree compression
-
 
     # :tools editorconfig
     editorconfig-core-c # per-project style config

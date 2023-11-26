@@ -19,7 +19,7 @@
       shellAliases = {
         "rbs" =
           "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
-        "nfp" = "nix flake update /home/mayrf/.config/nixcfg";
+        "nfu" = "nix flake update /home/mayrf/.config/nixcfg";
         "emacs" = "emacsclient -c";
       };
       autocd = true;

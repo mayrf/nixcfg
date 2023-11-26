@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Shell block
+# key: <shell
+# --
+
+#+begin_src sh :results output :session shared
+$0
+#+end_src
