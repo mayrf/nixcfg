@@ -33,7 +33,6 @@
 
     # Social
     signal-desktop
-    schildichat-desktop
     hexchat
 
     # Dev tools
@@ -67,6 +66,7 @@
     thunderbird
     protonmail-bridge
     armcord
+    obsidian
 
     # Learning
     anki-bin
