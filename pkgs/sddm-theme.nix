@@ -6,7 +6,7 @@ let
 
   image = pkgs.fetchurl {
     url = imgLink;
-    sha256 = "sha256-VcKWlLRImYHOFKG9NKvKcFhQPxOGAnJI39L1HU8GLbg=";
+    sha256 = "sha256-6A34obGpDh9vHwodRVZYOwsCo01XRv9ZZPUcy7zHe58=";
   };
 in pkgs.stdenv.mkDerivation {
   name = "sddm-theme";

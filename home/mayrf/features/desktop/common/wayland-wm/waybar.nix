@@ -336,7 +336,7 @@ in {
       * {
         font-family: ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
         font-size: 11pt;
-        padding: 0 3px;
+        padding: 0 8px;
       }
 
       .modules-right {
