@@ -178,7 +178,7 @@
 (setq org-roam-capture-templates
    '(("d" "default" plain
       "%?" :target
-      (file+head "pages/${slug}.org" "#+title: ${title}\n")
+      (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)))
 
 ;; (setq org-roam-capture-templates
@@ -416,9 +416,8 @@
 (setq-default org-reverse-datetree-level-formats
               '("%Y"                    ; year
                 (lambda (time) (format-time-string "%Y-%m %B" (org-reverse-datetree-monday time))) ; month
-                "%Y W%W"                ; week
-                "%Y-%m-%d %A"           ; date
-                ))
+;;                "%Y W%W"                ; week
+                "%Y-%m-%d %A"))           ; date
 
 (setq org-caldav-url "https://yemenroad.duckdns.org/remote.php/dav/calendars/Ostpol")
 
@@ -447,7 +446,7 @@
                     "%?" :empty-lines 1 :append nil)
 
                ("W" "Weekly Review" entry
-                 (file+olp+datetree "~/org/gtd/weekly-review.org")
+                 (file+function "~/org/gtd/weekly-review.org" org-reverse-datetree-goto-date-in-file)
                  (file "~/org/gtd/templates/weekly_review.txt"))
 
                ("T" "Tickler" entry

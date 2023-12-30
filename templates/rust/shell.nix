@@ -20,9 +20,6 @@ in pkgs.mkShell {
     pkg-config
     rustfmt
     clippy
-    # other dependencies
-    #gtk3
-    #wrapGAppsHook
   ]);
   RUST_BACKTRACE = 1;
   # CARGO_TARGET_DIR = /tmp/cargo-installzSk78J;

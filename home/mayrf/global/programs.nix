@@ -39,6 +39,7 @@
     docker-compose
     dbeaver
     rnix-lsp
+    texlab
     nodePackages_latest.bash-language-server
 
     texlive.combined.scheme-full
