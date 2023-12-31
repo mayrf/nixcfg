@@ -3,6 +3,8 @@
 (setq user-full-name "Fritz Mayr"
       user-mail-address "70516376+mayrf@users.noreply.github.com")
 
+(setq apheleia-remote-algorithm 'local)
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
 ;; - `doom-font' -- the primary font to use

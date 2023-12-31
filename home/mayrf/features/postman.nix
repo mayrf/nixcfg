@@ -1,9 +1,10 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    postman
-    # needed for postman
-    openssl
-  ];
+  home.packages = with pkgs;
+    [
+      # postman
+      # needed for postman
+      openssl
+    ];
 }

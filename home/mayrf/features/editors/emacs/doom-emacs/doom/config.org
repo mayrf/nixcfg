@@ -8,6 +8,12 @@
 (setq user-full-name "Fritz Mayr"
       user-mail-address "70516376+mayrf@users.noreply.github.com")
 #+end_src
+* Remote editing
+Enable remote formatting
+
+#+begin_src emacs-lisp :tangle yes
+(setq apheleia-remote-algorithm 'local)
+#+end_src
 
 * Fonts
 #+begin_src emacs-lisp :tangle yes
