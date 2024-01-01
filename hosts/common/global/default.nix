@@ -55,6 +55,9 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+services.printing.drivers = [
+    pkgs.gutenprint
+ ];
   services.openssh.enable = true;
 
   hardware.bluetooth.enable = true;
@@ -73,7 +76,7 @@
     wireguard-tools
     nixfmt
     wget
-
+    system-config-printer
     riseup-vpn
     libsForQt5.qt5.qtwayland
     rustdesk

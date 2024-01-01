@@ -53,20 +53,15 @@
     settings = {
       general = {
         layout = "master";
-        gaps_in = 2;
-        gaps_out = 2;
-        border_size = 2;
-        cursor_inactive_timeout = 4;
-        # "col.active_border" = "rgba (33 ccffee) rgba (00 ff99ee) 45 deg";
-        # "col.inactive_border" = "rgba(595959aa)";
+        gaps_in = 0;
+        gaps_out = 0;
+        border_size = 1;
+        cursor_inactive_timeout = 10;
         "col.active_border" = "0xff${config.colorscheme.colors.base0C}";
         "col.inactive_border" = "0xff${config.colorscheme.colors.base02}";
-        # "col.group_border_active" = "0xff${config.colorscheme.colors.base0B}";
-        # "col.group_border" = "0xff${config.colorscheme.colors.base04}";
       };
       misc = { focus_on_activate = true; };
       input = {
-        # touchpad.disable_while_typing = false;
         kb_layout = "us";
         kb_variant = "altgr-intl";
         # kb_options = "hungarian_letters:huletters,caps:swapescape";
@@ -74,48 +69,20 @@
         repeat_rate = 50;
         repeat_delay = 250;
       };
-      # dwindle.split_width_multiplier = 1.35;
-      # misc.vfr = "on";
 
       decoration = {
-        # active_opacity = 1.0;
         active_opacity = 0.94;
         inactive_opacity = 0.84;
         fullscreen_opacity = 1.0;
-        rounding = 4;
         blur = {
           size = 5;
           passes = 3;
           new_optimizations = true;
           ignore_opacity = true;
         };
-        # drop_shadow = true;
-        # shadow_range = 12;
-        # shadow_offset = "3 3";
-        # "col.shadow" = "0x44000000";
-        # "col.shadow_inactive" = "0x66000000";
       };
       animations = {
-        enabled = true;
-        bezier = [
-          "easein,0.11, 0, 0.5, 0"
-          "easeout,0.5, 1, 0.89, 1"
-          "easeinback,0.36, 0, 0.66, -0.56"
-          "easeoutback,0.34, 1.56, 0.64, 1"
-        ];
-
-        animation = [
-          "windowsIn,1,3,easeoutback,slide"
-          "windowsOut,1,3,easeinback,slide"
-          "windowsMove,1,3,easeoutback"
-          "workspaces,1,2,easeoutback,slide"
-          "fadeIn,1,3,easeout"
-          "fadeOut,1,3,easein"
-          "fadeSwitch,1,3,easeout"
-          "fadeShadow,1,3,easeout"
-          "fadeDim,1,3,easeout"
-          "border,1,3,easeout"
-        ];
+        enabled = false;
       };
 
       exec = [ "${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill" ];

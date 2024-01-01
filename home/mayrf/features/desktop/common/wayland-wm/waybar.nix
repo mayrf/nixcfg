@@ -96,8 +96,9 @@ in
             "(.*) – Doom Emacs" = "  $1";
             "(.*) — LibreWolf" = "LibreWolf  - $1";
             "LibreWolf" = "LibreWolf ";
-            "(.*) — Mozilla Firefox"= "󰈹  $1";
+            "(.*) — Mozilla Firefox" = "󰈹  $1";
             "Mozilla Firefox"= "󰈹";
+            "(.*) - Mozilla Thunderbird" = "  $1";
             "vim (.*)"= "  $1";
           };
         };
