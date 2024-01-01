@@ -27,7 +27,12 @@ let
 
   # Function to simplify making waybar outputs
   jsonOutput = name:
-    { pre ? "", text ? "", tooltip ? "", alt ? "", class ? "", percentage ? ""
+    { pre ? ""
+    , text ? ""
+    , tooltip ? ""
+    , alt ? ""
+    , class ? ""
+    , percentage ? ""
     }:
     "${
       pkgs.writeShellScriptBin "waybar-${name}" ''
@@ -42,7 +47,8 @@ let
           '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
       ''
     }/bin/waybar-${name}";
-in {
+in
+{
   programs.waybar = {
     enable = true;
     package = pkgs.waybar.overrideAttrs (oa: {
@@ -51,66 +57,50 @@ in {
     systemd.enable = true;
     settings = {
 
-      # secondary = {
-      #   mode = "dock";
-      #   layer = "top";
-      #   height = 22;
-      #   width = 100;
-      #   margin = "6";
-      #   position = "bottom";
-      #   modules-center = (lib.optionals config.wayland.windowManager.sway.enable [
-      #     "sway/workspaces"
-      #     "sway/mode"
-      #   ]) ++ (lib.optionals config.wayland.windowManager.hyprland.enable [
-      #     "wlr/workspaces"
-      #   ]);
-
-      #   "wlr/workspaces" = {
-      #     on-click = "activate";
-      #   };
-      # };
 
       primary = {
-        mode = "dock";
         layer = "bottom";
-        height = 14;
-        margin = "6";
         position = "bottom";
         output = builtins.map (m: m.name)
           (builtins.filter (m: !m.noBar) config.monitors);
         modules-left = [
           "custom/menu"
-          "custom/currentplayer"
-          "custom/player"
-          "wlr/workspaces"
+          "hyprland/workspaces"
         ];
-        # ] ++ (lib.optionals config.wayland.windowManager.sway.enable [
-        #   "sway/workspaces"
-        #   "sway/mode"
-        # ]) ++ (lib.optionals config.wayland.windowManager.hyprland.enable [
-        #   "wlr/workspaces"
-        # ]);
         modules-center = [
           "cpu"
-          "custom/gpu"
+          "custom/separator"
           "memory"
+          "custom/separator"
           "clock"
+          "custom/separator"
           "pulseaudio"
-          "custom/unread-mail"
-          "custom/gammastep"
-          "custom/gpg-agent"
         ];
         modules-right = [
-          "custom/gamemode"
+          "hyprland/window"
+          "custom/separator"
           "network"
-          "custom/tailscale-ping"
+          "custom/separator"
           "battery"
+          "custom/separator"
           "tray"
+          "custom/separator"
           "custom/hostname"
         ];
 
         "wlr/workspaces" = { on-click = "activate"; };
-
+        "hyprland/window" = {
+          rewrite = {
+            "(.*) - Brave" = "Brave  - $1";
+            "Brave" = "Brave ";
+            "(.*) – Doom Emacs" = "  $1";
+            "(.*) — LibreWolf" = "LibreWolf  - $1";
+            "LibreWolf" = "LibreWolf ";
+            "(.*) — Mozilla Firefox"= "󰈹  $1";
+            "Mozilla Firefox"= "󰈹";
+            "vim (.*)"= "  $1";
+          };
+        };
         clock = {
           format = "{:%d/%m %H:%M}";
           tooltip-format = ''
@@ -170,28 +160,31 @@ in {
             Down: {bandwidthDownBits}'';
           on-click = "";
         };
+        "custom/separator" = { exec = "echo '|'"; };
         "custom/tailscale-ping" = {
           interval = 2;
           return-type = "json";
-          exec = let
-            inherit (builtins) concatStringsSep attrNames;
-            hosts = attrNames outputs.nixosConfigurations;
-            homeMachine = "merope";
-            remoteMachine = "alcyone";
-          in jsonOutput "tailscale-ping" {
-            # Build variables for each host
-            pre = ''
-              set -o pipefail
-              ${concatStringsSep "\n" (map (host: ''
-                ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
-              '') hosts)}
-            '';
-            # Access a remote machine's and a home machine's ping
-            text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
-            # Show pings from all machines
-            tooltip = concatStringsSep "\n"
-              (map (host: "${host}: $ping_${host}") hosts);
-          };
+          exec =
+            let
+              inherit (builtins) concatStringsSep attrNames;
+              hosts = attrNames outputs.nixosConfigurations;
+              homeMachine = "merope";
+              remoteMachine = "alcyone";
+            in
+            jsonOutput "tailscale-ping" {
+              # Build variables for each host
+              pre = ''
+                set -o pipefail
+                ${concatStringsSep "\n" (map (host: ''
+                  ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
+                '') hosts)}
+              '';
+              # Access a remote machine's and a home machine's ping
+              text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
+              # Show pings from all machines
+              tooltip = concatStringsSep "\n"
+                (map (host: "${host}: $ping_${host}") hosts);
+            };
           format = "{}";
           on-click = "";
         };
@@ -322,98 +315,57 @@ in {
           on-click = "${playerctl} play-pause";
         };
       };
-
     };
     # Cheatsheet:
     # x -> all sides
     # x y -> vertical, horizontal
     # x y z -> top, horizontal, bottom
     # w x y z -> top, right, bottom, left
-    style = let
-      inherit (config.colorscheme) colors;
-      # css
-    in ''
-      * {
-        font-family: ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
-        font-size: 11pt;
-        padding: 0 8px;
-      }
+    style =
+      let
+        inherit (config.colorscheme) colors;
+        # css
+      in
+      ''
+        * {
+            /* border: none; */
+            border-radius: 0;
+            /* font-family: JetBrainsMono Nerd Font Mono; */
 
-      .modules-right {
-        margin-right: -15px;
-      }
+            font-family: Roboto, ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
+            font-size: 13px;
+            min-height: 0;
+            padding: 0 7px;
+        }
 
-      .modules-left {
-        margin-left: -15px;
-      }
+        #custom-separator {
+          padding: 0 0;
+          color: #000000;
+        }
 
-      window#waybar.top {
-        opacity: 0.95;
-        padding: 0;
-        background-color: #${colors.base00};
-        border: 2px solid #${colors.base0C};
-        border-radius: 10px;
-      }
-      window#waybar.bottom {
-        opacity: 0.90;
-        background-color: #${colors.base00};
-        border: 2px solid #${colors.base0C};
-        border-radius: 10px;
-      }
+        #workspaces button {
+            padding: 0 5px;
+            background-color: transparent;
+            color: #ffffff;
+        }
 
-      window#waybar {
-        color: #${colors.base05};
-      }
+        #workspaces button:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
 
-      #workspaces button {
-        background-color: #${colors.base01};
-        color: #${colors.base05};
-        margin: 7px;
-      }
-      #workspaces button.hidden {
-        background-color: #${colors.base00};
-        color: #${colors.base04};
-      }
-      #workspaces button.focused,
-      #workspaces button.active {
-        background-color: #${colors.base0A};
-        color: #${colors.base00};
-      }
+        #workspaces button.active {
+            background-color: #64727D;
+            /* box-shadow: inset 0 -3px #ffffff; */
+        }
 
-      #clock {
-        background-color: #${colors.base0C};
-        color: #${colors.base00};
-        padding-left: 15px;
-        padding-right: 15px;
-        margin-top: 0;
-        margin-bottom: 0;
-        border-radius: 10px;
-      }
+        #workspaces button.urgent {
+            background-color: #eb4d4b;
+        }
 
-      #custom-menu {
-        background-color: #${colors.base0C};
-        color: #${colors.base00};
-        padding-left: 15px;
-        padding-right: 22px;
-        margin-left: 0;
-        margin-right: 10px;
-        margin-top: 0;
-        margin-bottom: 0;
-        border-radius: 10px;
-      }
-      #custom-hostname {
-        background-color: #${colors.base0C};
-        color: #${colors.base00};
-        padding-left: 15px;
-        padding-right: 18px;
-        margin-right: 0;
-        margin-top: 0;
-        margin-bottom: 0;
-        border-radius: 10px;
-      }
-      #tray {
-        color: #${colors.base05};
-      }
-    '';
+        #tray {
+          color: #${colors.base05};
+        }
+
+      '';
   };
 }
