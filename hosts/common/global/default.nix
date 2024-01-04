@@ -21,16 +21,21 @@
       libvdpau-va-gl
     ];
   };
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
 
   nixpkgs = {
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
-      # permittedInsecurePackages = [
-      #   "electron-12.2.3"
-      # ];
+      permittedInsecurePackages = [ "electron-19.1.9" ];
     };
   };
+  security.polkit.enable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -55,10 +60,9 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-services.printing.drivers = [
-    pkgs.gutenprint
- ];
+  services.printing.drivers = [ pkgs.gutenprint ];
   services.openssh.enable = true;
+  services.avahi.enable = true;
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.settings = {
@@ -80,6 +84,8 @@ services.printing.drivers = [
     riseup-vpn
     libsForQt5.qt5.qtwayland
     rustdesk
+    etcher
+    libsForQt5.polkit-kde-agent
 
   ];
 

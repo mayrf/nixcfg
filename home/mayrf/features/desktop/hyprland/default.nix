@@ -81,15 +81,15 @@
           ignore_opacity = true;
         };
       };
-      animations = {
-        enabled = false;
-      };
+      animations = { enabled = false; };
 
       exec = [ "${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill" ];
 
       exec-once = [
         "wl-paste --type text --watch cliphist store" # Stores only text data
         "wl-paste --type image --watch cliphist store" # Stores only image data
+        "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
+
       ];
 
       bind = let

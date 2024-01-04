@@ -43,6 +43,8 @@
     nodePackages_latest.bash-language-server
 
     texlive.combined.scheme-full
+    zola
+    hugo
 
     # Media
     deluge
