@@ -172,7 +172,49 @@
     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
 )
 
+(setq org-agenda-files
+      (mapcar 'file-truename
+	      (file-expand-wildcards "~/org/*.org")))
+
+;; Save the corresponding buffers
+(defun gtd-save-org-buffers ()
+  "Save `org-agenda-files' buffers without user confirmation.
+See also `org-save-all-org-buffers'"
+  (interactive)
+  (message "Saving all org-buffers except current...")
+  ;; (save-some-buffers t (lambda ()
+  ;;   		 (when (member (buffer-file-name) org-agenda-files)
+  ;;   		   t)))
+  (org-save-all-org-buffers)
+  (message "Saving all org-buffers except current... done"))
+
+;; Add it after refile
+(advice-add 'org-refile :after
+	    (lambda (&rest _)
+	      (gtd-save-org-buffers)))
+
 (setq org-reverse-note-order t)
+;; Automatically get the files in "~/Documents/org"
+;; with fullpath
+(setq org-agenda-files
+      (mapcar 'file-truename
+	      (file-expand-wildcards "~/org/*.org")))
+
+;; Save the corresponding buffers
+(defun gtd-save-org-buffers ()
+  "Save `org-agenda-files' buffers without user confirmation.
+See also `org-save-all-org-buffers'"
+  (interactive)
+  (message "Saving org-agenda-files buffers...")
+  (save-some-buffers t (lambda ()
+			 (when (member (buffer-file-name) org-agenda-files)
+			   t)))
+  (message "Saving org-agenda-files buffers... done"))
+
+;; Add it after refile
+(advice-add 'org-refile :after
+	    (lambda (&rest _)
+	      (gtd-save-org-buffers)))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -440,8 +482,6 @@
                 (lambda (time) (format-time-string "%Y-%m %B" (org-reverse-datetree-monday time))) ; month
 ;;                "%Y W%W"                ; week
                 "%Y-%m-%d %A"))           ; date
-
-(setq org-caldav-url "https://yemenroad.duckdns.org/remote.php/dav/calendars/Ostpol")
 
 (after! org
   ;; (setq org-archive-reversed-order t)

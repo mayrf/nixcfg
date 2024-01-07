@@ -302,9 +302,64 @@ ln -s ~/.local/share/Trash .
     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
 )
 #+end_src
+** Automatic saving after refilling
+
+After refilling, you will have to save manually your opened org files, which is not really convenient.
+Fortunately, a small change in the code will save the files automatically.
+
+First, you need to get the files you want to save with their fullpath.
+Replace the previous definition of =org-agenda-files= with the following:
+
+#+begin_src lisp
+(setq org-agenda-files
+      (mapcar 'file-truename
+	      (file-expand-wildcards "~/org/*.org")))
+#+end_src
+
+Now, we create a new function to save those files, using the model of the =org-save-all-org-buffers= function and finally we add it after the =org-refile= action:
+
+#+begin_src lisp
+;; Save the corresponding buffers
+(defun gtd-save-org-buffers ()
+  "Save `org-agenda-files' buffers without user confirmation.
+See also `org-save-all-org-buffers'"
+  (interactive)
+  (message "Saving all org-buffers except current...")
+  ;; (save-some-buffers t (lambda ()
+  ;;   		 (when (member (buffer-file-name) org-agenda-files)
+  ;;   		   t)))
+  (org-save-all-org-buffers)
+  (message "Saving all org-buffers except current... done"))
+
+;; Add it after refile
+(advice-add 'org-refile :after
+	    (lambda (&rest _)
+	      (gtd-save-org-buffers)))
+#+end_src
 ** Refiling
 #+begin_src emacs-lisp :tangle yes
 (setq org-reverse-note-order t)
+;; Automatically get the files in "~/Documents/org"
+;; with fullpath
+(setq org-agenda-files
+      (mapcar 'file-truename
+	      (file-expand-wildcards "~/org/*.org")))
+
+;; Save the corresponding buffers
+(defun gtd-save-org-buffers ()
+  "Save `org-agenda-files' buffers without user confirmation.
+See also `org-save-all-org-buffers'"
+  (interactive)
+  (message "Saving org-agenda-files buffers...")
+  (save-some-buffers t (lambda ()
+			 (when (member (buffer-file-name) org-agenda-files)
+			   t)))
+  (message "Saving org-agenda-files buffers... done"))
+
+;; Add it after refile
+(advice-add 'org-refile :after
+	    (lambda (&rest _)
+	      (gtd-save-org-buffers)))
 #+end_src
 ** Org and Roam directories
 #+begin_src emacs-lisp :tangle yes
@@ -594,11 +649,7 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
 
 #+end_src
 
-** Org calendar
 
-#+begin_src emacs-lisp :tangle yes
-(setq org-caldav-url "https://yemenroad.duckdns.org/remote.php/dav/calendars/Ostpol")
-#+end_src
 ** GTD
 #+begin_src emacs-lisp :tangle yes
 (after! org
