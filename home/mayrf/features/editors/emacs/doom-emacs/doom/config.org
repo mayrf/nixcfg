@@ -8,6 +8,12 @@
 (setq user-full-name "Fritz Mayr"
       user-mail-address "70516376+mayrf@users.noreply.github.com")
 #+end_src
+* General config
+
+#+begin_src emacs-lisp :tangle yes
+(setq projectile-project-search-path '("~/code"))
+#+end_src
+
 * Remote editing
 Enable remote formatting
 
@@ -296,6 +302,10 @@ ln -s ~/.local/share/Trash .
     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
 )
 #+end_src
+** Refiling
+#+begin_src emacs-lisp :tangle yes
+(setq org-reverse-note-order t)
+#+end_src
 ** Org and Roam directories
 #+begin_src emacs-lisp :tangle yes
 
@@ -317,7 +327,24 @@ ln -s ~/.local/share/Trash .
 ;;       "%?"
 ;;       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:${title}\n")
 ;;       :unnarrowed t)))
-(setq projectile-project-search-path '("~/code"))
+
+;; (use-package! websocket
+;;     ;; :after org-roam)
+;;     :after org)
+
+;; (use-package! org-roam-ui
+;;     ;; :after org-roam ;; or :after org
+;;     :after org ;; or :after org
+;; ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;; ;;         a hookable mode anymore, you're advised to pick something yourself
+;; ;;         if you don't care about startup time, use
+;; ;;  :hook (after-init . org-roam-ui-mode)
+;;     :config
+;;     (setq org-roam-ui-sync-theme t
+;;           org-roam-ui-follow t
+;;           org-roam-ui-update-on-save t
+;;           org-roam-ui-open-on-start t))
+
 
 #+end_src
 *** Logseq conversion

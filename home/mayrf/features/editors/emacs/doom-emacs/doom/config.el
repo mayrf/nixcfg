@@ -3,6 +3,8 @@
 (setq user-full-name "Fritz Mayr"
       user-mail-address "70516376+mayrf@users.noreply.github.com")
 
+(setq projectile-project-search-path '("~/code"))
+
 (setq apheleia-remote-algorithm 'local)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
@@ -170,6 +172,8 @@
     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
 )
 
+(setq org-reverse-note-order t)
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -188,7 +192,23 @@
 ;;       "%?"
 ;;       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:${title}\n")
 ;;       :unnarrowed t)))
-(setq projectile-project-search-path '("~/code"))
+
+;; (use-package! websocket
+;;     ;; :after org-roam)
+;;     :after org)
+
+;; (use-package! org-roam-ui
+;;     ;; :after org-roam ;; or :after org
+;;     :after org ;; or :after org
+;; ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;; ;;         a hookable mode anymore, you're advised to pick something yourself
+;; ;;         if you don't care about startup time, use
+;; ;;  :hook (after-init . org-roam-ui-mode)
+;;     :config
+;;     (setq org-roam-ui-sync-theme t
+;;           org-roam-ui-follow t
+;;           org-roam-ui-update-on-save t
+;;           org-roam-ui-open-on-start t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
