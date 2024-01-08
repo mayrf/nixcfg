@@ -63,6 +63,7 @@
   services.printing.drivers = [ pkgs.gutenprint ];
   services.openssh.enable = true;
   services.avahi.enable = true;
+  services.gvfs.enable = true;
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.settings = {
