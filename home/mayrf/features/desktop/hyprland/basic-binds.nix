@@ -24,7 +24,6 @@ in
 
     bind = [
       "SUPERSHIFT,q,killactive"
-      "SUPERSHIFT,Backspace,exit"
 
       "SUPER,s,togglesplit"
       "SUPER,f,fullscreen,1"
