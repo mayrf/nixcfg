@@ -9,6 +9,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    darwin = { # MacOS Package Management
+      url = "github:lnl7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     hyprland.url = "github:hyprwm/Hyprland";
 
@@ -31,12 +35,12 @@
 
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, darwin, ... }@inputs:
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
-      systems = [ "x86_64-linux" "aarch64-linux" ];
-      system = [ "x86_64-linux" "aarch64-linux" ];
+      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+      # system = [ "x86_64-linux" "aarch64-linux"  "aarch64-darwin"];
 
       pkgsFor = nixpkgs.legacyPackages;
       forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
@@ -111,25 +115,28 @@
         };
       };
 
-      # home-manager switch --flake .#mayrf@helium
-      homeConfigurations = {
-        "mayrf@helium" = lib.homeManagerConfiguration {
-          modules = [ ./home/mayrf/helium.nix ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = let
-            user = "mayrf";
-            host = "helium";
-          in { inherit inputs outputs user host; };
+      darwinConfigurations = let
+        user = "fmayr";
+        host = "osmium";
+      in {
+        ${host} = darwin.lib.darwinSystem {
+          modules = [
+            ./hosts/osmium
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.extraSpecialArgs = {
+                inherit inputs outputs user host;
+              };
+              home-manager.users.fmayr = {
+                imports = [ ./home/mayrf/osmium.nix ];
+                # home.stateVersion = "23.11";
+              };
+            }
+          ];
+          specialArgs = { inherit inputs outputs user host; };
         };
 
-        "mayrf@tellur" = lib.homeManagerConfiguration {
-          modules = [ ./home/mayrf/tellur.nix ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = let
-            user = "mayrf";
-            host = "tellur";
-          in { inherit inputs outputs user host; };
-        };
       };
+
     };
 }
