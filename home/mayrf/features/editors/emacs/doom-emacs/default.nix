@@ -1,56 +1,34 @@
 { config, pkgs, lib, location, ... }:
-
-{
+let emacs = pkgs.emacs29;
+    repoUrl = "https://github.com/doomemacs/doomemacs";
+in {
   # Emacs
   services.emacs = {
     enable = true;
-    package = pkgs.emacs29;
+    package = emacs;
   };
+
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs29;
+    package = emacs;
   };
-  #  package = with pkgs;
-  #    ((emacsPackagesFor emacsNativeComp).emacsWithPackages
-  #      (epkgs: with epkgs; [ vterm emacsql-sqlite ]));
-  # services.emacs = {
-  #   enable = true;
-  #   client.enable = true;
-  #   startWithUserSession = "graphical";
-  #   socketActivation.enable = true;
-  #   package = with pkgs;
-  #     ((emacsPackagesFor emacsNativeComp).emacsWithPackages
-  #       (epkgs: with epkgs; [ vterm emacsql-sqlite ]));
-  # };
-  # systemd.user.services.emacs.Install.WantedBy = [ "default.target" ];
 
   home.activation = {
-    doomEmacsActivationAction = lib.hm.dag.entryAfter [ "writeBoundry" ] ''
-      EMACS="${config.home.homeDirectory}/.config/emacs"
-      DOOM="${config.home.homeDirectory}/.config/doom"
-      if [ ! -d "$EMACS" ]; then
-        ${pkgs.git}/bin/git clone https://github.com/hlissner/doom-emacs.git $EMACS
-      #  yes | $EMACS/bin/doom install
-        rm $HOME/.config/doom
+    doomEmacsActivationAction = ''
+      EMACS_DIR="${config.xdg.configHome}/emacs"
+      DOOM="${config.xdg.configHome}/doom"
+      if [ ! -d "$EMACS_DIR" ] || [ -z "$(ls  "$EMACS_DIR")" ]; then
+          rm -rf $EMACS_DIR
+          ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
       fi
 
-      if [ ! -d "$DOOM" ]; then
-        ln -s ${config.home.homeDirectory}/.config/nixcfg/home/mayrf/features/editors/emacs/doom-emacs/doom $HOME/.config/doom
+      if [ ! -e "$DOOM" ]; then
+        ln -s ${config.xdg.configHome}/nixcfg/home/mayrf/features/editors/emacs/doom-emacs/doom $DOOM
+        # yes | $EMACS_DIR/bin/doom install
       fi
-
-      # $EMACS/bin/doom sync
-      # TODO find a way to make this work (Error: failed to run Emacs with command 'emacs'
-      # Are you sure Emacs is installed and in your $PATH?
-      # if [ -x "/home/mayrf/.config/emacs/bin/doom" ]; then
-      #   /home/mayrf/.config/emacs/bin/doom sync
-      # fi
-    ''; # It will always sync when rebuild is done. So changes will always be applied.
-
-    #   doomEmacsSyncAction = lib.hm.dag.entryAfter [ "installPackages" ] ''
-    #        EMACS="${config.home.homeDirectory}/.config/emacs"
-    #        $EMACS/bin/doom sync
-    #'';
+    '';
   };
+  # fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
 
   home.packages = with pkgs; [
     # Doom emacs dependencies
@@ -64,7 +42,6 @@
     imagemagick # for image-dired    sqlite
     gcc
     emacs-all-the-icons-fonts
-
     zstd # for undo-fu-session/undo-tree compression
 
     # :tools editorconfig
@@ -78,6 +55,22 @@
     hunspellDicts.en_US
     hunspellDicts.es_ES
     hunspellDicts.en_GB-ize
+
+    #python
+    poetry
+    nodePackages_latest.pyright
+    python311Packages.isort
+    python311Packages.pylint
+    python311Packages.yapf
+    python311Packages.pylama
+
   ];
+
   home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
+
+  home.shellAliases = { "emacs" = "${emacs}/bin/emacs"; };
+# e()     { pgrep emacs && emacsclient -n "$@" || emacs -nw "$@" }
+# ediff() { emacs -nw --eval "(ediff-files \"$1\" \"$2\")"; }
+# eman()  { emacs -nw --eval "(switch-to-buffer (man \"$1\"))"; }
+# ekill() { emacsclient --eval '(kill-emacs)'; }
 }

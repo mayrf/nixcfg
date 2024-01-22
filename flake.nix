@@ -9,7 +9,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    darwin = { # MacOS Package Management
+
+    darwin = {
+      # MacOS Package Management
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -44,7 +46,8 @@
 
       pkgsFor = nixpkgs.legacyPackages;
       forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
-    in {
+    in
+    {
       inherit lib;
 
       homeManagerModules = import ./modules/home-manager;
@@ -52,91 +55,63 @@
       overlays = import ./overlays { inherit inputs outputs; };
       wallpapers = import ./home/mayrf/wallpapers;
 
-      # sudo nixos-rebuild switch --flake .#${host}
-      nixosConfigurations = {
-        # Personal laptop
-        helium = let
+      nixosSystems = [ {
           user = "mayrf";
           host = "helium";
-        in lib.nixosSystem {
-          modules = [
-            ./hosts/helium
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host;
-              };
-              home-manager.users.mayrf = {
-                imports = [ ./home/mayrf/helium.nix ];
-              };
-            }
-          ];
-          specialArgs = { inherit inputs outputs user host; };
-        };
+      } ];
 
-        # Work
-        tellur = let
+      # sudo nixos-rebuild switch --flake .#${host}
+      # Personal laptop
+      #
+      # nixosConfigurations = f: lib.genAttrs nixosSystems (sys: f )
+      nixosConfigurations =
+        let
           user = "mayrf";
-          host = "tellur";
-        in lib.nixosSystem {
-          modules = [
-            ./hosts/tellur
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host;
-              };
-              home-manager.users.mayrf = {
-                imports = [ ./home/mayrf/tellur.nix ];
-              };
-            }
-          ];
-          specialArgs = { inherit inputs outputs user host; };
+          host = "helium";
+        in
+        {
+          ${host} = lib.nixosSystem {
+            modules = [
+              ./hosts/${host}
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.extraSpecialArgs = {
+                  inherit inputs outputs user host;
+                };
+                home-manager.users.${user} = {
+                  imports = [ ./home/mayrf/${host}.nix ];
+                };
+              }
+            ];
+            specialArgs = { inherit inputs outputs user host; };
+          };
         };
 
-        #desktop
-        yttrium = let
-          user = "mayrf";
-          host = "yttrium";
-        in lib.nixosSystem {
-          modules = [
-            ./hosts/yttrium
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host;
-              };
-              home-manager.users.mayrf = {
-                imports = [ ./home/mayrf/yttrium.nix ];
-              };
-            }
-          ];
-          specialArgs = { inherit inputs outputs user host; };
-        };
-      };
 
-      darwinConfigurations = let
-        user = "fmayr";
-        host = "osmium";
-      in {
-        ${host} = darwin.lib.darwinSystem {
-          modules = [
-            ./hosts/osmium
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host;
-              };
-              home-manager.users.fmayr = {
-                imports = [ ./home/mayrf/osmium.nix ];
-                # home.stateVersion = "23.11";
-              };
-            }
-          ];
-          specialArgs = { inherit inputs outputs user host; };
-        };
+      darwinConfigurations =
+        let
+          user = "fmayr";
+          host = "osmium";
+        in
+        {
+          ${host} = darwin.lib.darwinSystem {
+            modules = [
+              ./hosts/osmium
+              home-manager.darwinModules.home-manager
+              {
+                home-manager.extraSpecialArgs = {
+                  inherit inputs outputs user host;
+                };
+                home-manager.users.fmayr = {
+                  imports = [ ./home/mayrf/osmium.nix ];
+                  # home.stateVersion = "23.11";
+                };
+              }
+            ];
+            specialArgs = { inherit inputs outputs user host; };
+          };
 
-      };
+        };
 
     };
 }

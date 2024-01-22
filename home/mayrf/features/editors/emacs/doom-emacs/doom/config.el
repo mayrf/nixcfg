@@ -5,7 +5,7 @@
 
 (setq projectile-project-search-path '("~/code"))
 
-(setq apheleia-remote-algorithm 'local)
+;; (setq apheleia-remote-algorithm 'local)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;

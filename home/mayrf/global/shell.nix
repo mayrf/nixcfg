@@ -1,6 +1,13 @@
 { config, lib, pkgs, host, ... }:
 
 {
+
+  home.shellAliases = {
+    "rbs" = "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
+    "nfu" = "nix flake update /home/mayrf/.config/nixcfg";
+    # "emacs" = "emacsclient -c";
+    "rlwb" = "pkill -USR2 waybar";
+  };
   programs = {
 
     direnv = {
@@ -16,13 +23,6 @@
 
     zsh = {
       enable = true;
-      shellAliases = {
-        "rbs" =
-          "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
-        "nfu" = "nix flake update /home/mayrf/.config/nixcfg";
-        "emacs" = "emacsclient -c";
-        "rlwb" = "pkill -USR2 waybar";
-      };
       autocd = true;
       historySubstringSearch.enable = true;
       history = {

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Python block
+# key: <python
+# --
+
+#+begin_src python :results output :session shared
+$0
+#+end_src
