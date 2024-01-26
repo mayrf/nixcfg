@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
+  nixpkgs.config.allowUnfree = true;
   programs.vscode = {
     enable = true;
     # package = pkgs.vscodium;
@@ -10,6 +11,8 @@
       esbenp.prettier-vscode
       matklad.rust-analyzer
       eamodio.gitlens
+      bbenoist.nix
+      brettm12345.nixfmt-vscode
 
       # TODO Find fix
       # The following plugin need to be installed manually for now as they are
@@ -22,6 +25,8 @@
     ];
     mutableExtensionsDir = true;
     userSettings = {
+      # lib.mkIf (config.networking.system == "aarch64-darwin") 
+
       "terminal.integrated.profiles.linux".zsh.path =
         "/run/current-system/sw/bin/zsh";
       "git.autofetch" = true;
@@ -38,6 +43,7 @@
       "[javascript]" = {
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };
+      "[nix]" = { "editor.defaultFormatter" = "brettm12345.nixfmt-vscode"; };
     };
   };
 }

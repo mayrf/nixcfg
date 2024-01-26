@@ -3,7 +3,7 @@
 (setq user-full-name "Fritz Mayr"
       user-mail-address "70516376+mayrf@users.noreply.github.com")
 
-(setq projectile-project-search-path '("~/code"))
+(setq projectile-project-search-path '("~/code" "~/repos"))
 
 ;; (setq apheleia-remote-algorithm 'local)
 
@@ -19,7 +19,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
+;;(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them

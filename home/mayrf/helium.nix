@@ -3,6 +3,7 @@
 {
   imports = [
     ./global
+    ./features/linux
     ./features/lf
     ./features/terminal/alacritty.nix
     ./features/terminal/foot.nix

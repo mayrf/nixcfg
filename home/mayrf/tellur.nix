@@ -3,6 +3,7 @@
 {
   imports = [
     ./global
+    ./features/linux
     ./features/lf
     ./features/teams.nix
     ./features/terminal/alacritty.nix
@@ -14,7 +15,6 @@
     ./features/postman.nix
     ./features/editors/idea.nix
   ];
-
 
   colorscheme = inputs.nix-colors.colorschemes.atelier-sulphurpool;
 

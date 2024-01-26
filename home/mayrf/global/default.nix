@@ -7,7 +7,6 @@ in {
   imports = [
     inputs.nix-colors.homeManagerModule
     ./git
-    ./programs.nix
     ./shell.nix
     ./mimeApps.nix
     ../features/editors/nvim.nix
@@ -56,26 +55,6 @@ in {
     git.enable = true;
   };
 
-  home = {
-    username = lib.mkDefault "mayrf";
-    homeDirectory = lib.mkDefault "/home/${config.home.username}";
-    stateVersion = lib.mkDefault "23.11";
-    sessionPath = [ "$HOME/.local/bin" ];
-
-    # persistence = {
-    #   "/persist/home/mayrf" = {
-    #     directories = [
-    #       "Documents"
-    #       "Downloads"
-    #       "Pictures"
-    #       "Videos"
-    #       ".local/bin"
-    #     ];
-    #     allowOther = true;
-    #   };
-    # };
-  };
-
   colorscheme = lib.mkDefault colorSchemes.dracula;
   wallpaper = let
     largest = f: xs: builtins.head (builtins.sort (a: b: a > b) (map f xs));
@@ -91,17 +70,6 @@ in {
   home.file.".colorscheme".text = config.colorscheme.slug;
 
   fonts.fontconfig.enable = true;
-
-  services = {
-    nextcloud-client = {
-      enable = true;
-      startInBackground = true;
-    };
-    gpg-agent = {
-      enable = true;
-      pinentryFlavor = "qt";
-    };
-  };
 
   xdg = {
     enable = true;

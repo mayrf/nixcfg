@@ -1,6 +1,7 @@
 { config, pkgs, lib, location, ... }:
-let emacs = pkgs.emacs29;
-    repoUrl = "https://github.com/doomemacs/doomemacs";
+let
+  emacs = pkgs.emacs29; # pkgs.emacs-macport
+  repoUrl = "https://github.com/doomemacs/doomemacs";
 in {
   # Emacs
   services.emacs = {
@@ -69,8 +70,8 @@ in {
   home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
 
   home.shellAliases = { "emacs" = "${emacs}/bin/emacs"; };
-# e()     { pgrep emacs && emacsclient -n "$@" || emacs -nw "$@" }
-# ediff() { emacs -nw --eval "(ediff-files \"$1\" \"$2\")"; }
-# eman()  { emacs -nw --eval "(switch-to-buffer (man \"$1\"))"; }
-# ekill() { emacsclient --eval '(kill-emacs)'; }
+  # e()     { pgrep emacs && emacsclient -n "$@" || emacs -nw "$@" }
+  # ediff() { emacs -nw --eval "(ediff-files \"$1\" \"$2\")"; }
+  # eman()  { emacs -nw --eval "(switch-to-buffer (man \"$1\"))"; }
+  # ekill() { emacsclient --eval '(kill-emacs)'; }
 }
