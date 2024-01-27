@@ -10,6 +10,7 @@
           k = "up";
           h = "left";
           l = "right";
+          "1" = "super + 1";
         };
       };
     };

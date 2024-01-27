@@ -1,5 +1,5 @@
 { inputs, lib, pkgs, config, outputs, ... }: {
-  imports = [ ./programs.nix ];
+  imports = [ ../global/programs.nix ];
 
   services = {
     nextcloud-client = {

@@ -45,6 +45,7 @@
     hyprpicker
     brightnessctl
     inputs.hyprland-contrib.packages.x86_64-linux.grimblast
+    xorg.xhost
     # hyprslurp
   ];
   wayland.windowManager.hyprland = {

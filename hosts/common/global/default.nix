@@ -87,9 +87,9 @@
     rustdesk
     etcher
     libsForQt5.polkit-kde-agent
-
+    woeusb-ng
   ];
-
+  nix.optimise.automatic = true;
   nix = {
     package = pkgs.nixFlakes;
     settings = {

@@ -51,6 +51,7 @@
     bisq-desktop
     # lutris
     # Cli tools
+    gparted
     ollama
     steam
     img2pdf
@@ -100,7 +101,8 @@
     # Productivity
     nextcloud-client
     onlyoffice-bin
-    libreoffice
+    temurin-jre-bin-21
+    libreoffice-fresh
     keepassxc
     calibre
     drawio

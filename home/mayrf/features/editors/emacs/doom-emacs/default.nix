@@ -33,6 +33,7 @@ in {
 
   home.packages = with pkgs; [
     # Doom emacs dependencies
+    lldb
     emacsPackages.vterm
     emacsPackages.emacsql-sqlite
     emacsPackages.pdf-tools

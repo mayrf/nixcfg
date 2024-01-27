@@ -46,6 +46,59 @@
 
       pkgsFor = nixpkgs.legacyPackages;
       forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
+      nixosSystems = [
+        {
+          user = "mayrf";
+          host = "helium";
+        }
+        {
+          user = "mayrf";
+          host = "yttrium";
+        }
+      ];
+
+      #   entry: {
+      #   entry.host = let
+      #     user = entry.user;
+      #     host = entry.host;
+      #   in lib.nixosSystem {
+      #     modules = [
+      #       ./hosts/${host}
+      #       home-manager.nixosModules.home-manager
+      #       {
+      #         home-manager.extraSpecialArgs = {
+      #           inherit inputs outputs user host;
+      #         };
+      #         home-manager.users.${user} = {
+      #           imports = [ ./home/mayrf/${host}.nix ];
+      #         };
+      #       }
+      #     ];
+      #     specialArgs = { inherit inputs outputs user host; };
+      #   };
+      # };
+
+      # createNixOsSystem = entry: {
+      #   entry.host = let
+      #     user = entry.user;
+      #     host = entry.host;
+      #   in lib.nixosSystem {
+      #     modules = [
+      #       ./hosts/${host}
+      #       home-manager.nixosModules.home-manager
+      #       {
+      #         home-manager.extraSpecialArgs = {
+      #           inherit inputs outputs user host;
+      #         };
+      #         home-manager.users.${user} = {
+      #           imports = [ ./home/mayrf/${host}.nix ];
+      #         };
+      #       }
+      #     ];
+      #     specialArgs = { inherit inputs outputs user host; };
+      #   };
+      # };
+      # nixosSystemss = map createNixOsSystem nixosSystems;
     in {
       inherit lib;
 
@@ -54,18 +107,41 @@
       overlays = import ./overlays { inherit inputs outputs; };
       wallpapers = import ./home/mayrf/wallpapers;
 
-      nixosSystems = [{
-        user = "mayrf";
-        host = "helium";
-      }];
+      # nixosConfigurations = nixosSystemss;
 
+      # nixosConfigurations = map createNixOsSystem nixosSystems;
+      #   nixosConfigurations ={
+      #                              map createNixOsSystem nixosSystems;
+      #                            };
       # sudo nixos-rebuild switch --flake .#${host}
       # Personal laptop
       #
       # nixosConfigurations = f: lib.genAttrs nixosSystems (sys: f )
+      #
+      # nixosConfigurations = let
+      #   user = "mayrf";
+      #   host = "helium";
+      # in {
+      #   ${host} = lib.nixosSystem {
+      #     modules = [
+      #       ./hosts/${host}
+      #       home-manager.nixosModules.home-manager
+      #       {
+      #         home-manager.extraSpecialArgs = {
+      #           inherit inputs outputs user host;
+      #         };
+      #         home-manager.users.${user} = {
+      #           imports = [ ./home/mayrf/${host}.nix ];
+      #         };
+      #       }
+      #     ];
+      #     specialArgs = { inherit inputs outputs user host; };
+      #   };
+      # };
+
       nixosConfigurations = let
         user = "mayrf";
-        host = "helium";
+        host = "yttrium";
       in {
         ${host} = lib.nixosSystem {
           modules = [
@@ -83,6 +159,25 @@
           specialArgs = { inherit inputs outputs user host; };
         };
       };
+      # -        yttrium = let
+      # -          user = "mayrf";
+      # -          host = "yttrium";
+      # -        in lib.nixosSystem {
+      # -          modules = [
+      # -            ./hosts/yttrium
+      # -            home-manager.nixosModules.home-manager
+      # -            {
+      # -              home-manager.extraSpecialArgs = {
+      # -                inherit inputs outputs user host;
+      # -              };
+      # -              home-manager.users.mayrf = {
+      # -                imports = [ ./home/mayrf/yttrium.nix ];
+      # -              };
+      # -            }
+      # -          ];
+      # -          specialArgs = { inherit inputs outputs user host; };
+      # -        };
+      # -      };
 
       darwinConfigurations = let
         user = "fmayr";
