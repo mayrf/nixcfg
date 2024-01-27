@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   imports = [
     ./gammastep.nix
     ./mako.nix
@@ -8,7 +7,6 @@
     ./swaylock.nix
     ./waybar.nix
     ./wofi.nix
-    ./zathura.nix
   ];
 
   xdg.mimeApps.enable = true;
