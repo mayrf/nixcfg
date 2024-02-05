@@ -496,6 +496,10 @@ See also `org-save-all-org-buffers'"
                  (file "~/org/gtd/inbox.org")
                  "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
 
+               ("r" "Rice wish" entry
+                 (file+headline "~/org/gtd/next.org" "RICE")
+                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
+
                ("b" "book [inbox]" entry
                  (file+headline "~/org/gtd/inbox.org" "Books")
                  "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?")
@@ -503,7 +507,7 @@ See also `org-save-all-org-buffers'"
                ;; ("j" "Journal" plain
                ;;   (file+datetree "~/org/gtd/journal.org")
                ;;   "" :empty-lines-after 1)
-               ("z" "Journal test" plain
+               ("j" "Journal" plain
                     (file+function "~/org/gtd/journal.org" org-reverse-datetree-goto-date-in-file)
                     "%?" :empty-lines 1 :append nil)
 

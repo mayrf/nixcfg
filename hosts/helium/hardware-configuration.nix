@@ -21,7 +21,7 @@
     kernelModules = [ "kvm-intel" ];
     loader.grub = {
       enable = true;
-      configurationLimit = 5;
+      configurationLimit = 3;
       # Get disk is via: lsblk -o ID-LINK,PATH
       device =
         "/dev/disk/by-id/wwn-0x5001b444a7c374b6"; # or "nodev" for efi only
