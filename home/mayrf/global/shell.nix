@@ -8,6 +8,7 @@
     # "emacs" = "emacsclient -c";
     "rlwb" = "pkill -USR2 waybar";
   };
+  home.sessionVariables = { FONTS = "$HOME/.local/share/fonts"; };
   programs = {
 
     direnv = {

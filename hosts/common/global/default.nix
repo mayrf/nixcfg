@@ -89,6 +89,19 @@
     libsForQt5.polkit-kde-agent
     woeusb-ng
   ];
+  fonts.packages = with pkgs; [
+    vistafonts
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
+  ];
+
   nix.optimise.automatic = true;
   nix = {
     package = pkgs.nixFlakes;
