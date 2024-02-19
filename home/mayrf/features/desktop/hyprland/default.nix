@@ -54,8 +54,8 @@
     settings = {
       general = {
         layout = "master";
-        gaps_in = 0;
-        gaps_out = 0;
+        gaps_in = 1;
+        gaps_out = 1;
         border_size = 1;
         cursor_inactive_timeout = 10;
         "col.active_border" = "0xff${config.colorscheme.colors.base0C}";

@@ -68,6 +68,8 @@ in {
     nodePackages_latest.vscode-css-languageserver-bin
     nodePackages_latest.prettier
 
+    # for markdown-preview-eww
+    rubyPackages.redcarpet
   ];
 
   home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];

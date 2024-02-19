@@ -12,6 +12,7 @@
 (package! dired-open)
 (package! dired-subtree)
 (package! dirvish)
+(package! markdown-preview-eww)
 
 ;; org roam ui
 ;; https://github.com/org-roam/org-roam-ui

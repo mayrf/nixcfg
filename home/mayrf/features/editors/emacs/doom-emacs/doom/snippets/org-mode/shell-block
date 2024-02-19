@@ -3,6 +3,6 @@
 # key: <shell
 # --
 
-#+begin_src sh :results output :session shared
+#+begin_src sh :results output
 $0
 #+end_src

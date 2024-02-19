@@ -7,6 +7,8 @@
     "nfu" = "nix flake update /home/mayrf/.config/nixcfg";
     # "emacs" = "emacsclient -c";
     "rlwb" = "pkill -USR2 waybar";
+    "fcd" = ''cd "$(find -type d | fzf)"'';
+    "open" = ''xdg-open "$(find -type f | fzf)"'';
   };
   home.sessionVariables = { FONTS = "$HOME/.local/share/fonts"; };
   programs = {
