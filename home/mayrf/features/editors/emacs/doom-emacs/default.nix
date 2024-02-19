@@ -49,6 +49,9 @@ in {
     # :tools editorconfig
     editorconfig-core-c # per-project style config
 
+    # nix
+    nil
+
     # other dependencies
     hunspell
     hunspellDicts.de_AT

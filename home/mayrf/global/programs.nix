@@ -42,7 +42,6 @@
     # Dev tools
     docker-compose
     dbeaver
-    rnix-lsp
     texlab
     nodePackages_latest.bash-language-server
     emmet-ls
@@ -87,7 +86,7 @@
     gnome.nautilus
     gnome.sushi # A quick previewer for Nautilus
     gnupg
-    pinentry-qt # GnuPG’s interface to passphrase input
+    pinentry-qt # GnuPG s interface to passphrase input
     ipscan
     qemu
     virt-manager

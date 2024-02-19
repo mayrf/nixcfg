@@ -12,7 +12,6 @@
 
   ];
 
-
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
@@ -22,6 +21,5 @@
     hostName = host; # Define your hostname.
   };
 
-
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 }

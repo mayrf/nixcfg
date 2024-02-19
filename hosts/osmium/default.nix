@@ -10,14 +10,12 @@
     nixfmt
     # colima
     docker
-    rnix-lsp
     ollama
     rectangle
     docker
     docker-compose
     docker-machine
     tree
-    rnix-lsp
     jq
   ];
 
@@ -69,7 +67,7 @@
   #     skhdConfig = ''
   #       # Navigation
   #       # Hold Caps Lock and tap 'j' for down arrow
-  #       # caps - j : key Ơ
+  #       # caps - j : key O
   #       caps - j : key Down
 
   #       # Hold Caps Lock and tap 'k' for up arrow

@@ -41,10 +41,6 @@
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
-      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
-
-      pkgsFor = nixpkgs.legacyPackages;
-      forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
     in {
       inherit lib;
 
@@ -52,7 +48,6 @@
       templates = import ./templates;
       overlays = import ./overlays { inherit inputs outputs; };
       wallpapers = import ./home/mayrf/wallpapers;
-
       nixosConfigurations = let
         configs = [
           {
