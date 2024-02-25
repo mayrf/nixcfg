@@ -19,7 +19,7 @@
     # Cli tools
     gparted
     ollama
-    steam
+    # steam
     img2pdf
     tldr
     rsync # Syncer - $ rsync -r dir1/ dir2/
@@ -89,7 +89,7 @@
     pinentry-qt # GnuPG s interface to passphrase input
     ipscan
     qemu
-    virt-manager
+    # virt-manager
     offlineimap
     (python3.withPackages (ps: with ps; [ jupyter ]))
     borgbackup

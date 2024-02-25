@@ -1,6 +1,11 @@
 { config, pkgs, lib, location, ... }:
 let
   emacs = pkgs.emacs29; # pkgs.emacs-macport
+  # package = pkgs.emacs-unstable;
+  # emacs = pkgs.emacs-unstable.override {
+  # withXwidgets = true;
+  # withGTK3 = true;
+  # };
   repoUrl = "https://github.com/doomemacs/doomemacs";
 in {
   # Emacs
@@ -43,14 +48,32 @@ in {
     fd # faster projectile indexing
     imagemagick # for image-dired    sqlite
     gcc
-    emacs-all-the-icons-fonts
+
+    shfmt
+    shellcheck
+
+    html-tidy
+    stylelint
+
+    dockfmt
+
+    (pkgs.nerdfonts.override {
+      fonts = [ "NerdFontsSymbolsOnly" "JetBrainsMono" "iA-Writer" ];
+    })
+
     zstd # for undo-fu-session/undo-tree compression
 
     # :tools editorconfig
     editorconfig-core-c # per-project style config
 
+    # :markdown preview
+    python311Packages.grip
+
     # nix
     nil
+
+    # language tools
+    languagetool
 
     # other dependencies
     hunspell
@@ -73,6 +96,7 @@ in {
 
     # for markdown-preview-eww
     rubyPackages.redcarpet
+
   ];
 
   home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];

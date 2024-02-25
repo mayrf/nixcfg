@@ -23,6 +23,15 @@ cmd mkdir ${{
 	mkdir $ans
 }}
 
+
+cmd mergepdf ${{
+  printf "$fx\n"
+	printf "Combined PDF Name: "
+	read ans
+
+  printf "$fx\n$ans.pdf" | sed 's/ /\\ /g' | xargs pdfunite
+}}
+
 cmd mkimg2pdf ${{
   printf "$fx\n"
 	printf "PDF Name: "
@@ -70,7 +79,8 @@ map zb calcdirsize
 map mm mark-save
 map ml mark-load
 map mr mark-remove
-map mp mkimg2pdf
+map mpi mkimg2pdf
+map mpp mergepdf
 
 
 # Movement

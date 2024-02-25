@@ -20,6 +20,7 @@
 ;; accept. For example:
 ;;
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
+(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
