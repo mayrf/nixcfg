@@ -88,8 +88,6 @@
     gnupg
     pinentry-qt # GnuPG s interface to passphrase input
     ipscan
-    qemu
-    # virt-manager
     offlineimap
     (python3.withPackages (ps: with ps; [ jupyter ]))
     borgbackup
