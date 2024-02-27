@@ -2,7 +2,7 @@
   description = "My personal NixOs configuration";
 
   inputs = {
-
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
@@ -43,7 +43,7 @@
 
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, darwin, ... }@inputs:
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
@@ -76,20 +76,30 @@
         value = let
           user = "${config.user}";
           host = "${config.host}";
+
+          # pkgs = import nixpkgs {
+          #   # inherit system;
+          #   config.allowUnfree = true; # Allow Proprietary Software
+          # };
+
+          stable = import nixpkgs-stable {
+            system = "x86_64-linux"; # System Architecture
+            config.allowUnfree = true;
+          };
         in lib.nixosSystem {
           modules = [
             ./hosts/${host}
             home-manager.nixosModules.home-manager
             {
               home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host;
+                inherit inputs outputs user host stable;
               };
               home-manager.users.${user} = {
                 imports = [ ./home/mayrf/${host}.nix ];
               };
             }
           ];
-          specialArgs = { inherit inputs outputs user host; };
+          specialArgs = { inherit inputs outputs user host stable; };
         };
       }) configs);
 

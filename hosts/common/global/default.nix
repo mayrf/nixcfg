@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, user, ... }: {
+{ config, pkgs, stable, ... }: {
   imports = [
     #   ./sops.nix
     ./keyd.nix
@@ -111,7 +111,7 @@
     system-config-printer
     riseup-vpn
     libsForQt5.qt5.qtwayland
-    rustdesk
+    stable.rustdesk
     etcher
     libsForQt5.polkit-kde-agent
     woeusb-ng

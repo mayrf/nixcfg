@@ -1,19 +1,18 @@
-{ pkgs, config, ... }:
-{
+{ pkgs, config, stable, ... }: {
 
   home.packages = with pkgs; [
 
-    qt6.qtwayland
+    stable.qt6.qtwayland
     libsForQt5.qt5.qtwayland
   ];
-  qt = {
+  # qt = {
 
-    enable = true;
-    # platform theme "gtk" or "gnome"
-    platformTheme = "gtk";
-    # name of the qt theme
-    style.name = "adwaita-dark";
+  #   enable = true;
+  #   # platform theme "gtk" or "gnome"
+  #   platformTheme = "gtk";
+  #   # name of the qt theme
+  #   style.name = "adwaita-dark";
 
-    style.package = pkgs.adwaita-qt;
-  };
+  #   style.package = stable.adwaita-qt;
+  # };
 }

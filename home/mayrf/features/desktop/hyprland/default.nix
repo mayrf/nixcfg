@@ -72,7 +72,8 @@
       };
 
       decoration = {
-        active_opacity = 0.94;
+        active_opacity = 1.0;
+        # active_opacity = 0.94;
         inactive_opacity = 0.84;
         fullscreen_opacity = 1.0;
         blur = {
@@ -126,6 +127,8 @@
         "SUPER,e,exec,${editor}"
         "SUPER,w,exec,${browser}"
         "SUPERSHIFT,w,exec,${brave}"
+        "SUPER,r,exec,${terminal} lf"
+        "SUPERSHIFT,C,exec,${terminal} sudo nmtui"
         "SUPERSHIFT, R, exec,${hyprctl} reload"
         # Brightness control (only works if the system has lightd)
         ",XF86MonBrightnessUp,exec,brightnessctl set 5%+"
