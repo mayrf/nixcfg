@@ -4,7 +4,7 @@
 
   home.shellAliases = {
     "rbs" = "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
-    "nfu" = "nix flake update /home/mayrf/.config/nixcfg";
+    "nfu" = "nix flake update /home/mayrf/.config/nixcfg --commit-lock-file";
     # "emacs" = "emacsclient -c";
     "rlwb" = "pkill -USR2 waybar";
     "fcd" = ''cd "$(find -type d | fzf)"'';
