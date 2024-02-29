@@ -11,13 +11,13 @@
 
   imports = [
     # include NixOS-WSL modules
-    # <nixos-wsl/modules>
-    nixos-wsl.nixosModules.wsl
+    <nixos-wsl/modules>
+    # nixos-wsl.nixosModules
   ];
   # imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   wsl.enable = true;
-  wsl.defaultUser = "nixos";
+  wsl.defaultUser = "mayrf";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
