@@ -40,6 +40,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       # inputs.flake-utils.follows = "flake-utils";
     };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
 
@@ -69,6 +73,10 @@
           {
             user = "mayrf";
             host = "yttrium";
+          }
+          {
+            user = "mayrf";
+            host = "radium";
           }
         ];
       in builtins.listToAttrs (map (config: {
