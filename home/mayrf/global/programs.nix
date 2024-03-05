@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, stable, ... }: {
 
   programs = {
     zathura = {
@@ -11,7 +11,8 @@
   };
 
   home.packages = with pkgs; [
-    minikube
+    kubectl
+    kind
     fzf
     file
 
@@ -70,7 +71,7 @@
     temurin-jre-bin-21
     libreoffice-fresh
     keepassxc
-    calibre
+    stable.calibre
     drawio
     thunderbird
     protonmail-bridge
