@@ -5,6 +5,13 @@
   home.shellAliases = {
     "rbs" = "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
     "nfu" = "nix flake update /home/mayrf/.config/nixcfg --commit-lock-file";
+
+    "optimize" = ''
+      nix-env --list-generations
+            nix-env --delete-generations +1
+            sudo nix-collect-garbage -d
+            nix-collect-garbage -d
+            sudo nix-store --optimise'';
     # "emacs" = "emacsclient -c";
     "rlwb" = "pkill -USR2 waybar";
     "fcd" = ''cd "$(find -type d | fzf)"'';
