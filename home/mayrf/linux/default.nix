@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, config, outputs, ... }: {
+{ lib, config, ... }: {
   imports = [ ../global/programs.nix ];
 
   services = {
@@ -17,18 +17,25 @@
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
     stateVersion = lib.mkDefault "23.11";
     sessionPath = [ "$HOME/.local/bin" ];
-
-    # persistence = {
-    #   "/persist/home/mayrf" = {
-    #     directories = [
-    #       "Documents"
-    #       "Downloads"
-    #       "Pictures"
-    #       "Videos"
-    #       ".local/bin"
-    #     ];
-    #     allowOther = true;
-    #   };
-    # };
   };
+  # For virtualisation
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
+    };
+  };
+
+  # persistence = {
+  #   "/persist/home/mayrf" = {
+  #     directories = [
+  #       "Documents"
+  #       "Downloads"
+  #       "Pictures"
+  #       "Videos"
+  #       ".local/bin"
+  #     ];
+  #     allowOther = true;
+  #   };
+  # };
 }

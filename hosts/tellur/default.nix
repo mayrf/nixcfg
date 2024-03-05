@@ -9,6 +9,7 @@
     ../common/users/mayrf
     ../common/optional/docker.nix
     ../common/optional/pipewire.nix
+    ../common/linux.nix
 
   ];
 

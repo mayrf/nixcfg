@@ -79,11 +79,4 @@ in {
     stateHome = "${config.home.homeDirectory}/.local/state";
   };
 
-  # For virtualisation
-  # dconf.settings = {
-  #   "org/virt-manager/virt-manager/connections" = {
-  #     autoconnect = [ "qemu:///system" ];
-  #     uris = [ "qemu:///system" ];
-  #   };
-  # };
 }
