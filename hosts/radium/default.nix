@@ -20,5 +20,7 @@
     hostName = host; # Define your hostname.
   };
 
+  environment.systemPackages = with pkgs; [ wsl-vpnkit ];
+
   system.stateVersion = "23.11"; # Did you read the comment?
 }
