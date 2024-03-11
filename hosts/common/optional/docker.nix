@@ -4,4 +4,5 @@
     enable = true;
     setSocketVariable = true;
   };
+  virtualisation.containerd.enable = true;
 }

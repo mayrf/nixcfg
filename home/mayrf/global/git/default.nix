@@ -12,6 +12,7 @@
         commit = {
           template = "${config.xdg.configHome}/git/commitTemplate.txt";
         };
+        credential = { helper = "store"; };
       };
 
     };

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, nixos-wsl, ... }:
+{ lib, ... }:
 
 {
 
@@ -9,15 +9,9 @@
   # NixOS-WSL specific options are documented on the NixOS-WSL repository:
   # https://github.com/nix-community/NixOS-WSL
 
-  imports = [
-    # include NixOS-WSL modules
-    <nixos-wsl/modules>
-    # nixos-wsl.nixosModules
-  ];
-  # imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
-
   wsl.enable = true;
   wsl.defaultUser = "mayrf";
+  wsl.docker-desktop.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

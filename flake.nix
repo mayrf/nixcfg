@@ -47,7 +47,8 @@
 
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, darwin, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, darwin, nixos-wsl
+    , ... }@inputs:
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
@@ -98,6 +99,7 @@
           modules = [
             ./hosts/${host}
             home-manager.nixosModules.home-manager
+            nixos-wsl.nixosModules.wsl
             {
               home-manager.extraSpecialArgs = {
                 inherit inputs outputs user host stable;

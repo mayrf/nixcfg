@@ -40,6 +40,7 @@
         size = 100000;
       };
       initExtra = ''
+        source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
         eval "$(direnv hook zsh)"
       '';
     };

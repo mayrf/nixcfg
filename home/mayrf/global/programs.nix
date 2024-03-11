@@ -11,6 +11,7 @@
   };
 
   home.packages = with pkgs; [
+    nerdctl
     kubectl
     kind
     fzf
