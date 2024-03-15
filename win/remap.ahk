@@ -8,8 +8,8 @@ CapsLock::
     While GetKeyState("CapsLock", "P")
         Sleep, 10
 
-    ; If CapsLock was held for less than 300 milliseconds, send Esc
-    If (A_TickCount - start < 300)
+    ; If CapsLock was held for less than 200 milliseconds, send Esc
+    If (A_TickCount - start < 200)
         Send {Esc}
 return
 
