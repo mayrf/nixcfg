@@ -46,8 +46,6 @@
     docker-compose
     dbeaver
     texlab
-    nodePackages_latest.bash-language-server
-    emmet-ls
 
     texlive.combined.scheme-full
     zola

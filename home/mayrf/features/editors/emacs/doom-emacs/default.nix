@@ -53,6 +53,9 @@ in {
     shellcheck
 
     html-tidy
+    vscode-langservers-extracted
+    nodePackages_latest.bash-language-server
+
     stylelint
 
     dockfmt
