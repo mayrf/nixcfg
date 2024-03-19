@@ -1,4 +1,3 @@
-
 # See flake.lock for the specific Git revisions that our flake inputs are
 # pinned to.
 {
@@ -26,13 +25,13 @@
         # Cross-platform development environment (including CI)
         devShells.default = pkgs.mkShell {
           # Packages available in the environment
-          buildInputs = with pkgs; [
+          buildInputs = with pkgs;
+            [
 
-          ];
+            ];
           shellHook = ''
             Welcome the your nix-dev-shell!
           '';
         };
       });
-}
 }

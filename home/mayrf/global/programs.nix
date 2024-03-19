@@ -43,7 +43,6 @@
     hexchat
 
     # Dev tools
-    docker-compose
     dbeaver
     texlab
 

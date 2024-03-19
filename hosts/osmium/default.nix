@@ -9,7 +9,6 @@
     azure-cli
     nixfmt
     # colima
-    docker
     ollama
     rectangle
     docker

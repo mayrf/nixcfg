@@ -1,7 +1,6 @@
 { config, lib, pkgs, host, ... }:
 
 {
-
   home.shellAliases = {
     "rbs" = "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
     "nfu" = "nix flake update /home/mayrf/.config/nixcfg --commit-lock-file";
@@ -16,6 +15,7 @@
     "rlwb" = "pkill -USR2 waybar";
     "fcd" = ''cd "$(find -type d | fzf)"'';
     "open" = ''xdg-open "$(find -type f | fzf)"'';
+    "ec" = "ec_func";
   };
   home.sessionVariables = { FONTS = "$HOME/.local/share/fonts"; };
   programs = {
@@ -42,6 +42,12 @@
       initExtra = ''
         source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
         eval "$(direnv hook zsh)"
+
+        # functions
+        ec_func() {
+            nohup emacsclient -c "$1" >/dev/null 2>&1 &
+        }
+
       '';
     };
   };
