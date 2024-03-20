@@ -56,7 +56,6 @@
     riseup-vpn
     libsForQt5.qt5.qtwayland
     stable.rustdesk
-    etcher
     libsForQt5.polkit-kde-agent
     woeusb-ng
   ];

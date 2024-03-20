@@ -1,4 +1,4 @@
-{ lib, config, ... }: {
+{ lib, config, pkgs, ... }: {
   imports = [ ../global/programs.nix ];
 
   services = {
@@ -8,7 +8,7 @@
     };
     gpg-agent = {
       enable = true;
-      pinentryFlavor = "qt";
+      pinentryPackage = pkgs.pinentry-qt;
     };
   };
 

@@ -37,6 +37,7 @@
     # pandoc -f markdown -t org -o ${md%.*}.org ${md};
     pandoc
     sparrow
+    statix
 
     # Social
     signal-desktop
