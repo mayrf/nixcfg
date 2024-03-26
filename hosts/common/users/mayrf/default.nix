@@ -5,6 +5,12 @@ let
 in {
   programs.zsh.enable = true;
   programs.steam.enable = true;
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs;
+    [
+      # Add any missing dynamic libraries for unpackaged
+      # programs here, NOT in environment.systemPackages
+    ];
 
   users.mutableUsers = true;
   users.users.${user} = {
