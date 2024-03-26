@@ -75,6 +75,12 @@ in {
     # nix
     nil
 
+    # typescript
+    nodePackages_latest.eslint
+    nodePackages_latest.prettier
+    nodePackages_latest.prettier
+    nodePackages_latest.typescript-language-server
+
     # language tools
     languagetool
 
@@ -95,7 +101,6 @@ in {
     python311Packages.yapf
     python311Packages.pylama
     nodePackages_latest.vscode-css-languageserver-bin
-    nodePackages_latest.prettier
 
     # for markdown-preview-eww
     rubyPackages.redcarpet
