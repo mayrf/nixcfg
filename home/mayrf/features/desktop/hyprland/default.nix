@@ -58,8 +58,8 @@
         gaps_out = 1;
         border_size = 1;
         cursor_inactive_timeout = 10;
-        "col.active_border" = "0xff${config.colorscheme.colors.base0C}";
-        "col.inactive_border" = "0xff${config.colorscheme.colors.base02}";
+        "col.active_border" = "0xff${config.colorscheme.palette.base0C}";
+        "col.inactive_border" = "0xff${config.colorscheme.palette.base02}";
       };
       misc = { focus_on_activate = true; };
       input = {

@@ -27,12 +27,7 @@ let
 
   # Function to simplify making waybar outputs
   jsonOutput = name:
-    { pre ? ""
-    , text ? ""
-    , tooltip ? ""
-    , alt ? ""
-    , class ? ""
-    , percentage ? ""
+    { pre ? "", text ? "", tooltip ? "", alt ? "", class ? "", percentage ? ""
     }:
     "${
       pkgs.writeShellScriptBin "waybar-${name}" ''
@@ -47,8 +42,7 @@ let
           '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
       ''
     }/bin/waybar-${name}";
-in
-{
+in {
   programs.waybar = {
     enable = true;
     package = pkgs.waybar.overrideAttrs (oa: {
@@ -57,16 +51,12 @@ in
     systemd.enable = true;
     settings = {
 
-
       primary = {
         layer = "bottom";
         position = "bottom";
         output = builtins.map (m: m.name)
           (builtins.filter (m: !m.noBar) config.monitors);
-        modules-left = [
-          "custom/menu"
-          "hyprland/workspaces"
-        ];
+        modules-left = [ "custom/menu" "hyprland/workspaces" ];
         modules-center = [
           "cpu"
           "custom/separator"
@@ -97,9 +87,9 @@ in
             "(.*) — LibreWolf" = "LibreWolf  - $1";
             "LibreWolf" = "LibreWolf ";
             "(.*) — Mozilla Firefox" = "󰈹  $1";
-            "Mozilla Firefox"= "󰈹";
+            "Mozilla Firefox" = "󰈹";
             "(.*) - Mozilla Thunderbird" = "  $1";
-            "vim (.*)"= "  $1";
+            "vim (.*)" = "  $1";
           };
         };
         clock = {
@@ -165,27 +155,25 @@ in
         "custom/tailscale-ping" = {
           interval = 2;
           return-type = "json";
-          exec =
-            let
-              inherit (builtins) concatStringsSep attrNames;
-              hosts = attrNames outputs.nixosConfigurations;
-              homeMachine = "merope";
-              remoteMachine = "alcyone";
-            in
-            jsonOutput "tailscale-ping" {
-              # Build variables for each host
-              pre = ''
-                set -o pipefail
-                ${concatStringsSep "\n" (map (host: ''
-                  ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
-                '') hosts)}
-              '';
-              # Access a remote machine's and a home machine's ping
-              text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
-              # Show pings from all machines
-              tooltip = concatStringsSep "\n"
-                (map (host: "${host}: $ping_${host}") hosts);
-            };
+          exec = let
+            inherit (builtins) concatStringsSep attrNames;
+            hosts = attrNames outputs.nixosConfigurations;
+            homeMachine = "merope";
+            remoteMachine = "alcyone";
+          in jsonOutput "tailscale-ping" {
+            # Build variables for each host
+            pre = ''
+              set -o pipefail
+              ${concatStringsSep "\n" (map (host: ''
+                ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
+              '') hosts)}
+            '';
+            # Access a remote machine's and a home machine's ping
+            text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
+            # Show pings from all machines
+            tooltip = concatStringsSep "\n"
+              (map (host: "${host}: $ping_${host}") hosts);
+          };
           format = "{}";
           on-click = "";
         };
@@ -322,51 +310,49 @@ in
     # x y -> vertical, horizontal
     # x y z -> top, horizontal, bottom
     # w x y z -> top, right, bottom, left
-    style =
-      let
-        inherit (config.colorscheme) colors;
-        # css
-      in
-      ''
-        * {
-            /* border: none; */
-            border-radius: 0;
-            /* font-family: JetBrainsMono Nerd Font Mono; */
+    style = let
+      inherit (config.colorscheme) palette;
+      # css
+    in ''
+      * {
+          /* border: none; */
+          border-radius: 0;
+          /* font-family: JetBrainsMono Nerd Font Mono; */
 
-            font-family: Roboto, ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
-            font-size: 13px;
-            min-height: 0;
-            padding: 0 7px;
-        }
+          font-family: Roboto, ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
+          font-size: 13px;
+          min-height: 0;
+          padding: 0 7px;
+      }
 
-        #custom-separator {
-          padding: 0 0;
-          color: #000000;
-        }
+      #custom-separator {
+        padding: 0 0;
+        color: #000000;
+      }
 
-        #workspaces button {
-            padding: 0 5px;
-            background-color: transparent;
-            color: #ffffff;
-        }
+      #workspaces button {
+          padding: 0 5px;
+          background-color: transparent;
+          color: #ffffff;
+      }
 
-        #workspaces button:hover {
-            background: rgba(0, 0, 0, 0.4);
-        }
+      #workspaces button:hover {
+          background: rgba(0, 0, 0, 0.4);
+      }
 
-        #workspaces button.active {
-            background-color: #64727D;
-            /* box-shadow: inset 0 -3px #ffffff; */
-        }
+      #workspaces button.active {
+          background-color: #64727D;
+          /* box-shadow: inset 0 -3px #ffffff; */
+      }
 
-        #workspaces button.urgent {
-            background-color: #eb4d4b;
-        }
+      #workspaces button.urgent {
+          background-color: #eb4d4b;
+      }
 
-        #tray {
-          color: #${colors.base05};
-        }
+      #tray {
+        color: #${palette.base05};
+      }
 
-      '';
+    '';
   };
 }
