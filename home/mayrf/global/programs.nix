@@ -12,10 +12,9 @@
 
   home.packages = with pkgs; [
     nerdctl
-    kubectl
-    kind
     fzf
     file
+    nodejs
 
     bisq-desktop
     # lutris

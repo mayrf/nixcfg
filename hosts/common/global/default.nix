@@ -7,6 +7,8 @@
   time.timeZone = "Europe/Berlin";
   services.udev.packages = [ pkgs.yubikey-personalization ];
 
+  services.vscode-server.enable = true;
+  services.vscode-server.enableFHS = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;

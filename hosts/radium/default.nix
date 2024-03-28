@@ -22,5 +22,17 @@
 
   environment.systemPackages = with pkgs; [ wsl-vpnkit ];
 
+  systemd.services.wsl-vpnkit = {
+    enable = true;
+    description = "wsl-vpnkit";
+    after = [ "network.target" ];
+
+    serviceConfig = {
+      ExecStart = "${pkgs.wsl-vpnkit}/bin/wsl-vpnkit";
+      Restart = "always";
+      KillMode = "mixed";
+    };
+  };
+
   system.stateVersion = "23.11"; # Did you read the comment?
 }

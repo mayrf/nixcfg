@@ -7,6 +7,7 @@
     ./features/lf
     ./features/terminal/kitty.nix
     ./features/editors/emacs/doom-emacs
+    ./features/editors/vscode.nix
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.atelier-sulphurpool;
