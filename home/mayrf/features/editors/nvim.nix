@@ -8,6 +8,8 @@
       extraConfig = ''
         set clipboard+=unnamedplus
         set number relativenumber
+        set shiftwidth=4
+        set shiftwidth=4
       '';
     };
   };

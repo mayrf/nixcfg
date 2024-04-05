@@ -44,7 +44,8 @@ in {
     emacsPackages.pdf-tools
     git
     (ripgrep.override { withPCRE2 = true; })
-    gnutls # for TLS connectivity    coreutils
+    gnutls # for TLS connectivity
+    coreutils
     fd # faster projectile indexing
     imagemagick # for image-dired    sqlite
     gcc
