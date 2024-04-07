@@ -57,7 +57,7 @@
     system-config-printer
     riseup-vpn
     libsForQt5.qt5.qtwayland
-    stable.rustdesk
+    # stable.rustdesk
     libsForQt5.polkit-kde-agent
     woeusb-ng
   ];

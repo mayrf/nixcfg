@@ -21,8 +21,11 @@
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
-       (company           ; the ultimate code completion backend
-        +childframe)
+       ;; (company           ; the ultimate code completion backend
+       ;;  +childframe)
+       (corfu
+        +icons
+        +orderless)
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;;ivy               ; a search engine for love and life
@@ -91,6 +94,7 @@
        :tools
        ;;ansible
        biblio            ; Writes a PhD for you (citation needed)
+       ;;collab            ; buffers with friends
        (debugger + lsp)          ; FIXME stepping through code, to help you add bugs
        direnv
        docker
