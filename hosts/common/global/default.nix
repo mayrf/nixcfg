@@ -52,7 +52,7 @@
     bluetuith
     vim
     wireguard-tools
-    nixfmt
+    nixfmt-classic
     wget
     system-config-printer
     riseup-vpn

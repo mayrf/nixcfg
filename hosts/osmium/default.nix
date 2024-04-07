@@ -7,7 +7,7 @@
     jetbrains.idea-community
     dbeaver
     azure-cli
-    nixfmt
+    nixfmt-classic
     # colima
     ollama
     rectangle
