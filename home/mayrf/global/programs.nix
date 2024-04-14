@@ -42,6 +42,7 @@
     # Social
     signal-desktop
     hexchat
+    logseq
 
     # Dev tools
     dbeaver

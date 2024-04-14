@@ -298,10 +298,15 @@ ln -s ~/.local/share/Trash .
 
 * Org
 ** Appearance
+*** Org-modern
 #+begin_src emacs-lisp :tangle yes
-(setq
-    org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
-)
+(add-hook 'org-mode-hook #'org-modern-mode)
+(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+#+end_src
+*** Org-Superstar-headline
+#+begin_src emacs-lisp :tangle yes
+;; (setq
+;;     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
 #+end_src
 ** Automatic saving after refilling
 
