@@ -105,6 +105,7 @@ in {
 
     # for markdown-preview-eww
     rubyPackages.redcarpet
+    yaml-language-server
 
   ];
 

@@ -196,7 +196,9 @@
        (web               ; the tubes
         +lsp
         +tree-sitter)
-       yaml              ; JSON, but readable
+       (yaml
+        +tree-sitter
+        +lsp)              ; JSON, but readable
        ;;zig               ; C, but simpler
 
        :email

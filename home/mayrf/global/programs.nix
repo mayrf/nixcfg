@@ -16,6 +16,8 @@
     fzf
     file
     nodejs
+    kubectl
+    argocd
 
     bisq-desktop
     # lutris

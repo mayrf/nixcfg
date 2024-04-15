@@ -16,6 +16,7 @@
     "fcd" = ''cd "$(find -type d | fzf)"'';
     "open" = ''xdg-open "$(find -type f | fzf)"'';
     "ec" = "ec_func";
+    "k" = "kubectl";
   };
   home.sessionVariables = { FONTS = "$HOME/.local/share/fonts"; };
   programs = {
