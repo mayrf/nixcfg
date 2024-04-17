@@ -63,6 +63,7 @@ in {
     html-tidy
     vscode-langservers-extracted
     nodePackages_latest.bash-language-server
+    vimPlugins.copilot-vim
 
     stylelint
     dockfmt

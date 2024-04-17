@@ -96,6 +96,15 @@
 ;;               (tdr/fix-centaur-tabs))
 ;; )
 
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
 (setq company-idle-delay 0.1)
 (setq company-box-doc-delay 0.2)
 (setq company-box-doc-no-wrap t)
