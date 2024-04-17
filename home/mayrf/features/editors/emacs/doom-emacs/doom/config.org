@@ -73,10 +73,10 @@ Enable remote formatting
 
 #+begin_src emacs-lisp :tangle yes
 
-;; git reset --soft HEAD~1
+ ; git reset --soft HEAD~1
 (require 'magit)
 
-(defun ar/magit-soft-reset-head~1 ()
+(defun magit-user/magit-soft-reset-head~1 ()
   "Soft reset current git repo to HEAD~1."
   (interactive)
   (magit-reset-soft "HEAD~1"))
@@ -334,7 +334,7 @@ Fortunately, a small change in the code will save the files automatically.
 First, you need to get the files you want to save with their fullpath.
 Replace the previous definition of =org-agenda-files= with the following:
 
-#+begin_src lisp
+#+begin_src emacs-lisp :tangle yes
 (setq org-agenda-files
       (mapcar 'file-truename
 	      (file-expand-wildcards "~/org/*.org")))
@@ -342,7 +342,7 @@ Replace the previous definition of =org-agenda-files= with the following:
 
 Now, we create a new function to save those files, using the model of the =org-save-all-org-buffers= function and finally we add it after the =org-refile= action:
 
-#+begin_src lisp
+#+begin_src emacs-lisp :tangle yes
 ;; Save the corresponding buffers
 (defun gtd-save-org-buffers ()
   "Save `org-agenda-files' buffers without user confirmation.

@@ -21,8 +21,10 @@ in {
 
   home.activation = {
     doomEmacsActivationAction = ''
+
       EMACS_DIR="${config.xdg.configHome}/emacs"
       DOOM="${config.xdg.configHome}/doom"
+
       if [ ! -d "$EMACS_DIR" ] || [ -z "$(ls  "$EMACS_DIR")" ]; then
           rm -rf $EMACS_DIR
           ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
@@ -33,6 +35,11 @@ in {
         # yes | $EMACS_DIR/bin/doom install
       fi
     '';
+  };
+  home.sessionVariables = {
+    EMACS_DIR = "${config.xdg.configHome}/emacs";
+    DOOM = "${config.xdg.configHome}/doom";
+    DOOMDIR = "${config.xdg.configHome}/doom";
   };
   # fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
 
@@ -58,7 +65,6 @@ in {
     nodePackages_latest.bash-language-server
 
     stylelint
-
     dockfmt
 
     (pkgs.nerdfonts.override {
@@ -94,7 +100,6 @@ in {
     hunspellDicts.es_ES
     hunspellDicts.en_GB-ize
 
-    #python
     poetry
     nodePackages_latest.pyright
     python311Packages.isort

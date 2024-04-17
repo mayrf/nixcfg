@@ -18,6 +18,7 @@
     nodejs
     kubectl
     argocd
+    kubernetes-helm
 
     bisq-desktop
     # lutris

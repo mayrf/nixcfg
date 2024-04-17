@@ -41,10 +41,10 @@
 
 (setq evil-jumps-max-length 1000)
 
-;; git reset --soft HEAD~1
+; git reset --soft HEAD~1
 (require 'magit)
 
-(defun ar/magit-soft-reset-head~1 ()
+(defun magit-user/magit-soft-reset-head~1 ()
   "Soft reset current git repo to HEAD~1."
   (interactive)
   (magit-reset-soft "HEAD~1"))
@@ -168,6 +168,22 @@
 
 (setq delete-by-moving-to-trash t
       trash-directory "~/.local/share/Trash/files/")
+
+(defun my/org-table-tab ()
+  "Use `org-cycle' if inside an Org table, otherwise use original Tab functionality."
+  (interactive)
+  (if (org-at-table-p)
+      (org-cycle)
+    (if (bound-and-true-p company-mode)
+        (company-indent-or-complete-common)
+      (indent-for-tab-command))))
+
+(with-eval-after-load 'org
+  (with-eval-after-load 'evil
+    (evil-define-key 'insert org-mode-map
+      (kbd "TAB") 'my/org-table-tab)
+    (evil-define-key 'insert org-mode-map
+      (kbd "<tab>") 'my/org-table-tab)))
 
 (add-hook 'org-mode-hook #'org-modern-mode)
 (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
