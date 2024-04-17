@@ -297,6 +297,24 @@ ln -s ~/.local/share/Trash .
 #+end_example
 
 * Org
+** Bind tab inside org-table
+#+begin_src emacs-lisp :tangle yes
+(defun my/org-table-tab ()
+  "Use `org-cycle' if inside an Org table, otherwise use original Tab functionality."
+  (interactive)
+  (if (org-at-table-p)
+      (org-cycle)
+    (if (bound-and-true-p company-mode)
+        (company-indent-or-complete-common)
+      (indent-for-tab-command))))
+
+(with-eval-after-load 'org
+  (with-eval-after-load 'evil
+    (evil-define-key 'insert org-mode-map
+      (kbd "TAB") 'my/org-table-tab)
+    (evil-define-key 'insert org-mode-map
+      (kbd "<tab>") 'my/org-table-tab)))
+#+end_src
 ** Appearance
 *** Org-modern
 #+begin_src emacs-lisp :tangle yes
