@@ -15,8 +15,8 @@
 (package! markdown-preview-eww)
 (package! org-modern)
 (package! org-super-agenda)
-(package! copilot
-  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+;; (package! copilot
+;;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 
 ;; org roam ui
 ;; https://github.com/org-roam/org-roam-ui
