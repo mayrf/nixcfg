@@ -11,6 +11,8 @@
   };
 
   home.packages = with pkgs; [
+    # (stable.ollama.override { acceleration = "rocm"; })
+    oterm
     tmux
     nerdctl
     fzf
@@ -24,7 +26,6 @@
     # lutris
     # Cli tools
     gparted
-    ollama
     # steam
     img2pdf
     tldr

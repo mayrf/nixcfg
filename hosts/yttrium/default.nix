@@ -1,4 +1,4 @@
-{ config, pkgs, user, host, ... }:
+{ config, pkgs, user, host, stable, ... }:
 
 {
   imports = [
@@ -16,6 +16,13 @@
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
+  };
+
+  services.ollama = {
+    environmentVariables = { HSA_OVERRIDE_GFX_VERSION = "10.3.0"; };
+    package = stable.ollama;
+    enable = true;
+    acceleration = "rocm";
   };
 
   networking = {
