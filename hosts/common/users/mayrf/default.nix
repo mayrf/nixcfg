@@ -16,7 +16,7 @@ in {
   users.users.${user} = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "video" "audio" "plugdev" ]
+    extraGroups = [ "wheel" "video" "audio" "plugdev" "lp" ]
       ++ ifTheyExist [ "network" "docker" "libvirtd" "deluge" ];
 
     # passwordFile = config.sops.secrets.mayrf_password.path;

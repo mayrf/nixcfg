@@ -6,13 +6,14 @@
     libsForQt5.qt5.qtgraphicaleffects
   ];
 
-  programs.hyprland.enable = true; # only here to be usable as default session. Configuration in Home Manager
-  services.xserver = {
-    enable = true;
+  programs.hyprland.enable =
+    true; # only here to be usable as default session. Configuration in Home Manager
+  services = {
     displayManager = {
+      enable = true;
       defaultSession = "hyprland";
-      sddm.enable = true;
-      sddm.theme = "${ import ./../../../pkgs/sddm-theme.nix { inherit pkgs; }}";
+      sddm.wayland.enable = true;
+      sddm.theme = "${import ./../../../pkgs/sddm-theme.nix { inherit pkgs; }}";
     };
   };
 }

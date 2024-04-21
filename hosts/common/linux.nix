@@ -23,7 +23,8 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  services.printing.drivers = [ pkgs.gutenprint ];
+  services.printing.drivers =
+    [ pkgs.gutenprint pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper ];
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.settings = {
