@@ -12,6 +12,7 @@
 
   home.packages = with pkgs; [
     # (stable.ollama.override { acceleration = "rocm"; })
+    kcl-cli
     oterm
     tmux
     nerdctl
