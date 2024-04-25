@@ -1,4 +1,4 @@
-{ config, pkgs, user, host, stable, ... }:
+{ pkgs, host, pkgs-master, ... }:
 
 {
   imports = [
@@ -20,7 +20,7 @@
 
   services.ollama = {
     environmentVariables = { HSA_OVERRIDE_GFX_VERSION = "10.3.0"; };
-    package = stable.ollama;
+    package = pkgs-master.ollama;
     enable = true;
     acceleration = "rocm";
   };

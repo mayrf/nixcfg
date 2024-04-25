@@ -56,29 +56,37 @@ in {
     fd # faster projectile indexing
     imagemagick # for image-dired    sqlite
     gcc
+    zstd # for undo-fu-session/undo-tree compression
 
+    # shell mode
     shfmt
     shellcheck
+    nodePackages_latest.bash-language-server
 
+    # web mode
     html-tidy
     vscode-langservers-extracted
-    nodePackages_latest.bash-language-server
-    vimPlugins.copilot-vim
 
-    stylelint
+    # docker mode
     dockfmt
+
+    # :tools editorconfig
+    editorconfig-core-c # per-project style config
+
+    #misc/unknown
+    stylelint
+    vimPlugins.copilot-vim
 
     (pkgs.nerdfonts.override {
       fonts = [ "NerdFontsSymbolsOnly" "JetBrainsMono" "iA-Writer" ];
     })
 
-    zstd # for undo-fu-session/undo-tree compression
-
-    # :tools editorconfig
-    editorconfig-core-c # per-project style config
-
     # :markdown preview
     python311Packages.grip
+
+    # for markdown-preview-eww
+    rubyPackages.redcarpet
+    yaml-language-server
 
     # nix
     nil
@@ -101,17 +109,13 @@ in {
     hunspellDicts.es_ES
     hunspellDicts.en_GB-ize
 
+    # python
     poetry
-    nodePackages_latest.pyright
     python311Packages.isort
     python311Packages.pylint
     python311Packages.yapf
     python311Packages.pylama
     nodePackages_latest.vscode-css-languageserver-bin
-
-    # for markdown-preview-eww
-    rubyPackages.redcarpet
-    yaml-language-server
 
   ];
 

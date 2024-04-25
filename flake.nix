@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
@@ -48,8 +49,8 @@
 
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, darwin, nixos-wsl
-    , vscode-server, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, nixpkgs-master, home-manager
+    , darwin, nixos-wsl, vscode-server, ... }@inputs:
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
@@ -92,6 +93,11 @@
           #   config.allowUnfree = true; # Allow Proprietary Software
           # };
 
+          pkgs-master = import nixpkgs-master {
+            system = "x86_64-linux"; # System Architecture
+            config.allowUnfree = true;
+          };
+
           stable = import nixpkgs-stable {
             system = "x86_64-linux"; # System Architecture
             config.allowUnfree = true;
@@ -104,14 +110,16 @@
             vscode-server.nixosModules.default
             {
               home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host stable;
+                inherit inputs outputs user host stable pkgs-master;
               };
               home-manager.users.${user} = {
                 imports = [ ./home/mayrf/${host}.nix ];
               };
             }
           ];
-          specialArgs = { inherit inputs outputs user host stable; };
+          specialArgs = {
+            inherit inputs outputs user host stable pkgs-master;
+          };
         };
       }) configs);
 
