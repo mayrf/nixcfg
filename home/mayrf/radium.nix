@@ -6,7 +6,7 @@
     ./linux
     ./features/lf
     ./features/terminal/kitty.nix
-    ./features/editors/emacs/doom-emacs
+    ./features/editors/emacs
     ./features/editors/vscode.nix
   ];
 

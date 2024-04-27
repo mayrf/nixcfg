@@ -9,7 +9,7 @@
   };
   imports = [
     ./global
-    # ./features/editors/emacs/doom-emacs
+    # ./features/editors/emacs
     # ./features/lf
     # ./features/terminal/alacritty.nix
     # ./features/terminal/foot.nix

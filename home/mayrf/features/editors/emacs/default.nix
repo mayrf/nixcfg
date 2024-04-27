@@ -21,17 +21,26 @@ in {
 
   home.activation = {
     doomEmacsActivationAction = ''
+      check_dir() {
+          local dir="$1"
+          [ ! -d "$dir" ] || [ -z "$(ls "$dir")" ]
+      }
 
+      VANILLA_EMACS_DIR="${config.xdg.configHome}/emacs-vanilla"
       EMACS_DIR="${config.xdg.configHome}/emacs"
       DOOM="${config.xdg.configHome}/doom"
 
-      if [ ! -d "$EMACS_DIR" ] || [ -z "$(ls  "$EMACS_DIR")" ]; then
+      if check_dir "$EMACS_DIR"; then
           rm -rf $EMACS_DIR
           ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
       fi
 
+      if check_dir "$VANILLA_EMACS_DIR"; then
+        ln -s ${config.xdg.configHome}/nixcfg/home/mayrf/features/editors/emacs/vanilla-emacs $VANILLA_EMACS_DIR
+      fi
+
       if [ ! -e "$DOOM" ]; then
-        ln -s ${config.xdg.configHome}/nixcfg/home/mayrf/features/editors/emacs/doom-emacs/doom $DOOM
+        ln -s ${config.xdg.configHome}/nixcfg/home/mayrf/features/editors/emacs/doom $DOOM
         # yes | $EMACS_DIR/bin/doom install
       fi
     '';
@@ -121,7 +130,11 @@ in {
 
   home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
 
-  home.shellAliases = { "emacs" = "${emacs}/bin/emacs"; };
+  home.shellAliases = {
+    "emacs" = "${emacs}/bin/emacs";
+    "vanilla-emacs" =
+      "${emacs}/bin/emacs --init-directory ${config.xdg.configHome}/emacs-vanilla &";
+  };
   # e()     { pgrep emacs && emacsclient -n "$@" || emacs -nw "$@" }
   # ediff() { emacs -nw --eval "(ediff-files \"$1\" \"$2\")"; }
   # eman()  { emacs -nw --eval "(switch-to-buffer (man \"$1\"))"; }

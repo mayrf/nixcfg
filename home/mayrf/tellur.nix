@@ -10,7 +10,7 @@
     ./features/terminal/foot.nix
     ./features/terminal/kitty.nix
     ./features/desktop/hyprland
-    ./features/editors/emacs/doom-emacs
+    ./features/editors/emacs
     ./features/editors/vscode.nix
     ./features/postman.nix
     ./features/editors/idea.nix
