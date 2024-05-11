@@ -69,6 +69,7 @@
     sxiv
     urbit
     minitube
+    ardour
 
     # Productivity
     nextcloud-client
