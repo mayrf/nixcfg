@@ -126,6 +126,9 @@ in {
     python311Packages.pylama
     nodePackages_latest.vscode-css-languageserver-bin
 
+    #kcl
+    kcl-cli
+
   ];
 
   home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];

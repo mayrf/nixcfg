@@ -96,6 +96,8 @@
 ;;               (tdr/fix-centaur-tabs))
 ;; )
 
+;; (setq eglot-server-programs () )
+
 ;; accept completion from copilot and fallback to company
 ;;(use-package! copilot
 ;;  :hook (prog-mode . copilot-mode)

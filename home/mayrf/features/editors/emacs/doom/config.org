@@ -141,6 +141,10 @@ Enable remote formatting
 ;; )
 #+end_src
 * lsp
+** Eglot
+#+begin_src emacs-lisp :tangle yes
+;; (setq eglot-server-programs () )
+#+end_src
 ** Copilot
 #+begin_src emacs-lisp :tangle yes
 ;; accept completion from copilot and fallback to company
