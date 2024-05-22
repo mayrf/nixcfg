@@ -11,6 +11,7 @@
     ../common/optional/pipewire.nix
 
   ];
+  services.vscode-server.enable = true;
 
   #boot = {
   #  kernelPackages = pkgs.linuxKernel.packages.linux_zen;

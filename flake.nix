@@ -45,8 +45,9 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
 
+    # https://github.com/nix-community/nixos-vscode-server
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
   outputs = { self, nixpkgs, nixpkgs-stable, nixpkgs-master, home-manager
@@ -107,13 +108,17 @@
             ./hosts/${host}
             home-manager.nixosModules.home-manager
             nixos-wsl.nixosModules.wsl
+            # vscode-server.nixosModules.home.vscode-server.home.nix
             vscode-server.nixosModules.default
             {
               home-manager.extraSpecialArgs = {
                 inherit inputs outputs user host stable pkgs-master;
               };
               home-manager.users.${user} = {
-                imports = [ ./home/mayrf/${host}.nix ];
+                imports = [
+                  ./home/mayrf/${host}.nix
+                  vscode-server.homeModules.default
+                ];
               };
             }
           ];
