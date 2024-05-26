@@ -9,7 +9,6 @@
     azure-cli
     nixfmt-classic
     # colima
-    ollama
     rectangle
     docker
     docker-compose

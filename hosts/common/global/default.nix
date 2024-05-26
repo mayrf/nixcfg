@@ -1,4 +1,4 @@
-{ config, pkgs, stable, ... }: {
+{ config, pkgs, stable, catppuccin, ... }: {
   imports = [
     #   ./sops.nix
   ];
@@ -12,6 +12,10 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+  };
+  catppuccin = {
+    enable = true;
+    flavor = "macchiato"; # type: one of “latte”, “frappe”, “macchiato”, “mocha”
   };
 
   nixpkgs = {

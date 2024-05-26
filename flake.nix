@@ -45,13 +45,14 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin.url = "github:catppuccin/nix";
 
     # https://github.com/nix-community/nixos-vscode-server
     vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
   outputs = { self, nixpkgs, nixpkgs-stable, nixpkgs-master, home-manager
-    , darwin, nixos-wsl, vscode-server, ... }@inputs:
+    , darwin, nixos-wsl, vscode-server, catppuccin, ... }@inputs:
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
@@ -106,6 +107,7 @@
         in lib.nixosSystem {
           modules = [
             ./hosts/${host}
+            catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
             nixos-wsl.nixosModules.wsl
             # vscode-server.nixosModules.home.vscode-server.home.nix
@@ -118,6 +120,7 @@
                 imports = [
                   ./home/mayrf/${host}.nix
                   vscode-server.homeModules.default
+                  catppuccin.homeManagerModules.catppuccin
                 ];
               };
             }
