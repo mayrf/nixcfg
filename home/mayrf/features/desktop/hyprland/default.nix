@@ -57,7 +57,7 @@
         gaps_in = 1;
         gaps_out = 1;
         border_size = 1;
-        cursor_inactive_timeout = 10;
+        # cursor_inactive_timeout = 10;
         "col.active_border" = "0xff${config.colorscheme.palette.base0C}";
         "col.inactive_border" = "0xff${config.colorscheme.palette.base02}";
       };
