@@ -12,7 +12,7 @@
 
   home.packages = with pkgs; [
     # (stable.ollama.override { acceleration = "rocm"; })
-    # oterm
+    oterm
     tmux
     nerdctl
     fzf
@@ -49,7 +49,7 @@
     logseq
 
     # Dev tools
-    dbeaver
+    dbeaver-bin
     texlab
 
     texlive.combined.scheme-full
