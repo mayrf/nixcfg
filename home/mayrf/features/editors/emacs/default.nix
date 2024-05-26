@@ -120,6 +120,7 @@ in {
 
     # python
     poetry
+    ruff
     python311Packages.isort
     python311Packages.pylint
     python311Packages.yapf

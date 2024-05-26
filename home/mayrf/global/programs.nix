@@ -81,6 +81,10 @@
     protonmail-bridge
     armcord
     obsidian
+    krita
+    inkscape
+    reaper
+    ardour
 
     # Learning
     anki-bin
