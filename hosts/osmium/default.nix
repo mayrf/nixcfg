@@ -5,7 +5,6 @@
   environment.systemPackages = with pkgs; [
     vim
     jetbrains.idea-community
-    dbeaver
     azure-cli
     nixfmt-classic
     # colima

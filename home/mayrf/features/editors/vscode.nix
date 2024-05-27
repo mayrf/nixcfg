@@ -44,6 +44,7 @@
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };
       "[nix]" = { "editor.defaultFormatter" = "brettm12345.nixfmt-vscode"; };
+      "remote.SSH.useLocalServer" = false;
     };
   };
 }
