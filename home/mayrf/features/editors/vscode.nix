@@ -9,7 +9,7 @@
       vscodevim.vim
       ms-python.python
       esbenp.prettier-vscode
-      matklad.rust-analyzer
+      rust-lang.rust-analyzer
       eamodio.gitlens
       bbenoist.nix
       brettm12345.nixfmt-vscode

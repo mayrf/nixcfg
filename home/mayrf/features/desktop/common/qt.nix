@@ -1,8 +1,8 @@
-{ pkgs, config, stable, ... }: {
+{ pkgs, config, pkgs-stable, ... }: {
 
   home.packages = with pkgs; [
 
-    stable.qt6.qtwayland
+    pkgs-stable.qt6.qtwayland
     libsForQt5.qt5.qtwayland
   ];
   # qt = {
@@ -13,6 +13,6 @@
   #   # name of the qt theme
   #   style.name = "adwaita-dark";
 
-  #   style.package = stable.adwaita-qt;
+  #   style.package = pkgs-stable.adwaita-qt;
   # };
 }

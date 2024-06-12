@@ -1,4 +1,4 @@
-{ pkgs, stable, ... }: {
+{ pkgs, pkgs-stable, ... }: {
 
   programs = {
     zathura = {
@@ -73,9 +73,9 @@
     nextcloud-client
     onlyoffice-bin
     temurin-jre-bin-21
-    stable.libreoffice-fresh
+    pkgs-stable.libreoffice-fresh
     keepassxc
-    stable.calibre
+    pkgs-stable.calibre
     drawio
     thunderbird
     protonmail-bridge

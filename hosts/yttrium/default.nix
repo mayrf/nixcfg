@@ -1,4 +1,4 @@
-{ pkgs, host, pkgs-master, ... }:
+{ pkgs, host, pkgs-stable, ... }:
 
 {
   imports = [
@@ -21,7 +21,7 @@
   services.ollama = {
     environmentVariables = { HSA_OVERRIDE_GFX_VERSION = "10.3.0"; };
     # package = pkgs-master.ollama;
-    package = pkgs.ollama;
+    package = pkgs-stable.ollama;
     enable = true;
     acceleration = "rocm";
   };
@@ -31,5 +31,5 @@
   };
   hardware.ledger.enable = true;
 
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }

@@ -1,4 +1,4 @@
-{ config, pkgs, stable, catppuccin, ... }: {
+{ config, pkgs, pkgs-stable, catppuccin, ... }: {
   imports = [
     #   ./sops.nix
   ];
@@ -65,7 +65,7 @@
     system-config-printer
     riseup-vpn
     libsForQt5.qt5.qtwayland
-    # stable.rustdesk
+    # pkgs-stable.rustdesk
     libsForQt5.polkit-kde-agent
     woeusb-ng
   ];

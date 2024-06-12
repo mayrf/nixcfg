@@ -2,7 +2,7 @@
   description = "My personal NixOs configuration";
 
   inputs = {
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -100,7 +100,7 @@
             config.allowUnfree = true;
           };
 
-          stable = import nixpkgs-stable {
+          pkgs-stable = import nixpkgs-stable {
             system = "x86_64-linux"; # System Architecture
             config.allowUnfree = true;
           };
@@ -114,7 +114,7 @@
             vscode-server.nixosModules.default
             {
               home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host stable pkgs-master;
+                inherit inputs outputs user host pkgs-master pkgs-stable;
               };
               home-manager.users.${user} = {
                 imports = [
@@ -126,7 +126,7 @@
             }
           ];
           specialArgs = {
-            inherit inputs outputs user host stable pkgs-master;
+            inherit inputs outputs user host pkgs-master pkgs-stable;
           };
         };
       }) configs);
