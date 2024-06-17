@@ -70,7 +70,7 @@ in {
     # shell mode
     shfmt
     shellcheck
-    nodePackages_latest.bash-language-server
+    bash-language-server
 
     # web mode
     html-tidy
