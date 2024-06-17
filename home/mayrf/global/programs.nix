@@ -20,6 +20,7 @@
     kubectl
     argocd
     kubernetes-helm
+    sxiv
 
     bisq-desktop
     # lutris

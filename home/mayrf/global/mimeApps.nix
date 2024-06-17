@@ -23,6 +23,9 @@
     "application/msword" = "writer.desktop";
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
       "writer.desktop";
+    "image/jpeg" = "sxiv.desktop";
+    "image/png" = "sxiv.desktop";
+    "image/gif" = "sxiv.desktop";
   };
 }
 # ls -l /run/current-system/sw/share/applications
