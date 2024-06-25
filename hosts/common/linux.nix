@@ -5,7 +5,7 @@
 
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
       # Not sure if I need all these...

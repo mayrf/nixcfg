@@ -1,6 +1,6 @@
 { config, pkgs, pkgs-stable, catppuccin, ... }: {
 
-  imports = [ ./sops.nix ];
+  # imports = [ ./sops.nix ];
 
   security.sudo.wheelNeedsPassword = false;
   time.timeZone = "Europe/Berlin";

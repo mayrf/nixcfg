@@ -20,7 +20,6 @@
 
   services.ollama = {
     environmentVariables = { HSA_OVERRIDE_GFX_VERSION = "10.3.0"; };
-    # package = pkgs-master.ollama;
     package = pkgs-stable.ollama;
     enable = true;
     acceleration = "rocm";

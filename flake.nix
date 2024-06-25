@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
@@ -17,17 +16,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
-
     nix-colors.url = "github:misterio77/nix-colors";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -39,10 +31,14 @@
 
     # https://github.com/nix-community/nixos-vscode-server
     vscode-server.url = "github:nix-community/nixos-vscode-server";
+
+    # nix-secrets = {
+    #   url = "git+ssh://git@github.com:mayrf/sops.git?ref=main&shallow=1";
+    #   flake = false;
+    # };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, nixpkgs-master, home-manager
-    , darwin, nixos-wsl, vscode-server, catppuccin, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, ... }@inputs:
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
@@ -73,11 +69,6 @@
           user = "${config.user}";
           host = "${config.host}";
 
-          pkgs-master = import nixpkgs-master {
-            system = "x86_64-linux"; # System Architecture
-            config.allowUnfree = true;
-          };
-
           pkgs-stable = import nixpkgs-stable {
             system = "x86_64-linux"; # System Architecture
             config.allowUnfree = true;
@@ -86,26 +77,24 @@
           modules = [
             ./hosts/${host}
             inputs.sops-nix.nixosModules.sops
-            catppuccin.nixosModules.catppuccin
+            inputs.catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
-            nixos-wsl.nixosModules.wsl
-            vscode-server.nixosModules.default
+            inputs.nixos-wsl.nixosModules.wsl
+            inputs.vscode-server.nixosModules.default
             {
               home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host pkgs-master pkgs-stable;
+                inherit inputs outputs user host pkgs-stable;
               };
               home-manager.users.${user} = {
                 imports = [
                   ./home/mayrf/${host}.nix
-                  vscode-server.homeModules.default
-                  catppuccin.homeManagerModules.catppuccin
+                  inputs.vscode-server.homeModules.default
+                  inputs.catppuccin.homeManagerModules.catppuccin
                 ];
               };
             }
           ];
-          specialArgs = {
-            inherit inputs outputs user host pkgs-master pkgs-stable;
-          };
+          specialArgs = { inherit inputs outputs user host pkgs-stable; };
         };
       }) configs);
 
@@ -113,7 +102,7 @@
         user = "fmayr";
         host = "osmium";
       in {
-        ${host} = darwin.lib.darwinSystem {
+        ${host} = inputs.darwin.lib.darwinSystem {
           modules = [
             ./hosts/osmium
             home-manager.darwinModules.home-manager

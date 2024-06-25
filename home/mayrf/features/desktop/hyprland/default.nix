@@ -44,9 +44,7 @@
     cliphist
     hyprpicker
     brightnessctl
-    inputs.hyprland-contrib.packages.x86_64-linux.grimblast
     xorg.xhost
-    # hyprslurp
   ];
   wayland.windowManager.hyprland = {
     enable = true;
@@ -105,7 +103,7 @@
         # }}/bin/pass-wofi";
 
         grimblast =
-          "${inputs.hyprland-contrib.packages.x86_64-linux.grimblast}/bin/grimblast";
+          "${pkgs.grimblast}/bin/grimblast";
         pactl = "${pkgs.pulseaudio}/bin/pactl";
 
         gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";

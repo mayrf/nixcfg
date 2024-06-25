@@ -35,6 +35,7 @@ in {
           ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
       fi
 
+
       if check_dir "$VANILLA_EMACS_DIR"; then
         ln -s ${config.xdg.configHome}/nixcfg/home/mayrf/features/editors/emacs/vanilla-emacs $VANILLA_EMACS_DIR
       fi
