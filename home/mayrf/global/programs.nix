@@ -74,7 +74,7 @@
     nextcloud-client
     onlyoffice-bin
     temurin-jre-bin-21
-    pkgs-stable.libreoffice-fresh
+    pkgs-stable.libreoffice-qt6-fresh
     keepassxc
     pkgs-stable.calibre
     drawio

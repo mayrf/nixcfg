@@ -10,7 +10,7 @@
     ./features/editors/vscode.nix
   ];
 
-  colorscheme = inputs.nix-colors.colorschemes.atelier-sulphurpool;
+  colorscheme = inputs.nix-colors.colorschemes.woodland;
 
   wallpaper = outputs.wallpapers.aenami-northwind;
 }
