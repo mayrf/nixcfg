@@ -1,22 +1,20 @@
-{ inputs, lib, config, ... }:
-let
-  isEd25519 = k: k.type == "ed25519";
-  getKeyPath = k: k.path;
-  keys = builtins.filter isEd25519 config.services.openssh.hostKeys;
-in
+{ config, lib, pkgs, ... }:
+
 {
+  sops = {
+    defaultSopsFile = /home/mayrf/.config/nixcfg/sops/secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    validateSopsFiles = false;
 
-  imports = [
-    inputs.sops-nix.nixosModules.sops
-  ];
+    age = {
+      sshKeyPaths = [ "/home/mayrf/.ssh/id_ed25519" ];
+      keyFile = "/home/mayrf/.config/sops/age/keys.txt";
+      generateKey = true;
+    };
 
-  sops.defaultSopsFile = ../secrets/secrets.yaml;
-  # This will automatically import SSH keys as age keys
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  # This is using an age key that is expected to already be in the filesystem
-  # sops.age.keyFile = "${config.xdg.configHome}/sops/age/key.txt";
-  sops.age.keyFile = "/home/mayrf/sops/age/key.txt";
-  # This will generate a new key if the key specified above does not exist
-  sops.age.generateKey = true;
-  # This is the actual specification of the secrets.
+    secrets."wireguard_x220/public_key" = { };
+    secrets."wireguard_x220/private_key" = { };
+    secrets."wireguard_x220/endpoint" = { };
+
+  };
 }

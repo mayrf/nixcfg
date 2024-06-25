@@ -31,16 +31,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-      # inputs.flake-utils.follows = "flake-utils";
-    };
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -58,16 +48,9 @@
       lib = nixpkgs.lib // home-manager.lib;
     in {
       inherit lib;
-      nixpkgs.overlays = [
-        (import (builtins.fetchTarball {
-          url =
-            "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-        }))
-      ];
 
       homeManagerModules = import ./modules/home-manager;
       templates = import ./templates;
-      overlays = import ./overlays { inherit inputs outputs; };
       wallpapers = import ./home/mayrf/wallpapers;
       nixosConfigurations = let
         configs = [
@@ -90,11 +73,6 @@
           user = "${config.user}";
           host = "${config.host}";
 
-          # pkgs = import nixpkgs {
-          #   # inherit system;
-          #   config.allowUnfree = true; # Allow Proprietary Software
-          # };
-
           pkgs-master = import nixpkgs-master {
             system = "x86_64-linux"; # System Architecture
             config.allowUnfree = true;
@@ -107,10 +85,10 @@
         in lib.nixosSystem {
           modules = [
             ./hosts/${host}
+            inputs.sops-nix.nixosModules.sops
             catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
             nixos-wsl.nixosModules.wsl
-            # vscode-server.nixosModules.home.vscode-server.home.nix
             vscode-server.nixosModules.default
             {
               home-manager.extraSpecialArgs = {
@@ -145,7 +123,6 @@
               };
               home-manager.users.fmayr = {
                 imports = [ ./home/mayrf/osmium.nix ];
-                # home.stateVersion = "23.11";
               };
             }
           ];

@@ -94,6 +94,8 @@
     vimgolf
 
     #Utils
+    just
+    age
     gnome.nautilus
     gnome.sushi # A quick previewer for Nautilus
     gnupg
