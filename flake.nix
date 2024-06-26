@@ -27,7 +27,7 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    catppuccin.url = "github:catppuccin/nix";
+    stylix.url = "github:danth/stylix";
 
     # https://github.com/nix-community/nixos-vscode-server
     vscode-server.url = "github:nix-community/nixos-vscode-server";
@@ -77,10 +77,10 @@
           modules = [
             ./hosts/${host}
             inputs.sops-nix.nixosModules.sops
-            inputs.catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
             inputs.nixos-wsl.nixosModules.wsl
             inputs.vscode-server.nixosModules.default
+            inputs.stylix.nixosModules.stylix
             {
               home-manager.extraSpecialArgs = {
                 inherit inputs outputs user host pkgs-stable;
@@ -89,7 +89,6 @@
                 imports = [
                   ./home/mayrf/${host}.nix
                   inputs.vscode-server.homeModules.default
-                  inputs.catppuccin.homeManagerModules.catppuccin
                 ];
               };
             }

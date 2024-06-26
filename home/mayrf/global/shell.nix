@@ -18,7 +18,11 @@
     "ec" = "ec_func";
     "k" = "kubectl";
   };
-  home.sessionVariables = { FONTS = "$HOME/.local/share/fonts"; };
+  home.sessionVariables = {
+    FONTS = "$HOME/.local/share/fonts";
+    FLAKE = "/home/mayrf/.config/nixcfg";
+  };
+  home.packages = with pkgs; [ nh nix-output-monitor nvd ];
   programs = {
 
     direnv = {

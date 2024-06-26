@@ -1,20 +1,23 @@
-{ config, pkgs, pkgs-stable, catppuccin, ... }: {
+{ config, pkgs, pkgs-stable, outputs, ... }: {
 
   # imports = [ ./sops.nix ];
 
   security.sudo.wheelNeedsPassword = false;
   time.timeZone = "Europe/Berlin";
   services.udev.packages = [ pkgs.yubikey-personalization ];
+  stylix.enable = true;
+  stylix.image = pkgs.fetchurl {
+    url =
+      "https://unsplash.com/photos/K2s_YE031CA/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzE5NDI1ODU3fA&force=true&w=2400";
+    sha256 = "sha256-mVRwIHcjWbyPSzN5L7/F50DWs2f+MZJ6dSh3pyjmPys=";
+  };
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/woodland.yaml";
 
   services.vscode-server.enable = true;
   services.vscode-server.enableFHS = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-  };
-  catppuccin = {
-    enable = true;
-    flavor = "macchiato"; # type: one of “latte”, “frappe”, “macchiato”, “mocha”
   };
 
   nixpkgs = {

@@ -40,12 +40,7 @@
         include "level3(ralt_switch)"
     };  '';
   # TODO set up cliphist
-  home.packages = with pkgs; [
-    cliphist
-    hyprpicker
-    brightnessctl
-    xorg.xhost
-  ];
+  home.packages = with pkgs; [ cliphist hyprpicker brightnessctl xorg.xhost ];
   wayland.windowManager.hyprland = {
     enable = true;
 
@@ -55,15 +50,11 @@
         gaps_in = 1;
         gaps_out = 1;
         border_size = 1;
-        # cursor_inactive_timeout = 10;
-        "col.active_border" = "0xff${config.colorscheme.palette.base0C}";
-        "col.inactive_border" = "0xff${config.colorscheme.palette.base02}";
       };
       misc = { focus_on_activate = true; };
       input = {
         kb_layout = "us";
         kb_variant = "altgr-intl";
-        # kb_options = "hungarian_letters:huletters,caps:swapescape";
         kb_options = "hungarian_letters:huletters";
         repeat_rate = 50;
         repeat_delay = 250;
@@ -102,8 +93,7 @@
         # pass = config.programs.password-store.package;
         # }}/bin/pass-wofi";
 
-        grimblast =
-          "${pkgs.grimblast}/bin/grimblast";
+        grimblast = "${pkgs.grimblast}/bin/grimblast";
         pactl = "${pkgs.pulseaudio}/bin/pactl";
 
         gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
