@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-stable, outputs, ... }: {
+{ config, pkgs, pkgs-stable, ... }: {
 
   # imports = [ ./sops.nix ];
 

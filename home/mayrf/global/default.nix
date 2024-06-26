@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, config, outputs, ... }:
+{ inputs, lib, pkgs, config, ... }:
 let
   inherit (inputs.nix-colors) colorSchemes;
   inherit (inputs.nix-colors.lib-contrib { inherit pkgs; })
@@ -10,7 +10,7 @@ in {
     ./shell.nix
     ./mimeApps.nix
     ../features/editors/nvim.nix
-  ] ++ (builtins.attrValues outputs.homeManagerModules);
+  ] ++ (builtins.attrValues (import ../../../modules/home-manager));
 
   nixpkgs = {
     config = {

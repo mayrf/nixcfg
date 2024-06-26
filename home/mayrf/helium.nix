@@ -1,4 +1,4 @@
-{ inputs, outputs, ... }:
+{ inputs, ... }:
 
 {
   imports = [
@@ -14,8 +14,6 @@
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
-
-  wallpaper = outputs.wallpapers.aenami-northwind;
 
   #  ------   ------
   # | DP-2 | | DP-3 |

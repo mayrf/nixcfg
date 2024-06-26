@@ -1,5 +1,5 @@
 {
-  description = "My personal NixOs configuration";
+  description = "mayrf's NixOs configuration";
 
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
@@ -7,12 +7,6 @@
 
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    darwin = {
-      # MacOS Package Management
-      url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -38,84 +32,82 @@
     # };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, ... }@inputs:
-    let
-      inherit (self) outputs;
-      lib = nixpkgs.lib // home-manager.lib;
-    in {
-      inherit lib;
+  outputs = { ... }@inputs: {
 
-      homeManagerModules = import ./modules/home-manager;
-      templates = import ./templates;
-      wallpapers = import ./home/mayrf/wallpapers;
-      nixosConfigurations = let
-        configs = [
-          {
-            user = "mayrf";
-            host = "helium";
-          }
-          {
-            user = "mayrf";
-            host = "yttrium";
-          }
-          {
-            user = "mayrf";
-            host = "radium";
-          }
-        ];
-      in builtins.listToAttrs (map (config: {
-        name = "${config.host}";
-        value = let
-          user = "${config.user}";
-          host = "${config.host}";
+    homeManagerModules = import ./modules/home-manager;
+    templates = import ./templates;
+    wallpapers = import ./home/mayrf/wallpapers;
+    nixosConfigurations = let
+      configs = [
+        {
+          user = "mayrf";
+          host = "yttrium";
+        }
+        {
+          user = "mayrf";
+          host = "radium";
+        }
+      ];
+      moduleImports = [
+        inputs.sops-nix.nixosModules.sops
+        inputs.home-manager.nixosModules.home-manager
+        inputs.nixos-wsl.nixosModules.wsl
+        inputs.vscode-server.nixosModules.default
+        inputs.stylix.nixosModules.stylix
+      ];
+    in builtins.listToAttrs (map (config: {
+      name = "${config.host}";
+      value = let
+        user = "${config.user}";
+        host = "${config.host}";
 
-          pkgs-stable = import nixpkgs-stable {
-            system = "x86_64-linux"; # System Architecture
-            config.allowUnfree = true;
-          };
-        in lib.nixosSystem {
-          modules = [
-            ./hosts/${host}
-            inputs.sops-nix.nixosModules.sops
-            home-manager.nixosModules.home-manager
-            inputs.nixos-wsl.nixosModules.wsl
-            inputs.vscode-server.nixosModules.default
-            inputs.stylix.nixosModules.stylix
-            {
-              home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host pkgs-stable;
-              };
-              home-manager.users.${user} = {
-                imports = [
-                  ./home/mayrf/${host}.nix
-                  inputs.vscode-server.homeModules.default
-                ];
-              };
-            }
-          ];
-          specialArgs = { inherit inputs outputs user host pkgs-stable; };
+        pkgs-stable = import inputs.nixpkgs-stable {
+          system = "x86_64-linux"; # System Architecture
+          config.allowUnfree = true;
         };
-      }) configs);
-
-      darwinConfigurations = let
-        user = "fmayr";
-        host = "osmium";
-      in {
-        ${host} = inputs.darwin.lib.darwinSystem {
-          modules = [
-            ./hosts/osmium
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.extraSpecialArgs = {
-                inherit inputs outputs user host;
-              };
-              home-manager.users.fmayr = {
-                imports = [ ./home/mayrf/osmium.nix ];
-              };
-            }
-          ];
-          specialArgs = { inherit inputs outputs user host; };
+      in inputs.nixpkgs.lib.nixosSystem {
+        modules = [
+          ./hosts/${host}
+          {
+            home-manager.extraSpecialArgs = {
+              inherit inputs user host pkgs-stable;
+            };
+            home-manager.users.${user} = {
+              imports = [
+                ./home/mayrf/${host}.nix
+                inputs.vscode-server.homeModules.default
+              ];
+            };
+          }
+        ] ++ moduleImports;
+        specialArgs = { inherit inputs user host pkgs-stable; };
+      };
+    }) configs) // {
+      helium = let
+        user = "mayrf";
+        host = "helium";
+        pkgs-stable = import inputs.nixpkgs-stable {
+          system = "x86_64-linux"; # System Architecture
+          config.allowUnfree = true;
         };
+      in inputs.nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs user host pkgs-stable; };
+        modules = [
+          ./hosts/helium
+          {
+            home-manager.extraSpecialArgs = {
+              inherit inputs user host pkgs-stable;
+            };
+            home-manager.users.mayrf = {
+              imports = [
+                ./home/mayrf/helium.nix
+                inputs.vscode-server.homeModules.default
+              ];
+            };
+          }
+        ] ++ moduleImports;
       };
     };
+
+  };
 }
