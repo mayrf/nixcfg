@@ -13,8 +13,6 @@
   };
   stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/woodland.yaml";
 
-  services.vscode-server.enable = true;
-  services.vscode-server.enableFHS = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;

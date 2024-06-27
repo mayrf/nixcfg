@@ -23,9 +23,6 @@
     };
     stylix.url = "github:danth/stylix";
 
-    # https://github.com/nix-community/nixos-vscode-server
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
-
     # nix-secrets = {
     #   url = "git+ssh://git@github.com:mayrf/sops.git?ref=main&shallow=1";
     #   flake = false;
@@ -52,7 +49,6 @@
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.home-manager
         inputs.nixos-wsl.nixosModules.wsl
-        inputs.vscode-server.nixosModules.default
         inputs.stylix.nixosModules.stylix
       ];
     in builtins.listToAttrs (map (config: {
@@ -73,10 +69,7 @@
               inherit inputs user host pkgs-stable;
             };
             home-manager.users.${user} = {
-              imports = [
-                ./home/mayrf/${host}.nix
-                inputs.vscode-server.homeModules.default
-              ];
+              imports = [ ./home/mayrf/${host}.nix ];
             };
           }
         ] ++ moduleImports;
@@ -99,10 +92,7 @@
               inherit inputs user host pkgs-stable;
             };
             home-manager.users.mayrf = {
-              imports = [
-                ./home/mayrf/helium.nix
-                inputs.vscode-server.homeModules.default
-              ];
+              imports = [ ./home/mayrf/helium.nix ];
             };
           }
         ] ++ moduleImports;
