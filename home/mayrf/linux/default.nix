@@ -15,7 +15,7 @@
   home = {
     username = lib.mkDefault "mayrf";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
-    stateVersion = lib.mkDefault "23.11";
+    stateVersion = lib.mkDefault "24.05";
     sessionPath = [ "$HOME/.local/bin" ];
   };
   # For virtualisation
@@ -25,17 +25,4 @@
       uris = [ "qemu:///system" ];
     };
   };
-
-  # persistence = {
-  #   "/persist/home/mayrf" = {
-  #     directories = [
-  #       "Documents"
-  #       "Downloads"
-  #       "Pictures"
-  #       "Videos"
-  #       ".local/bin"
-  #     ];
-  #     allowOther = true;
-  #   };
-  # };
 }

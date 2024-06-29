@@ -4,13 +4,14 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-
     ../common/global
     ../common/users/mayrf
-    ../common/optional/docker.nix
     ../common/optional/pipewire.nix
-
   ];
+
+  mymodules.docker.enable = true;
+  # mydocker.enable = true;
+  # mydocker.enable = true;
 
   networking = {
     hostName = host; # Define your hostname.
@@ -30,5 +31,5 @@
     };
   };
 
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }

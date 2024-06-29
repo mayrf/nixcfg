@@ -4,7 +4,6 @@
   imports = [
     ./global
     ./linux
-    ./features/lf
     ./features/terminal/alacritty.nix
     ./features/terminal/foot.nix
     ./features/desktop/hyprland
@@ -12,6 +11,8 @@
     ./features/editors/emacs
     ./features/editors/vscode.nix
   ];
+
+  lf.enable = true;
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
 

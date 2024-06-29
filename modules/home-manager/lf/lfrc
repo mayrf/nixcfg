@@ -1,0 +1,89 @@
+set dirfirst
+set drawbox
+set icons
+set ignorecase
+set number
+set preview
+set ratios "2:3:3"
+set relativenumber
+set scrolloff 10
+
+
+# Previewer
+set previewer ctpv;
+set cleaner ctpvclear;
+&ctpv -s $id
+&ctpvquit $id
+
+#Custom commands:
+cmd mkdir ${{ 
+	printf "Directory Name: "
+	read ans
+	mkdir $ans
+}}
+
+
+cmd mergepdf ${{
+  printf "$fx\n"
+	printf "Combined PDF Name: "
+	read ans
+
+  printf "$fx\n$ans.pdf" | sed 's/ /\\ /g' | xargs pdfunite
+}}
+
+cmd mkimg2pdf ${{
+  printf "$fx\n"
+	printf "PDF Name: "
+	read ans
+  printf "$fx" | sed 's/ /\\ /g' | xargs img2pdf -o $ans.pdf
+}}
+
+# Archive bindings
+cmd unarchive ${{
+  case "$f" in
+      *.zip) unzip "$f" ;;
+      *.tar.gz) tar -xzvf "$f" ;;
+      *.tar.bz2) tar -xjvf "$f" ;;
+      *.tar) tar -xvf "$f" ;;
+      *) echo "Unsupported format" ;;
+  esac
+}}
+
+# Trash cli bindings
+cmd trash ${{
+  files=$(printf "$fx" | tr '\n' ';')
+  while [ "$files" ]; do
+    # extract the substring from start of string up to delimiter.
+    # this is the first "element" of the string.
+    file=${files%%;*}
+
+    trash-put "$(basename "$file")"
+    # if there's only one element left, set `files` to an empty string.
+    # this causes us to exit this `while` loop.
+    # else, we delete the first "element" of the string from files, and move onto the next.
+    if [ "$files" = "$file" ]; then
+      files=''
+    else
+      files="${files#*;}"
+    fi
+  done
+}}
+
+# Mappings
+map D trash
+map au unarchive
+map m
+map md mkdir
+map zb calcdirsize
+map mm mark-save
+map ml mark-load
+map mr mark-remove
+map mpi mkimg2pdf
+map mpp mergepdf
+
+
+# Movement
+map gtr cd ~/.local/share/Trash/files
+map gr cd ~/cloud
+# map gm pushd ~/mnt/datacloud/data
+# map gv pushd ~/video

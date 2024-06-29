@@ -10,7 +10,7 @@ in {
     ./shell.nix
     ./mimeApps.nix
     ../features/editors/nvim.nix
-  ] ++ (builtins.attrValues (import ../../../modules/home-manager));
+  ];
 
   nixpkgs = {
     config = {

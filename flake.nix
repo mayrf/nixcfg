@@ -21,83 +21,84 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     stylix.url = "github:danth/stylix";
 
-    # nix-secrets = {
-    #   url = "git+ssh://git@github.com:mayrf/sops.git?ref=main&shallow=1";
-    #   flake = false;
-    # };
+    nix-secrets = {
+      url = "git+ssh://git@github.com/mayrf/sops.git?ref=main&shallow=1";
+      flake = false;
+    };
   };
 
-  outputs = { ... }@inputs: {
-
-    homeManagerModules = import ./modules/home-manager;
-    templates = import ./templates;
-    wallpapers = import ./home/mayrf/wallpapers;
-    nixosConfigurations = let
-      configs = [
-        {
-          user = "mayrf";
-          host = "yttrium";
-        }
-        {
-          user = "mayrf";
-          host = "radium";
-        }
-      ];
+  outputs = { self, ... }@inputs:
+    let
+      inherit (self) outputs;
       moduleImports = [
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.home-manager
         inputs.nixos-wsl.nixosModules.wsl
         inputs.stylix.nixosModules.stylix
       ];
-    in builtins.listToAttrs (map (config: {
-      name = "${config.host}";
-      value = let
-        user = "${config.user}";
-        host = "${config.host}";
-
-        pkgs-stable = import inputs.nixpkgs-stable {
-          system = "x86_64-linux"; # System Architecture
-          config.allowUnfree = true;
-        };
-      in inputs.nixpkgs.lib.nixosSystem {
-        modules = [
-          ./hosts/${host}
-          {
-            home-manager.extraSpecialArgs = {
-              inherit inputs user host pkgs-stable;
-            };
-            home-manager.users.${user} = {
-              imports = [ ./home/mayrf/${host}.nix ];
-            };
-          }
-        ] ++ moduleImports;
-        specialArgs = { inherit inputs user host pkgs-stable; };
+      pkgs-stable = import inputs.nixpkgs-stable {
+        system = "x86_64-linux"; # System Architecture
+        config.allowUnfree = true;
       };
-    }) configs) // {
-      helium = let
-        user = "mayrf";
-        host = "helium";
-        pkgs-stable = import inputs.nixpkgs-stable {
-          system = "x86_64-linux"; # System Architecture
-          config.allowUnfree = true;
-        };
-      in inputs.nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs user host pkgs-stable; };
-        modules = [
-          ./hosts/helium
+      specialArgs = { inherit outputs inputs pkgs-stable; };
+    in {
+      homemanagermodules = import ./modules/home-manager;
+      nixosmodules = import ./modules/nixos;
+      templates = import ./templates;
+      nixosConfigurations = let
+        configs = [
           {
-            home-manager.extraSpecialArgs = {
-              inherit inputs user host pkgs-stable;
-            };
-            home-manager.users.mayrf = {
-              imports = [ ./home/mayrf/helium.nix ];
-            };
+            user = "mayrf";
+            host = "yttrium";
           }
-        ] ++ moduleImports;
+          {
+            user = "mayrf";
+            host = "radium";
+          }
+        ];
+      in builtins.listToAttrs (map (config: {
+        name = "${config.host}";
+        value = let
+          user = "${config.user}";
+          host = "${config.host}";
+
+        in inputs.nixpkgs.lib.nixosSystem {
+          modules = [
+            ./modules/nixos
+            ./hosts/${host}
+            {
+              home-manager.extraSpecialArgs = {
+                inherit user host;
+              } // specialArgs;
+              home-manager.users.${user} = {
+                imports = [ ./home/mayrf/${host}.nix ./modules/home-manager ];
+              };
+            }
+          ] ++ moduleImports;
+          specialArgs = { inherit user host; } // specialArgs;
+        };
+      }) configs) // {
+        helium = let
+          user = "mayrf";
+          host = "helium";
+        in inputs.nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit user host; } // specialArgs;
+          modules = [
+            ./hosts/helium
+            ./modules/nixos
+            {
+              home-manager.extraSpecialArgs = {
+                inherit user host;
+              } // specialArgs;
+              home-manager.users.mayrf = {
+                imports = [ ./home/mayrf/helium.nix ];
+              };
+            }
+          ] ++ moduleImports;
+        };
       };
     };
-
-  };
 }

@@ -6,7 +6,6 @@
     ./hardware-configuration.nix
     ../common/global
     ../common/users/mayrf
-    ../common/optional/docker.nix
     ../common/optional/pipewire.nix
     ../common/linux.nix
   ];
@@ -20,5 +19,5 @@
     hostName = host; # Define your hostname.
   };
 
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }

@@ -7,7 +7,6 @@
 
     ../common/global
     ../common/users/mayrf
-    ../common/optional/docker.nix
     ../common/optional/pipewire.nix
     ../common/optional/lutris.nix
     ../common/linux.nix
