@@ -273,6 +273,24 @@
         "type": "github"
       }
     },
+    "nix-secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1719181360,
+        "narHash": "sha256-B1uhdKXZlP0F/i+4qY5nxpaXGW/ihuzbWzB/kZMCDgQ=",
+        "ref": "main",
+        "rev": "538dfc3837a183790d022cfe0e2bda5e0f3952d2",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@gitlab.com/mayrf/nix-secrets.git"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@gitlab.com/mayrf/nix-secrets.git"
+      }
+    },
     "nixos-wsl": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -378,6 +396,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "nix-colors": "nix-colors",
+        "nix-secrets": "nix-secrets",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",

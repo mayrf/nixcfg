@@ -25,7 +25,7 @@
     stylix.url = "github:danth/stylix";
 
     nix-secrets = {
-      url = "git+ssh://git@github.com/mayrf/sops.git?ref=main&shallow=1";
+      url = "git+ssh://git@gitlab.com/mayrf/nix-secrets.git?ref=main&shallow=1";
       flake = false;
     };
   };
@@ -94,7 +94,7 @@
                 inherit user host;
               } // specialArgs;
               home-manager.users.mayrf = {
-                imports = [ ./home/mayrf/helium.nix ];
+                imports = [ ./home/mayrf/helium.nix ./modules/home-manager ];
               };
             }
           ] ++ moduleImports;
