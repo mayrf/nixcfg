@@ -16,8 +16,6 @@
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
 
-  wallpaper = outputs.wallpapers.aenami-cold-red-light;
-
   #  ------   ------
   # | DP-1 | | DP-3 |
   #  ------   ------

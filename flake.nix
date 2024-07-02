@@ -32,72 +32,30 @@
 
   outputs = { self, ... }@inputs:
     let
-      inherit (self) outputs;
-      moduleImports = [
-        inputs.sops-nix.nixosModules.sops
-        inputs.home-manager.nixosModules.home-manager
-        inputs.nixos-wsl.nixosModules.wsl
-        inputs.stylix.nixosModules.stylix
-      ];
-      pkgs-stable = import inputs.nixpkgs-stable {
-        system = "x86_64-linux"; # System Architecture
-        config.allowUnfree = true;
-      };
-      specialArgs = { inherit outputs inputs pkgs-stable; };
-    in {
+      # inherit (self) outputs;
+      aidLib = import ./aidLib/default.nix { inherit inputs; };
+    in with aidLib; {
       homemanagermodules = import ./modules/home-manager;
       nixosmodules = import ./modules/nixos;
       templates = import ./templates;
-      nixosConfigurations = let
-        configs = [
-          {
-            user = "mayrf";
-            host = "yttrium";
-          }
-          {
-            user = "mayrf";
-            host = "radium";
-          }
-        ];
-      in builtins.listToAttrs (map (config: {
-        name = "${config.host}";
-        value = let
-          user = "${config.user}";
-          host = "${config.host}";
-
-        in inputs.nixpkgs.lib.nixosSystem {
-          modules = [
-            ./modules/nixos
-            ./hosts/${host}
-            {
-              home-manager.extraSpecialArgs = {
-                inherit user host;
-              } // specialArgs;
-              home-manager.users.${user} = {
-                imports = [ ./home/mayrf/${host}.nix ./modules/home-manager ];
-              };
-            }
-          ] ++ moduleImports;
-          specialArgs = { inherit user host; } // specialArgs;
+      nixosConfigurations = {
+        radium = mkSystem {
+          user = "mayrf";
+          host = "radium";
+          nixosPath = ./hosts/radium;
+          homePath = ./home/mayrf/radium.nix;
         };
-      }) configs) // {
-        helium = let
+        yttrium = mkSystem {
+          user = "mayrf";
+          host = "yttrium";
+          nixosPath = ./hosts/yttrium;
+          homePath = ./home/mayrf/yttrium.nix;
+        };
+        helium = mkSystem {
           user = "mayrf";
           host = "helium";
-        in inputs.nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit user host; } // specialArgs;
-          modules = [
-            ./hosts/helium
-            ./modules/nixos
-            {
-              home-manager.extraSpecialArgs = {
-                inherit user host;
-              } // specialArgs;
-              home-manager.users.mayrf = {
-                imports = [ ./home/mayrf/helium.nix ./modules/home-manager ];
-              };
-            }
-          ] ++ moduleImports;
+          nixosPath = ./hosts/helium;
+          homePath = ./home/mayrf/helium.nix;
         };
       };
     };
