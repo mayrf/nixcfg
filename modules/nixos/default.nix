@@ -1,4 +1,1 @@
-# { docker = ./docker.nix; }
-{
-  imports = [ ./docker.nix ];
-}
+{ docker = ./docker.nix; }
