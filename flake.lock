@@ -282,13 +282,13 @@
         "rev": "538dfc3837a183790d022cfe0e2bda5e0f3952d2",
         "shallow": true,
         "type": "git",
-        "url": "ssh://git@gitlab.com/mayrf/nix-secrets.git"
+        "url": "ssh://git@github.com/mayrf/sops.git"
       },
       "original": {
         "ref": "main",
         "shallow": true,
         "type": "git",
-        "url": "ssh://git@gitlab.com/mayrf/nix-secrets.git"
+        "url": "ssh://git@github.com/mayrf/sops.git"
       }
     },
     "nixos-wsl": {

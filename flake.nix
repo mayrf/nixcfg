@@ -25,7 +25,8 @@
     stylix.url = "github:danth/stylix";
 
     nix-secrets = {
-      url = "git+ssh://git@gitlab.com/mayrf/nix-secrets.git?ref=main&shallow=1";
+      # url = "git+ssh://git@gitlab.com/mayrf/nix-secrets.git?ref=main&shallow=1";
+      url = "git+ssh://git@github.com/mayrf/sops.git?ref=main&shallow=1";
       flake = false;
     };
   };
@@ -35,8 +36,8 @@
       # inherit (self) outputs;
       aidLib = import ./aidLib/default.nix { inherit inputs; };
     in with aidLib; {
-      homemanagermodules = import ./modules/home-manager;
-      nixosmodules = import ./modules/nixos;
+      homeManagerModules = import ./modules/home-manager;
+      nixosModules = import ./modules/nixos;
       templates = import ./templates;
       nixosConfigurations = {
         radium = mkSystem {
