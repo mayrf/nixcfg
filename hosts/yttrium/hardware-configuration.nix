@@ -25,18 +25,18 @@
     efi = { canTouchEfiVariables = true; };
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
-    fsType = "ext4";
-  };
+  # fileSystems."/" = {
+  #   device = "/dev/disk/by-label/nixos";
+  #   fsType = "ext4";
+  # };
 
   boot.initrd.luks.devices."cryptroot".device =
     "/dev/disk/by-uuid/67b692b5-68aa-4b4d-bab8-86eda9f7bb87";
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/boot";
-    fsType = "vfat";
-  };
+  # fileSystems."/boot" = {
+  #   device = "/dev/disk/by-label/boot";
+  #   fsType = "vfat";
+  # };
 
   swapDevices = [{
     device = "/var/lib/swapfile";

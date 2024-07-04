@@ -29,6 +29,11 @@
       url = "git+ssh://git@github.com/mayrf/sops.git?ref=main&shallow=1";
       flake = false;
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    impermanence = { url = "github:nix-community/impermanence"; };
   };
 
   outputs = { self, ... }@inputs:

@@ -7,6 +7,8 @@ let
     inputs.home-manager.nixosModules.home-manager
     inputs.nixos-wsl.nixosModules.wsl
     inputs.stylix.nixosModules.stylix
+    inputs.disko.nixosModules.default
+    inputs.impermanence.nixosModules.impermanence
   ] ++ (builtins.attrValues outputs.nixosModules);
 
   pkgs-stable = import inputs.nixpkgs-stable {
@@ -35,6 +37,7 @@ in rec {
             imports = [
               config.homePath
               # ../modules/home-manager
+              inputs.impermanence.nixosModules.home-manager.impermanence
             ] ++ (builtins.attrValues outputs.homeManagerModules);
           };
         }
