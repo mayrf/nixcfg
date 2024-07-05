@@ -27,7 +27,6 @@ in rec {
       } // specialArgs;
       modules = [
         config.nixosPath
-        # ../modules/nixos
         {
           home-manager.extraSpecialArgs = {
             user = config.user;
@@ -36,7 +35,6 @@ in rec {
           home-manager.users.mayrf = {
             imports = [
               config.homePath
-              # ../modules/home-manager
               inputs.impermanence.nixosModules.home-manager.impermanence
             ] ++ (builtins.attrValues outputs.homeManagerModules);
           };

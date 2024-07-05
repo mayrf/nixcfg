@@ -7,7 +7,7 @@
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.initrd.availableKernelModules =
-    [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+    [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -30,8 +30,9 @@
   #   fsType = "ext4";
   # };
 
-  boot.initrd.luks.devices."cryptroot".device =
-    "/dev/disk/by-uuid/67b692b5-68aa-4b4d-bab8-86eda9f7bb87";
+  # boot.initrd.luks.devices."cryptroot".device =
+  #   # "/dev/disk/by-uuid/67b692b5-68aa-4b4d-bab8-86eda9f7bb87";
+  #   "/dev/disk/by-uuid/7656cd6e-c132-4cae-839e-0cd53b704317";
 
   # fileSystems."/boot" = {
   #   device = "/dev/disk/by-label/boot";
