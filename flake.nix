@@ -38,9 +38,16 @@
 
   outputs = { self, ... }@inputs:
     let
+      forAllSystems = inputs.nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+        #"aarch64-darwin"
+      ];
       # inherit (self) outputs;
       aidLib = import ./aidLib/default.nix { inherit inputs; };
     in with aidLib; {
+      packages = forAllSystems (system:
+        let pkgs = inputs.nixpkgs.legacyPackages.${system};
+        in import ./pkgs { inherit pkgs; });
       homeManagerModules = import ./modules/home-manager;
       nixosModules = import ./modules/nixos;
       templates = import ./templates;

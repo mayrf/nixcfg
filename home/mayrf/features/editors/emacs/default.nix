@@ -126,10 +126,11 @@ in {
     python311Packages.pylint
     python311Packages.yapf
     python311Packages.pylama
-    nodePackages_latest.vscode-css-languageserver-bin
+    vscode-langservers-extracted
 
     #kcl
-    kcl-cli
+    kcl
+    kclvm
 
   ];
 

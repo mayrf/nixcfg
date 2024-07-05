@@ -5,6 +5,7 @@
   programs.vscode = {
     enable = true;
     # package = pkgs.vscodium;
+    package = pkgs.vscode.fhs;
     extensions = with pkgs.vscode-extensions; [
       vscodevim.vim
       ms-python.python

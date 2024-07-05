@@ -96,8 +96,8 @@
     #Utils
     just
     age
-    gnome.nautilus
-    gnome.sushi # A quick previewer for Nautilus
+    nautilus
+    sushi # A quick previewer for Nautilus
     gnupg
     pinentry-qt # GnuPG s interface to passphrase input
     ipscan
