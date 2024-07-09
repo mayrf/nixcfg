@@ -1,3 +1,4 @@
+SOPS_FILE := "~/sops/secrets/secrets.yaml"
 
 # default recipe to display help information
 default:
@@ -14,3 +15,12 @@ rebuild:
   scripts/system-flake-rebuild.sh
 
 rebuild-update: update && rebuild
+
+
+update-nix-secrets:
+  (cd ~/sops && git fetch && git rebase) || true
+  nix flake lock --update-input nix-secrets
+
+sops:
+  echo "Editing {{SOPS_FILE}}"
+  nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops {{SOPS_FILE}}"

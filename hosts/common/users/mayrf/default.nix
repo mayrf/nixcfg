@@ -12,15 +12,15 @@ in {
       # programs here, NOT in environment.systemPackages
     ];
 
-  users.mutableUsers = true;
+  users.mutableUsers = false;
   users.users.${user} = {
     isNormalUser = true;
     shell = pkgs.zsh;
     extraGroups = [ "wheel" "video" "audio" "plugdev" "lp" ]
       ++ ifTheyExist [ "network" "docker" "libvirtd" "deluge" ];
 
-    # passwordFile = config.sops.secrets.mayrf_password.path;
-    initialPassword = "password";
+    hashedPasswordFile = config.sops.secrets."mayrf/hashedPassword".path;
+    # initialPassword = "password";
     packages = [ pkgs.home-manager ];
   };
 
@@ -29,6 +29,5 @@ in {
   #   neededForUsers = true;
   # };
 
-  services.geoclue2.enable = true;
   security.pam.services = { swaylock = { }; };
 }

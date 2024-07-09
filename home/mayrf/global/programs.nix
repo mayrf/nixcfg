@@ -11,6 +11,7 @@
   };
 
   home.packages = with pkgs; [
+    gnucash
     oterm
     tmux
     nerdctl
