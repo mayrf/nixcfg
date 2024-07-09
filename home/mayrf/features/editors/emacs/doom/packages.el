@@ -15,6 +15,7 @@
 (package! markdown-preview-eww)
 (package! org-modern)
 (package! org-super-agenda)
+(package! org-download)
 ;; (package! copilot
 ;;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 

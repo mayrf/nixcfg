@@ -312,6 +312,11 @@ cd ~/
 ln -s ~/.local/share/Trash .
 #+end_example
 
+** Drag and drop with org-download
+#+begin_src emacs-lisp :tangle yes
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+#+end_src
 * Org
 ** Bind tab inside org-table
 #+begin_src emacs-lisp :tangle yes

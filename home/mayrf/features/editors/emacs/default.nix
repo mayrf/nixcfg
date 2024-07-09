@@ -132,6 +132,7 @@ in {
     kcl
     kclvm
 
+    xclip
   ];
 
   home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];

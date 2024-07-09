@@ -180,6 +180,9 @@
 (setq delete-by-moving-to-trash t
       trash-directory "~/.local/share/Trash/files/")
 
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+
 (defun my/org-table-tab ()
   "Use `org-cycle' if inside an Org table, otherwise use original Tab functionality."
   (interactive)
