@@ -42,7 +42,8 @@
         #"aarch64-darwin"
       ];
       # inherit (self) outputs;
-      aidLib = import ./aidLib/default.nix { inherit inputs; };
+      configVars = import ./vars;
+      aidLib = import ./aidLib/default.nix { inherit inputs configVars; };
     in with aidLib; {
       packages = forAllSystems (system:
         let pkgs = inputs.nixpkgs.legacyPackages.${system};

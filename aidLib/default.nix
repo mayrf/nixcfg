@@ -1,4 +1,4 @@
-{ inputs }:
+{ inputs, configVars }:
 let
   aidLib = (import ./default.nix) { inherit inputs; };
   outputs = inputs.self.outputs;
@@ -16,7 +16,7 @@ let
     config.allowUnfree = true;
   };
 
-  specialArgs = { inherit outputs inputs pkgs-stable; };
+  specialArgs = { inherit outputs inputs pkgs-stable configVars; };
 in rec {
 
   mkSystem = config:
