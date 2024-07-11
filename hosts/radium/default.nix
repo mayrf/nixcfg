@@ -10,8 +10,6 @@
   ];
 
   mymodules.docker.enable = true;
-  # mydocker.enable = true;
-  # mydocker.enable = true;
 
   networking = {
     hostName = host; # Define your hostname.

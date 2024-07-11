@@ -10,6 +10,6 @@ in {
     # secrets."wireguard_x220/public_key" = { };
     # secrets."wireguard_x220/private_key" = { };
     # secrets."wireguard_x220/endpoint" = { };
-    secrets."mayrf/hashedPassword" = { };
+    secrets."mayrf/hashedPassword" = { neededForUsers = true; };
   };
 }

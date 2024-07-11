@@ -67,7 +67,6 @@
     libsForQt5.qt5.qtwayland
     # pkgs-stable.rustdesk
     libsForQt5.polkit-kde-agent
-    woeusb-ng
   ];
   fonts.packages = with pkgs; [
     vistafonts

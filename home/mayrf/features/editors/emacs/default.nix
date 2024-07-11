@@ -128,10 +128,6 @@ in {
     python311Packages.pylama
     vscode-langservers-extracted
 
-    #kcl
-    kcl
-    kclvm
-
     xclip
   ];
 

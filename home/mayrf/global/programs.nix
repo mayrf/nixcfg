@@ -11,6 +11,7 @@
   };
 
   home.packages = with pkgs; [
+
     gnucash
     oterm
     tmux
@@ -61,7 +62,7 @@
     deluge
     mpv
     freetube
-    tor-browser-bundle-bin
+    tor-browser
     vlc
     brave
     firefox
@@ -109,6 +110,8 @@
     sshfs
     jq
     ijq
+
+    pkgs-stable.kcl-cli
 
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
