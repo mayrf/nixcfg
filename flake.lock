@@ -311,10 +311,10 @@
     "nix-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1720521173,
-        "narHash": "sha256-DDVKiSMFN1P1Ko0ofFFglpDybdkG5WBZnesJusBTKSY=",
+        "lastModified": 1720685479,
+        "narHash": "sha256-2+USZZrrPrFJFhj3i67gLYAm+qTwtLxOs/AgExUypJ4=",
         "ref": "main",
-        "rev": "c8aec421bab40b731b2d9bf34b006c008ce30438",
+        "rev": "d5d3cdd420c6411436d1b0727bfd7c32bd9fef29",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/mayrf/sops.git"
