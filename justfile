@@ -24,3 +24,10 @@ update-nix-secrets:
 sops:
   echo "Editing {{SOPS_FILE}}"
   nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops {{SOPS_FILE}}"
+
+rekey:
+  cd ~/sops && (\
+    sops updatekeys -y secrets/secrets.yaml && \
+    (pre-commit run --all-files || true) && \
+    git add -u && (git commit -m "chore: rekey" || true) && git push \
+  )
