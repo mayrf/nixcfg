@@ -61,12 +61,17 @@
   environment.persistence."/persist/system" = {
     hideMounts = true;
     directories = [
-      "/etc/nixos"
       "/var/log"
       "/var/lib/bluetooth"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/etc/NetworkManager/system-connections"
+      {
+        directory = "/etc/nixos";
+        user = "mayrf";
+        group = "users";
+        mode = "0777";
+      }
       {
         directory = "/var/lib/colord";
         user = "colord";
@@ -82,6 +87,31 @@
         parentDirectory = { mode = "u=rwx,g=,o="; };
       }
     ];
+
+    users.mayrf = {
+      directories = [
+        "Downloads"
+        "Music"
+        "Pictures"
+        "Documents"
+        "Videos"
+        "VirtualBox VMs"
+        ".gnupg"
+        ".ssh"
+        ".nixops"
+        ".thunderbird"
+        ".local/share/keyrings"
+        ".local/share/direnv"
+        ".local/share/Steam"
+        ".config/emacs"
+        #{
+        #  directory = ".local/share/Steam";
+        #  method = "symlink";
+        #}
+      ];
+      files = [ ".screenrc" ];
+      #  allowOther = true;
+    };
   };
   programs.fuse.userAllowOther = true;
 
