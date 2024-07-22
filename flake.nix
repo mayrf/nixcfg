@@ -42,7 +42,7 @@
         #"aarch64-darwin"
       ];
       # inherit (self) outputs;
-      configVars = import ./vars;
+      configVars = import ./vars { inherit inputs; };
       aidLib = import ./aidLib/default.nix { inherit inputs configVars; };
     in with aidLib; {
       packages = forAllSystems (system:

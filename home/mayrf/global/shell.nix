@@ -1,9 +1,9 @@
-{ config, lib, pkgs, host, ... }:
+{ config, lib, pkgs, host, configVars,... }:
 
 {
   home.shellAliases = {
-    "rbs" = "sudo nixos-rebuild switch --flake $HOME/.config/nixcfg/.#${host}";
-    "nfu" = "nix flake update /home/mayrf/.config/nixcfg --commit-lock-file";
+    "rbs" = "sudo nixos-rebuild switch --flake $FLAKE#${host}";
+    "nfu" = "nix flake update $FLAKE --commit-lock-file";
 
     "optimize" = ''
       nix-env --list-generations
@@ -20,7 +20,7 @@
   };
   home.sessionVariables = {
     FONTS = "$HOME/.local/share/fonts";
-    FLAKE = "/home/mayrf/.config/nixcfg";
+    FLAKE = if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
   };
   home.packages = with pkgs; [ nh nix-output-monitor nvd ];
   programs = {

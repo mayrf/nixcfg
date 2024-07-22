@@ -19,7 +19,7 @@
     #   configurationLimit = 10;
     # };
     systemd-boot = {
-      configurationLimit = 6;
+      configurationLimit = 10;
       enable = true;
     };
     efi = { canTouchEfiVariables = true; };

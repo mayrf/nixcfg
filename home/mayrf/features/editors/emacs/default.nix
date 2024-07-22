@@ -1,4 +1,4 @@
-{ config, pkgs, lib, location, ... }:
+{ config, pkgs, lib, location, host, configVars, ... }:
 let
   emacs = pkgs.emacs29; # pkgs.emacs-macport
   # package = pkgs.emacs-unstable;
@@ -7,6 +7,7 @@ let
   # withGTK3 = true;
   # };
   repoUrl = "https://github.com/doomemacs/doomemacs";
+  flakeDir = if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
 in {
   # Emacs
   services.emacs = {
@@ -31,17 +32,17 @@ in {
       DOOM="${config.xdg.configHome}/doom"
 
       if check_dir "$EMACS_DIR"; then
-          rm -rf $EMACS_DIR
-          ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
+          rm -rf $EMACS_DIR/*
+          ${flakeDir}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
       fi
 
 
       if check_dir "$VANILLA_EMACS_DIR"; then
-        ln -s ${config.xdg.configHome}/nixcfg/home/mayrf/features/editors/emacs/vanilla-emacs $VANILLA_EMACS_DIR
+        ln -s ${flakeDir}/home/mayrf/features/editors/emacs/vanilla-emacs $VANILLA_EMACS_DIR
       fi
 
       if [ ! -e "$DOOM" ]; then
-        ln -s ${config.xdg.configHome}/nixcfg/home/mayrf/features/editors/emacs/doom $DOOM
+        ln -s ${flakeDir}/home/mayrf/features/editors/emacs/doom $DOOM
         # yes | $EMACS_DIR/bin/doom install
       fi
     '';

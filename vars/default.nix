@@ -2,6 +2,7 @@
   username = "mayrf";
   userEmail = inputs.nix-secrets.user-email;
   workEmail = inputs.nix-secrets.work-email;
+  flakeDir = "/etc/nixos";
   #domain = inputs.nix-secrets.domain;
   #userFullName = inputs.nix-secrets.full-name;
   #handle = "emergentmind";

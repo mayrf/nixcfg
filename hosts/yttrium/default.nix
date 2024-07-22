@@ -95,6 +95,7 @@
         "Pictures"
         "Documents"
         "Videos"
+        "code"
         "VirtualBox VMs"
         ".gnupg"
         ".ssh"
