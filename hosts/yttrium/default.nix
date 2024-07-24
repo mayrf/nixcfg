@@ -105,12 +105,13 @@
         ".local/share/direnv"
         ".local/share/Steam"
         ".config/emacs"
+        ".config/Signal"
         #{
         #  directory = ".local/share/Steam";
         #  method = "symlink";
         #}
       ];
-      files = [ ".screenrc" ];
+      files = [ ".zsh_history" ];
       #  allowOther = true;
     };
   };
