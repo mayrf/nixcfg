@@ -4,7 +4,6 @@ let
     builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in {
   programs.zsh.enable = true;
-  programs.steam.enable = true;
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs;
     [

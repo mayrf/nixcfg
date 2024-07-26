@@ -28,7 +28,6 @@
     # lutris
     # Cli tools
     gparted
-    # steam
     img2pdf
     tldr
     rsync # Syncer - $ rsync -r dir1/ dir2/
