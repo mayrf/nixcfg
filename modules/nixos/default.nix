@@ -1,1 +1,4 @@
-{ docker = ./docker.nix; }
+{
+  docker = ./docker.nix;
+  gaming = ./gaming.nix;
+}

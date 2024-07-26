@@ -13,6 +13,9 @@
     (import ./disko.nix { device = "/dev/nvme0n1"; })
   ];
 
+  mymodules.docker.enable = true;
+  mymodules.gaming.enable = true;
+
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
@@ -24,7 +27,7 @@
     package = pkgs.ollama-rocm;
     # enable = false;
     enable = true;
-    # acceleration = "rocm";
+    acceleration = "rocm";
   };
   services.nextjs-ollama-llm-ui.enable = true;
 
@@ -68,7 +71,7 @@
       "/var/lib/bluetooth"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
-      "/var/lib/ollama"
+      # "/var/lib/ollama"
       {
         directory = "/var/lib/private";
         mode = "u=rwx,g=,o=";
@@ -125,9 +128,19 @@
         #}
       ];
       files = [ ".zsh_history" ];
-      #  allowOther = true;
+      # allowOther = true;
     };
   };
   programs.fuse.userAllowOther = true;
 
+  environment.etc."keycloak-database-pass".text = "PWD";
+  services.keycloak = {
+    enable = true;
+    settings = {
+      hostname = "localhost";
+      http-enabled = true;
+      hostname-strict-https = false;
+    };
+    database.passwordFile = "/etc/keycloak-database-pass";
+  };
 }
