@@ -19,11 +19,14 @@
   };
 
   services.ollama = {
-    environmentVariables = { HSA_OVERRIDE_GFX_VERSION = "10.3.0"; };
-    package = pkgs-stable.ollama;
+    # environmentVariables = { HSA_OVERRIDE_GFX_VERSION = "10.3.0"; };
+    rocmOverrideGfx = "10.3.0";
+    package = pkgs.ollama-rocm;
+    # enable = false;
     enable = true;
-    acceleration = "rocm";
+    # acceleration = "rocm";
   };
+  services.nextjs-ollama-llm-ui.enable = true;
 
   networking = {
     hostName = host; # Define your hostname.
@@ -65,6 +68,15 @@
       "/var/lib/bluetooth"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
+      "/var/lib/ollama"
+      {
+        directory = "/var/lib/private";
+        mode = "u=rwx,g=,o=";
+      }
+      {
+        directory = "/var/lib/private/ollama";
+        mode = "0700";
+      }
       "/etc/NetworkManager/system-connections"
       {
         directory = "/etc/nixos";
@@ -104,6 +116,7 @@
         ".local/share/keyrings"
         ".local/share/direnv"
         ".local/share/Steam"
+        ".local/share/oterm"
         ".config/emacs"
         ".config/Signal"
         #{
