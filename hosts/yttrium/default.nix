@@ -10,12 +10,19 @@
     ../common/optional/pipewire.nix
     ../common/optional/lutris.nix
     ../common/linux.nix
+    ../common/optional/sddm.nix
     (import ./disko.nix { device = "/dev/nvme0n1"; })
   ];
 
   mymodules.docker.enable = true;
   mymodules.gaming.enable = true;
   mymodules.impermanence.enable = true;
+
+  nix.settings = {
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys =
+      [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+  };
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;

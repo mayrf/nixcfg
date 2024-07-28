@@ -80,6 +80,7 @@ in {
           "Videos"
           "code"
           "cloud"
+          "org"
           "VirtualBox VMs"
           ".gnupg"
           ".librewolf"
@@ -95,6 +96,7 @@ in {
           ".config/Signal"
           ".config/git"
           ".config/Nextcloud"
+          ".config/keepassxc"
 
           #{
           #  directory = ".local/share/Steam";

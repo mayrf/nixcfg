@@ -43,6 +43,8 @@
   home.packages = with pkgs; [ cliphist hyprpicker brightnessctl xorg.xhost ];
   wayland.windowManager.hyprland = {
     enable = true;
+    package =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
 
     settings = {
       general = {
