@@ -7,7 +7,8 @@ let
   # withGTK3 = true;
   # };
   repoUrl = "https://github.com/doomemacs/doomemacs";
-  flakeDir = if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
+  flakeDir =
+    if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
 in {
   # Emacs
   services.emacs = {
@@ -105,7 +106,7 @@ in {
     # typescript
     nodePackages_latest.eslint
     nodePackages_latest.prettier
-    nodePackages_latest.prettier
+    prettier-plugin-go-template
     nodePackages_latest.typescript-language-server
 
     # language tools
