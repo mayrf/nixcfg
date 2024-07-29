@@ -33,6 +33,7 @@ in {
       STEAM_EXTRA_COMPAT_TOOLS_PATHS =
         "\${HOME}/.steam/root/compatibilitytools.d";
     };
+    # gamescope -W 2560 -H 1440 -r 60 -- %command%
 
   };
 }
