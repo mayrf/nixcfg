@@ -1,4 +1,4 @@
-{ config, lib, pkgs, host, configVars,... }:
+{ config, lib, pkgs, host, configVars, ... }:
 
 {
   home.shellAliases = {
@@ -20,7 +20,10 @@
   };
   home.sessionVariables = {
     FONTS = "$HOME/.local/share/fonts";
-    FLAKE = if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
+    FLAKE = if host != "yttrium" then
+      "$HOME/.config/nixcfg"
+    else
+      "${configVars.flakeDir}";
   };
   home.packages = with pkgs; [ nh nix-output-monitor nvd ];
   programs = {
