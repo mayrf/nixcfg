@@ -97,6 +97,8 @@ in {
           ".config/git"
           ".config/Nextcloud"
           ".config/keepassxc"
+          ".ollama"
+          ".cache/git/credential/socket"
 
           #{
           #  directory = ".local/share/Steam";
