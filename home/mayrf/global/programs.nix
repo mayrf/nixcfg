@@ -13,7 +13,7 @@
   home.packages = with pkgs; [
     sops
     gnucash
-    oterm
+    # oterm
     tmux
     nerdctl
     fzf
