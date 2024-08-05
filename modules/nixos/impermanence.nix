@@ -99,6 +99,7 @@ in {
           ".config/keepassxc"
           ".ollama"
           ".cache/git/credential/socket"
+          ".cache/keepassxc"
 
           #{
           #  directory = ".local/share/Steam";

@@ -13,7 +13,7 @@
   home.packages = with pkgs; [
     sops
     gnucash
-    # oterm
+    pkgs-stable.oterm
     tmux
     nerdctl
     fzf
@@ -109,6 +109,7 @@
     borgbackup
     borgmatic
     sshfs
+
     jq
     ijq
 
