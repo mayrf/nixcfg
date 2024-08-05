@@ -23,6 +23,7 @@
     argocd
     kubernetes-helm
     sxiv
+    devbox
 
     bisq-desktop
     # lutris
