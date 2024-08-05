@@ -4,17 +4,18 @@
   imports = [
     ./global
     ./linux
-    ./features/lf
     ./features/terminal/alacritty.nix
     ./features/terminal/foot.nix
     ./features/desktop/hyprland
-    ./features/editors/emacs
-    ./features/editors/vscode.nix
     ./features/postman.nix
     ./features/editors/idea.nix
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
+
+  lf.enable = true;
+  vscode.enable = true;
+  emacs.enable = true;
 
   #  ------   ------
   # | DP-1 | | DP-3 |
@@ -28,25 +29,25 @@
     workspace = "1";
     primary = true;
   }];
-#  home.persistence."/persist/home" = {
-#    directories = [
-#      "Downloads"
-#      "Music"
-#      "Pictures"
-#      "Documents"
-#      "Videos"
-#      "VirtualBox VMs"
-#      ".gnupg"
-#      ".ssh"
-#      ".nixops"
-#      ".local/share/keyrings"
-#      ".local/share/direnv"
-#      {
-#        directory = ".local/share/Steam";
-#        method = "symlink";
-#      }
-#    ];
-#    files = [ ".screenrc" ];
-#    allowOther = true;
-#  };
+  #  home.persistence."/persist/home" = {
+  #    directories = [
+  #      "Downloads"
+  #      "Music"
+  #      "Pictures"
+  #      "Documents"
+  #      "Videos"
+  #      "VirtualBox VMs"
+  #      ".gnupg"
+  #      ".ssh"
+  #      ".nixops"
+  #      ".local/share/keyrings"
+  #      ".local/share/direnv"
+  #      {
+  #        directory = ".local/share/Steam";
+  #        method = "symlink";
+  #      }
+  #    ];
+  #    files = [ ".screenrc" ];
+  #    allowOther = true;
+  #  };
 }

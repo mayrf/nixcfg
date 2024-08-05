@@ -8,11 +8,11 @@
     ./features/terminal/foot.nix
     ./features/desktop/hyprland
     ./features/terminal/kitty.nix
-    ./features/editors/emacs
-    ./features/editors/vscode.nix
   ];
 
   lf.enable = true;
+  vscode.enable = true;
+  emacs.enable = true;
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
 
