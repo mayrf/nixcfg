@@ -1,4 +1,4 @@
-{ pkgs, pkgs-stable, ... }: {
+{ pkgs, pkgs-stable, outputs, ... }: {
 
   programs = {
     zathura = {
@@ -24,6 +24,7 @@
     kubernetes-helm
     sxiv
     devbox
+    outputs.packages.x86_64-linux.kcl-language-server
 
     bisq-desktop
     # lutris
