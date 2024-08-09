@@ -8,7 +8,6 @@
     ./features/terminal/foot.nix
     ./features/desktop/hyprland
     ./features/postman.nix
-    ./features/editors/idea.nix
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

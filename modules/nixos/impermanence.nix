@@ -100,6 +100,7 @@ in {
           ".ollama"
           ".cache/git/credential/socket"
           ".cache/keepassxc"
+          ".cache/BraveSoftware"
 
           #{
           #  directory = ".local/share/Steam";

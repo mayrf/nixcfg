@@ -37,7 +37,6 @@
     enable = true;
     acceleration = "rocm";
   };
-  services.nextjs-ollama-llm-ui.enable = true;
 
   networking = {
     hostName = host; # Define your hostname.
@@ -46,14 +45,4 @@
 
   system.stateVersion = "24.05"; # Did you read the comment?
 
-  environment.etc."keycloak-database-pass".text = "PWD";
-  services.keycloak = {
-    enable = true;
-    settings = {
-      hostname = "localhost";
-      http-enabled = true;
-      hostname-strict-https = false;
-    };
-    database.passwordFile = "/etc/keycloak-database-pass";
-  };
 }
