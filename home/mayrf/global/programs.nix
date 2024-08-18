@@ -50,6 +50,7 @@
     signal-desktop
     hexchat
     logseq
+    element-desktop
 
     # Dev tools
     dbeaver-bin
@@ -89,6 +90,7 @@
     inkscape
     reaper
     ardour
+    scribus
 
     # Learning
     anki-bin

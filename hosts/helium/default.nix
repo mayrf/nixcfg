@@ -11,6 +11,9 @@
     ../common/linux.nix
   ];
 
+  mymodules.docker.enable = true;
+  mymodules.laptop.enable = true;
+
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];

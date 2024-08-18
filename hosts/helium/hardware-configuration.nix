@@ -46,6 +46,7 @@
     device = "/var/lib/swapfile";
     size = 16 * 1024;
   }];
+  services.fstrim.enable = true;
 
   networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
