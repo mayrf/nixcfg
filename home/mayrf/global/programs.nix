@@ -43,7 +43,6 @@
     # TODO add Scripts like:
     # pandoc -f markdown -t org -o ${md%.*}.org ${md};
     pandoc
-    sparrow
     statix
 
     # Social
@@ -56,7 +55,7 @@
     dbeaver-bin
     texlab
 
-    texlive.combined.scheme-full
+    pkgs-stable.texlive.combined.scheme-full
     zola
     hugo
 

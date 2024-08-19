@@ -3,4 +3,5 @@
   gaming = ./gaming.nix;
   impermanence = ./impermanence.nix;
   laptop = ./laptop.nix;
+  vpn = ./vpn.nix;
 }

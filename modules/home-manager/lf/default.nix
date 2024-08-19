@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs-stable, pkgs, lib, ... }:
 with lib;
 let cfg = config.lf;
 in {
@@ -12,8 +12,8 @@ in {
 
     home.packages = with pkgs; [
       # lf dependencies
-      ctpv
-      ueberzugpp
+      pkgs-stable.ctpv
+      pkgs-stable.ueberzugpp
       ffmpeg_6-full
       jq
       poppler_utils
