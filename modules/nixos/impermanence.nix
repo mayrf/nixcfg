@@ -99,7 +99,6 @@ in {
           ".config/keepassxc"
           ".config/BraveSoftware"
           ".ollama"
-          ".cache/git/credential/socket"
           ".cache/keepassxc"
 
           #{
@@ -107,7 +106,7 @@ in {
           #  method = "symlink";
           #}
         ];
-        files = [ ".zsh_history" ];
+        files = [ ".zsh_history" ".git-credentials" ];
         # allowOther = true;
       };
     };

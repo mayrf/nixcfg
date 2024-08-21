@@ -16,7 +16,8 @@ in {
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [ "electron-28.3.3" "electron-27.3.11" ];
+      permittedInsecurePackages = [ ];
+
     };
   };
 

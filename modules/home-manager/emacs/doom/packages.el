@@ -16,6 +16,7 @@
 (package! org-modern)
 (package! org-super-agenda)
 (package! org-download)
+(package! olivetti)
 ;; (package! copilot
 ;;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 

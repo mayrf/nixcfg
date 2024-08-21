@@ -15,7 +15,6 @@
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [ "electron-19.1.9" ];
     };
   };
   security.polkit.enable = true;

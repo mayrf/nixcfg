@@ -48,8 +48,8 @@
     # Social
     signal-desktop
     hexchat
-    logseq
-    element-desktop
+    # logseq
+    pkgs-stable.cinny-desktop
 
     # Dev tools
     dbeaver-bin

@@ -484,31 +484,39 @@ See also `org-save-all-org-buffers'"
       (message "Bad items: %s" bad))
     nil))
 
-(setq org-agenda-custom-commands
-      '(("v" "Better Agenda" (
-          (agenda "")
-          (tags "@computer"
-                ((org-agenda-overriding-header "@computer")))
-          (tags "@home"
-                ((org-agenda-overriding-header "@home")))
-          (tags "@work"
-                ((org-agenda-overriding-header "@work")))
-          (tags "@telephone"
-                ((org-agenda-overriding-header "@telephone")))
-          (alltodo "")))
-        ("c" "@computer" (
-          (tags "@computer"
-                ((org-agenda-overriding-header "@computer")))))
-        ("h" "@home" (
-          (tags "@home"
-                ((org-agenda-overriding-header "@home")))))
-        ("w" "@work" (
-          (tags "@work"
-                ((org-agenda-overriding-header "@work")))))
-        ("p" "@phone" (
-          (tags "@telephone"
-                ((org-agenda-overriding-header "@telephone")))))
-        ))
+;; Function to be run when org-agenda is opened
+(defun org-agenda-open-hook ()
+  "Hook to be run when org-agenda is opened"
+  (olivetti-mode))
+
+;; Adds hook to org agenda mode, making follow mode active in org agenda
+(add-hook 'org-agenda-mode-hook 'org-agenda-open-hook)
+
+;; (setq org-agenda-custom-commands
+;;       '(("v" "Better Agenda" (
+;;           (agenda "")
+;;           (tags "@computer"
+;;                 ((org-agenda-overriding-header "@computer")))
+;;           (tags "@home"
+;;                 ((org-agenda-overriding-header "@home")))
+;;           (tags "@work"
+;;                 ((org-agenda-overriding-header "@work")))
+;;           (tags "@telephone"
+;;                 ((org-agenda-overriding-header "@telephone")))
+;;           (alltodo "")))
+;;         ("c" "@computer" (
+;;           (tags "@computer"
+;;                 ((org-agenda-overriding-header "@computer")))))
+;;         ("h" "@home" (
+;;           (tags "@home"
+;;                 ((org-agenda-overriding-header "@home")))))
+;;         ("w" "@work" (
+;;           (tags "@work"
+;;                 ((org-agenda-overriding-header "@work")))))
+;;         ("p" "@phone" (
+;;           (tags "@telephone"
+;;                 ((org-agenda-overriding-header "@telephone")))))
+;;         ))
 
 (setq-default org-reverse-datetree-level-formats
               '("%Y"                    ; year

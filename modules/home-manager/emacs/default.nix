@@ -1,4 +1,4 @@
-{ config, pkgs, lib, host, configVars, ... }:
+{ config, pkgs, pkgs-stable, lib, host, configVars, ... }:
 with lib;
 let
   cfg = config.emacs;
@@ -83,7 +83,6 @@ in {
 
       # web mode
       html-tidy
-      vscode-langservers-extracted
 
       # docker mode
       dockfmt
@@ -134,7 +133,7 @@ in {
       python311Packages.pylint
       python311Packages.yapf
       python311Packages.pylama
-      vscode-langservers-extracted
+      pkgs-stable.vscode-langservers-extracted
 
       xclip
     ];
