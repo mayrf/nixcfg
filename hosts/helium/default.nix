@@ -12,7 +12,7 @@
   ];
 
   mymodules.docker.enable = true;
-  mymodules.virtualisation = true;
+  mymodules.virtualisation.enable = true;
   mymodules.laptop.enable = true;
 
   sops.secrets."wireguard/x220_conf" = { };
