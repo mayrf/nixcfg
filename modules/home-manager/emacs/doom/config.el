@@ -5,8 +5,6 @@
 
 (setq projectile-project-search-path '("~/code" "~/repos"))
 
-;; (setq apheleia-remote-algorithm 'local)
-
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
 ;; - `doom-font' -- the primary font to use
@@ -49,82 +47,9 @@
   (interactive)
   (magit-reset-soft "HEAD~1"))
 
-(defun toggle-window-split ()
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-             (next-win-buffer (window-buffer (next-window)))
-             (this-win-edges (window-edges (selected-window)))
-             (next-win-edges (window-edges (next-window)))
-             (this-win-2nd (not (and (<= (car this-win-edges)
-                                         (car next-win-edges))
-                                     (<= (cadr this-win-edges)
-                                         (cadr next-win-edges)))))
-             (splitter
-              (if (= (car this-win-edges)
-                     (car (window-edges (next-window))))
-                  'split-window-horizontally
-                'split-window-vertically)))
-        (delete-other-windows)
-        (let ((first-win (selected-window)))
-          (funcall splitter)
-          (if this-win-2nd (other-window 1))
-          (set-window-buffer (selected-window) this-win-buffer)
-          (set-window-buffer (next-window) next-win-buffer)
-          (select-window first-win)
-          (if this-win-2nd (other-window 1))))))
-
-  (map! :leader
-        :prefix "w"
-      "i" #'window-toggle-split-direction)
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
-
-;; (defun tdr/fix-centaur-tabs ()
-;; (centaur-tabs-mode -1)
-;; (centaur-tabs-mode)
-;; (centaur-tabs-headline-match)
-;; )
-
-;; (if (daemonp)
-;;     (add-hook 'after-make-frame-functions
-;;               (lambda (frame)
-;;                 (with-selected-frame frame
-;;                   (tdr/fix-centaur-tabs)))
-;;               (tdr/fix-centaur-tabs))
-;; )
-
-;; (setq eglot-server-programs () )
-
-;; accept completion from copilot and fallback to company
-;;(use-package! copilot
-;;  :hook (prog-mode . copilot-mode)
-;;  :bind (:map copilot-completion-map
-;;              ("<tab>" . 'copilot-accept-completion)
-;;              ("TAB" . 'copilot-accept-completion)
-;;              ("C-TAB" . 'copilot-accept-completion-by-word)
-;;              ("C-<tab>" . 'copilot-accept-completion-by-word)))
-
-(setq company-idle-delay 0.1)
-(setq company-box-doc-delay 0.2)
-(setq company-box-doc-no-wrap t)
-
-;; (after! lsp-ui
-;; (setq lsp-ui-doc-show-with-cursor t)
-  ;; (setq lsp-ui-doc-enable t)
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-ui-doc-use-webkite t))
-  ;; (setq lsp-ui-doc-delay 0))
-
-(setq-default tide-user-preferences '(:importModuleSpecifierPreference "relative" :includeCompletionsForModuleExports t :includeCompletionsWithInsertText t :allowTextChangesInNewFiles t))
-
-(map! :after lsp-mode
-      :leader
-      :prefix "l"
-      "g g" #'lsp-find-definition
-      "g r" #'lsp-find-references)
 
 (map! :leader
       (:prefix ("d" . "dired")
@@ -202,8 +127,59 @@
 (add-hook 'org-mode-hook #'org-modern-mode)
 (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
 
+;; Minimal UI
+;; (package-initialize)
+;; (menu-bar-mode -1)
+;; (tool-bar-mode -1)
+;; (scroll-bar-mode -1)
+;; (modus-themes-load-operandi)
+
+;; ;; Choose some fonts
+;; ;; (set-face-attribute 'default nil :family "Iosevka")
+;; ;; (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
+;; ;; (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
+
+;; ;; Add frame borders and window dividers
+;; (modify-all-frames-parameters
+;;  '((right-divider-width . 40)
+;;    (internal-border-width . 40)))
+;; (dolist (face '(window-divider
+;;                 window-divider-first-pixel
+;;                 window-divider-last-pixel))
+;;   (face-spec-reset-face face)
+;;   (set-face-foreground face (face-attribute 'default :background)))
+;; (set-face-background 'fringe (face-attribute 'default :background))
+
 ;; (setq
-;;     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
+;;  ;; Edit settings
+;;  org-auto-align-tags nil
+;;  org-tags-column 0
+;;  org-catch-invisible-edits 'show-and-error
+;;  org-special-ctrl-a/e t
+;;  org-insert-heading-respect-content t
+
+;;  ;; Org styling, hide markup etc.
+;;  org-hide-emphasis-markers t
+;;  org-pretty-entities t
+
+;;  ;; Agenda styling
+;;  org-agenda-tags-column 0
+;;  org-agenda-block-separator ?─
+;;  org-agenda-time-grid
+;;  '((daily today require-timed)
+;;    (800 1000 1200 1400 1600 1800 2000)
+;;    " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+;;  org-agenda-current-time-string
+;;  "◀── now ─────────────────────────────────────────────────")
+
+;; ;; Ellipsis styling
+;; (setq org-ellipsis "…")
+;; (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
+
+;; (global-org-modern-mode)
+
+(setq
+    org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
 
 (setq org-agenda-files
       (mapcar 'file-truename
