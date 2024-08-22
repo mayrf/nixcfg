@@ -12,6 +12,7 @@
   ];
 
   mymodules.docker.enable = true;
+  mymodules.virtualisation = true;
   mymodules.laptop.enable = true;
 
   sops.secrets."wireguard/x220_conf" = { };
@@ -23,7 +24,6 @@
     trusted-public-keys =
       [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
-
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
