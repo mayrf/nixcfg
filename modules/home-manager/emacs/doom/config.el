@@ -536,8 +536,9 @@ See also `org-save-all-org-buffers'"
   (setq org-capture-templates '(
                                 ("i" "Inbox test" entry
                                  (file "gtd/inbox.org")
-                                 (concat "* TODO %?\n"
-                                          "/Entered on/ %U"))
+                                 "* TODO %?\n/Entered on/ %U")
+                                 ;; (concat "* TODO %?\n"
+                                 ;;          "/Entered on/ %U"))
                                 ("t" "Todo" entry
                                  (file "~/org/gtd/inbox.org")
                                  "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
