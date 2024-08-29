@@ -1,4 +1,4 @@
-SOPS_FILE := "~/sops/secrets/secrets.yaml"
+SOPS_FILE := "~/code/sops/secrets/secrets.yaml"
 
 # default recipe to display help information
 default:

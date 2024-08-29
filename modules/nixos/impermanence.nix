@@ -98,6 +98,7 @@ in {
           ".config/Nextcloud"
           ".config/keepassxc"
           ".config/BraveSoftware"
+          ".config/sops"
           ".ollama"
           ".cache/keepassxc"
 
