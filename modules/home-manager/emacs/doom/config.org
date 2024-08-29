@@ -305,6 +305,8 @@ Reproduce Screenshot from
 #+end_src
 ** Automatic saving after refilling
 
+From [[https://www.labri.fr/perso/nrougier/GTD/index.html][Get Things Done with Emacs]]
+
 After refilling, you will have to save manually your opened org files, which is not really convenient.
 Fortunately, a small change in the code will save the files automatically.
 
@@ -704,11 +706,19 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
                            "~/org/gtd/next.org"
                            "~/org/gtd/tickler.org"))
 
+  (add-hook 'org-capture-mode-hook 'delete-other-windows)
+
   ;; setting up inbox captures
   (setq org-capture-templates '(
                                 ("i" "Inbox test" entry
                                  (file "gtd/inbox.org")
                                  "* TODO %?\n/Entered on/ %U")
+                                ("m" "Meeting" entry
+                                 (file+headline "gtd/tickler.org" "Future")
+                                 "* %? :meeting:\n<%<%Y-%m-%d %a %H:00>>")
+                                ("n" "Note" entry
+                                 (file "notes.org")
+                                 "* Note (%a)\n/Entered on/ %U\n\n%?")
                                  ;; (concat "* TODO %?\n"
                                  ;;          "/Entered on/ %U"))
                                 ("t" "Todo" entry
@@ -757,7 +767,39 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
                              ("~/org/gtd/agenda.org" :maxlevel . 1)
                              ("~/org/gtd/read-review.org" :maxlevel . 1)
                              ("~/org/gtd/tickler.org" :maxlevel . 1)))
-  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  ;; Rougier org mode stuff
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (defun log-todo-next-creation-date (&rest ignore)
+  "Log NEXT creation time in the property drawer under the key 'ACTIVATED'"
+  (when (and (string= (org-get-todo-state) "NEXT")
+             (not (org-entry-get nil "ACTIVATED")))
+    (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
+(add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
+(setq org-agenda-custom-commands
+      '(("g" "Get Things Done (GTD)"
+         ((agenda ""
+                  ((org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'deadline))
+                   (org-deadline-warning-days 0)))
+          (todo "NEXT"
+                ((org-agenda-skip-function
+                  '(org-agenda-skip-entry-if 'deadline))
+                 (org-agenda-prefix-format "  %i %-12:c [%e] ")
+                 (org-agenda-overriding-header "\nTasks\n")))
+          (agenda nil
+                  ((org-agenda-entry-types '(:deadline))
+                   (org-agenda-format-date "")
+                   (org-deadline-warning-days 7)
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
+                   (org-agenda-overriding-header "\nDeadlines")))
+          (tags-todo "inbox"
+                     ((org-agenda-prefix-format "  %?-12t% s")
+                      (org-agenda-overriding-header "\nInbox\n")))
+          (tags "CLOSED>=\"<today>\""
+                ((org-agenda-overriding-header "\nCompleted today\n")))))))
+
+
   (setq org-log-done 'time))
 #+end_src
 
