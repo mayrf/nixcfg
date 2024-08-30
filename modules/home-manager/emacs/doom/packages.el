@@ -13,12 +13,12 @@
 (package! dired-subtree)
 (package! dirvish)
 (package! markdown-preview-eww)
-(package! org-modern)
 (package! org-super-agenda)
 (package! org-download)
 (package! org-modern-indent
   :recipe (:host github :repo "jdtsmith/org-modern-indent" :files ("*.el")))
 (package! olivetti)
+(package! org-modern)
 ;; (package! copilot
 ;;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 

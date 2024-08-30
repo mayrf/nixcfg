@@ -91,7 +91,6 @@
 #+end_src
 
 
-
 * DIRED
 The following dired config is copied from distrotubes emacs config:
 
@@ -316,7 +315,7 @@ Replace the previous definition of =org-agenda-files= with the following:
 #+begin_src emacs-lisp :tangle yes
 (setq org-agenda-files
       (mapcar 'file-truename
-	      (file-expand-wildcards "~/org/*.org")))
+	      (file-expand-wildcards "~/Documents/org/*.org")))
 #+end_src
 
 Now, we create a new function to save those files, using the model of the =org-save-all-org-buffers= function and finally we add it after the =org-refile= action:
@@ -346,7 +345,7 @@ See also `org-save-all-org-buffers'"
 ;; with fullpath
 (setq org-agenda-files
       (mapcar 'file-truename
-	      (file-expand-wildcards "~/org/*.org")))
+	      (file-expand-wildcards "~/Documents/org/*.org")))
 
 ;; Save the corresponding buffers
 (defun gtd-save-org-buffers ()
@@ -369,39 +368,15 @@ See also `org-save-all-org-buffers'"
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-;; (setq org-roam-directory (file-truename "~/org/RoamNotes"))
-(setq org-roam-directory (file-truename "~/org/roam-logseq"))
-(setq org-roam-dailies-directory "journals/")
+(setq org-directory "~/Documents/org/")
+(setq org-roam-directory (file-truename "roam-logseq"))
+(setq org-roam-dailies-directory "journals")
 ;; default roam template adds extra #+title:
 (setq org-roam-capture-templates
    '(("d" "default" plain
       "%?" :target
       (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)))
-
-;; (setq org-roam-capture-templates
-;;    '(("d" "default" plain
-;;       "%?"
-;;       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title:${title}\n")
-;;       :unnarrowed t)))
-
-;; (use-package! websocket
-;;     ;; :after org-roam)
-;;     :after org)
-
-;; (use-package! org-roam-ui
-;;     ;; :after org-roam ;; or :after org
-;;     :after org ;; or :after org
-;; ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;; ;;         a hookable mode anymore, you're advised to pick something yourself
-;; ;;         if you don't care about startup time, use
-;; ;;  :hook (after-init . org-roam-ui-mode)
-;;     :config
-;;     (setq org-roam-ui-sync-theme t
-;;           org-roam-ui-follow t
-;;           org-roam-ui-update-on-save t
-;;           org-roam-ui-open-on-start t))
 
 
 #+end_src
@@ -701,10 +676,10 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
 #+begin_src emacs-lisp :tangle yes
 (after! org
   ;; (setq org-archive-reversed-order t)
-  (setq org-agenda-files '("~/org/gtd/inbox.org"
-                           "~/org/gtd/inbox_phone.org"
-                           "~/org/gtd/next.org"
-                           "~/org/gtd/tickler.org"))
+  (setq org-agenda-files '("gtd/inbox.org"
+                           "gtd/inbox_phone.org"
+                           "gtd/next.org"
+                           "gtd/tickler.org"))
 
   (add-hook 'org-capture-mode-hook 'delete-other-windows)
 
@@ -722,51 +697,35 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
                                  ;; (concat "* TODO %?\n"
                                  ;;          "/Entered on/ %U"))
                                 ("t" "Todo" entry
-                                 (file "~/org/gtd/inbox.org")
+                                 (file "gtd/inbox.org")
                                  "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
 
                                 ("r" "Rice wish" entry
-                                 (file+headline "~/org/gtd/next.org" "RICE")
+                                 (file+headline "gtd/next.org" "RICE")
                                  "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
 
                                 ("b" "book [inbox]" entry
-                                 (file+headline "~/org/gtd/inbox.org" "Books")
+                                 (file+headline "gtd/inbox.org" "Books")
                                  "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?")
 
-                                ;; ("j" "Journal" plain
-                                ;;   (file+datetree "~/org/gtd/journal.org")
-                                ;;   "" :empty-lines-after 1)
                                 ("j" "Journal" plain
-                                 (file+function "~/org/gtd/journal.org" org-reverse-datetree-goto-date-in-file)
+                                 (file+function "gtd/journal.org" org-reverse-datetree-goto-date-in-file)
                                  "%?" :empty-lines 1 :append nil)
 
                                 ("W" "Weekly Review" entry
-                                 (file+function "~/org/gtd/weekly-review.org" org-reverse-datetree-goto-date-in-file)
-                                 (file "~/org/gtd/templates/weekly_review.txt"))
+                                 (file+function "gtd/weekly-review.org" org-reverse-datetree-goto-date-in-file)
+                                 (file "gtd/templates/weekly_review.txt"))
 
                                 ("T" "Tickler" entry
-                                 (file+headline "~/org/gtd/tickler.org" "Tickler")
+                                 (file+headline "gtd/tickler.org" "Tickler")
                                  "* %i%? \n %U")))
 
-  ;; (add-to-list 'org-capture-templates
-  ;;              '("t" "Todo" entry
-  ;;                (file+headline "~/org/gtd/inbox.org" "TASKS")
-  ;;                "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n"))
 
-  ;; (add-to-list 'org-capture-templates
-  ;;              '("b" "book [inbox]" entry
-  ;;                (file+headline "~/org/gtd/inbox.org" "Books")
-  ;;                "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?"))
-  ;; (add-to-list 'org-capture-templates
-  ;;              '("T" "Tickler" entry
-  ;;                (file+headline "~/org/gtd/tickler.org" "Tickler")
-  ;;                "* %i%? \n %U"))
-
-  (setq org-refile-targets '(("~/org/gtd/next.org" :maxlevel . 1)
-                             ("~/org/gtd/someday.org" :maxlevel . 1)
-                             ("~/org/gtd/agenda.org" :maxlevel . 1)
-                             ("~/org/gtd/read-review.org" :maxlevel . 1)
-                             ("~/org/gtd/tickler.org" :maxlevel . 1)))
+  (setq org-refile-targets '(("gtd/next.org" :maxlevel . 1)
+                             ("gtd/someday.org" :maxlevel . 1)
+                             ("gtd/agenda.org" :maxlevel . 1)
+                             ("gtd/read-review.org" :maxlevel . 1)
+                             ("gtd/tickler.org" :maxlevel . 1)))
   ;; Rougier org mode stuff
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
   (defun log-todo-next-creation-date (&rest ignore)
@@ -813,7 +772,6 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
   (set-popup-rule! "*doom:vterm-popup:main" :size 0.25 :vslot -4 :select t :quit nil :ttl 0 :side 'right)
   )
 #+end_src
-
 
 * Doom pkg explaination
 
