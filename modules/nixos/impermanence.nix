@@ -80,7 +80,6 @@ in {
           "Videos"
           "code"
           "cloud"
-          "org"
           "VirtualBox VMs"
           ".gnupg"
           ".librewolf"
