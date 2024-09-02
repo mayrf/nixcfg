@@ -230,15 +230,38 @@ See also `org-save-all-org-buffers'"
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/org/")
-(setq org-roam-directory (file-truename "~/Documents/org/roam-logseq"))
-(setq org-roam-dailies-directory "~/Documents/org/roam-logseq/journals")
-;; default roam template adds extra #+title:
-(setq org-roam-capture-templates
-   '(("d" "default" plain
-      "%?" :target
-      (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)))
+
+;; Logseq compatability see: https://sbgrl.me/posts/logseq-org-roam-1/
+;; (setq org-directory "~/Documents/org/")
+(setq org-directory "~/Documents/org/"
+      org-roam-directory (file-truename (file-name-concat org-directory "roam/"))
+      org-roam-dailies-directory "journals/")
+
+
+(setq org-roam-file-exclude-regexp "\\.git/.*\\|logseq/.*$"
+      org-roam-capture-templates
+      '(("d" "default" plain
+         "%?"
+         ;; Accomodates for the fact that Logseq uses the "pages" directory
+         :target (file+head "pages/${slug}.org" "#+title: ${title}\n")
+         :unnarrowed t))
+      org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         "* %?"
+         :target (file+head "%<%Y-%m-%d>.org" ;; format matches Logseq
+                            "#+title: %<%Y-%m-%d>\n"))))
+
+
+
+
+;; (setq org-roam-directory (file-truename "~/Documents/org/roam-logseq"))
+;; (setq org-roam-dailies-directory "~/Documents/org/roam-logseq/journals")
+;; ;; default roam template adds extra #+title:
+;; (setq org-roam-capture-templates
+;;    '(("d" "default" plain
+;;       "%?" :target
+;;       (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+;;       :unnarrowed t)))
 
 ;; Function to be run when org-agenda is opened
 (defun org-agenda-open-hook ()
