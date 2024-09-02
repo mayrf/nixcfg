@@ -117,6 +117,8 @@
     # pkgs-stable.kcl-cli
 
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "iA-Writer" ]; })
+    (pkgs.nerdfonts.override {
+      fonts = [ "JetBrainsMono" "iA-Writer" "FiraCode" ];
+    })
   ];
 }

@@ -71,6 +71,7 @@
     mplus-outline-fonts.githubRelease
     dina-font
     proggyfonts
+    roboto
   ];
 
   nix.optimise.automatic = true;
