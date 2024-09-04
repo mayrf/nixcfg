@@ -6,7 +6,6 @@ let
 in {
   imports = [
     inputs.nix-colors.homeManagerModule
-    ./git
     ./shell.nix
     ./mimeApps.nix
     ../features/editors/nvim.nix

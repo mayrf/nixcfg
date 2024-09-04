@@ -5,4 +5,5 @@
   lf = import ./lf;
   emacs = import ./emacs;
   vscode = ./vscode.nix;
+  git = ./git;
 }

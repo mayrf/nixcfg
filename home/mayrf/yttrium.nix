@@ -15,6 +15,7 @@
   lf.enable = true;
   vscode.enable = true;
   emacs.enable = true;
+  git.enable = true;
 
   #  ------   ------
   # | DP-1 | | DP-3 |

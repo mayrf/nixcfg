@@ -6,6 +6,7 @@
   lf.enable = true;
   vscode.enable = true;
   emacs.enable = true;
+  git.enable = true;
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
 
