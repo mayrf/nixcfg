@@ -381,7 +381,7 @@ See also `org-save-all-org-buffers'"
       '(("d" "default" plain
          "%?"
          ;; Accomodates for the fact that Logseq uses the "pages" directory
-         :target (file+head "pages/${slug}.org" "#+title: ${title}\n")
+         :target (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
          :unnarrowed t))
       org-roam-dailies-capture-templates
       '(("d" "default" entry
@@ -702,6 +702,9 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
   (setq org-agenda-files '("gtd/inbox.org"
                            "gtd/inbox_phone.org"
                            "gtd/next.org"
+                           "gtd/projects.org"
+                           "gtd/notes.org"
+                           "gtd/meeting.org"
                            "gtd/tickler.org"))
 
   (add-hook 'org-capture-mode-hook 'delete-other-windows)
@@ -715,7 +718,7 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
                                  (file+headline "gtd/tickler.org" "Future")
                                  "* %? :meeting:\n<%<%Y-%m-%d %a %H:00>>")
                                 ("n" "Note" entry
-                                 (file "notes.org")
+                                 (file "gtd/notes.org")
                                  "* Note (%a)\n/Entered on/ %U\n\n%?")
                                  ;; (concat "* TODO %?\n"
                                  ;;          "/Entered on/ %U"))
@@ -743,12 +746,30 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
                                  (file+headline "gtd/tickler.org" "Tickler")
                                  "* %i%? \n %U")))
 
+        (setq org-refile-targets '((nil :maxlevel . 9)
+                                        (org-agenda-files :maxlevel . 1)))
+        ;; (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
+        ;; (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
 
-  (setq org-refile-targets '(("gtd/next.org" :maxlevel . 1)
-                             ("gtd/someday.org" :maxlevel . 1)
-                             ("gtd/agenda.org" :maxlevel . 1)
-                             ("gtd/read-review.org" :maxlevel . 1)
-                             ("gtd/tickler.org" :maxlevel . 1)))
+  ;; (setq org-refile-targets '(
+
+
+  ;;                            ((file-name-concat org-directory "gtd/next.org") :maxlevel . 1)
+  ;;                            ((file-name-concat org-directory "gtd/someday.org") :maxlevel . 1)
+  ;;                            ((file-name-concat org-directory "gtd/agenda.org") :maxlevel . 1)
+  ;;                            ((file-name-concat org-directory "gtd/read-review.org") :maxlevel . 1)
+  ;;                            ((file-name-concat org-directory "gtd/tickler.org") :maxlevel . 1)
+
+  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/next.org")) :maxlevel . 1)
+  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/someday.org")) :maxlevel . 1)
+  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/agenda.org")) :maxlevel . 1)
+  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/read-review.org")) :maxlevel . 1)
+  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/tickler.org")) :maxlevel . 1)
+  ;;                            ))
+                             ;; ("someday.org" :maxlevel . 1)
+                             ;; ("agenda.org" :maxlevel . 1)
+                             ;; ("read-review.org" :maxlevel . 1)
+                             ;; ("tickler.org" :maxlevel . 1)))
   ;; Rougier org mode stuff
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
   (defun log-todo-next-creation-date (&rest ignore)
@@ -784,9 +805,6 @@ From here: [[https://gist.github.com/zot/ddf1a89a567fea73bc3c8a209d48f527][org-r
 
   (setq org-log-done 'time))
 #+end_src
-
-#+RESULTS:
-: time
 
 * vterm
 
