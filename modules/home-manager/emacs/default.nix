@@ -3,12 +3,13 @@ with lib;
 let
   cfg = config.emacs;
 
-  emacs = pkgs.emacs29; # pkgs.emacs-macport
   # package = pkgs.emacs-unstable;
   # emacs = pkgs.emacs-unstable.override {
   # withXwidgets = true;
   # withGTK3 = true;
   # };
+  emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
+    (epkgs: [ epkgs.vterm epkgs.emacsql-sqlite epkgs.pdf-tools ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";
   flakeDir =
     if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
@@ -64,9 +65,6 @@ in {
     home.packages = with pkgs; [
       # Doom emacs dependencies
       lldb
-      emacsPackages.vterm
-      emacsPackages.emacsql-sqlite
-      emacsPackages.pdf-tools
       git
       (ripgrep.override { withPCRE2 = true; })
       gnutls # for TLS connectivity

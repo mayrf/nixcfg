@@ -23,15 +23,6 @@
         };
       in {
         # Cross-platform development environment (including CI)
-        devShells.default = pkgs.mkShell {
-          # Packages available in the environment
-          buildInputs = with pkgs;
-            [
-
-            ];
-          shellHook = ''
-            Welcome the your nix-dev-shell!
-          '';
-        };
+        devShells.default = import ./shell.nix { inherit pkgs; };
       });
 }
