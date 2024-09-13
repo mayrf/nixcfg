@@ -89,6 +89,7 @@ in {
           ".local/share/keyrings"
           ".local/share/direnv"
           ".local/share/Steam"
+          ".local/share/fonts"
           ".steam"
           ".local/share/oterm"
           ".config/emacs"

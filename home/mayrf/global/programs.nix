@@ -54,7 +54,6 @@
     signal-desktop
     hexchat
     # logseq
-    pkgs-stable.cinny-desktop
 
     # Dev tools
     dbeaver-bin
