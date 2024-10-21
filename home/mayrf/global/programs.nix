@@ -11,27 +11,17 @@
   };
 
   home.packages = with pkgs; [
-    sops
-    gnucash
     pkgs-stable.oterm
-    tmux
     nerdctl
-    fzf
+    tmux
     file
     nodejs
-    kubectl
     # TODO Make kubectl plugin installs declarative (example below: cnpg from "https://cloudnative-pg.io/documentation/1.24/kubectl-plugin/")
     # curl -sSfL \
     # https://github.com/cloudnative-pg/cloudnative-pg/raw/main/hack/install-cnpg-plugin.sh | \
     # sudo sh -s -- -b /usr/local/bin
     # krew
-    argocd
-    kubernetes-helm
-    sxiv
-    devbox
-    outputs.packages.x86_64-linux.kcl-language-server
 
-    bisq-desktop
     # lutris
     # Cli tools
     gparted
@@ -45,6 +35,10 @@
     git
     git-crypt
     tree
+    sops
+    sxiv
+    devbox
+    fzf
     # TODO add Scripts like:
     # pandoc -f markdown -t org -o ${md%.*}.org ${md};
     pandoc
@@ -87,13 +81,16 @@
     drawio
     thunderbird
     protonmail-bridge
-    armcord
+    legcord
     obsidian
     krita
     inkscape
     reaper
     ardour
     scribus
+    gimp
+    gnucash
+    pkgs-stable.bisq-desktop
 
     # Learning
     anki-bin
@@ -114,10 +111,19 @@
     borgbackup
     borgmatic
     sshfs
-
     jq
     ijq
+    compose2nix
+
+    # kubernetes related
+    fluxcd
+    kubectl
+    argocd
+    kubernetes-helm
     kcl
+    k9s
+    outputs.packages.x86_64-linux.kcl-language-server
+
     # pkgs-stable.kcl-cli
 
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"

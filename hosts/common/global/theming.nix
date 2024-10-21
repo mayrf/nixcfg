@@ -11,5 +11,5 @@
   # https://nixos.wiki/wiki/GNOME#Running_GNOME_programs_outside_of_GNOME
   environment.systemPackages =
     [ pkgs.adwaita-icon-theme pkgs.gnomeExtensions.appindicator ];
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = [ pkgs.gnome-settings-daemon ];
 }

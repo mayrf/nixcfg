@@ -107,7 +107,12 @@ in {
           #  method = "symlink";
           #}
         ];
-        files = [ ".zsh_history" ".git-credentials" ];
+        files = [
+          ".zsh_history"
+          ".git-credentials"
+
+          ".kube/config"
+        ];
         # allowOther = true;
       };
     };
