@@ -11,7 +11,7 @@ in {
       enable = true;
       setSocketVariable = true;
     };
-    virtualisation.containerd.enable = true;
+    # virtualisation.containerd.enable = true;
 
     environment.systemPackages = with pkgs; [
       docker-compose

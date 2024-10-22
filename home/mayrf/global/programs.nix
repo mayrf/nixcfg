@@ -20,7 +20,11 @@
     # curl -sSfL \
     # https://github.com/cloudnative-pg/cloudnative-pg/raw/main/hack/install-cnpg-plugin.sh | \
     # sudo sh -s -- -b /usr/local/bin
-    # krew
+    argocd
+    kubernetes-helm
+    sxiv
+    devbox
+    outputs.packages.x86_64-linux.kcl-language-server
 
     # lutris
     # Cli tools
