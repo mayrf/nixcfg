@@ -40,7 +40,13 @@
         include "level3(ralt_switch)"
     };  '';
   # TODO set up cliphist
-  home.packages = with pkgs; [ cliphist hyprpicker brightnessctl xorg.xhost ];
+  home.packages = with pkgs; [
+    cliphist
+    hyprpicker
+    brightnessctl
+    xorg.xhost
+    pyprland
+  ];
   wayland.windowManager.hyprland = {
     enable = true;
     package =
@@ -195,6 +201,27 @@
       submap=passthrough
       bind=SUPER,P,submap,reset
       submap=reset
+
+      $scratchpadsize = size 80% 85%
+
+      bind=SUPER,Z,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term respawn not needed"; else alacritty --class scratch_term; fi
+      bind=SUPER,Z,togglespecialworkspace,scratch_term
+
+      $scratch_term = class:^(scratch_term)$
+      windowrulev2 = float,$scratch_term
+      windowrulev2 = $scratchpadsize,$scratch_term
+      windowrulev2 = workspace special:scratch_term ,$scratch_term
+      windowrulev2 = center,$scratch_term
+
+      bind=SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacs /home/mayrf/Documents/org/gtd/inbox.org  --class scratch_emacs; fi
+      bind=SUPER,B,togglespecialworkspace,scratch_emacs
+
+      $scratch_emacs = class:^(scratch_emacs)$
+      windowrulev2 = float,$scratch_emacs
+      windowrulev2 = $scratchpadsize,$scratch_emacs
+      windowrulev2 = workspace special:scratch_emacs ,$scratch_emacs
+      windowrulev2 = center,$scratch_emacs
+
     '';
   };
 }
