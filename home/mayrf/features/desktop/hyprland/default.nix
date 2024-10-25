@@ -169,6 +169,7 @@
       (lib.optionals config.programs.wofi.enable [
         "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
         "SUPER,d,exec,${wofi} -S drun"
+        "SUPERSHIFT,N,exec, wofi-shutdown"
         "SUPERSHIFT,d,exec,${wofi} -S drun"
         "SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
       ]
@@ -213,7 +214,7 @@
       windowrulev2 = workspace special:scratch_term ,$scratch_term
       windowrulev2 = center,$scratch_term
 
-      bind=SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacs /home/mayrf/Documents/org/gtd/inbox.org  --class scratch_emacs; fi
+      bind=SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacsclient . --class scratch_emacs; fi
       bind=SUPER,B,togglespecialworkspace,scratch_emacs
 
       $scratch_emacs = class:^(scratch_emacs)$

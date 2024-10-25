@@ -11,6 +11,13 @@ in {
     ../features/editors/nvim.nix
   ];
 
+  home.file = {
+    ".local/bin" = {
+      source = ./scripts;
+      recursive = true;
+    };
+  };
+
   nixpkgs = {
     config = {
       allowUnfree = true;

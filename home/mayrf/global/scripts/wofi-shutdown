@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+# Power menu script using tofi
+
+# CHOSEN=$(printf "Lock\nSuspend\nReboot\nShutdown\nLog Out" | wofi --dmenu)
+CHOSEN=$(printf "Reboot\nShutdown\nLog Out" | wofi --dmenu)
+
+case "$CHOSEN" in
+	# "Lock") lockscreen ;;
+	# "Suspend") systemctl suspend-then-hibernate ;;
+	"Reboot") reboot ;;
+	"Shutdown") poweroff ;;
+	"Log Out") hyprctl dispatch exit ;;
+	*) exit 1 ;;
+esac
