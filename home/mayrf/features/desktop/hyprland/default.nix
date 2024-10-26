@@ -170,6 +170,7 @@
         "SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
         "SUPER,d,exec,${wofi} -S drun"
         "SUPERSHIFT,N,exec, wofi-shutdown"
+        "SUPERSHIFT,v,exec, wofi-vpn"
         "SUPERSHIFT,d,exec,${wofi} -S drun"
         "SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
       ]

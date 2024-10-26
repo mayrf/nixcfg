@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Power menu script using tofi
+
+# CHOSEN=$(printf "Lock\nSuspend\nReboot\nShutdown\nLog Out" | wofi --dmenu)
+CHOSEN=$(printf "VPN up\nVPN down" | wofi --dmenu)
+
+case "$CHOSEN" in
+# "Lock") lockscreen ;;
+# "Suspend") systemctl suspend-then-hibernate ;;
+"VPN up") sudo systemctl start wg-quick-wg0 ;;
+"VPN down") sudo systemctl stop wg-quick-wg0 ;;
+*) exit 1 ;;
+esac
