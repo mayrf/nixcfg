@@ -21,8 +21,7 @@ in {
         ];
       };
     };
-    wayland.windowManager.hyprland.settings.bind = lib.mkAfter [
-      "SUPERSHIFT,Backspace,exec,systemctl --user start hyprland-session-shutdown.target; hyprctl dispatch exit"
-    ];
+    wayland.windowManager.hyprland.settings.bind =
+      lib.mkAfter [ "SUPERSHIFT,Backspace,exec, wofi-shutdown " ];
   };
 }
