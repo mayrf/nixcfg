@@ -32,6 +32,7 @@ in rec {
             user = config.user;
             host = config.host;
           } // specialArgs;
+          # home-manager.backupFileExtension = "backup";
           home-manager.users.mayrf = {
             imports = [
               config.homePath
