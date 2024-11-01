@@ -18,7 +18,6 @@ let
 
   specialArgs = { inherit outputs inputs pkgs-stable configVars; };
 in rec {
-
   mkSystem = config:
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {
@@ -42,5 +41,4 @@ in rec {
         }
       ] ++ moduleImports;
     };
-
 }

@@ -214,8 +214,9 @@
       bind=SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacsclient -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
       bind=SUPER,B,togglespecialworkspace,scratch_emacs
 
-      $scratch_emacs = class:^(scratch_emacs)$
-      # windowrulev2 = float,$scratch_emacs
+      # $scratch_emacs = class:^(scratch_emacs)$
+      $scratch_emacs = workspace:special:scratch_emacs
+      windowrulev2 = float,$scratch_emacs
       windowrulev2 = $scratchpadsize,$scratch_emacs
       windowrulev2 = workspace special:scratch_emacs ,$scratch_emacs
       windowrulev2 = center,$scratch_emacs
