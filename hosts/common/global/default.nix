@@ -63,7 +63,7 @@
   fonts.packages = with pkgs; [
     vistafonts
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     liberation_ttf
     fira-code
@@ -76,7 +76,6 @@
 
   nix.optimise.automatic = true;
   nix = {
-    package = pkgs.nixFlakes;
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       keep-outputs = true;

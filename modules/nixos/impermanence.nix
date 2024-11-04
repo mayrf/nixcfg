@@ -90,6 +90,7 @@ in {
           ".local/share/direnv"
           ".local/share/Steam"
           ".local/share/fonts"
+          ".local/share/nautilus"
           ".steam"
           ".local/share/oterm"
           ".config/emacs"

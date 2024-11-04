@@ -40,13 +40,7 @@
         include "level3(ralt_switch)"
     };  '';
   # TODO set up cliphist
-  home.packages = with pkgs; [
-    cliphist
-    hyprpicker
-    brightnessctl
-    xorg.xhost
-    pyprland
-  ];
+  home.packages = with pkgs; [ cliphist hyprpicker brightnessctl xorg.xhost ];
 
   wayland.windowManager.hyprland = {
     enable = true;

@@ -109,7 +109,7 @@
     sushi # A quick previewer for Nautilus
     gnupg
     pinentry-qt # GnuPG s interface to passphrase input
-    ipscan
+    pkgs-stable.ipscan
     offlineimap
     (python3.withPackages (ps: with ps; [ jupyter ]))
     borgbackup
