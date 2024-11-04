@@ -330,6 +330,8 @@ See also `org-save-all-org-buffers'"
   ;; (setq org-archive-reversed-order t)
   (setq org-agenda-files '("gtd/inbox.org"
                            "gtd/inbox_phone.org"
+                           "gtd/read-review.org"
+                           "gtd/someday.org"
                            "gtd/next.org"
                            "gtd/projects.org"
                            "gtd/notes.org"
