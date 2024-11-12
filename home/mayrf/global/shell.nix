@@ -17,6 +17,8 @@
     "open" = ''xdg-open "$(find -type f | fzf)"'';
     "ec" = "ec_func";
     "k" = "kubectl";
+    "check-impermanence" = ''
+      sudo fd --one-file-system --base-directory / --type f --hidden --exclude "{tmp,etc/passwd}"'';
   };
   home.sessionVariables = {
     FONTS = "$HOME/.local/share/fonts";

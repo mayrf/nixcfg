@@ -98,10 +98,13 @@ in {
           ".config/git"
           ".config/Nextcloud"
           ".config/keepassxc"
-          ".config/BraveSoftware"
           ".config/sops"
           ".ollama"
           ".cache/keepassxc"
+          # Brave
+          ".config/BraveSoftware"
+          ".cache/BraveSoftware"
+          ".local/share/kwalletd/"
 
           #{
           #  directory = ".local/share/Steam";
