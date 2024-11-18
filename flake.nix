@@ -34,6 +34,11 @@
     };
     impermanence = { url = "github:nix-community/impermanence"; };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... }@inputs:

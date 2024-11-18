@@ -36,6 +36,7 @@ in rec {
             imports = [
               config.homePath
               inputs.impermanence.nixosModules.home-manager.impermanence
+              inputs.nixvim.homeManagerModules.nixvim
             ] ++ (builtins.attrValues outputs.homeManagerModules);
           };
         }

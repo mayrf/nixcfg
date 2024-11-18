@@ -3,7 +3,11 @@
 {
   home.shellAliases = {
     "rbs" = "sudo nixos-rebuild switch --flake $FLAKE#${host}";
-    "nfu" = "nix flake update $FLAKE --commit-lock-file";
+
+    "rbs-no-c" =
+      "sudo nixos-rebuild switch --flake $FLAKE#${host} --option build-use-substitutes false";
+
+    "nfu" = "nix flake update --flake $FLAKE --commit-lock-file";
 
     "optimize" = ''
       nix-env --list-generations

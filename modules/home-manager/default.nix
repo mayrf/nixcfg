@@ -6,4 +6,5 @@
   emacs = import ./emacs;
   vscode = ./vscode.nix;
   git = ./git;
+  myvim = ./myvim.nix;
 }
