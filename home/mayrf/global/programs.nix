@@ -127,6 +127,7 @@
     kcl
     k9s
     outputs.packages.x86_64-linux.kcl-language-server
+    outputs.packages.x86_64-linux.httpyac
 
     # pkgs-stable.kcl-cli
 
