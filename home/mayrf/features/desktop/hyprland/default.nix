@@ -96,18 +96,17 @@
         enabled=false
       }
 
-      decoration {
-        blur {
-          ignore_opacity=true
-          new_optimizations=true
-          passes=3
-          size=5
-        }
-        active_opacity=1.000000
-        col.shadow=rgba(231e1899)
-        fullscreen_opacity=1.000000
-        inactive_opacity=0.840000
-      }
+      # decoration {
+      #   blur {
+      #     ignore_opacity=true
+      #     new_optimizations=true
+      #     passes=3
+      #     size=5
+      #   }
+      #   active_opacity=1.000000
+      #   fullscreen_opacity=1.000000
+      #   inactive_opacity=0.840000
+      # }
 
       general {
         border_size=1

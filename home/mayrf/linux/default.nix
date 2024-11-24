@@ -15,7 +15,7 @@
   home = {
     username = lib.mkDefault "mayrf";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
-    stateVersion = lib.mkDefault "24.05";
+    stateVersion = lib.mkDefault "24.11";
     sessionPath = [ "$HOME/.local/bin" ];
   };
   # For virtualisation

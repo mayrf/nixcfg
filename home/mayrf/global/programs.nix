@@ -81,7 +81,8 @@
     temurin-jre-bin-21
     pkgs-stable.libreoffice-qt6-fresh
     keepassxc
-    pkgs-stable.calibre
+    # pkgs-stable.calibre
+    calibre
     drawio
     thunderbird
     protonmail-bridge
@@ -94,8 +95,9 @@
     scribus
     gimp
     gnucash
-    pkgs-stable.bisq-desktop
-
+    # pkgs-stable.bisq-desktop
+    # bisq-desktop
+    bisq2
     # Learning
     anki-bin
     tipp10
@@ -129,6 +131,7 @@
     outputs.packages.x86_64-linux.kcl-language-server
     outputs.packages.x86_64-linux.httpyac
 
+    nfs-utils
     # pkgs-stable.kcl-cli
 
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
