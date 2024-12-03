@@ -18,7 +18,7 @@ in {
       after = [ "network.target" "network-online.target" ];
       wantedBy = lib.mkForce [ ];
       environment.DEVICE = "wg0";
-      path = [ pkgs.wireguard-tools pkgs.iptables pkgs.iproute ];
+      path = [ pkgs.wireguard-tools pkgs.iptables pkgs.iproute2 ];
     };
 
     networking = {
