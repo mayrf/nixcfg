@@ -39,6 +39,8 @@ in {
         "/var/lib/bluetooth"
         "/var/lib/nixos"
         "/var/lib/systemd/coredump"
+        # "/var/lib/open-webui"
+        "/var/lib/private/open-webui"
         # "/var/lib/ollama"
         {
           directory = "/var/lib/private";
@@ -91,6 +93,7 @@ in {
           ".local/share/Steam"
           ".local/share/fonts"
           ".local/share/nautilus"
+          ".local/share/Anki2"
           ".steam"
           ".local/share/oterm"
           ".config/emacs"

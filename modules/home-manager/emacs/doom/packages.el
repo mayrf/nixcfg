@@ -22,6 +22,9 @@
 ;; (package! copilot
 ;;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 
+
+(package! org-cv
+  :recipe (:host gitlab :repo "Titan-C/org-cv" :files ("*.el")))
 ;; org roam ui
 ;; https://github.com/org-roam/org-roam-ui
 (unpin! org-roam)

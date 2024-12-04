@@ -436,6 +436,47 @@ See also `org-save-all-org-buffers'"
 
   (setq org-log-done 'time))
 
+(use-package! ox-moderncv
+    ;; :load-path "path_to_repository/org-cv/"
+    :init (require 'ox-moderncv))
+(use-package! ox-altacv
+    ;; :load-path "path_to_repository/org-cv/"
+    :init (require 'ox-altacv))
+
+(use-package! ox-awesomecv
+    ;; :load-path "path_to_repository/org-cv/"
+  :init (require 'ox-awesomecv))
+
+(use-package! ox-awesomecv2
+    ;; :load-path "path_to_repository/org-cv/"
+    :init (require 'ox-awesomecv2))
+
+;; (use-package! org-cv
+;;     ;; :load-path "path_to_repository/org-cv/"
+;;     :init (require 'ox-awesomecv))
+;; (use-package! ox-
+;;     ;; :load-path "path_to_repository/org-cv/"
+;;     :init (require 'ox-altacv))
+
+(defun org-cv-modern-export-to-pdf ()
+  (interactive)
+  (let ((outfile (org-export-output-file-name ".tex")))
+    (org-export-to-file 'moderncv outfile
+      nil nil nil nil nil
+      #'org-latex-compile)))
+
+;; (setq org-latex-compiler "lualatex")
+(setq org-latex-compiler "xelatex")
+(defun org-cv-awesome-export-to-pdf ()
+  (interactive)
+  (let (
+        (outfile (org-export-output-file-name ".tex"))
+        ;; (org-latex-compiler 'lualatex)
+        )
+    (org-export-to-file 'awesomecv outfile
+      nil nil nil nil nil
+      #'org-latex-compile)))
+
 (after! vterm
   (set-popup-rule! "*doom:vterm-popup:main" :size 0.25 :vslot -4 :select t :quit nil :ttl 0 :side 'right)
   )

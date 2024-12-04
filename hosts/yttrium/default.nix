@@ -15,6 +15,7 @@
   ];
 
   mymodules.docker.enable = true;
+  mymodules.open-webui.enable = true;
   mymodules.virtualisation.enable = true;
   mymodules.gaming.enable = true;
   mymodules.impermanence.enable = true;

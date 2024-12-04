@@ -5,4 +5,5 @@
   laptop = ./laptop.nix;
   vpn = ./vpn.nix;
   virtualisation = ./virtualisation.nix;
+  open-webui = ./open-webui.nix;
 }

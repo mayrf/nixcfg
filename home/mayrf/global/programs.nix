@@ -57,7 +57,7 @@
     dbeaver-bin
     texlab
 
-    pkgs-stable.texlive.combined.scheme-full
+    texlive.combined.scheme-full
     zola
     hugo
 
@@ -135,8 +135,8 @@
     # pkgs-stable.kcl-cli
 
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
-    (pkgs.nerdfonts.override {
-      fonts = [ "JetBrainsMono" "iA-Writer" "FiraCode" ];
-    })
+    nerd-fonts.im-writing
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
   ];
 }

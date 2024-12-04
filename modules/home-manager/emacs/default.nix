@@ -92,9 +92,9 @@ in {
       stylelint
       vimPlugins.copilot-vim
 
-      (pkgs.nerdfonts.override {
-        fonts = [ "NerdFontsSymbolsOnly" "JetBrainsMono" "iA-Writer" ];
-      })
+      nerd-fonts.im-writing
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.symbols-only
 
       # :markdown preview
       python311Packages.grip
