@@ -1,4 +1,4 @@
-{ pkgs, pkgs-stable, outputs, ... }: {
+{ pkgs, unstable, outputs, ... }: {
 
   programs = {
     zathura = {
@@ -11,7 +11,7 @@
   };
 
   home.packages = with pkgs; [
-    pkgs-stable.oterm
+    oterm
     nerdctl
     tmux
     file
@@ -79,7 +79,7 @@
     nextcloud-client
     onlyoffice-bin
     temurin-jre-bin-21
-    pkgs-stable.libreoffice-qt6-fresh
+    libreoffice-qt6-fresh
     keepassxc
     # pkgs-stable.calibre
     calibre
@@ -111,7 +111,7 @@
     sushi # A quick previewer for Nautilus
     gnupg
     pinentry-qt # GnuPG s interface to passphrase input
-    pkgs-stable.ipscan
+    ipscan
     offlineimap
     (python3.withPackages (ps: with ps; [ jupyter ]))
     borgbackup
@@ -132,11 +132,10 @@
     outputs.packages.x86_64-linux.httpyac
 
     nfs-utils
-    # pkgs-stable.kcl-cli
 
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
-    nerd-fonts.im-writing
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
+    unstable.nerd-fonts.im-writing
+    unstable.nerd-fonts.jetbrains-mono
+    unstable.nerd-fonts.fira-code
   ];
 }

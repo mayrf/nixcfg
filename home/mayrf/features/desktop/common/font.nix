@@ -1,9 +1,9 @@
-{ pkgs, ... }: {
+{ pkgs, unstable, ... }: {
   fontProfiles = {
     enable = true;
     monospace = {
       family = "FiraCode Nerd Font";
-      package = pkgs.nerd-fonts.fira-code;
+      package = unstable.nerd-fonts.fira-code;
     };
     regular = {
       family = "Fira Sans";

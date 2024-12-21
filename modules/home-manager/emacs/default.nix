@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-stable, lib, host, configVars, ... }:
+{ config, pkgs, unstable, lib, host, configVars, ... }:
 with lib;
 let
   cfg = config.emacs;
@@ -92,9 +92,9 @@ in {
       stylelint
       vimPlugins.copilot-vim
 
-      nerd-fonts.im-writing
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.symbols-only
+      unstable.nerd-fonts.im-writing
+      unstable.nerd-fonts.jetbrains-mono
+      unstable.nerd-fonts.symbols-only
 
       # :markdown preview
       python311Packages.grip
@@ -131,7 +131,7 @@ in {
       python311Packages.pylint
       python311Packages.yapf
       python311Packages.pylama
-      pkgs-stable.vscode-langservers-extracted
+      vscode-langservers-extracted
 
       xclip
     ];

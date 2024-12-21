@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-stable, ... }: {
+{ config, pkgs, ... }: {
 
   imports = [ ./sops.nix ./theming.nix ];
 

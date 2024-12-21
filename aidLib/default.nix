@@ -11,12 +11,12 @@ let
     inputs.impermanence.nixosModules.impermanence
   ] ++ (builtins.attrValues outputs.nixosModules);
 
-  pkgs-stable = import inputs.nixpkgs-stable {
+  unstable = import inputs.unstable {
     system = "x86_64-linux"; # System Architecture
     config.allowUnfree = true;
   };
 
-  specialArgs = { inherit outputs inputs pkgs-stable configVars; };
+  specialArgs = { inherit outputs inputs unstable configVars; };
 in rec {
   mkSystem = config:
     inputs.nixpkgs.lib.nixosSystem {
