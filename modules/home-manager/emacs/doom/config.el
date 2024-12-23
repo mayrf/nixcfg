@@ -32,7 +32,8 @@
 ;; (setq doom-theme 'doom-one)
 ;; (setq doom-theme 'doom-gruvbox)
 ;; (setq doom-theme 'doom-monokai-pro)
-(setq doom-theme 'doom-molokai)
+;; (setq doom-theme 'doom-molokai)
+(setq doom-theme 'doom-henna)
 
 
 ;; (setq doom-theme 'doom-manegarm)
@@ -132,6 +133,13 @@
       (kbd "TAB") 'my/org-table-tab)
     (evil-define-key 'insert org-mode-map
       (kbd "<tab>") 'my/org-table-tab)))
+
+(defun org-mode-open-hook ()
+  "Hook to be run when org-agenda is opened"
+  (olivetti-mode))
+
+;; Adds hook to org agenda mode, making follow mode active in org agenda
+(add-hook 'org-mode-hook 'org-mode-open-hook)
 
 (add-hook 'org-mode-hook #'org-modern-mode)
 (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
