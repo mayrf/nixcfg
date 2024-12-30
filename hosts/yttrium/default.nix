@@ -1,4 +1,4 @@
-{ pkgs, host, lib, ... }:
+{ pkgs, host, lib, stable, ... }:
 
 {
   imports = [
@@ -28,7 +28,7 @@
   services.ollama = {
     # environmentVariables = { HSA_OVERRIDE_GFX_VERSION = "10.3.0"; };
     rocmOverrideGfx = "10.3.0";
-    package = pkgs.ollama-rocm;
+    package = stable.ollama-rocm;
     # enable = false;
     enable = true;
     acceleration = "rocm";
@@ -39,6 +39,7 @@
   };
   hardware.ledger.enable = true;
 
-  system.stateVersion = "24.05"; # Did you read the comment?
+  # system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 
 }

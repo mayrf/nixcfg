@@ -1,4 +1,4 @@
-{ inputs, configVars }:
+{ lib, inputs, configVars }:
 let
   aidLib = (import ./default.nix) { inherit inputs; };
   outputs = inputs.self.outputs;
@@ -13,11 +13,32 @@ let
 
   unstable = import inputs.unstable {
     system = "x86_64-linux"; # System Architecture
-    config.allowUnfree = true;
+    # config.allowUnfree = true;
+    config = {
+      allowUnfree = true;
+      allowBroken = true;
+      allowUnfreePredicate = (_: true);
+      permittedInsecurePackages = [ ];
+
+    };
   };
 
-  specialArgs = { inherit outputs inputs unstable configVars; };
+  stable = import inputs.stable {
+    system = "x86_64-linux"; # System Architecture
+    # config.allowUnfree = true;
+    #
+    config = {
+      allowUnfree = true;
+      allowBroken = true;
+      allowUnfreePredicate = (_: true);
+      permittedInsecurePackages = [ ];
+
+    };
+  };
+
+  specialArgs = { inherit outputs inputs unstable stable configVars; };
 in rec {
+  relativeToRoot = lib.path.append ../.;
   mkSystem = config:
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {

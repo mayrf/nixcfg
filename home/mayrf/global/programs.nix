@@ -1,4 +1,4 @@
-{ pkgs, unstable, outputs, ... }: {
+{ pkgs, stable, unstable, outputs, ... }: {
 
   programs = {
     zathura = {
@@ -73,7 +73,7 @@
     sxiv
     urbit
     minitube
-    ardour
+    stable.ardour
 
     # Productivity
     nextcloud-client
@@ -91,13 +91,8 @@
     krita
     inkscape
     reaper
-    ardour
     scribus
     gimp
-    gnucash
-    # pkgs-stable.bisq-desktop
-    # bisq-desktop
-    bisq2
     # Learning
     anki-bin
     tipp10

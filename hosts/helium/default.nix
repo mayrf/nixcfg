@@ -9,11 +9,13 @@
     ../common/users/mayrf
     ../common/optional/pipewire.nix
     ../common/linux.nix
+    (import ./disko.nix { device = "/dev/sda"; })
   ];
 
   mymodules.docker.enable = true;
   mymodules.virtualisation.enable = true;
   mymodules.laptop.enable = true;
+  # mymodules.impermanence.enable = true;
 
   sops.secrets."wireguard/x220_conf" = { };
   mymodules.vpn.enable = true;
@@ -28,5 +30,5 @@
     hostName = host; # Define your hostname.
   };
 
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 }

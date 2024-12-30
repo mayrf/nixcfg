@@ -2,11 +2,14 @@
   description = "mayrf's NixOs configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    stable.url = "github:nixos/nixpkgs/nixos-24.11";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      # url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -49,7 +52,10 @@
       ];
       # inherit (self) outputs;
       configVars = import ./vars { inherit inputs; };
-      aidLib = import ./aidLib/default.nix { inherit inputs configVars; };
+      aidLib = import ./aidLib/default.nix {
+        inherit inputs configVars;
+        lib = inputs.nixpkgs.lib;
+      };
     in with aidLib; {
       packages = forAllSystems (system:
         let pkgs = inputs.nixpkgs.legacyPackages.${system};

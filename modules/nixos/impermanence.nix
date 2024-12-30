@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, configVars, ... }:
 with lib;
-let cfg = config.mymodules.impermanence;
+let
+  cfg = config.mymodules.impermanence;
+  persistenceDir = lib.types.option
+    inputs.impermanence.persistence."/persist/no_bak".directories;
 in {
   options.mymodules.impermanence = {
     enable = mkEnableOption "my impermanence config";
@@ -31,17 +34,30 @@ in {
       umount /btrfs_tmp
     '';
 
-    fileSystems."/persist".neededForBoot = true;
-    environment.persistence."/persist/system" = {
+    fileSystems.${configVars.persistDirRoot}.neededForBoot = true;
+    environment.persistence.${configVars.persistDir} = {
       hideMounts = true;
       directories = [
         "/var/log"
         "/var/lib/bluetooth"
         "/var/lib/nixos"
         "/var/lib/systemd/coredump"
-        # "/var/lib/open-webui"
+        "/etc/NetworkManager/system-connections"
+        {
+          directory = "/var/lib/colord";
+          user = "colord";
+          group = "colord";
+          mode = "u=rwx,g=rx,o=";
+        }
+
+        {
+          directory = "/etc/nixos";
+          user = "mayrf";
+          group = "users";
+          mode = "0777";
+        }
+
         "/var/lib/private/open-webui"
-        # "/var/lib/ollama"
         {
           directory = "/var/lib/private";
           mode = "u=rwx,g=,o=";
@@ -50,20 +66,8 @@ in {
           directory = "/var/lib/private/ollama";
           mode = "0700";
         }
-        "/etc/NetworkManager/system-connections"
-        {
-          directory = "/etc/nixos";
-          user = "mayrf";
-          group = "users";
-          mode = "0777";
-        }
-        {
-          directory = "/var/lib/colord";
-          user = "colord";
-          group = "colord";
-          mode = "u=rwx,g=rx,o=";
-        }
       ];
+
       files = [
         "/etc/machine-id"
         "/var/lib/swapfile"
@@ -73,7 +77,7 @@ in {
         }
       ];
 
-      users.mayrf = {
+      users.${configVars.username} = {
         directories = [
           "Downloads"
           "Music"
@@ -82,37 +86,65 @@ in {
           "Videos"
           "code"
           "cloud"
-          "VirtualBox VMs"
-          ".gnupg"
-          ".librewolf"
           ".ssh"
-          ".nixops"
+          ".gnupg"
+
+          "VirtualBox VMs"
+
+          ".librewolf"
+
           ".thunderbird"
+
           ".local/share/keyrings"
+
           ".local/share/direnv"
+
           ".local/share/Steam"
+
           ".local/share/fonts"
+
           ".local/share/nautilus"
+
           ".local/share/Anki2"
+
           ".steam"
+
           ".local/share/oterm"
+
           ".config/emacs"
+
           ".config/Signal"
+
           ".config/git"
+
           ".config/Nextcloud"
+
           ".config/keepassxc"
+
           ".config/sops"
+
           ".ollama"
+
           ".cache/keepassxc"
+
           # Brave
           ".config/BraveSoftware"
           ".cache/BraveSoftware"
           ".local/share/kwalletd/"
 
+          ".config/FreeTube"
+
+          ".local/share/Nextcloud/"
+
+          ".config/libreoffice"
+
           #{
           #  directory = ".local/share/Steam";
           #  method = "symlink";
           #}
+          # private stuff
+          ".sparrow"
+          ".local/share/Bisq2"
         ];
         files = [
           ".zsh_history"

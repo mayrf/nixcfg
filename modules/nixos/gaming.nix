@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, stable, ... }:
 with lib;
 let cfg = config.mymodules.gaming;
 in {
@@ -23,8 +23,8 @@ in {
       mangohud
       protonup
       lutris
-      heroic
-      bottles
+      stable.heroic
+      # bottles
     ];
 
     programs.gamemode.enable = true;

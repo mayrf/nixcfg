@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, stable, lib, ... }:
 with lib;
 let cfg = config.mymodules.open-webui;
 in {
@@ -8,6 +8,7 @@ in {
   config = mkIf cfg.enable {
     services.open-webui = {
       enable = true;
+      package = stable.open-webui;
       stateDir = "/var/lib/open-webui";
       port = 8080;
       environment = {

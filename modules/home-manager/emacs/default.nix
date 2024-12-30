@@ -9,7 +9,8 @@ let
   # withGTK3 = true;
   # };
   emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
-    (epkgs: [ epkgs.vterm epkgs.emacsql-sqlite epkgs.pdf-tools ]));
+    # (epkgs: [ epkgs.vterm epkgs.emacsql-sqlite epkgs.pdf-tools ]));
+    (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";
   flakeDir =
     if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
@@ -41,7 +42,7 @@ in {
 
         if check_dir "$EMACS_DIR"; then
             rm -rf $EMACS_DIR/*
-            ${flakeDir}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
+            ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
         fi
 
 

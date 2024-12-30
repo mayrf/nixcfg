@@ -79,6 +79,7 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       keep-outputs = true;
+      allowed-users = [ "mayrf" ];
       substituters =
         [ "https://hyprland.cachix.org" "https://nix-community.cachix.org/" ];
       trusted-public-keys = [
