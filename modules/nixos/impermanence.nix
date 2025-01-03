@@ -104,6 +104,11 @@ in {
           ".local/share/fonts"
 
           ".local/share/nautilus"
+          # For nautilus bookmarks
+          # ".config/gtk-3.0/bookmarks"
+          ".config/gtk-3.0"
+
+          ".local/share/gnucash"
 
           ".local/share/Anki2"
 
@@ -151,6 +156,8 @@ in {
           ".git-credentials"
 
           ".kube/config"
+          # Brave
+          ".config/kwalletrc"
         ];
         # allowOther = true;
       };

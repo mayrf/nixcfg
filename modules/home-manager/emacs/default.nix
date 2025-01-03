@@ -8,7 +8,8 @@ let
   # withXwidgets = true;
   # withGTK3 = true;
   # };
-  emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
+  # emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
+  emacs = ((pkgs.emacsPackagesFor pkgs.emacs30).emacsWithPackages
     # (epkgs: [ epkgs.vterm epkgs.emacsql-sqlite epkgs.pdf-tools ]));
     (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";

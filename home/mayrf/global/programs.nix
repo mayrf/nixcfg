@@ -93,6 +93,7 @@
     reaper
     scribus
     gimp
+    stable.gnucash
     # Learning
     anki-bin
     tipp10
