@@ -37,6 +37,7 @@
     };
     impermanence = { url = "github:nix-community/impermanence"; };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
     nixvim = {
       url = "github:nix-community/nixvim";
       # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`

@@ -1,0 +1,109 @@
+#+title: Emacs Configuration
+;;#+setupfile: ../headers
+#+property: header-args:emacs-lisp  :mkdirp yes :lexical t :exports code
+#+property: header-args:emacs-lisp+ :tangle ~/.config/emacs-vanilla/init.el
+#+property: header-args:emacs-lisp+ :mkdirp yes :noweb no-export
+
+* Emacs Configuration
+
+** Package Manager
+*** Elpaca
+#+begin_src emacs-lisp
+(defun my/nixos-p ()
+  "Return t if operating system is NixOS, nil otherwise."
+  (string-match-p "NixOS" (shell-command-to-string "uname -v")))
+
+(defun my/nixos/get-emacs-build-date ()
+  "Return NixOS Emacs build date."
+  (string-match "--prefix.*emacs.*\\([[:digit:]]\\{8\\}\\)" system-configuration-options)
+  (string-to-number (match-string 1 system-configuration-options)))
+
+;; Run this before the elpaca.el is loaded. Before the installer in your init.el is a good spot.
+(when (my/nixos-p) (setq elpaca-core-date (list (my/nixos/get-emacs-build-date))))
+;;(setq elpaca-core-date (list (my/nixos/get-emacs-build-date)))
+#+end_src
+
+#+begin_src emacs-lisp
+(defvar elpaca-installer-version 0.8)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil :depth 1
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (< emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
+                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                  ,(plist-get order :repo) ,repo))))
+                  ((zerop (call-process "git" nil buffer t "checkout"
+                                        (or (plist-get order :ref) "--"))))
+                  (emacs (concat invocation-directory invocation-name))
+                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                  ((require 'elpaca))
+                  ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (load "./elpaca-autoloads")))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
+#+end_src
+
+#+begin_src emacs-lisp
+;; Install use-package support
+(elpaca elpaca-use-package
+  ;; Enable use-package :ensure support for Elpaca.
+  (elpaca-use-package-mode))
+#+end_src
+
+
+** Loading All Configuration Modules
+
+#+name: emacs-modules
+| Module Name              | Config Page                      |
+|--------------------------+----------------------------------|
+| =basic-config.el=        | [[file:./basic-config.org][Basic Configuration]]              |
+| =custom-elisp.el=        | [[file:./custom-elisp.org][Custom Elisp]]                     |
+#| =package-manager.el=     | [[file:./package-manager.org][Package Manager]]                  |
+#| =keybinding-managers.el= | [[file:./keybinding-managemers.org][Keybinding Managers]]              |
+#| =applications.el=        | [[file:./packages/applications.org][Packages — Applications]]          |
+#| =autocompletion.el=      | [[file:./packages/autocompletion.org][Packages — Autocompletion]]        |
+#| =editing.el=             | [[file:./packages/editing.org][Packages — Editing]]               |
+#| =helpful.el=             | [[file:./packages/helpful.org][Packages — Making My Life Easier]] |
+#| =org.el=                 | [[file:./packages/org.org][Packages — Org Mode]]              |
+#| =programming.el=         | [[file:./packages/programming.org][Packages — Programming]]           |
+#| =visual-config.el=       | [[file:./packages/visual-config.org][Packages — Visual Configuration]]  |
+#| =keybindings.el=         | [[file:./keybindings.org][Keybindings]]                      |
+
+#+name: generate-modules
+#+begin_src emacs-lisp :tangle no :cache yes :var modules=emacs-modules :exports none
+(mapconcat (lambda (line)
+             (concat "\"" (string-trim (car line) "=" "=") "\""))
+           modules
+           " ")
+#+end_src
+
+#+RESULTS[5a092538a383cbb71829a978945746a474791415]: generate-modules
+#: "basic-config.el" "custom-elisp.el" "package-manager.el" "keybinding-managers.el" "applications.el" "autocompletion.el" "editing.el" "helpful.el" "misc.el" "org.el" "programming.el" "visual-config.el" "keybindings.el"
+: "basic-config.el" "custom-elisp.el"
+
+#+begin_src emacs-lisp :noweb yes
+(dolist (module '(<<generate-modules()>>))
+  (load (expand-file-name module
+                          (expand-file-name "lisp" user-emacs-directory))))
+#+end_src

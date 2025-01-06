@@ -9,10 +9,14 @@ let
   # withGTK3 = true;
   # };
   # emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
-  emacs = ((pkgs.emacsPackagesFor pkgs.emacs30).emacsWithPackages
+  emacs = ((pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
     # (epkgs: [ epkgs.vterm epkgs.emacsql-sqlite epkgs.pdf-tools ]));
     (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";
+  emacsBinPath = "${emacs}/bin"; 
+  # Match the default socket path for the Emacs version so emacsclient continues
+  # to work without wrapping it.
+  socketDir = "%t/emacs";
   flakeDir =
     if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
 in {
@@ -29,6 +33,63 @@ in {
       enable = true;
       package = emacs;
     };
+
+    systemd.user.services.vanillaemacs = {
+      Unit = {
+        Description = "Emacs text editor with vanilla config";
+        Documentation =
+          "info:emacs man:emacs(1) https://gnu.org/software/emacs/";
+
+        # After = optional (cfg.startWithUserSession == "graphical")
+        #   "graphical-session.target";
+        # PartOf = optional (cfg.startWithUserSession == "graphical")
+        #   "graphical-session.target";
+
+        # Avoid killing the Emacs session, which may be full of
+        # unsaved buffers.
+        X-RestartIfChanged = false;
+      # } // optionalAttrs needsSocketWorkaround {
+        # Emacs deletes its socket when shutting down, which systemd doesn't
+        # handle, resulting in a server without a socket.
+        # See https://github.com/nix-community/home-manager/issues/2018
+        RefuseManualStart = true;
+      };
+
+      Service = {
+        Type = "notify";
+
+        # We wrap ExecStart in a login shell so Emacs starts with the user's
+        # environment, most importantly $PATH and $NIX_PROFILES. It may be
+        # worth investigating a more targeted approach for user services to
+        # import the user environment.
+        ExecStart = ''
+          ${pkgs.runtimeShell} -l -c "${emacsBinPath}/emacs --init-directory ${config.xdg.configHome}/emacs-vanilla --fg-daemon=vanilla"
+    '';
+
+        # Emacs will exit with status 15 after having received SIGTERM, which
+        # is the default "KillSignal" value systemd uses to stop services.
+        SuccessExitStatus = 15;
+
+        Restart = "on-failure";
+      # } // optionalAttrs needsSocketWorkaround {
+        # Use read-only directory permissions to prevent emacs from
+        # deleting systemd's socket file before exiting.
+        ExecStartPost =
+          "${pkgs.coreutils}/bin/chmod --changes -w ${socketDir}";
+        ExecStopPost =
+          "${pkgs.coreutils}/bin/chmod --changes +w ${socketDir}";
+      };
+    # } // optionalAttrs (cfg.startWithUserSession != false) {
+      Install = {
+        WantedBy = [
+          # (if cfg.startWithUserSession == true then
+            "default.target"
+          # else
+            # "graphical-session.target")
+        ];
+      };
+    };
+
 
     home.activation = {
       doomEmacsActivationAction = ''
@@ -48,7 +109,7 @@ in {
 
 
         if check_dir "$VANILLA_EMACS_DIR"; then
-          ln -s ${flakeDir}/modules/home-manager/emacs/vanilla-emacs $VANILLA_EMACS_DIR
+          ln -s ${flakeDir}/modules/home-manager/emacs/vanilla $VANILLA_EMACS_DIR
         fi
 
         if [ ! -e "$DOOM" ]; then

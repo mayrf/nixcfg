@@ -9,7 +9,7 @@
     ../common/users/mayrf
     ../common/optional/pipewire.nix
     ../common/linux.nix
-    (import ./disko.nix { device = "/dev/sda"; })
+   # (import ./disko.nix { device = "/dev/sda"; })
   ];
 
   mymodules.docker.enable = true;

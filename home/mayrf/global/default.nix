@@ -16,6 +16,7 @@ in {
   };
 
   nixpkgs = {
+    overlays = [inputs.emacs-overlay.overlays.emacs];
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);

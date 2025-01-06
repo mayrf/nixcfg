@@ -84,6 +84,7 @@
       browser = "${pkgs.librewolf}/bin/librewolf";
       brave = "${pkgs.brave}/bin/brave";
       editor = "${pkgs.emacs}/bin/emacsclient -c";
+      vanilla_emacs = "${pkgs.emacs}/bin/emacsclient -s vanilla -c";
       hyprctl = "${pkgs.hyprland}/bin/hyprctl";
     in ''
       exec=${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill
@@ -159,6 +160,7 @@
       # Program bindings
       bind=SUPER,Return,exec,${terminal}
       bind=SUPER,e,exec,${editor}
+      bind=SUPERSHIFT,e,exec,${vanilla_emacs}
       bind=SUPER,w,exec,${browser}
       bind=SUPERSHIFT,w,exec,${brave}
       bind=SUPER,r,exec,${terminal} lf

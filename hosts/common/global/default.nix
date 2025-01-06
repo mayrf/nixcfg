@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, inputs, ... }: {
 
   imports = [ ./sops.nix ./theming.nix ];
 
@@ -76,6 +76,7 @@
 
   nix.optimise.automatic = true;
   nix = {
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       keep-outputs = true;

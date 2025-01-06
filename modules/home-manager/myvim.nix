@@ -1,12 +1,104 @@
-{ config, pkgs, lib, inputs, ... }:
-with lib;
-let cfg = config.myvim;
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+with lib; let
+  cfg = config.myvim;
 in {
-  options.myvim = { enable = mkEnableOption "my myvim user config"; };
+  options.myvim = {enable = mkEnableOption "my myvim user config";};
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      nixd
+      alejandra
+      gnumake
+    ];
+
     programs.nixvim = {
+      #imports = [./keymaps.nix];
       enable = true;
+
       # clipboard.register = "unnamedplus";
+      globalOpts = {
+        # Tab defaults (might get overwritten by an LSP server)
+        tabstop = 4;
+        shiftwidth = 4;
+        softtabstop = 0;
+        expandtab = true;
+        smarttab = true;
+
+        # System clipboard support, needs xclip/wl-clipboard
+        clipboard = {
+          providers = {
+            wl-copy.enable = true; # Wayland
+            xsel.enable = true; # For X11
+          };
+          register = "unnamedplus";
+        };
+
+        # Save undo history
+        undofile = true;
+        # Start scrolling when the cursor is X lines away from the top/bottom
+        scrolloff = 5;
+        # Always show the signcolumn, otherwise text would be shifted when displaying error icons
+        signcolumn = "yes";
+
+        # Enable mouse
+        mouse = "a";
+
+        # Search
+        ignorecase = true;
+        smartcase = true;
+
+        # Configure how new splits should be opened
+        splitright = true;
+        splitbelow = true;
+      };
+      keymaps = [
+        # Neo-tree bindings
+        {
+          action = "<cmd>Neotree toggle<CR>";
+          key = "<leader>e";
+        }
+        # Lazygit
+        {
+          mode = "n";
+          key = "<leader>gg";
+          action = "<cmd>LazyGit<CR>";
+          options = {
+            desc = "LazyGit (root dir)";
+          };
+        }
+
+        # Telescope bindings
+
+        {
+          action = "<cmd>Telescope live_grep<CR>";
+          key = "<leader>fw";
+        }
+        {
+          action = "<cmd>Telescope find_files<CR>";
+          key = "<leader>ff";
+        }
+        {
+          action = "<cmd>Telescope git_commits<CR>";
+          key = "<leader>fg";
+        }
+        {
+          action = "<cmd>Telescope oldfiles<CR>";
+          key = "<leader>fh";
+        }
+        {
+          action = "<cmd>Telescope colorscheme<CR>";
+          key = "<leader>ch";
+        }
+        {
+          action = "<cmd>Telescope man_pages<CR>";
+          key = "<leader>fm";
+        }
+      ];
       opts = {
         # Show line numbers
         number = true;
@@ -19,17 +111,6 @@ in {
 
         # Don't show the mode, since it's already in the statusline
         showmode = false;
-
-        #  See `:help 'clipboard'`
-        clipboard = {
-          providers = {
-            wl-copy.enable = true; # For Wayland
-          };
-
-          # Sync clipboard between OS and Neovim
-          #  Remove this option if you want your OS clipboard to remain independent.
-          register = "unnamedplus";
-        };
       };
       defaultEditor = true;
       globals = {
@@ -43,22 +124,32 @@ in {
       };
       colorschemes.catppuccin.enable = true;
       plugins.lualine.enable = true;
+      viAlias = true;
+      vimAlias = true;
+      plugins = {
+        oil = {
+          enable = true;
+        };
+        treesitter = {
+          enable = true;
+        };
+        telescope = {
+          enable = true;
+          extensions = {
+            fzf-native = {
+              enable = true;
+            };
+          };
+        };
+        lsp.servers.nil_ls.enable = true;
+	lsp.enable = true;
+        lsp.servers.nixd.enable = true;
+        lsp.servers.nixd.settings.formatting.command = ["alejandra"];
+        lsp.servers.nixd.settings.nixpkgs = {
+          expr = "import <nixpkgs> { }";
+        };
+        web-devicons.enable = true;
+      };
     };
-
-    # programs = {
-    #   neovim = {
-    #     enable = true;
-    #     defaultEditor = true;
-    #     viAlias = true;
-    #     vimAlias = true;
-    #     extraConfig = ''
-    #       set clipboard+=unnamedplus
-    #       set number relativenumber
-    #       set shiftwidth=4
-    #       set shiftwidth=4
-    #     '';
-    #   };
-    # };
   };
-
 }
