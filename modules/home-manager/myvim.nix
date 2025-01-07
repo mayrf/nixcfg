@@ -1,25 +1,16 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
-}:
-with lib; let
-  cfg = config.myvim;
+{ config, pkgs, lib, inputs, ... }:
+with lib;
+let cfg = config.myvim;
 in {
-  options.myvim = {enable = mkEnableOption "my myvim user config";};
+  options.myvim = { enable = mkEnableOption "my myvim user config"; };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      nixd
-      alejandra
-      gnumake
-    ];
+    home.packages = with pkgs; [ nixd alejandra gnumake ];
 
     programs.nixvim = {
       #imports = [./keymaps.nix];
       enable = true;
-
+      viAlias = true;
+      vimAlias = true;
       # clipboard.register = "unnamedplus";
       globalOpts = {
         # Tab defaults (might get overwritten by an LSP server)
@@ -67,9 +58,7 @@ in {
           mode = "n";
           key = "<leader>gg";
           action = "<cmd>LazyGit<CR>";
-          options = {
-            desc = "LazyGit (root dir)";
-          };
+          options = { desc = "LazyGit (root dir)"; };
         }
 
         # Telescope bindings
@@ -102,6 +91,7 @@ in {
       opts = {
         # Show line numbers
         number = true;
+        relativenumber = true; # Show relative line numbers
         # You can also add relative line numbers, to help with jumping.
         #  Experiment for yourself to see if you like it!
         #relativenumber = true
@@ -124,30 +114,18 @@ in {
       };
       colorschemes.catppuccin.enable = true;
       plugins.lualine.enable = true;
-      viAlias = true;
-      vimAlias = true;
       plugins = {
-        oil = {
-          enable = true;
-        };
-        treesitter = {
-          enable = true;
-        };
+        oil = { enable = true; };
+        treesitter = { enable = true; };
         telescope = {
           enable = true;
-          extensions = {
-            fzf-native = {
-              enable = true;
-            };
-          };
+          extensions = { fzf-native = { enable = true; }; };
         };
         lsp.servers.nil_ls.enable = true;
-	lsp.enable = true;
+        lsp.enable = true;
         lsp.servers.nixd.enable = true;
-        lsp.servers.nixd.settings.formatting.command = ["alejandra"];
-        lsp.servers.nixd.settings.nixpkgs = {
-          expr = "import <nixpkgs> { }";
-        };
+        lsp.servers.nixd.settings.formatting.command = [ "alejandra" ];
+        lsp.servers.nixd.settings.nixpkgs = { expr = "import <nixpkgs> { }"; };
         web-devicons.enable = true;
       };
     };
