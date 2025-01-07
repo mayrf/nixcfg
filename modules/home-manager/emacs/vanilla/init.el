@@ -54,7 +54,22 @@
 (elpaca elpaca-use-package
   ;; Enable use-package :ensure support for Elpaca.
   (elpaca-use-package-mode))
+(setq use-package-always-ensure t)
 
-(dolist (module '("basic-config.el" "custom-elisp.el" "autocompletion.el"))
-  (load (expand-file-name module
-                          (expand-file-name "lisp" user-emacs-directory))))
+(defun my/reload-emacs ()
+  (interactive)
+  (load-file "~/.config/emacs-vanilla/init.el"))
+
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))

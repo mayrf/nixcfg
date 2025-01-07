@@ -1,15 +1,30 @@
-#+title: Emacs Configuration
-;;#+setupfile: ../headers
-#+property: header-args:emacs-lisp  :mkdirp yes :lexical t :exports code
-# #+property: header-args:emacs-lisp+ :tangle ~/.config/emacs-vanilla/init.el
-#+property: header-args:emacs-lisp+ :tangle ../init.el
-#+property: header-args:emacs-lisp+ :mkdirp yes :noweb no-export
+#+title: GNU Emacs configuration
+#+author: mayrf
+#+email: 70516376+mayrf@users.noreply.github.com
+#+language: en
 
-* Emacs Configuration
+This is my WIP vanilla Emacs config. The structure and content is heavily copied from Protesilaos Stavrous' [[https://protesilaos.com/emacs/dotemacs][dotemacs config]] and I am very grateful to him for sharing all of his superb Emacs resources with the community.
 
+* The early initialisation of Emacs (=early-init.el=)
+
+#+begin_src emacs-lisp :tangle "early-init.el"
+;; (setq package-enable-at-startup nil
+;;      inhibit-startup-message   t
+;;     frame-resize-pixelwise    t  ; fine resize
+;;      package-native-compile    t ; native compile packages
+;; )
+;; (scroll-bar-mode -1)               ; disable scrollbar
+;; (tool-bar-mode -1)                 ; disable toolbar
+;; (tooltip-mode -1)                  ; disable tooltips
+;; (menu-bar-mode -1)                 ; disable menubar
+#+end_src
+
+* The main initialisation of Emacs (=init.el=)
 ** Package Manager
 *** Elpaca
-#+begin_src emacs-lisp
+**** NixOs specific fix
+See [[https://github.com/progfolio/elpaca/wiki/Usage-with-Nix][Usage with Nix · progfolio/elpaca Wiki · GitHub]]
+#+begin_src emacs-lisp :tangle "init.el"
 (defun my/nixos-p ()
   "Return t if operating system is NixOS, nil otherwise."
   (string-match-p "NixOS" (shell-command-to-string "uname -v")))
@@ -24,7 +39,8 @@
 ;;(setq elpaca-core-date (list (my/nixos/get-emacs-build-date)))
 #+end_src
 
-#+begin_src emacs-lisp
+**** Installation
+#+begin_src emacs-lisp :tangle "init.el"
 (defvar elpaca-installer-version 0.8)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -65,46 +81,50 @@
 (elpaca `(,@elpaca-order))
 #+end_src
 
-#+begin_src emacs-lisp
+**** Configuration
+#+begin_src emacs-lisp :tangle "init.el"
 ;; Install use-package support
 (elpaca elpaca-use-package
   ;; Enable use-package :ensure support for Elpaca.
   (elpaca-use-package-mode))
+(setq use-package-always-ensure t)
 #+end_src
 
-
-** Loading All Configuration Modules
-
-#+name: emacs-modules
-| Module Name              | Config Page                      |
-|--------------------------+----------------------------------|
-| =basic-config.el=        | [[file:./basic-config.org][Basic Configuration]]              |
-| =custom-elisp.el=        | [[file:./custom-elisp.org][Custom Elisp]]                     |
-| =autocompletion.el=      | [[file:./packages/autocompletion.org][Packages — Autocompletion]]        |
-#| =package-manager.el=     | [[file:./package-manager.org][Package Manager]]                  |
-#| =keybinding-managers.el= | [[file:./keybinding-managemers.org][Keybinding Managers]]              |
-#| =applications.el=        | [[file:./packages/applications.org][Packages — Applications]]          |
-#| =editing.el=             | [[file:./packages/editing.org][Packages — Editing]]               |
-#| =helpful.el=             | [[file:./packages/helpful.org][Packages — Making My Life Easier]] |
-#| =org.el=                 | [[file:./packages/org.org][Packages — Org Mode]]              |
-#| =programming.el=         | [[file:./packages/programming.org][Packages — Programming]]           |
-#| =visual-config.el=       | [[file:./packages/visual-config.org][Packages — Visual Configuration]]  |
-#| =keybindings.el=         | [[file:./keybindings.org][Keybindings]]                      |
-
-#+name: generate-modules
-#+begin_src emacs-lisp :tangle no :cache yes :var modules=emacs-modules :exports none
-(mapconcat (lambda (line)
-             (concat "\"" (string-trim (car line) "=" "=") "\""))
-           modules
-           " ")
+** Custom Elisp
+*** Reload config
+#+begin_src emacs-lisp :tangle "init.el"
+(defun my/reload-emacs ()
+  (interactive)
+  (load-file "~/.config/emacs-vanilla/init.el"))
 #+end_src
 
-#+RESULTS[5a092538a383cbb71829a978945746a474791415]: generate-modules
-#: "basic-config.el" "custom-elisp.el" "package-manager.el" "keybinding-managers.el" "applications.el" "autocompletion.el" "editing.el" "helpful.el" "misc.el" "org.el" "programming.el" "visual-config.el" "keybindings.el"
-: "basic-config.el" "custom-elisp.el" "autocompletion.el"
+** Evil mode
 
-#+begin_src emacs-lisp :noweb yes
-(dolist (module '(<<generate-modules()>>))
-  (load (expand-file-name module
-                          (expand-file-name "lisp" user-emacs-directory))))
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 #+end_src
+
+# * completion:
+# #+begin_src elisp :tangle "init.el"
+# (use-package vertico
+#   :ensure t
+#   ;; :custom
+#   ;; (vertico-scroll-margin 0) ;; Different scroll margin
+#   ;; (vertico-count 20) ;; Show more candidates
+#   ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+#   ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+#   :init
+#   (vertico-mode))
+# #+end_src
