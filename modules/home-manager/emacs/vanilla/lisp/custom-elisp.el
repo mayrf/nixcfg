@@ -1,3 +1,3 @@
-(defun my-elisp/reload-emacs ()
+(defun my/reload-emacs ()
   (interactive)
   (load-file "~/.config/emacs-vanilla/init.el"))

@@ -1,7 +1,8 @@
 #+title: Emacs Configuration
 ;;#+setupfile: ../headers
 #+property: header-args:emacs-lisp  :mkdirp yes :lexical t :exports code
-#+property: header-args:emacs-lisp+ :tangle ~/.config/emacs-vanilla/init.el
+# #+property: header-args:emacs-lisp+ :tangle ~/.config/emacs-vanilla/init.el
+#+property: header-args:emacs-lisp+ :tangle ../init.el
 #+property: header-args:emacs-lisp+ :mkdirp yes :noweb no-export
 
 * Emacs Configuration
@@ -79,10 +80,10 @@
 |--------------------------+----------------------------------|
 | =basic-config.el=        | [[file:./basic-config.org][Basic Configuration]]              |
 | =custom-elisp.el=        | [[file:./custom-elisp.org][Custom Elisp]]                     |
+| =autocompletion.el=      | [[file:./packages/autocompletion.org][Packages — Autocompletion]]        |
 #| =package-manager.el=     | [[file:./package-manager.org][Package Manager]]                  |
 #| =keybinding-managers.el= | [[file:./keybinding-managemers.org][Keybinding Managers]]              |
 #| =applications.el=        | [[file:./packages/applications.org][Packages — Applications]]          |
-#| =autocompletion.el=      | [[file:./packages/autocompletion.org][Packages — Autocompletion]]        |
 #| =editing.el=             | [[file:./packages/editing.org][Packages — Editing]]               |
 #| =helpful.el=             | [[file:./packages/helpful.org][Packages — Making My Life Easier]] |
 #| =org.el=                 | [[file:./packages/org.org][Packages — Org Mode]]              |
@@ -100,7 +101,7 @@
 
 #+RESULTS[5a092538a383cbb71829a978945746a474791415]: generate-modules
 #: "basic-config.el" "custom-elisp.el" "package-manager.el" "keybinding-managers.el" "applications.el" "autocompletion.el" "editing.el" "helpful.el" "misc.el" "org.el" "programming.el" "visual-config.el" "keybindings.el"
-: "basic-config.el" "custom-elisp.el"
+: "basic-config.el" "custom-elisp.el" "autocompletion.el"
 
 #+begin_src emacs-lisp :noweb yes
 (dolist (module '(<<generate-modules()>>))

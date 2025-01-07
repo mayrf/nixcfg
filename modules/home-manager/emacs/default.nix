@@ -9,11 +9,11 @@ let
   # withGTK3 = true;
   # };
   # emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
-  emacs = ((pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
+  emacs = ((pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages
     # (epkgs: [ epkgs.vterm epkgs.emacsql-sqlite epkgs.pdf-tools ]));
     (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";
-  emacsBinPath = "${emacs}/bin"; 
+  emacsBinPath = "${emacs}/bin";
   # Match the default socket path for the Emacs version so emacsclient continues
   # to work without wrapping it.
   socketDir = "%t/emacs";
@@ -48,11 +48,11 @@ in {
         # Avoid killing the Emacs session, which may be full of
         # unsaved buffers.
         X-RestartIfChanged = false;
-      # } // optionalAttrs needsSocketWorkaround {
+        # } // optionalAttrs needsSocketWorkaround {
         # Emacs deletes its socket when shutting down, which systemd doesn't
         # handle, resulting in a server without a socket.
         # See https://github.com/nix-community/home-manager/issues/2018
-        RefuseManualStart = true;
+        # RefuseManualStart = true;
       };
 
       Service = {
@@ -64,32 +64,29 @@ in {
         # import the user environment.
         ExecStart = ''
           ${pkgs.runtimeShell} -l -c "${emacsBinPath}/emacs --init-directory ${config.xdg.configHome}/emacs-vanilla --fg-daemon=vanilla"
-    '';
+        '';
 
         # Emacs will exit with status 15 after having received SIGTERM, which
         # is the default "KillSignal" value systemd uses to stop services.
         SuccessExitStatus = 15;
 
         Restart = "on-failure";
-      # } // optionalAttrs needsSocketWorkaround {
+        # } // optionalAttrs needsSocketWorkaround {
         # Use read-only directory permissions to prevent emacs from
         # deleting systemd's socket file before exiting.
-        ExecStartPost =
-          "${pkgs.coreutils}/bin/chmod --changes -w ${socketDir}";
-        ExecStopPost =
-          "${pkgs.coreutils}/bin/chmod --changes +w ${socketDir}";
+        # ExecStartPost = "${pkgs.coreutils}/bin/chmod --changes -w ${socketDir}";
+        # ExecStopPost = "${pkgs.coreutils}/bin/chmod --changes +w ${socketDir}";
       };
-    # } // optionalAttrs (cfg.startWithUserSession != false) {
+      # } // optionalAttrs (cfg.startWithUserSession != false) {
       Install = {
         WantedBy = [
           # (if cfg.startWithUserSession == true then
-            "default.target"
+          "default.target"
           # else
-            # "graphical-session.target")
+          # "graphical-session.target")
         ];
       };
     };
-
 
     home.activation = {
       doomEmacsActivationAction = ''

@@ -55,6 +55,6 @@
   ;; Enable use-package :ensure support for Elpaca.
   (elpaca-use-package-mode))
 
-(dolist (module '("basic-config.el" "custom-elisp.el"))
+(dolist (module '("basic-config.el" "custom-elisp.el" "autocompletion.el"))
   (load (expand-file-name module
                           (expand-file-name "lisp" user-emacs-directory))))

@@ -1,12 +1,14 @@
 #+title: Emacs — Basic Configuration
 ;;##+setupfile: ../headers
 #+property: header-args:emacs-lisp  :mkdirp yes :lexical t :exports code
-#+property: header-args:emacs-lisp+ :tangle ~/.config/emacs-vanilla/lisp/basic-config.el
+# #+property: header-args:emacs-lisp+ :tangle ~/.config/emacs-vanilla/lisp/basic-config.el
+#+property: header-args:emacs-lisp+ :tangle ../lisp/basic-config.el
 #+property: header-args:emacs-lisp+ :mkdirp yes :noweb no-export
 
 ** Early Init
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle ~/.config/emacs-vanilla/early-init.el :mkdirp yes
+# :header-args:emacs-lisp: :tangle ~/.config/emacs-vanilla/early-init.el :mkdirp yes
+:header-args:emacs-lisp: :tangle ../early-init.el :mkdirp yes
 :header-args:emacs-lisp+: :exports code :results silent :lexical t
 :END:
 The early init file is the file loaded before anything else in

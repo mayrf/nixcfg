@@ -1,0 +1,17 @@
+#+title: Emacs — Keybinding Managers
+# #+setupfile: ../headers
+#+property: header-args:emacs-lisp  :mkdirp yes :lexical t :exports code
+#+property: header-args:emacs-lisp+ :tangle ../lisp/autocompletion.el
+#+property: header-args:emacs-lisp+ :mkdirp yes :noweb no-export
+
+#+begin_src emacs-lisp
+(use-package vertico
+  :ensure t
+  ;; :custom
+  ;; (vertico-scroll-margin 0) ;; Different scroll margin
+  ;; (vertico-count 20) ;; Show more candidates
+  ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+  ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+  :init
+  (vertico-mode))
+#+end_src
