@@ -43,6 +43,11 @@ in {
         "/var/lib/nixos"
         "/var/lib/systemd/coredump"
         "/etc/NetworkManager/system-connections"
+
+        # Cups
+        "/var/cache/cups"
+        "/lib/lib/cups"
+
         {
           directory = "/var/lib/colord";
           user = "colord";

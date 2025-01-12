@@ -85,7 +85,6 @@
     calibre
     drawio
     thunderbird
-    protonmail-bridge
     legcord
     obsidian
     krita

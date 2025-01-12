@@ -7,6 +7,7 @@ in {
   imports = [ inputs.nix-colors.homeManagerModule ./shell.nix ./mimeApps.nix ];
 
   myvim.enable = true;
+  myProton.enable = true;
 
   home.file = {
     ".local/bin" = {
@@ -16,7 +17,7 @@ in {
   };
 
   nixpkgs = {
-    overlays = [inputs.emacs-overlay.overlays.emacs];
+    overlays = [ inputs.emacs-overlay.overlays.emacs ];
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);

@@ -7,4 +7,5 @@
   vscode = ./vscode.nix;
   git = ./git;
   myvim = ./myvim.nix;
+  myProton = ./protonmail.nix;
 }
