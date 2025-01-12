@@ -1,4 +1,4 @@
-{ pkgs, stable, unstable, outputs, ... }: {
+{ pkgs, stable, unstable, outputs, configVars, ... }: {
 
   programs = {
     zathura = {
@@ -8,6 +8,11 @@
     wofi = { enable = true; };
     gpg = { enable = true; };
     librewolf.enable = true;
+  };
+
+  home.persistence."${configVars.persistDir}/home/${configVars.username}" = {
+    directories = [ ".config/fabric" ];
+    # files = [ ".screenrc" ];
   };
 
   home.packages = with pkgs; [
@@ -98,6 +103,7 @@
     tipp10
     exercism
     vimgolf
+    fabric-ai
 
     #Utils
     just

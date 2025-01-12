@@ -88,11 +88,14 @@ in {
           "Music"
           "Pictures"
           "Documents"
+          "playground"
           "Videos"
           "code"
           "cloud"
           ".ssh"
           ".gnupg"
+          # docker / distrobox
+          ".local/share/containers"
 
           "VirtualBox VMs"
 
