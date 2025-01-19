@@ -7,7 +7,9 @@ in {
   imports = [ inputs.nix-colors.homeManagerModule ./shell.nix ./mimeApps.nix ];
 
   myvim.enable = true;
+  myGhostty.enable = true;
   myProton.enable = true;
+  yazi.enable = true;
 
   home.file = {
     ".local/bin" = {

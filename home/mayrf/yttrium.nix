@@ -16,6 +16,7 @@
   vscode.enable = true;
   emacs.enable = true;
   git.enable = true;
+  email.enable = true;
 
   #  ------   ------
   # | DP-1 | | DP-3 |

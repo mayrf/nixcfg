@@ -8,4 +8,7 @@
   git = ./git;
   myvim = ./myvim.nix;
   myProton = ./protonmail.nix;
+  myGhostty = ./ghostty.nix;
+  yazi = ./yazi.nix;
+  email = ./email.nix;
 }

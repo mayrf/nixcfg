@@ -59,6 +59,15 @@
         eval "$(direnv hook zsh)"
 
         # functions
+        function y() {
+          local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+          yazi "$@" --cwd-file="$tmp"
+          if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+            builtin cd -- "$cwd"
+          fi
+          rm -f -- "$tmp"
+        }
+
         ec_func() {
             nohup emacsclient -c "$1" >/dev/null 2>&1 &
         }

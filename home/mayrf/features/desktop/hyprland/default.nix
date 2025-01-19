@@ -80,8 +80,12 @@
       # terminal = config.home.sessionVariables.TERMINAL;
       # browser = defaultApp "x-scheme-handler/https";
       # editor = defaultApp "text/plain";
-      terminal = "${pkgs.kitty}/bin/kitty";
+      # terminal = "${pkgs.kitty}/bin/kitty";
+      terminal = "${pkgs.ghostty}/bin/ghostty";
+      terminal-exec = "${pkgs.ghostty}/bin/ghostty -e";
       browser = "${pkgs.librewolf}/bin/librewolf";
+      filemanager = "${pkgs.yazi}/bin/yazi";
+
       brave = "${pkgs.brave}/bin/brave";
       editor = "${pkgs.emacs}/bin/emacsclient -c";
       vanilla_emacs = "${pkgs.emacs}/bin/emacsclient -s vanilla -c";
@@ -163,7 +167,8 @@
       bind=SUPERSHIFT,e,exec,${vanilla_emacs}
       bind=SUPER,w,exec,${browser}
       bind=SUPERSHIFT,w,exec,${brave}
-      bind=SUPER,r,exec,${terminal} lf
+      # bind=SUPER,r,exec,${terminal-exec} "zsh -c -i 'y'"
+      bind=SUPER,r,exec,${terminal-exec} yazi
       bind=SUPERSHIFT,C,exec,${terminal} sudo nmtui
       bind=SUPERSHIFT, R, exec,${hyprctl} reload
       # Brightness control (only works if the system has lightd)
