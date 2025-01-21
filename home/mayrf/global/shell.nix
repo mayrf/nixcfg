@@ -20,6 +20,7 @@
     "fcd" = ''cd "$(find -type d | fzf)"'';
     "open" = ''xdg-open "$(find -type f | fzf)"'';
     "ec" = "ec_func";
+    "ec_term" = "ec_func_term";
     "ec_van" = "ec_vanilla_func";
     "k" = "kubectl";
     "check-impermanence" = ''
@@ -73,10 +74,14 @@
         }
 
         # functions
+        ec_func_term() {
+            emacsclient -c --no-window-system "$1"
+        }
+
+        # functions
         ec_vanilla_func() {
             nohup emacsclient -s vanilla -c "$1" >/dev/null 2>&1 &
         }
-
       '';
     };
   };

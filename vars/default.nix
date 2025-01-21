@@ -6,5 +6,5 @@
   persistDir = "/persist/system";
   persistDirNoBak = "/persist/no_bak";
   persistDirRoot = "/persist";
-  # isMinimal = false; # Used to indicate nixos-installer build
+  # impermanence = if host == "yttrium" then true else false;
 }

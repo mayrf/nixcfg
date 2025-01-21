@@ -8,7 +8,7 @@ in {
 
   myvim.enable = true;
   myGhostty.enable = true;
-  myProton.enable = true;
+  # myProton.enable = true;
   yazi.enable = true;
 
   home.file = {

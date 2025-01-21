@@ -60,6 +60,13 @@
   (interactive)
   (load-file "~/.config/emacs-vanilla/init.el"))
 
+(mapc
+   (lambda (string)
+     (add-to-list 'load-path (locate-user-emacs-file string)))
+   ;;'("prot-lisp" "prot-emacs-modules"))
+   '("mayrf-lisp" "mayrf-emacs-modules"))
+(require 'mayrf-emacs-completion)
+
 (use-package evil
   :ensure t
   :init

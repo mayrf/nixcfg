@@ -33,6 +33,10 @@
 
     # lutris
     # Cli tools
+    fabric-ai
+    openssl
+    btop
+    stable.argocd-autopilot
     gparted
     img2pdf
     tldr

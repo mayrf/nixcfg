@@ -151,11 +151,12 @@ I can simply stop editing it and perfom the edits directly in the
 files that are already placed where I need them to be.
 
 #+begin_src emacs-lisp :tangle "init.el"
-(mapc
- (lambda (string)
-   (add-to-list 'load-path (locate-user-emacs-file string)))
- ;;'("prot-lisp" "prot-emacs-modules"))
- '("mayrf-lisp" "mayrf-emacs-modules"))
+  (mapc
+   (lambda (string)
+     (add-to-list 'load-path (locate-user-emacs-file string)))
+   ;;'("prot-lisp" "prot-emacs-modules"))
+   '("mayrf-lisp" "mayrf-emacs-modules"))
+(require 'mayrf-emacs-completion)
 #+end_src
 
 
@@ -178,14 +179,21 @@ files that are already placed where I need them to be.
 #+end_src
 
 * completion:
-# #+begin_src elisp :tangle "init.el"
-# (use-package vertico
-#   :ensure t
-#   ;; :custom
-#   ;; (vertico-scroll-margin 0) ;; Different scroll margin
-#   ;; (vertico-count 20) ;; Show more candidates
-#   ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
-#   ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
-#   :init
-#   (vertico-mode))
-# #+end_src
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-completion.el" :mkdirp yes
+(use-package vertico
+    :ensure t
+    :custom
+    ;; (vertico-scroll-margin 0) ;; Different scroll margin
+    (vertico-count 20) ;; Show more candidates
+    ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+    ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+    :init
+    (vertico-mode))
+(use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+(provide 'mayrf-emacs-completion)
+(message "Hi")
+#+end_src
