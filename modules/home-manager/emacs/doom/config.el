@@ -3,6 +3,8 @@
 (setq user-full-name "Fritz Mayr"
       user-mail-address "70516376+mayrf@users.noreply.github.com")
 
+(setq evil-jumps-max-length 1000)
+
 (setq projectile-project-search-path '("~/code" "~/repos"))
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
@@ -17,8 +19,8 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
-(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
+;;(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
+;;(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
@@ -38,16 +40,6 @@
 
 ;; (setq doom-theme 'doom-manegarm)
 
-(setq evil-jumps-max-length 1000)
-
-; git reset --soft HEAD~1
-(require 'magit)
-
-(defun magit-user/magit-soft-reset-head~1 ()
-  "Soft reset current git repo to HEAD~1."
-  (interactive)
-  (magit-reset-soft "HEAD~1"))
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -60,257 +52,6 @@
                 vterm-mode-hook
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-(map! :leader
-      (:prefix ("d" . "dired")
-       :desc "Open dired" "d" #'dired
-       :desc "Dired jump to current" "j" #'dired-jump)
-      (:after dired
-       (:map dired-mode-map
-        :desc "Peep-dired image previews" "d p" #'peep-dired
-        :desc "Dired view file"           "d v" #'dired-view-file)))
-
-(evil-define-key 'normal dired-mode-map
-  (kbd "M-RET") 'dired-display-file
-  (kbd "h") 'dired-up-directory
-  (kbd "l") 'dired-open-file ; use dired-find-file instead of dired-open.
-  (kbd "m") 'dired-mark
-  (kbd "t") 'dired-toggle-marks
-  (kbd "u") 'dired-unmark
-  (kbd "C") 'dired-do-copy
-  (kbd "D") 'dired-do-delete
-  (kbd "J") 'dired-goto-file
-  (kbd "M") 'dired-do-chmod
-  (kbd "O") 'dired-do-chown
-  (kbd "P") 'dired-do-print
-  (kbd "R") 'dired-do-rename
-  (kbd "T") 'dired-do-touch
-  (kbd "Y") 'dired-copy-filenamecopy-filename-as-kill ; copies filename to kill ring.
-  (kbd "Z") 'dired-do-compress
-  (kbd "+") 'dired-create-directory
-  (kbd "-") 'dired-do-kill-lines
-  (kbd "% l") 'dired-downcase
-  (kbd "% m") 'dired-mark-files-regexp
-  (kbd "% u") 'dired-upcase
-  (kbd "* %") 'dired-mark-files-regexp
-  (kbd "* .") 'dired-mark-extension
-  (kbd "* /") 'dired-mark-directories
-  (kbd "; d") 'epa-dired-do-decrypt
-  (kbd "; e") 'epa-dired-do-encrypt)
-;; Get file icons in dired
-;; (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-;; With dired-open plugin, you can launch external programs for certain extensions
-;; For example, I set all .png files to open in 'sxiv' and all .mp4 files to open in 'mpv'
-(setq dired-open-extensions '(("gif" . "sxiv")
-                              ("jpg" . "sxiv")
-                              ("png" . "sxiv")
-                              ("mkv" . "mpv")
-                              ("mp4" . "mpv")))
-
-(evil-define-key 'normal peep-dired-mode-map
-  (kbd "j") 'peep-dired-next-file
-  (kbd "k") 'peep-dired-prev-file)
-(add-hook 'peep-dired-hook 'evil-normalize-keymaps)
-
-(setq delete-by-moving-to-trash t
-      trash-directory "~/.local/share/Trash/files/")
-
-;; Drag-and-drop to `dired`
-(add-hook 'dired-mode-hook 'org-download-enable)
-
-(defun my/org-table-tab ()
-  "Use `org-cycle' if inside an Org table, otherwise use original Tab functionality."
-  (interactive)
-  (if (org-at-table-p)
-      (org-cycle)
-    (if (bound-and-true-p company-mode)
-        (company-indent-or-complete-common)
-      (indent-for-tab-command))))
-
-(with-eval-after-load 'org
-  (with-eval-after-load 'evil
-    (evil-define-key 'insert org-mode-map
-      (kbd "TAB") 'my/org-table-tab)
-    (evil-define-key 'insert org-mode-map
-      (kbd "<tab>") 'my/org-table-tab)))
-
-(defun org-mode-open-hook ()
-  "Hook to be run when org-agenda is opened"
-  (olivetti-mode))
-
-;; Adds hook to org agenda mode, making follow mode active in org agenda
-(add-hook 'org-mode-hook 'org-mode-open-hook)
-
-(add-hook 'org-mode-hook #'org-modern-mode)
-(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
-(add-hook 'org-mode-hook #'org-modern-indent-mode 90)
-(setq org-modern-star nil)
-
-;; ;; Choose some fonts
-;; (set-face-attribute 'default nil :family "Iosevka")
-;; (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
-;; (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
-
-;; Add frame borders and window dividers
-(modify-all-frames-parameters
- '((right-divider-width . 20)
-   (internal-border-width . 20)))
-(dolist (face '(window-divider
-                window-divider-first-pixel
-                window-divider-last-pixel))
-  (face-spec-reset-face face)
-  (set-face-foreground face (face-attribute 'default :background)))
-(set-face-background 'fringe (face-attribute 'default :background))
-
-(setq
- ;; Edit settings
- org-auto-align-tags nil
- org-tags-column 0
- org-catch-invisible-edits 'show-and-error
- org-special-ctrl-a/e t
- org-insert-heading-respect-content t
-
- ;; Org styling, hide markup etc.
- org-hide-emphasis-markers t
- org-pretty-entities t
-
- ;; Agenda styling
- org-agenda-tags-column 0
- org-agenda-block-separator ?─
- org-agenda-time-grid
- '((daily today require-timed)
-   (800 1000 1200 1400 1600 1800 2000)
-   " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
- org-agenda-current-time-string
- "◀── now ─────────────────────────────────────────────────")
-
-;; Ellipsis styling
-;; (setq org-ellipsis "…")
-;; (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
-
-;; (global-org-modern-mode)
-
-;; (setq
-;;     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
-
-(setq org-agenda-files
-      (mapcar 'file-truename
-	      (file-expand-wildcards "~/Documents/org/*.org")))
-
-;; Save the corresponding buffers
-(defun gtd-save-org-buffers ()
-  "Save `org-agenda-files' buffers without user confirmation.
-See also `org-save-all-org-buffers'"
-  (interactive)
-  (message "Saving all org-buffers except current...")
-  ;; (save-some-buffers t (lambda ()
-  ;;   		 (when (member (buffer-file-name) org-agenda-files)
-  ;;   		   t)))
-  (org-save-all-org-buffers)
-  (message "Saving all org-buffers except current... done"))
-
-;; Add it after refile
-(advice-add 'org-refile :after
-	    (lambda (&rest _)
-	      (gtd-save-org-buffers)))
-
-(setq org-reverse-note-order t)
-;; Automatically get the files in "~/Documents/org"
-;; with fullpath
-(setq org-agenda-files
-      (mapcar 'file-truename
-	      (file-expand-wildcards "~/Documents/org/*.org")))
-
-;; Save the corresponding buffers
-(defun gtd-save-org-buffers ()
-  "Save `org-agenda-files' buffers without user confirmation.
-See also `org-save-all-org-buffers'"
-  (interactive)
-  (message "Saving org-agenda-files buffers...")
-  (save-some-buffers t (lambda ()
-			 (when (member (buffer-file-name) org-agenda-files)
-			   t)))
-  (message "Saving org-agenda-files buffers... done"))
-
-;; Add it after refile
-(advice-add 'org-refile :after
-	    (lambda (&rest _)
-	      (gtd-save-org-buffers)))
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-
-;; Logseq compatability see: https://sbgrl.me/posts/logseq-org-roam-1/
-;; (setq org-directory "~/Documents/org/")
-(setq org-directory "~/Documents/org/"
-      org-roam-directory (file-truename (file-name-concat org-directory "roam/"))
-      org-roam-dailies-directory "journals/")
-
-
-(setq org-roam-file-exclude-regexp "\\.git/.*\\|logseq/.*$"
-      org-roam-capture-templates
-      '(("d" "default" plain
-         "%?"
-         ;; Accomodates for the fact that Logseq uses the "pages" directory
-         :target (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-         :unnarrowed t))
-      org-roam-dailies-capture-templates
-      '(("d" "default" entry
-         "* %?"
-         :target (file+head "%<%Y-%m-%d>.org" ;; format matches Logseq
-                            "#+title: %<%Y-%m-%d>\n"))))
-
-
-
-
-;; (setq org-roam-directory (file-truename "~/Documents/org/roam-logseq"))
-;; (setq org-roam-dailies-directory "~/Documents/org/roam-logseq/journals")
-;; ;; default roam template adds extra #+title:
-;; (setq org-roam-capture-templates
-;;    '(("d" "default" plain
-;;       "%?" :target
-;;       (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-;;       :unnarrowed t)))
-
-;; Function to be run when org-agenda is opened
-(defun org-agenda-open-hook ()
-  "Hook to be run when org-agenda is opened"
-  (olivetti-mode))
-
-;; Adds hook to org agenda mode, making follow mode active in org agenda
-(add-hook 'org-agenda-mode-hook 'org-agenda-open-hook)
-
-;; (setq org-agenda-custom-commands
-;;       '(("v" "Better Agenda" (
-;;           (agenda "")
-;;           (tags "@computer"
-;;                 ((org-agenda-overriding-header "@computer")))
-;;           (tags "@home"
-;;                 ((org-agenda-overriding-header "@home")))
-;;           (tags "@work"
-;;                 ((org-agenda-overriding-header "@work")))
-;;           (tags "@telephone"
-;;                 ((org-agenda-overriding-header "@telephone")))
-;;           (alltodo "")))
-;;         ("c" "@computer" (
-;;           (tags "@computer"
-;;                 ((org-agenda-overriding-header "@computer")))))
-;;         ("h" "@home" (
-;;           (tags "@home"
-;;                 ((org-agenda-overriding-header "@home")))))
-;;         ("w" "@work" (
-;;           (tags "@work"
-;;                 ((org-agenda-overriding-header "@work")))))
-;;         ("p" "@phone" (
-;;           (tags "@telephone"
-;;                 ((org-agenda-overriding-header "@telephone")))))
-;;         ))
-
-(setq-default org-reverse-datetree-level-formats
-              '("%Y"                    ; year
-                (lambda (time) (format-time-string "%Y-%m %B" (org-reverse-datetree-monday time))) ; month
-;;                "%Y W%W"                ; week
-                "%Y-%m-%d %A"))           ; date
 
 (after! ispell
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
@@ -444,50 +185,210 @@ See also `org-save-all-org-buffers'"
 
   (setq org-log-done 'time))
 
-(use-package! ox-moderncv
-    ;; :load-path "path_to_repository/org-cv/"
-    :init (require 'ox-moderncv))
-(use-package! ox-altacv
-    ;; :load-path "path_to_repository/org-cv/"
-    :init (require 'ox-altacv))
+; git reset --soft HEAD~1
+(require 'magit)
 
-(use-package! ox-awesomecv
-    ;; :load-path "path_to_repository/org-cv/"
-  :init (require 'ox-awesomecv))
-
-(use-package! ox-awesomecv2
-    ;; :load-path "path_to_repository/org-cv/"
-    :init (require 'ox-awesomecv2))
-
-;; (use-package! org-cv
-;;     ;; :load-path "path_to_repository/org-cv/"
-;;     :init (require 'ox-awesomecv))
-;; (use-package! ox-
-;;     ;; :load-path "path_to_repository/org-cv/"
-;;     :init (require 'ox-altacv))
-
-(defun org-cv-modern-export-to-pdf ()
+(defun magit-user/magit-soft-reset-head~1 ()
+  "Soft reset current git repo to HEAD~1."
   (interactive)
-  (let ((outfile (org-export-output-file-name ".tex")))
-    (org-export-to-file 'moderncv outfile
-      nil nil nil nil nil
-      #'org-latex-compile)))
+  (magit-reset-soft "HEAD~1"))
 
-;; (setq org-latex-compiler "lualatex")
-(setq org-latex-compiler "xelatex")
-(defun org-cv-awesome-export-to-pdf ()
+(map! :leader
+      (:prefix ("d" . "dired")
+       :desc "Open dired" "d" #'dired
+       :desc "Dired jump to current" "j" #'dired-jump)
+      (:after dired
+       (:map dired-mode-map
+        :desc "Peep-dired image previews" "d p" #'peep-dired
+        :desc "Dired view file"           "d v" #'dired-view-file)))
+
+(evil-define-key 'normal dired-mode-map
+  (kbd "M-RET") 'dired-display-file
+  (kbd "h") 'dired-up-directory
+  (kbd "l") 'dired-open-file ; use dired-find-file instead of dired-open.
+  (kbd "m") 'dired-mark
+  (kbd "t") 'dired-toggle-marks
+  (kbd "u") 'dired-unmark
+  (kbd "C") 'dired-do-copy
+  (kbd "D") 'dired-do-delete
+  (kbd "J") 'dired-goto-file
+  (kbd "M") 'dired-do-chmod
+  (kbd "O") 'dired-do-chown
+  (kbd "P") 'dired-do-print
+  (kbd "R") 'dired-do-rename
+  (kbd "T") 'dired-do-touch
+  (kbd "Y") 'dired-copy-filenamecopy-filename-as-kill ; copies filename to kill ring.
+  (kbd "Z") 'dired-do-compress
+  (kbd "+") 'dired-create-directory
+  (kbd "-") 'dired-do-kill-lines
+  (kbd "% l") 'dired-downcase
+  (kbd "% m") 'dired-mark-files-regexp
+  (kbd "% u") 'dired-upcase
+  (kbd "* %") 'dired-mark-files-regexp
+  (kbd "* .") 'dired-mark-extension
+  (kbd "* /") 'dired-mark-directories
+  (kbd "; d") 'epa-dired-do-decrypt
+  (kbd "; e") 'epa-dired-do-encrypt)
+;; Get file icons in dired
+;; (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+;; With dired-open plugin, you can launch external programs for certain extensions
+;; For example, I set all .png files to open in 'sxiv' and all .mp4 files to open in 'mpv'
+(setq dired-open-extensions '(("gif" . "sxiv")
+                              ("jpg" . "sxiv")
+                              ("png" . "sxiv")
+                              ("mkv" . "mpv")
+                              ("mp4" . "mpv")))
+
+(evil-define-key 'normal peep-dired-mode-map
+  (kbd "j") 'peep-dired-next-file
+  (kbd "k") 'peep-dired-prev-file)
+(add-hook 'peep-dired-hook 'evil-normalize-keymaps)
+
+(setq delete-by-moving-to-trash t
+      trash-directory "~/.local/share/Trash/files/")
+
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+
+;; (defun my/org-table-tab ()
+;;   "Use `org-cycle' if inside an Org table, otherwise use original Tab functionality."
+;;   (interactive)
+;;   (if (org-at-table-p)
+;;       (org-cycle)
+;;     (if (bound-and-true-p company-mode)
+;;         (company-indent-or-complete-common)
+;;       (indent-for-tab-command))))
+
+;; (with-eval-after-load 'org
+;;   (with-eval-after-load 'evil
+;;     (evil-define-key 'insert org-mode-map
+;;       (kbd "TAB") 'my/org-table-tab)
+;;     (evil-define-key 'insert org-mode-map
+;;       (kbd "<tab>") 'my/org-table-tab)))
+
+(defun org-mode-open-hook ()
+  "Hook to be run when org-agenda is opened"
+  (olivetti-mode))
+
+;; Adds hook to org agenda mode, making follow mode active in org agenda
+(add-hook 'org-mode-hook 'org-mode-open-hook)
+
+(add-hook 'org-mode-hook #'org-modern-mode)
+(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+(add-hook 'org-mode-hook #'org-modern-indent-mode 90)
+(setq org-modern-star nil)
+
+;; ;; Choose some fonts
+;; (set-face-attribute 'default nil :family "Iosevka")
+;; (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
+;; (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
+
+;; Add frame borders and window dividers
+(modify-all-frames-parameters
+ '((right-divider-width . 20)
+   (internal-border-width . 20)))
+(dolist (face '(window-divider
+                window-divider-first-pixel
+                window-divider-last-pixel))
+  (face-spec-reset-face face)
+  (set-face-foreground face (face-attribute 'default :background)))
+(set-face-background 'fringe (face-attribute 'default :background))
+
+(setq
+ ;; Edit settings
+ org-auto-align-tags nil
+ org-tags-column 0
+ org-catch-invisible-edits 'show-and-error
+ org-special-ctrl-a/e t
+ org-insert-heading-respect-content t
+
+ ;; Org styling, hide markup etc.
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+
+ ;; Agenda styling
+ org-agenda-tags-column 0
+ org-agenda-block-separator ?─
+ org-agenda-time-grid
+ '((daily today require-timed)
+   (800 1000 1200 1400 1600 1800 2000)
+   " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+ org-agenda-current-time-string
+ "◀── now ─────────────────────────────────────────────────")
+
+;; Ellipsis styling
+;; (setq org-ellipsis "…")
+;; (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
+
+;; (global-org-modern-mode)
+
+;; (setq
+;;     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
+
+;; Automatically get the files in "~/Documents/org"
+;; with fullpath
+(setq org-agenda-files
+      (mapcar 'file-truename
+	      (file-expand-wildcards "~/Documents/org/*.org")))
+
+;; Save the corresponding buffers
+(defun gtd-save-org-buffers ()
+  "Save `org-agenda-files' buffers without user confirmation.
+See also `org-save-all-org-buffers'"
   (interactive)
-  (let (
-        (outfile (org-export-output-file-name ".tex"))
-        ;; (org-latex-compiler 'lualatex)
-        )
-    (org-export-to-file 'awesomecv outfile
-      nil nil nil nil nil
-      #'org-latex-compile)))
+  (message "Saving all org-buffers except current...")
+  (save-some-buffers t (lambda ()
+    		 (when (member (buffer-file-name) org-agenda-files)
+    		   t)))
+  (org-save-all-org-buffers)
+  (message "Saving all org-buffers except current... done"))
 
-(after! vterm
-  (set-popup-rule! "*doom:vterm-popup:main" :size 0.25 :vslot -4 :select t :quit nil :ttl 0 :side 'right)
-  )
+;; Add it after refile
+(advice-add 'org-refile :after
+	    (lambda (&rest _)
+	      (gtd-save-org-buffers)))
+(setq org-reverse-note-order t)
+
+;; If you use `org' and don't want your org files in the default location below,
+;; change `org-directory'. It must be set before org loads!
+
+;; Logseq compatability see: https://sbgrl.me/posts/logseq-org-roam-1/
+;; (setq org-directory "~/Documents/org/")
+(setq org-directory "~/Documents/org/"
+      org-roam-directory (file-truename (file-name-concat org-directory "roam/"))
+      org-roam-dailies-directory "journals/")
+
+
+(setq org-roam-file-exclude-regexp "\\.git/.*\\|logseq/.*$"
+      org-roam-capture-templates
+      '(("d" "default" plain
+         "%?"
+         ;; Accomodates for the fact that Logseq uses the "pages" directory
+         :target (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+         :unnarrowed t))
+      org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         "* %?"
+         :target (file+head "%<%Y-%m-%d>.org" ;; format matches Logseq
+                            "#+title: %<%Y-%m-%d>\n"))))
+
+
+
+
+;; (setq org-roam-directory (file-truename "~/Documents/org/roam-logseq"))
+;; (setq org-roam-dailies-directory "~/Documents/org/roam-logseq/journals")
+;; ;; default roam template adds extra #+title:
+;; (setq org-roam-capture-templates
+;;    '(("d" "default" plain
+;;       "%?" :target
+;;       (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+;;       :unnarrowed t)))
+
+(setq-default org-reverse-datetree-level-formats
+              '("%Y"                    ; year
+                (lambda (time) (format-time-string "%Y-%m %B" (org-reverse-datetree-monday time))) ; month
+;;                "%Y W%W"                ; week
+                "%Y-%m-%d %A"))           ; date
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
