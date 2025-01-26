@@ -1,0 +1,28 @@
+
+IMAPAccount mayrf #Name your account. Can be anything.
+Host 127.0.0.1 #Enter your email providers IMAP host address. Typically this is something like imap.gmail.com or imap-mail.outlook.com.
+Port 1993 #This can either be 993 or 143 depending on your connection type.
+User f.mayr@hotmail.com #This is your actual email address.
+Pass ynbv32gCY8XcNbYTvBBv #This is your email password.
+AuthMechs LOGIN #This declares what type of authentication is used by the email server, in most cases you will use LOGIN.
+#SSLType IMAPS #Sets the connection type. In our case we are using IMAPS (IMAP over TLS) but in some cases can be STARTTLS.
+TLSType None #Sets the connection type. In our case we are using IMAPS (IMAP over TLS) but in some cases can be STARTTLS.
+#CertificateFile /etc/ssl/certs/ca-certificates.crt #The location of your cert files.
+
+IMAPStore mayrf-remote #Name your IMAPStore. Can be anything really.
+Account mayrf #Set your account to use. This is in reference to the above settings.
+
+MaildirStore mayrf-local #Name your MaidldirStore. Can be anything really.
+Subfolders Verbatim #Sets the naming style used for hierarchical mailboxes. Verbatim sets it to Path/top/sub/subsub and Inbox/sub/subsub.
+Path /home/mayrf/.mail/f.mayr@hotmail.com/ #This is the path to the directory of your local mail.
+Inbox /home/mayrf/.mail/f.mayr@hotmail.com/INBOX #This is the path to the directory of your local INBOX folder.
+
+Channel mayrf #Name the Channel. Can be anything really.
+Expunge Both #This makes it so all files marked for deletion on both the mail server and the local machine are deleted.
+Far :mayrf-remote: #Set this to the name of your IMAPStore you set above.
+Near :mayrf-local: #Set this to the name of your MaildirStore you set above.
+Patterns "INBOX" "*" #This sets what mailboxes to sync. The "*" syncs anything and all mailboxes on your server.
+Create Both #This creates all missing mail boxes on both the local machine and the server.
+Sync All #This executes all sync operations.
+SyncState * #Sets the location of this channels sync state. Default is .mbsyncstate.
+# End profile

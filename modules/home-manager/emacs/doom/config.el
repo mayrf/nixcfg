@@ -19,7 +19,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-;;(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
 ;;(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
@@ -273,61 +273,61 @@
 ;; Adds hook to org agenda mode, making follow mode active in org agenda
 (add-hook 'org-mode-hook 'org-mode-open-hook)
 
-(add-hook 'org-mode-hook #'org-modern-mode)
-(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
-(add-hook 'org-mode-hook #'org-modern-indent-mode 90)
-(setq org-modern-star nil)
+;; (add-hook 'org-mode-hook #'org-modern-mode)
+;; (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+;; (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
+;; (setq org-modern-star nil)
 
-;; ;; Choose some fonts
-;; (set-face-attribute 'default nil :family "Iosevka")
-;; (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
-;; (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
+;; ;; ;; Choose some fonts
+;; ;; (set-face-attribute 'default nil :family "Iosevka")
+;; ;; (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
+;; ;; (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
 
-;; Add frame borders and window dividers
-(modify-all-frames-parameters
- '((right-divider-width . 20)
-   (internal-border-width . 20)))
-(dolist (face '(window-divider
-                window-divider-first-pixel
-                window-divider-last-pixel))
-  (face-spec-reset-face face)
-  (set-face-foreground face (face-attribute 'default :background)))
-(set-face-background 'fringe (face-attribute 'default :background))
+;; ;; Add frame borders and window dividers
+;; (modify-all-frames-parameters
+;;  '((right-divider-width . 20)
+;;    (internal-border-width . 20)))
+;; (dolist (face '(window-divider
+;;                 window-divider-first-pixel
+;;                 window-divider-last-pixel))
+;;   (face-spec-reset-face face)
+;;   (set-face-foreground face (face-attribute 'default :background)))
+;; (set-face-background 'fringe (face-attribute 'default :background))
 
-(setq
- ;; Edit settings
- org-auto-align-tags nil
- org-tags-column 0
- org-catch-invisible-edits 'show-and-error
- org-special-ctrl-a/e t
- org-insert-heading-respect-content t
+;; (setq
+;;  ;; Edit settings
+;;  org-auto-align-tags nil
+;;  org-tags-column 0
+;;  org-catch-invisible-edits 'show-and-error
+;;  org-special-ctrl-a/e t
+;;  org-insert-heading-respect-content t
 
- ;; Org styling, hide markup etc.
- org-hide-emphasis-markers t
- org-pretty-entities t
+;;  ;; Org styling, hide markup etc.
+;;  org-hide-emphasis-markers t
+;;  org-pretty-entities t
 
- ;; Agenda styling
- org-agenda-tags-column 0
- org-agenda-block-separator ?─
- org-agenda-time-grid
- '((daily today require-timed)
-   (800 1000 1200 1400 1600 1800 2000)
-   " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
- org-agenda-current-time-string
- "◀── now ─────────────────────────────────────────────────")
+;;  ;; Agenda styling
+;;  org-agenda-tags-column 0
+;;  org-agenda-block-separator ?─
+;;  org-agenda-time-grid
+;;  '((daily today require-timed)
+;;    (800 1000 1200 1400 1600 1800 2000)
+;;    " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+;;  org-agenda-current-time-string
+;;  "◀── now ─────────────────────────────────────────────────")
 
-;; Ellipsis styling
-;; (setq org-ellipsis "…")
-;; (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
+;; ;; Ellipsis styling
+;; ;; (setq org-ellipsis "…")
+;; ;; (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
 
-;; (global-org-modern-mode)
+;; ;; (global-org-modern-mode)
 
 ;; (setq
 ;;     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
 
 ;; Automatically get the files in "~/Documents/org"
 ;; with fullpath
-(setq org-agenda-files
+(setq my/org-files
       (mapcar 'file-truename
 	      (file-expand-wildcards "~/Documents/org/*.org")))
 
@@ -338,7 +338,7 @@ See also `org-save-all-org-buffers'"
   (interactive)
   (message "Saving all org-buffers except current...")
   (save-some-buffers t (lambda ()
-    		 (when (member (buffer-file-name) org-agenda-files)
+    		 (when (member (buffer-file-name) my/org-files)
     		   t)))
   (org-save-all-org-buffers)
   (message "Saving all org-buffers except current... done"))
