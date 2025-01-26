@@ -250,6 +250,8 @@
 ;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
 
+(setq org-directory "~/Documents/org/")
+
 ;; (defun my/org-table-tab ()
 ;;   "Use `org-cycle' if inside an Org table, otherwise use original Tab functionality."
 ;;   (interactive)
@@ -266,6 +268,13 @@
 ;;     (evil-define-key 'insert org-mode-map
 ;;       (kbd "<tab>") 'my/org-table-tab)))
 
+(setq-default org-reverse-datetree-level-formats
+              '("%Y"                    ; year
+                (lambda (time) (format-time-string "%Y-%m %B" (org-reverse-datetree-monday time))) ; month
+;;                "%Y W%W"                ; week
+                "%Y-%m-%d %A"))           ; date
+
+(setq olivetti-body-width 100)
 (defun org-mode-open-hook ()
   "Hook to be run when org-agenda is opened"
   (olivetti-mode))
@@ -329,7 +338,7 @@
 ;; with fullpath
 (setq my/org-files
       (mapcar 'file-truename
-	      (file-expand-wildcards "~/Documents/org/*.org")))
+	      (file-expand-wildcards (file-name-concat org-directory "*.org"))))
 
 ;; Save the corresponding buffers
 (defun gtd-save-org-buffers ()
@@ -354,41 +363,22 @@ See also `org-save-all-org-buffers'"
 
 ;; Logseq compatability see: https://sbgrl.me/posts/logseq-org-roam-1/
 ;; (setq org-directory "~/Documents/org/")
-(setq org-directory "~/Documents/org/"
-      org-roam-directory (file-truename (file-name-concat org-directory "roam/"))
-      org-roam-dailies-directory "journals/")
+(setq org-roam-directory (file-truename (file-name-concat org-directory "roam/"))
+      org-roam-dailies-directory "journals/"
+      org-roam-file-exclude-regexp "\\.git/.*\\|logseq/.*$")
 
 
-(setq org-roam-file-exclude-regexp "\\.git/.*\\|logseq/.*$"
-      org-roam-capture-templates
+(setq org-roam-capture-templates
       '(("d" "default" plain
          "%?"
          ;; Accomodates for the fact that Logseq uses the "pages" directory
          :target (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-         :unnarrowed t))
-      org-roam-dailies-capture-templates
+         :unnarrowed t)))
+(setq org-roam-dailies-capture-templates
       '(("d" "default" entry
          "* %?"
          :target (file+head "%<%Y-%m-%d>.org" ;; format matches Logseq
                             "#+title: %<%Y-%m-%d>\n"))))
-
-
-
-
-;; (setq org-roam-directory (file-truename "~/Documents/org/roam-logseq"))
-;; (setq org-roam-dailies-directory "~/Documents/org/roam-logseq/journals")
-;; ;; default roam template adds extra #+title:
-;; (setq org-roam-capture-templates
-;;    '(("d" "default" plain
-;;       "%?" :target
-;;       (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-;;       :unnarrowed t)))
-
-(setq-default org-reverse-datetree-level-formats
-              '("%Y"                    ; year
-                (lambda (time) (format-time-string "%Y-%m %B" (org-reverse-datetree-monday time))) ; month
-;;                "%Y W%W"                ; week
-                "%Y-%m-%d %A"))           ; date
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
