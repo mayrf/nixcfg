@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Fritz Mayr"
@@ -74,116 +76,6 @@
   (unless (file-exists-p ispell-personal-dictionary)
   (write-region "" nil ispell-personal-dictionary nil 0))
 )
-
-(after! org
-  ;; (setq org-archive-reversed-order t)
-  (setq org-agenda-files '("gtd/inbox.org"
-                           "gtd/inbox_phone.org"
-                           "gtd/read-review.org"
-                           "gtd/someday.org"
-                           "gtd/next.org"
-                           "gtd/projects.org"
-                           "gtd/notes.org"
-                           "gtd/meeting.org"
-                           "gtd/tickler.org"))
-
-  (add-hook 'org-capture-mode-hook 'delete-other-windows)
-
-  ;; setting up inbox captures
-  (setq org-capture-templates '(
-                                ("i" "Inbox test" entry
-                                 (file "gtd/inbox.org")
-                                 "* TODO %?\n/Entered on/ %U")
-                                ("m" "Meeting" entry
-                                 (file+headline "gtd/tickler.org" "Future")
-                                 "* %? :meeting:\n<%<%Y-%m-%d %a %H:00>>")
-                                ("n" "Note" entry
-                                 (file "gtd/notes.org")
-                                 "* Note (%a)\n/Entered on/ %U\n\n%?")
-                                 ;; (concat "* TODO %?\n"
-                                 ;;          "/Entered on/ %U"))
-                                ("t" "Todo" entry
-                                 (file "gtd/inbox.org")
-                                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
-
-                                ("r" "Rice wish" entry
-                                 (file+headline "gtd/next.org" "RICE")
-                                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
-
-                                ("b" "book [inbox]" entry
-                                 (file+headline "gtd/inbox.org" "Books")
-                                 "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?")
-
-                                ("j" "Journal" plain
-                                 (file+function "gtd/journal.org" org-reverse-datetree-goto-date-in-file)
-                                 "%?" :empty-lines 1 :append nil)
-
-                                ("W" "Weekly Review" entry
-                                 (file+function "gtd/weekly-review.org" org-reverse-datetree-goto-date-in-file)
-                                 (file "gtd/templates/weekly_review.txt"))
-
-                                ("T" "Tickler" entry
-                                 (file+headline "gtd/tickler.org" "Tickler")
-                                 "* %i%? \n %U")))
-
-        (setq org-refile-targets '((nil :maxlevel . 9)
-                                        (org-agenda-files :maxlevel . 1)))
-        ;; (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
-        ;; (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
-
-  ;; (setq org-refile-targets '(
-
-
-  ;;                            ((file-name-concat org-directory "gtd/next.org") :maxlevel . 1)
-  ;;                            ((file-name-concat org-directory "gtd/someday.org") :maxlevel . 1)
-  ;;                            ((file-name-concat org-directory "gtd/agenda.org") :maxlevel . 1)
-  ;;                            ((file-name-concat org-directory "gtd/read-review.org") :maxlevel . 1)
-  ;;                            ((file-name-concat org-directory "gtd/tickler.org") :maxlevel . 1)
-
-  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/next.org")) :maxlevel . 1)
-  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/someday.org")) :maxlevel . 1)
-  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/agenda.org")) :maxlevel . 1)
-  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/read-review.org")) :maxlevel . 1)
-  ;;                            ;; ((file-truename (file-name-concat org-directory "gtd/tickler.org")) :maxlevel . 1)
-  ;;                            ))
-                             ;; ("someday.org" :maxlevel . 1)
-                             ;; ("agenda.org" :maxlevel . 1)
-                             ;; ("read-review.org" :maxlevel . 1)
-                             ;; ("tickler.org" :maxlevel . 1)))
-  ;; Rougier org mode stuff
-  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
-  (defun log-todo-next-creation-date (&rest ignore)
-  "Log NEXT creation time in the property drawer under the key 'ACTIVATED'"
-  (when (and (string= (org-get-todo-state) "NEXT")
-             (not (org-entry-get nil "ACTIVATED")))
-    (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
-(add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
-(setq org-agenda-custom-commands
-      '(("g" "Get Things Done (GTD)"
-         ((agenda ""
-                  ((org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'deadline))
-                   (org-deadline-warning-days 0)))
-          (todo "NEXT"
-                ((org-agenda-skip-function
-                  '(org-agenda-skip-entry-if 'deadline))
-                 (org-agenda-prefix-format "  %i %-12:c [%e] ")
-                 (org-agenda-overriding-header "\nTasks\n")))
-          (agenda nil
-                  ((org-agenda-entry-types '(:deadline))
-                   (org-agenda-format-date "")
-                   (org-deadline-warning-days 7)
-                   (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
-                   (org-agenda-overriding-header "\nDeadlines")))
-          (tags-todo "inbox"
-                     ((org-agenda-prefix-format "  %?-12t% s")
-                      (org-agenda-overriding-header "\nInbox\n")))
-          (tags "CLOSED>=\"<today>\""
-                ((org-agenda-overriding-header "\nCompleted today\n")))))))
-
-
-  (setq org-log-done 'time))
 
 ; git reset --soft HEAD~1
 (require 'magit)
@@ -274,7 +166,7 @@
 ;;                "%Y W%W"                ; week
                 "%Y-%m-%d %A"))           ; date
 
-(setq olivetti-body-width 100)
+(setq olivetti-body-width 140)
 (defun org-mode-open-hook ()
   "Hook to be run when org-agenda is opened"
   (olivetti-mode))
@@ -367,18 +259,241 @@ See also `org-save-all-org-buffers'"
       org-roam-dailies-directory "journals/"
       org-roam-file-exclude-regexp "\\.git/.*\\|logseq/.*$")
 
+;; (setq org-roam-capture-project-template '("p" "project" plain
+;;          ;; The file function only seems to accept literal string paths, no functions; Maybe there is an alternative "file" function, which can accept this
+;;          (file "~/Documents/org/roam/Templates/ProjectTemplate.org")
+;;          :if-new (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+;;          :unnarrowed t)
+;;         ))
 
 (setq org-roam-capture-templates
       '(("d" "default" plain
          "%?"
-         ;; Accomodates for the fact that Logseq uses the "pages" directory
          :target (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-         :unnarrowed t)))
+         :unnarrowed t)
+        ;; 'org-roam-capture-project-template
+        ("p" "project" plain
+         ;; The file function only seems to accept literal string paths, no functions; Maybe there is an alternative "file" function, which can accept this
+         (file "~/Documents/org/roam/Templates/ProjectTemplate.org")
+         :if-new (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+         :unnarrowed t)
+        )
+      )
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry
          "* %?"
          :target (file+head "%<%Y-%m-%d>.org" ;; format matches Logseq
                             "#+title: %<%Y-%m-%d>\n"))))
+
+(defun org-roam-node-insert-immediate (arg &rest args)
+  (interactive "P")
+  (let ((args (cons arg args))
+        (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+                                                  '(:immediate-finish t)))))
+    (apply #'org-roam-node-insert args)))
+
+(defun my/org-roam-filter-by-tag (tag-name)
+  (lambda (node)
+    (member tag-name (org-roam-node-tags node))))
+
+(defun my/org-roam-list-notes-by-tag (tag-name)
+  (mapcar #'org-roam-node-file
+          (seq-filter
+           (my/org-roam-filter-by-tag tag-name)
+           (org-roam-node-list))))
+
+(defun my/org-roam-refresh-agenda-list ()
+  (interactive)
+  (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
+
+(defun my/org-roam-capture-inbox ()
+  (interactive)
+  (org-roam-capture- :node (org-roam-node-create)
+                     :templates '(("i" "inbox" plain "* TODO %?\n/Entered on/ %U"
+                                   :if-new (file+head "pages/Inbox.org" "#+title: Inbox\n")))))
+
+(global-set-key (kbd "C-c n b") #'my/org-roam-capture-inbox)
+
+(defun my/org-roam-project-finalize-hook ()
+  "Adds the captured project file to `org-agenda-files' if the
+capture was not aborted."
+  ;; Remove the hook since it was added temporarily
+  (remove-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
+
+  ;; Add project file to the agenda list if the capture was confirmed
+  (unless org-note-abort
+    (with-current-buffer (org-capture-get :buffer)
+      (add-to-list 'org-agenda-files (buffer-file-name)))))
+
+(defun my/org-roam-find-project ()
+  (interactive)
+  ;; Add the project file to the agenda after capture is finished
+  (add-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
+
+  ;; Select a project file to open, creating it if necessary
+  (org-roam-node-find
+   nil
+   nil
+   (my/org-roam-filter-by-tag "Project")
+   :templates
+   '(("p" "project" plain
+      ;; The file function only seems to accept literal string paths, no functions; Maybe there is an alternative "file" function, which can accept this
+      (file "~/Documents/org/roam/Templates/ProjectTemplate.org")
+      :if-new (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+      :unnarrowed t))
+   ;; '(("p" "project" plain
+   ;;    (file "~/Documents/org/roam/Templates/ProjectTemplate.org")
+   ;;    :if-new (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
+   ;;    :unnarrowed t))
+   ))
+
+(global-set-key (kbd "C-c n p") #'my/org-roam-find-project)
+
+(defun my/org-roam-capture-task ()
+  (interactive)
+  ;; Add the project file to the agenda after capture is finished
+  (add-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
+
+  ;; Capture the new task, creating the project file if necessary
+  (org-roam-capture- :node (org-roam-node-read
+                            nil
+                            (my/org-roam-filter-by-tag "Project"))
+                     :templates '(("p" "project" plain "** TODO %?"
+                                   :if-new (file+head+olp "pages/%<%Y%m%d%H%M%S>-${slug}.org"
+                                                          "#+title: ${title}\n#+category: ${title}\n#+filetags: Project"
+                                                          ("Tasks"))))))
+
+(global-set-key (kbd "C-c n t") #'my/org-roam-capture-task)
+
+;; (defun org-roam-dailies--capture (time &optional goto)
+;;   "Capture an entry in a daily-note for TIME, creating it if necessary.
+
+;; When GOTO is non-nil, go the note without creating an entry."
+;;   (org-roam-capture- :goto (when goto '(4))
+;;                      :node (org-roam-node-create)
+;;                      :templates org-roam-dailies-capture-templates
+;;                      :props (list :override-default-time time))
+;;   (when goto (run-hooks 'org-roam-dailies-find-file-hook)))
+
+;; (after! org-roam
+;; (use-package org-roam :demand t)
+(after! org
+  (require 'org-roam-dailies) ;; Ensure the keymap is available
+  (defun my/org-roam-copy-todo-to-today ()
+    (interactive)
+    (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+          ;; (org-roam-dailies-directory "journals/")
+          (org-roam-dailies-capture-templates
+           '(("t" "tasks" entry "%?"
+              :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+          (org-after-refile-insert-hook #'save-buffer)
+          today-file
+          pos)
+      (save-window-excursion
+        (org-roam-dailies--capture (current-time) t)
+
+        (setq today-file (buffer-file-name))
+        (message "today-file is: %s" today-file)
+        (message "buffer-file-name is: %s" buffer-file-name)
+        (setq pos (point)))
+
+      ;; Only refile if the target file is different than the current file
+      (unless (equal (file-truename today-file)
+                     (file-truename (buffer-file-name)))
+        (org-refile nil nil (list "Tasks" today-file nil pos)))))
+
+  (add-to-list 'org-after-todo-state-change-hook
+               (lambda ()
+                 (when (equal org-state "DONE")
+                   (my/org-roam-copy-todo-to-today)))))
+
+(after! org
+  ;; (setq org-archive-reversed-order t)
+  (setq org-agenda-files '("gtd/inbox.org"
+                           "gtd/inbox_phone.org"
+                           "gtd/read-review.org"
+                           "gtd/someday.org"
+                           "gtd/next.org"
+                           "gtd/projects.org"
+                           "gtd/notes.org"
+                           "gtd/meeting.org"
+                           "gtd/tickler.org"))
+
+  (add-hook 'org-capture-mode-hook 'delete-other-windows)
+
+  ;; setting up inbox captures
+  (setq org-capture-templates '(
+                                ("i" "inbox" entry
+                                 (file "roam/pages/Inbox.org")
+                                 "* TODO %?\n/Entered on/ %U")
+                                ("m" "Meeting" entry
+                                 (file+headline "gtd/tickler.org" "Future")
+                                 "* %? :meeting:\n<%<%Y-%m-%d %a %H:00>>")
+                                ("n" "Note" entry
+                                 (file "gtd/notes.org")
+                                 "* Note (%a)\n/Entered on/ %U\n\n%?")
+                                 ;; (concat "* TODO %?\n"
+                                 ;;          "/Entered on/ %U"))
+                                ("t" "Todo" entry
+                                 (file "gtd/inbox.org")
+                                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
+
+                                ("r" "Rice wish" entry
+                                 (file+headline "gtd/next.org" "RICE")
+                                 "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
+
+                                ("b" "book [inbox]" entry
+                                 (file+headline "gtd/inbox.org" "Books")
+                                 "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?")
+
+                                ("j" "Journal" plain
+                                 (file+function "gtd/journal.org" org-reverse-datetree-goto-date-in-file)
+                                 "%?" :empty-lines 1 :append nil)
+
+                                ("W" "Weekly Review" entry
+                                 (file+function "gtd/weekly-review.org" org-reverse-datetree-goto-date-in-file)
+                                 (file "gtd/templates/weekly_review.txt"))
+
+                                ("T" "Tickler" entry
+                                 (file+headline "gtd/tickler.org" "Tickler")
+                                 "* %i%? \n %U")))
+
+        (setq org-refile-targets '((nil :maxlevel . 9)
+                                        (org-agenda-files :maxlevel . 1)))
+  ;; Rougier org mode stuff
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (defun log-todo-next-creation-date (&rest ignore)
+  "Log NEXT creation time in the property drawer under the key 'ACTIVATED'"
+  (when (and (string= (org-get-todo-state) "NEXT")
+             (not (org-entry-get nil "ACTIVATED")))
+    (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
+(add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
+(setq org-agenda-custom-commands
+      '(("g" "Get Things Done (GTD)"
+         ((agenda ""
+                  ((org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'deadline))
+                   (org-deadline-warning-days 0)))
+          (todo "NEXT"
+                ((org-agenda-skip-function
+                  '(org-agenda-skip-entry-if 'deadline))
+                 (org-agenda-prefix-format "  %i %-12:c [%e] ")
+                 (org-agenda-overriding-header "\nTasks\n")))
+          (agenda nil
+                  ((org-agenda-entry-types '(:deadline))
+                   (org-agenda-format-date "")
+                   (org-deadline-warning-days 7)
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
+                   (org-agenda-overriding-header "\nDeadlines")))
+          (tags-todo "inbox"
+                     ((org-agenda-prefix-format "  %?-12t% s")
+                      (org-agenda-overriding-header "\nInbox\n")))
+          (tags "CLOSED>=\"<today>\""
+                ((org-agenda-overriding-header "\nCompleted today\n")))))))
+
+
+  (setq org-log-done 'time))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
