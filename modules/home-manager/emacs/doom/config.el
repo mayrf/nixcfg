@@ -239,7 +239,6 @@
         ("@planning" . ?n)
         ("@programming" . ?p)
         ("@writing" . ?w)
-        ("@calls" . ?s)
         ("@creative" . ?c)
         ("@reading" .?b)
         ("@media" .?m)
@@ -454,8 +453,8 @@ capture was not aborted."
                                 ("n" "Note" entry
                                  (file "gtd/notes.org")
                                  "* Note (%a)\n/Entered on/ %U\n\n%?")
-                                 ;; (concat "* TODO %?\n"
-                                 ;;          "/Entered on/ %U"))
+                                ;; (concat "* TODO %?\n"
+                                ;;          "/Entered on/ %U"))
                                 ("t" "Todo" entry
                                  (file "gtd/inbox.org")
                                  "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
@@ -480,39 +479,53 @@ capture was not aborted."
                                  (file+headline "gtd/tickler.org" "Tickler")
                                  "* %i%? \n %U")))
 
-        (setq org-refile-targets '((nil :maxlevel . 9)
-                                        (org-agenda-files :maxlevel . 1)))
+  ;; TODO Change this to use org roam refile maybe?
+  (setq org-refile-project-files (my/org-roam-list-notes-by-tag "Project"))
+  (setq org-refile-targets '((nil :maxlevel . 9)
+                             ;; (("roam/pages/Inbox.org"
+                             ;;   "roam/pages/inbox_phone.org"
+                             ;;   "roam/pages/next.org"
+                             ;;   "roam/pages/read_review.org"
+                             ;;   "roam/pages/someday.org"
+                             ;;   "roam/pages/tickler.org") :maxlevel . 1)))
+                             (("next.org"
+                               "read_review.org"
+                               "someday.org"
+                               "tickler.org") :maxlevel . 1)
+                             (org-refile-project-files :maxlevel . 1)
+                             ))
+
   ;; Rougier org mode stuff
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
   (defun log-todo-next-creation-date (&rest ignore)
-  "Log NEXT creation time in the property drawer under the key 'ACTIVATED'"
-  (when (and (string= (org-get-todo-state) "NEXT")
-             (not (org-entry-get nil "ACTIVATED")))
-    (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
-(add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
-(setq org-agenda-custom-commands
-      '(("g" "Get Things Done (GTD)"
-         ((agenda ""
+    "Log NEXT creation time in the property drawer under the key 'ACTIVATED'"
+    (when (and (string= (org-get-todo-state) "NEXT")
+               (not (org-entry-get nil "ACTIVATED")))
+      (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
+  (add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
+  (setq org-agenda-custom-commands
+        '(("g" "Get Things Done (GTD)"
+           ((agenda ""
+                    ((org-agenda-skip-function
+                      '(org-agenda-skip-entry-if 'deadline))
+                     (org-deadline-warning-days 0)))
+            (todo "NEXT"
                   ((org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'deadline))
-                   (org-deadline-warning-days 0)))
-          (todo "NEXT"
-                ((org-agenda-skip-function
-                  '(org-agenda-skip-entry-if 'deadline))
-                 (org-agenda-prefix-format "  %i %-12:c [%e] ")
-                 (org-agenda-overriding-header "\nTasks\n")))
-          (agenda nil
-                  ((org-agenda-entry-types '(:deadline))
-                   (org-agenda-format-date "")
-                   (org-deadline-warning-days 7)
-                   (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
-                   (org-agenda-overriding-header "\nDeadlines")))
-          (tags-todo "inbox"
-                     ((org-agenda-prefix-format "  %?-12t% s")
-                      (org-agenda-overriding-header "\nInbox\n")))
-          (tags "CLOSED>=\"<today>\""
-                ((org-agenda-overriding-header "\nCompleted today\n")))))))
+                   (org-agenda-prefix-format "  %i %-12:c [%e] ")
+                   (org-agenda-overriding-header "\nTasks\n")))
+            (agenda nil
+                    ((org-agenda-entry-types '(:deadline))
+                     (org-agenda-format-date "")
+                     (org-deadline-warning-days 7)
+                     (org-agenda-skip-function
+                      '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
+                     (org-agenda-overriding-header "\nDeadlines")))
+            (tags-todo "inbox"
+                       ((org-agenda-prefix-format "  %?-12t% s")
+                        (org-agenda-overriding-header "\nInbox\n")))
+            (tags "CLOSED>=\"<today>\""
+                  ((org-agenda-overriding-header "\nCompleted today\n")))))))
 
 
   (setq org-log-done 'time))
