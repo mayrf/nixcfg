@@ -370,6 +370,31 @@ Reproduce Screenshot from
 ;; (setq
 ;;     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
 #+end_src
+** Org Tags
+#+begin_src emacs-lisp :tangle yes
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
+
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
+
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@calls" . ?s)
+        ("@creative" . ?c)
+        ("@reading" .?b)
+        ("@media" .?m)
+        ("@listening" .?l)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r)))
+#+end_src
+
 ** Automatic saving after refilling
 
 From [[https://www.labri.fr/perso/nrougier/GTD/index.html][Get Things Done with Emacs]]

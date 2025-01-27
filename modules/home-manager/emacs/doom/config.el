@@ -226,6 +226,28 @@
 ;; (setq
 ;;     org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
 
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
+
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
+
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@calls" . ?s)
+        ("@creative" . ?c)
+        ("@reading" .?b)
+        ("@media" .?m)
+        ("@listening" .?l)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r)))
+
 ;; Automatically get the files in "~/Documents/org"
 ;; with fullpath
 (setq my/org-files
