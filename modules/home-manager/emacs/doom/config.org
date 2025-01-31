@@ -46,7 +46,7 @@ This line enables lexical binding which ensures that the my/org-roam-filter-by-t
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
+;;(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'semi-light))
 ;;(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
@@ -561,9 +561,6 @@ capture was not aborted."
 
 #+end_src
 
-#+RESULTS:
-: my/org-roam-find-project
-
 *** Capture a task directly into a specific project
 
 If you’ve set up project note files like we mentioned earlier, you can set up a capture template that allows you to quickly capture tasks for any project.
@@ -741,6 +738,14 @@ The following snippet sets up a hook for all Org task state changes and then cop
 
 
   (setq org-log-done 'time))
+#+end_src
+** Denote
+#+begin_src emacs-lisp :tangle yes
+;; (package-install 'denote)
+(require 'denote)
+
+(setq denote-directory (file-truename (file-name-concat org-directory "Denotes/")))
+;; (use-package! denote)
 #+end_src
 
 * Doom pkg explanation

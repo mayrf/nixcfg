@@ -19,6 +19,7 @@
   :recipe (:host github :repo "jdtsmith/org-modern-indent" :files ("*.el")))
 (package! olivetti)
 (package! org-modern)
+(package! denote)
 ;; (package! copilot
 ;;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 
