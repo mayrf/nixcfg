@@ -1,0 +1,13 @@
+*.eln
+eln-cache
+.org-id-locations
+bookmarks
+custom-vars.el
+elpaca/
+history
+org-caldav-be5a6c8.el
+places
+recentf
+transient/
+url/
+auto-save-list/

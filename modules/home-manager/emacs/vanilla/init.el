@@ -56,16 +56,58 @@
   (elpaca-use-package-mode))
 (setq use-package-always-ensure t)
 
+(add-to-list 'display-buffer-alist
+             '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+               (display-buffer-no-window)
+               (allow-no-window . t)))
+
+(defun org-babel-tangle-config ()
+  ;; (when (string-equal (buffer-file-name)
+  ;; 		      (expand-file-name "~/.config/emacs-vanilla/mayrf-emacs.org"))
+  (when (string-match "mayrf-emacs.org" (buffer-file-name))
+    (let ((org-config-babel-evaluate nil))
+      (org-babel-tangle))))
+
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (add-hook 'after-save-hook #'org-babel-tangle-config)))
+
+(defun load-directory (dir)
+  (let ((load-it (lambda (f)
+		   (load-file (concat (file-name-as-directory dir) f)))
+		 ))
+    (mapc load-it (directory-files dir nil "\\.el$"))))
+
 (defun my/reload-emacs ()
   (interactive)
+  ;; (org-babel-tangle "~/.config/emacs-vanilla/mayrf-emacs.org")
+  (my/reload-init-el)
+  (my/reload-modules))
+
+(defun my/reload-init-el ()
   (load-file "~/.config/emacs-vanilla/init.el"))
 
-(mapc
+
+(defun my/reload-modules ()
+  (interactive)
+  (load-directory (locate-user-emacs-file "mayrf-emacs-modules")))
+;; (mapc
+;;  (lambda (string)
+;;    (add-to-list 'load-path (locate-user-emacs-file string)))
+;;'("prot-lisp" "prot-emacs-modules"))
+;;'("mayrf-lisp" "mayrf-emacs-modules"))
+
+  (mapc
    (lambda (string)
      (add-to-list 'load-path (locate-user-emacs-file string)))
    ;;'("prot-lisp" "prot-emacs-modules"))
    '("mayrf-lisp" "mayrf-emacs-modules"))
+(require 'mayrf-emacs-keybindings)
 (require 'mayrf-emacs-completion)
+(require 'mayrf-emacs-style)
+(require 'mayrf-emacs-org-mode)
+(require 'mayrf-emacs-denote)
+(require 'mayrf-emacs-magit)
 
 (use-package evil
   :ensure t
@@ -80,3 +122,59 @@
   :ensure t
   :config
   (evil-collection-init))
+
+(use-package evil-nerd-commenter
+  :after evil
+  :config
+  (evilnc-default-hotkeys)
+  (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
+  (define-key evil-visual-state-map "gc" 'evilnc-comment-operator))
+
+(global-visual-line-mode t)
+
+(global-set-key [escape] 'keyboard-escape-quit)
+
+    (recentf-mode 1)
+      ;; Save what you enter into minibuffer prompts
+    (setq history-length 25)
+    (savehist-mode 1)
+    ;; Remember and restore the last cursor location of opened files
+    (save-place-mode 1)
+
+    ;; Move customization variables to a separate file and load it
+    ;; Disable the damn thing by making it disposable.
+    (setq custom-file (make-temp-file "emacs-custom-"))
+    (setq custom-file (locate-user-emacs-file "custom-vars.el"))
+    (load custom-file 'noerror 'nomessage)
+
+    ;; Don't pop up UI dialogs when prompting
+    ;;(setq use-dialog-box nil)
+    ;; Revert buffers when the underlying file has changed
+    (global-auto-revert-mode 1)
+    ;; Revert Dired and other buffers
+    (setq global-auto-revert-non-file-buffers t)
+
+
+
+  (setq custom-safe-themes t)
+  (use-package ef-themes
+    :config
+    (load-theme 'ef-melissa-dark t nil))
+  ;;(load-theme 'ef-melissa-dark)
+
+(use-package pdf-tools
+  :defer t
+  :commands (pdf-loader-install)
+  :mode "\\.pdf\\'"
+  :bind (:map pdf-view-mode-map
+              ("j" . pdf-view-next-line-or-next-page)
+              ("k" . pdf-view-previous-line-or-previous-page)
+              ("C-=" . pdf-view-enlarge)
+              ("C--" . pdf-view-shrink))
+  :init (pdf-loader-install)
+  :config (add-to-list 'revert-without-query ".pdf"))
+
+(add-hook 'pdf-view-mode-hook #'(lambda () (interactive) (display-line-numbers-mode -1)
+                                                         (blink-cursor-mode -1)
+                                                         ;; (doom-modeline-mode -1)
+							 ))

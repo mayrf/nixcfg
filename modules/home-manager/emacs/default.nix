@@ -194,6 +194,7 @@ in {
       vscode-langservers-extracted
 
       xclip
+      poppler_utils
     ];
 
     home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];

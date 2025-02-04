@@ -2,6 +2,7 @@
 #+author: mayrf
 #+email: 70516376+mayrf@users.noreply.github.com
 #+language: en
+#+startup: content indent
 
 This is my WIP vanilla Emacs config. The structure and content is heavily copied from Protesilaos Stavrous' [[https://protesilaos.com/emacs/dotemacs][dotemacs config]] and I am very grateful to him for sharing all of his superb Emacs resources with the community.
 
@@ -13,8 +14,8 @@ This is my WIP vanilla Emacs config. The structure and content is heavily copied
 ;;     frame-resize-pixelwise    t  ; fine resize
 ;;      package-native-compile    t ; native compile packages
 ;; )
-;; (scroll-bar-mode -1)               ; disable scrollbar
-;; (tool-bar-mode -1)                 ; disable toolbar
+(scroll-bar-mode -1)               ; disable scrollbar
+(tool-bar-mode -1)                 ; disable toolbar
 ;; (tooltip-mode -1)                  ; disable tooltips
 ;; (menu-bar-mode -1)                 ; disable menubar
 #+end_src
@@ -90,12 +91,56 @@ See [[https://github.com/progfolio/elpaca/wiki/Usage-with-Nix][Usage with Nix ·
 (setq use-package-always-ensure t)
 #+end_src
 
+**** Do not show those confusing warnings when installing packages
+#+begin_src emacs-lisp :tangle "init.el"
+(add-to-list 'display-buffer-alist
+             '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+               (display-buffer-no-window)
+               (allow-no-window . t)))
+#+end_src
+
 ** Custom Elisp
+*** Auto tangle configuration
+#+begin_src emacs-lisp :tangle "init.el"
+(defun org-babel-tangle-config ()
+  ;; (when (string-equal (buffer-file-name)
+  ;; 		      (expand-file-name "~/.config/emacs-vanilla/mayrf-emacs.org"))
+  (when (string-match "mayrf-emacs.org" (buffer-file-name))
+    (let ((org-config-babel-evaluate nil))
+      (org-babel-tangle))))
+
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (add-hook 'after-save-hook #'org-babel-tangle-config)))
+#+end_src
+
 *** Reload config
 #+begin_src emacs-lisp :tangle "init.el"
+
+(defun load-directory (dir)
+  (let ((load-it (lambda (f)
+		   (load-file (concat (file-name-as-directory dir) f)))
+		 ))
+    (mapc load-it (directory-files dir nil "\\.el$"))))
+
 (defun my/reload-emacs ()
   (interactive)
+  ;; (org-babel-tangle "~/.config/emacs-vanilla/mayrf-emacs.org")
+  (my/reload-init-el)
+  (my/reload-modules))
+
+(defun my/reload-init-el ()
   (load-file "~/.config/emacs-vanilla/init.el"))
+
+
+(defun my/reload-modules ()
+  (interactive)
+  (load-directory (locate-user-emacs-file "mayrf-emacs-modules")))
+;; (mapc
+;;  (lambda (string)
+;;    (add-to-list 'load-path (locate-user-emacs-file string)))
+;;'("prot-lisp" "prot-emacs-modules"))
+;;'("mayrf-lisp" "mayrf-emacs-modules"))
 #+end_src
 
 ** The =init.el= arrangements for my own modules and custom libraries
@@ -156,13 +201,18 @@ files that are already placed where I need them to be.
      (add-to-list 'load-path (locate-user-emacs-file string)))
    ;;'("prot-lisp" "prot-emacs-modules"))
    '("mayrf-lisp" "mayrf-emacs-modules"))
+(require 'mayrf-emacs-keybindings)
 (require 'mayrf-emacs-completion)
+(require 'mayrf-emacs-style)
+(require 'mayrf-emacs-org-mode)
+(require 'mayrf-emacs-denote)
+(require 'mayrf-emacs-magit)
+
+
 #+end_src
 
-
 ** Evil mode
-
-#+begin_src emacs-lisp :tangle "init.el"
+ #+begin_src emacs-lisp :tangle "init.el"
 (use-package evil
   :ensure t
   :init
@@ -176,24 +226,220 @@ files that are already placed where I need them to be.
   :ensure t
   :config
   (evil-collection-init))
+
+(use-package evil-nerd-commenter
+  :after evil
+  :config
+  (evilnc-default-hotkeys)
+  (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
+  (define-key evil-visual-state-map "gc" 'evilnc-comment-operator))
+ #+end_src
+** General Settings
+*** Visual
+#+begin_src emacs-lisp :tangle "init.el"
+(global-visual-line-mode t)
+#+end_src
+*** Navigation
+**** Minibuffer ESCAPE
+By default, Emacs requires you to hit ESC three times to escape quit the minibuffer.
+#+begin_src emacs-lisp :tangle "init.el"
+(global-set-key [escape] 'keyboard-escape-quit)
+#+end_src
+*** Must have settings from System crafters:
+https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
+#+begin_src emacs-lisp :tangle "init.el"
+    (recentf-mode 1)
+      ;; Save what you enter into minibuffer prompts
+    (setq history-length 25)
+    (savehist-mode 1)
+    ;; Remember and restore the last cursor location of opened files
+    (save-place-mode 1)
+
+    ;; Move customization variables to a separate file and load it
+    ;; Disable the damn thing by making it disposable.
+    (setq custom-file (make-temp-file "emacs-custom-"))
+    (setq custom-file (locate-user-emacs-file "custom-vars.el"))
+    (load custom-file 'noerror 'nomessage)
+
+    ;; Don't pop up UI dialogs when prompting
+    ;;(setq use-dialog-box nil)
+    ;; Revert buffers when the underlying file has changed
+    (global-auto-revert-mode 1)
+    ;; Revert Dired and other buffers
+    (setq global-auto-revert-non-file-buffers t)
+
+#+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+#+end_src
+*** Themes:
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq custom-safe-themes t)
+  (use-package ef-themes
+    :config
+    (load-theme 'ef-melissa-dark t nil))
+  ;;(load-theme 'ef-melissa-dark)
+#+end_src
+
+** PDFs
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package pdf-tools
+  :defer t
+  :commands (pdf-loader-install)
+  :mode "\\.pdf\\'"
+  :bind (:map pdf-view-mode-map
+              ("j" . pdf-view-next-line-or-next-page)
+              ("k" . pdf-view-previous-line-or-previous-page)
+              ("C-=" . pdf-view-enlarge)
+              ("C--" . pdf-view-shrink))
+  :init (pdf-loader-install)
+  :config (add-to-list 'revert-without-query ".pdf"))
+
+(add-hook 'pdf-view-mode-hook #'(lambda () (interactive) (display-line-numbers-mode -1)
+                                                         (blink-cursor-mode -1)
+                                                         ;; (doom-modeline-mode -1)
+							 ))
+#+end_src
+* Style:
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-style.el" :mkdirp yes
+(use-package nerd-icons
+  :ensure t)
+
+(use-package nerd-icons-completion
+  :ensure t
+  :after marginalia
+  :config
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :ensure t
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+(provide 'mayrf-emacs-style)
+#+end_src
+
+* Key-bindings:
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
+(use-package general
+  :config
+  (general-evil-setup)
+  (general-create-definer my/leader
+    :states '(normal insert visual emacs)
+    :keymaps 'override
+    :prefix "SPC" ;; set leader
+    :global-prefix "M-SPC") ;; access leader in insert mode
+  (my/leader
+    "b" '(:ignore t :wk "buffer")
+    "bb" '(switch-to-buffer :wk "Switch buffer")
+    "bk" '(kill-this-buffer :wk "Kill this buffer")
+    "bn" '(next-buffer :wk "Next buffer")
+    "bp" '(previous-buffer :wk "Previous buffer")
+    "br" '(revert-buffer :wk "Reload buffer"))
+
+  (my/leader
+    "f" '(:ignore t :wk "file")
+    "ff" 'find-file
+    "fr" 'recentf)
+
+  (my/leader
+    "h" '(:ignore t :wk "help")
+    "hrr" 'my/reload-emacs
+    "hy" 'my/reload-emacs
+    "hf" '(describe-function :wk "Describe function")
+    "hv" '(describe-variable :wk "Describe variable")
+    "hk" '(describe-variable :wk "Describe key")))
+
+(use-package magit)
+#+end_src
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
+(provide 'mayrf-emacs-keybindings)
+
 #+end_src
 
 * completion:
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-completion.el" :mkdirp yes
-(use-package vertico
+  (use-package vertico
     :ensure t
     :custom
     ;; (vertico-scroll-margin 0) ;; Different scroll margin
-    (vertico-count 20) ;; Show more candidates
+    (vertico-count 22) ;; Show more candidates
     ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
     ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
     :init
     (vertico-mode))
+#+end_src
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-completion.el" :mkdirp yes
+
 (use-package orderless
-    :ensure t
-    :custom
-    (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles basic partial-completion)))))
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package marginalia
+  ;; :hook (after-init . marginalia-mode))
+  :config (marginalia-mode))
 (provide 'mayrf-emacs-completion)
-(message "Hi")
+#+end_src
+
+* Org-mode:
+** Variable
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+(setq org-src-preserve-indentation t)
+(setq org-directory "~/Documents/org/")
+(setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
+#+end_src
+** Keybindings
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+  (my/leader
+    "o" '(:ignore t :wk "Open")
+    "oA" '(org-agenda :wk "Org Agenda"))
+#+end_src
+** Org Babel
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+(setq org-src-preserve-indentation t)
+#+end_src
+
+This goal of this section is to make emacs behave inside src blocks like in the major mode of the language specified by the src block
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+(setq org-src-tab-acts-natively t)
+#+end_src
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+(provide 'mayrf-emacs-org-mode)
+#+end_src
+** org-caldav
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+* Denote:
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
+(use-package denote
+  :after org
+  :config
+  (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/")))
+  )
+#+end_src
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
+(provide 'mayrf-emacs-denote)
+#+end_src
+
+* Magit:
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magigt.el" :mkdirp yes
+(use-package magit
+	 :general (my/leader "gg" 'magit)
+  )
+#+end_src
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magit.el" :mkdirp yes
+(provide 'mayrf-emacs-magit)
 #+end_src
