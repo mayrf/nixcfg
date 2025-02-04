@@ -234,6 +234,7 @@ files that are already placed where I need them to be.
   (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
   (define-key evil-visual-state-map "gc" 'evilnc-comment-operator))
  #+end_src
+
 ** General Settings
 *** Visual
 #+begin_src emacs-lisp :tangle "init.el"
@@ -342,6 +343,9 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
     "bn" '(next-buffer :wk "Next buffer")
     "bp" '(previous-buffer :wk "Previous buffer")
     "br" '(revert-buffer :wk "Reload buffer"))
+  (my/leader
+    "o" '(:ignore t :wk "Open")
+    "oA" '(org-agenda :wk "Org Agenda"))
 
   (my/leader
     "f" '(:ignore t :wk "file")
@@ -355,8 +359,6 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
     "hf" '(describe-function :wk "Describe function")
     "hv" '(describe-variable :wk "Describe variable")
     "hk" '(describe-variable :wk "Describe key")))
-
-(use-package magit)
 #+end_src
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
@@ -400,9 +402,6 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
 #+end_src
 ** Keybindings
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
-  (my/leader
-    "o" '(:ignore t :wk "Open")
-    "oA" '(org-agenda :wk "Org Agenda"))
 #+end_src
 ** Org Babel
 
@@ -434,10 +433,10 @@ This goal of this section is to make emacs behave inside src blocks like in the 
 #+end_src
 
 * Magit:
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magigt.el" :mkdirp yes
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magit.el" :mkdirp yes
 (use-package magit
-	 :general (my/leader "gg" 'magit)
-  )
+  :after general
+  :general (my/leader "gg" 'magit))
 #+end_src
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magit.el" :mkdirp yes
