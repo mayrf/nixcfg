@@ -68,4 +68,18 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 
 (add-hook 'denote-region-after-new-note-functions #'my-denote-region-org-structure-template)
 
+(defun file-to-string (file)
+  "File to string function"
+  (with-temp-buffer
+    (insert-file-contents file)
+    (buffer-string)))
+(defun my-weekly-review-template ()
+  ;; (interactive)
+        (file-to-string "~/Documents/org/gtd/templates/weekly_review.txt"))
+        ;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+
+(setq denote-templates '((weekly_review . my-weekly-review-template)))
+
+;; (message (file-to-string "~/Documents/org/gtd/templates/weekly_review.txt"))
+
 (provide 'mayrf-emacs-denote)
