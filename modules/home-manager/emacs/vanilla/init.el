@@ -61,6 +61,8 @@
                (display-buffer-no-window)
                (allow-no-window . t)))
 
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+
 (defun org-babel-tangle-config ()
   ;; (when (string-equal (buffer-file-name)
   ;; 		      (expand-file-name "~/.config/emacs-vanilla/mayrf-emacs.org"))
@@ -130,7 +132,43 @@
   (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
   (define-key evil-visual-state-map "gc" 'evilnc-comment-operator))
 
+(use-package dired-open
+  :config
+  (setq dired-open-extensions '(("gif" . "sxiv")
+                                ("jpg" . "sxiv")
+                                ("png" . "sxiv")
+                                ("mkv" . "mpv")
+                                ("mp4" . "mpv"))))
+
+(use-package peep-dired
+  :after dired
+  :hook (evil-normalize-keymaps . peep-dired-hook)
+  :config
+    (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
+    (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
+    (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
+)
+
+;; TODO Setup an use elfeed
+(use-package elfeed
+  :config
+  (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
+        elfeed-feeds (quote
+                       (("https://www.reddit.com/r/linux.rss" reddit linux)
+                        ("https://opensource.com/feed" opensource linux)))))
+(use-package elfeed-goodies
+  :init
+  (elfeed-goodies/setup)
+  :config
+  (setq elfeed-goodies/entry-pane-size 0.5))
+
+
+
+
+
 (global-visual-line-mode t)
+(which-key-mode)
 
 (global-set-key [escape] 'keyboard-escape-quit)
 

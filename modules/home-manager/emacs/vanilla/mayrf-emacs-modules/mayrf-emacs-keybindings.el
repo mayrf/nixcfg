@@ -20,6 +20,7 @@
   (my/leader
     "f" '(:ignore t :wk "file")
     "ff" 'find-file
+    "fP" '((lambda () (interactive) (find-file "~/.config/emacs-vanilla/mayrf-emacs.org")) :wk "Open Config")
     "fr" 'recentf)
 
   (my/leader

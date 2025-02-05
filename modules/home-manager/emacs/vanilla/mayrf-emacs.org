@@ -6,7 +6,7 @@
 
 This is my WIP vanilla Emacs config. The structure and content is heavily copied from Protesilaos Stavrous' [[https://protesilaos.com/emacs/dotemacs][dotemacs config]] and I am very grateful to him for sharing all of his superb Emacs resources with the community.
 
-* The early initialisation of Emacs (=early-init.el=)
+* Early Init 
 
 #+begin_src emacs-lisp :tangle "early-init.el"
 ;; (setq package-enable-at-startup nil
@@ -20,7 +20,7 @@ This is my WIP vanilla Emacs config. The structure and content is heavily copied
 ;; (menu-bar-mode -1)                 ; disable menubar
 #+end_src
 
-* The main initialisation of Emacs (=init.el=)
+* Init
 ** Package Manager
 *** Elpaca
 **** NixOs specific fix
@@ -99,8 +99,14 @@ See [[https://github.com/progfolio/elpaca/wiki/Usage-with-Nix][Usage with Nix ·
                (allow-no-window . t)))
 #+end_src
 
-** Custom Elisp
-*** Auto tangle configuration
+** Backup 
+By default, Emacs creates automatic backups of files in their original directories, such “file.el” and the backup “file.el~”.  This leads to a lot of clutter, so let’s tell Emacs to put all backups that it creates in the TRASH directory.
+
+#+begin_src emacs-lisp :tangle "init.el"
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+#+end_src
+
+** auto tangle configuration
 #+begin_src emacs-lisp :tangle "init.el"
 (defun org-babel-tangle-config ()
   ;; (when (string-equal (buffer-file-name)
@@ -114,7 +120,7 @@ See [[https://github.com/progfolio/elpaca/wiki/Usage-with-Nix][Usage with Nix ·
 	    (add-hook 'after-save-hook #'org-babel-tangle-config)))
 #+end_src
 
-*** Reload config
+** Reload config
 #+begin_src emacs-lisp :tangle "init.el"
 
 (defun load-directory (dir)
@@ -143,57 +149,7 @@ See [[https://github.com/progfolio/elpaca/wiki/Usage-with-Nix][Usage with Nix ·
 ;;'("mayrf-lisp" "mayrf-emacs-modules"))
 #+end_src
 
-** The =init.el= arrangements for my own modules and custom libraries
-
-I use a literate configuration as the "source of truth" for my Emacs
-configuration. What I do is to specify everything in one file and
-provide instructions for where things should go. The end product
-consists of a large set of files, encompassing the =early-init.el=
-([[#h:7b7b5898-09f7-4128-8af0-4041f67cb729][The early initialisation of Emacs (=early-init.el=)]]), the =init.el=
-([[#h:dae63bd9-93a8-41c4-af1b-d0f39ba50974][The main initialisation of Emacs (=init.el=)]]), the modules of my
-init, and the custom libraries I wrote.
-
-In the code snippet further below, I add two directories to the
-~load-path~. Concretely, any Emacs Lisp file inside these directories
-is thus declared to Emacs and we can load it properly. Here is what
-these two directories are about:
-
-- The =prot-emacs-modules= directory :: This is where I store all the
-  individual components of my Emacs setup. When I run Emacs, the
-  directory is a subdirectory of =~/.emacs.d/=. All files are prefixed
-  with =prot-emacs-=, followed by a word that broadly describes their
-  scope of application, such as ~prot-emacs-font~, ~prot-emacs-window~...
-
-  Each module consists of ordinary Elisp and a final call to ~provide~
-  the set of configurations as a /feature/ that can then be loaded via
-  ~require~ from the =init.el=. What Emacs calls a "feature" is, in
-  essence, a variable whose value is the entirety of the file that has
-  a ~provide~ call in it. Features are symbols that are named after
-  the file name minus its file type extension: ~prot-emacs-theme~ is
-  the feature provided by =prot-emacs-theme.el=.
-
-  Modules are intended only for configuration purposes.  They do not
-  define any major variables/functions, unless those are too
-  small/specific to be extracted into their own library.
-
-- The =prot-lisp= directory :: As with the aforementioned modules,
-  this directory is a subdirectory of =~/.emacs.d/=. This is where I
-  keep all my custom code that individual modules configure. The
-  contents of this directory can be understood as fully fledged
-  "packages" and, in fact, many of my actual packages started out as
-  =prot-lisp= experiments.
-
-  Each file is written in accordance with the conventions on Emacs
-  packaging, even though they are only intended for use in my setup
-  and are not polished to the level of my actual public-facing
-  packages (meaning the ones listed here: <https://protesilaos.com/emacs>).
-
-All this may not matter to you if you are reading either the
-=prot-emacs.org= file or its web page version. Still, this arrangement
-gives me maximum flexbility, as I can still share my code the way it
-would look. Plus, if I ever decide to stop using the literate config,
-I can simply stop editing it and perfom the edits directly in the
-files that are already placed where I need them to be.
+** Load modules
 
 #+begin_src emacs-lisp :tangle "init.el"
   (mapc
@@ -234,11 +190,61 @@ files that are already placed where I need them to be.
   (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
   (define-key evil-visual-state-map "gc" 'evilnc-comment-operator))
  #+end_src
+ 
+** Dired
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package dired-open
+  :config
+  (setq dired-open-extensions '(("gif" . "sxiv")
+                                ("jpg" . "sxiv")
+                                ("png" . "sxiv")
+                                ("mkv" . "mpv")
+                                ("mp4" . "mpv"))))
+
+(use-package peep-dired
+  :after dired
+  :hook (evil-normalize-keymaps . peep-dired-hook)
+  :config
+    (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
+    (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
+    (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
+)
+#+end_src
+
+
+** Elfeed
+
+#+begin_src emacs-lisp :tangle "init.el"
+;; TODO Setup an use elfeed
+(use-package elfeed
+  :config
+  (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
+        elfeed-feeds (quote
+                       (("https://www.reddit.com/r/linux.rss" reddit linux)
+                        ("https://opensource.com/feed" opensource linux)))))
+(use-package elfeed-goodies
+  :init
+  (elfeed-goodies/setup)
+  :config
+  (setq elfeed-goodies/entry-pane-size 0.5))
+#+end_src
+** template
+
+#+begin_src emacs-lisp :tangle "init.el"
+#+end_src
+
+** template
+
+#+begin_src emacs-lisp :tangle "init.el"
+#+end_src
+
 
 ** General Settings
 *** Visual
 #+begin_src emacs-lisp :tangle "init.el"
 (global-visual-line-mode t)
+(which-key-mode)
 #+end_src
 *** Navigation
 **** Minibuffer ESCAPE
@@ -350,6 +356,7 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
   (my/leader
     "f" '(:ignore t :wk "file")
     "ff" 'find-file
+    "fP" '((lambda () (interactive) (find-file "~/.config/emacs-vanilla/mayrf-emacs.org")) :wk "Open Config")
     "fr" 'recentf)
 
   (my/leader
@@ -399,6 +406,22 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
 (setq org-src-preserve-indentation t)
 (setq org-directory "~/Documents/org/")
 (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
+(setq org-inbox-file (file-truename (file-name-concat org-directory "Inbox.org")))
+(setq org-default-notes-file org-inbox-file)
+(setq org-capture-templates
+   '(("f" "Fleeting note" item
+      (file+headline org-default-notes-file "Notes")
+      "- %?")
+     ("p" "Permanent note" plain
+      (file denote-last-path)
+      #'denote-org-capture
+      :no-save t
+      :immediate-finish nil
+      :kill-buffer t
+      :jump-to-captured t)
+     ("t" "New task" entry
+      (file+headline org-default-notes-file "Tasks")
+      "* TODO %i%?")))
 #+end_src
 ** Keybindings
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
@@ -425,7 +448,72 @@ This goal of this section is to make emacs behave inside src blocks like in the 
   :after org
   :config
   (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/")))
+
   )
+(with-eval-after-load 'org-capture
+  (add-to-list 'org-capture-templates
+               '("N" "New note with no prompts (with denote.el)" plain
+		 (file denote-last-path)
+		 (function
+                  (lambda ()
+                    (denote-org-capture-with-prompts nil nil nil)))
+		 :no-save t
+		 :immediate-finish nil
+		 :kill-buffer t
+		 :jump-to-captured t))
+  (add-to-list 'org-capture-templates
+               '("j" "Journal" entry
+                 (file denote-journal-extras-path-to-new-or-existing-entry)
+                 "* %U %?\n%i\n%a"
+                 :kill-buffer t
+                 :empty-lines 1)))
+(defun my-denote-region-org-structure-template (_beg _end)
+  (when (derived-mode-p 'org-mode)
+    (activate-mark)
+    (call-interactively 'org-insert-structure-template)))
+
+;; TODO Maybe also add a link to the source?
+(add-hook 'denote-region-after-new-note-functions #'my-denote-region-org-structure-template)
+
+
+;; Variant of `my-denote-region' to reference the source
+
+(defun my-denote-region-get-source-reference ()
+  "Get a reference to the source for use with `my-denote-region'.
+The reference is a URL or an Org-formatted link to a file."
+  ;; We use a `cond' here because we can extend it to cover move
+  ;; cases.
+  (cond
+   ((derived-mode-p 'eww-mode)
+    (plist-get eww-data :url))
+   ;; Here we are just assuming an Org format.  We can make this more
+   ;; involved, if needed.
+   (buffer-file-name
+    (format "[[file:%s][%s]]" buffer-file-name (buffer-name)))))
+
+(defun my-denote-region ()
+  "Like `denote-region', but add the context afterwards.
+For how the context is retrieved, see `my-denote-region-get-source-reference'."
+  (interactive)
+  (let ((context (my-denote-region-get-source-reference)))
+    (call-interactively 'denote-region)
+    (when context
+      (goto-char (point-max))
+      (insert "\n")
+      (insert context))))
+
+;; Add quotes around snippets of text captured with `denote-region' or `my-denote-region'.
+
+(defun my-denote-region-org-structure-template (beg end)
+  "Automatically quote (with Org syntax) the contents of `denote-region'."
+  (when (derived-mode-p 'org-mode)
+    (goto-char end)
+    (insert "#+end_quote\n")
+    (goto-char beg)
+    (insert "#+begin_quote\n")))
+
+(add-hook 'denote-region-after-new-note-functions #'my-denote-region-org-structure-template)
+
 #+end_src
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
