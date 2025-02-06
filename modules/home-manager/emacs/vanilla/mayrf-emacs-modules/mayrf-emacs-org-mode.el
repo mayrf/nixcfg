@@ -2,6 +2,26 @@
 (setq org-directory "~/Documents/org/")
 (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
 (setq org-inbox-file (file-truename (file-name-concat org-directory "Inbox.org")))
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
+
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
+
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@creative" . ?c)
+        ("@reading" .?b)
+        ("@media" .?m)
+        ("@listening" .?l)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r)))
 (setq org-default-notes-file org-inbox-file)
 (setq org-capture-templates
    '(("f" "Fleeting note" item

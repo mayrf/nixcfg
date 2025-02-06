@@ -1,7 +1,6 @@
 *.eln
 eln-cache
 .org-id-locations
-bookmarks
 custom-vars.el
 elpaca/
 history
@@ -11,3 +10,4 @@ recentf
 transient/
 url/
 auto-save-list/
+bookmarks*

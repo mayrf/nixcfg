@@ -445,18 +445,13 @@ capture was not aborted."
   ;; setting up inbox captures
   (setq org-capture-templates '(
                                 ("i" "inbox" entry
-                                 (file "roam/pages/Inbox.org")
+                                 (file "Inbox.org")
                                  "* TODO %?\n/Entered on/ %U")
                                 ("m" "Meeting" entry
                                  (file+headline "gtd/tickler.org" "Future")
                                  "* %? :meeting:\n<%<%Y-%m-%d %a %H:00>>")
-                                ("n" "Note" entry
-                                 (file "gtd/notes.org")
-                                 "* Note (%a)\n/Entered on/ %U\n\n%?")
-                                ;; (concat "* TODO %?\n"
-                                ;;          "/Entered on/ %U"))
                                 ("t" "Todo" entry
-                                 (file "gtd/inbox.org")
+                                 (file "Inbox.org")
                                  "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
 
                                 ("r" "Rice wish" entry
@@ -464,16 +459,8 @@ capture was not aborted."
                                  "* TODO %^{Brief Description} \n%?\n:LOGBOOK:\n- Added: %T\n- created from: %f\n:END:\n")
 
                                 ("b" "book [inbox]" entry
-                                 (file+headline "gtd/inbox.org" "Books")
+                                 (file+headline "Inbox.org" "Books")
                                  "* %^{author} - %^{Title}\n- recommended by %^{recommended by}\n:PROPERTIES:\n:PAGES: %^{Pages}\n:GENRE: %^{Genre}\n:LINK: %^{Link}\n:END:\n:LOGBOOK:\n - Added: %T\n- created from: %f\n:END:\n%?")
-
-                                ("j" "Journal" plain
-                                 (file+function "gtd/journal.org" org-reverse-datetree-goto-date-in-file)
-                                 "%?" :empty-lines 1 :append nil)
-
-                                ("W" "Weekly Review" entry
-                                 (file+function "gtd/weekly-review.org" org-reverse-datetree-goto-date-in-file)
-                                 (file "gtd/templates/weekly_review.txt"))
 
                                 ("T" "Tickler" entry
                                  (file+headline "gtd/tickler.org" "Tickler")
