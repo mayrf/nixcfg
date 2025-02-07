@@ -44,6 +44,8 @@ in rec {
       specialArgs = {
         user = config.user;
         host = config.host;
+        #TODO Fix this switch
+        isImpermanent = config.isImpermanent;
       } // specialArgs;
       modules = [
         config.nixosPath
@@ -51,6 +53,8 @@ in rec {
           home-manager.extraSpecialArgs = {
             user = config.user;
             host = config.host;
+            #TODO Fix this switch
+            isImpermanent = config.isImpermanent;
           } // specialArgs;
           # home-manager.backupFileExtension = "backup";
           home-manager.users.mayrf = {

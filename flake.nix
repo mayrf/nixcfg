@@ -57,7 +57,7 @@
         inherit inputs configVars;
         lib = inputs.nixpkgs.lib;
       };
-    in with aidLib; {
+    in {
       packages = forAllSystems (system:
         let pkgs = inputs.nixpkgs.legacyPackages.${system};
         in import ./pkgs { inherit pkgs; });
@@ -65,21 +65,27 @@
       nixosModules = import ./modules/nixos;
       templates = import ./templates;
       nixosConfigurations = {
-        radium = mkSystem {
+        radium = aidLib.mkSystem {
           user = "mayrf";
           host = "radium";
+          #TODO Fix this switch
+          isImpermanent = false;
           nixosPath = ./hosts/radium;
           homePath = ./home/mayrf/radium.nix;
         };
-        yttrium = mkSystem {
+        yttrium = aidLib.mkSystem {
           user = "mayrf";
           host = "yttrium";
+          #TODO Fix this switch
+          isImpermanent = true;
           nixosPath = ./hosts/yttrium;
           homePath = ./home/mayrf/yttrium.nix;
         };
-        helium = mkSystem {
+        helium = aidLib.mkSystem {
           user = "mayrf";
           host = "helium";
+          #TODO Fix this switch
+          isImpermanent = false;
           nixosPath = ./hosts/helium;
           homePath = ./home/mayrf/helium.nix;
         };

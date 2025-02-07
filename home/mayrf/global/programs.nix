@@ -1,4 +1,4 @@
-{ pkgs, stable, unstable, outputs, configVars, ... }: {
+{ pkgs, stable, unstable, outputs, configVars, isImpermanent, ... }: {
 
   programs = {
     zathura = {
@@ -9,11 +9,12 @@
     gpg = { enable = true; };
     librewolf.enable = true;
   };
-
-  home.persistence."${configVars.persistDir}/home/${configVars.username}" = {
-    directories = [ ".config/fabric" ];
-    # files = [ ".screenrc" ];
-  };
+  home.persistence."${configVars.persistDir}/home/${configVars.username}" =
+    if (isImpermanent == true) then {
+      directories = [ ".config/fabric" ];
+      # files = [ ".screenrc" ];
+    } else
+      { };
 
   home.packages = with pkgs; [
     oterm
