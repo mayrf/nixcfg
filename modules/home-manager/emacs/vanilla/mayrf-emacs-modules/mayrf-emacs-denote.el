@@ -20,7 +20,32 @@
                  (file denote-journal-extras-path-to-new-or-existing-entry)
                  "* %U %?\n%i\n%a"
                  :kill-buffer t
-                 :empty-lines 1)))
+                 :empty-lines 1))
+  ;; TODO Add hook to automatically add the new file to agenda, until then, just reload config
+  (add-to-list 'org-capture-templates
+	       '("P" "New project (with Denote)" plain
+		 (file denote-last-path)
+		 (function
+		  (lambda ()
+                    (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
+			  ;; TODO Enable adding of additional keywords
+			  (denote-use-keywords '("project"))
+			  (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+			  (denote-prompts (denote-add-prompts '(keywords)))
+
+			  (denote-org-front-matter
+			   (concat "#+title:      %s\n"
+				   "#+date:       %s\n"
+				   "#+filetags:   %s\n"
+				   "#+identifier: %s\n"
+				   "#+category: %1$s\n"
+				   "\n")
+			   ))
+		      (denote-org-capture))))
+		 :no-save t
+		 :immediate-finish nil
+		 :kill-buffer t
+		 :jump-to-captured t)))
 (defun my-denote-region-org-structure-template (_beg _end)
   (when (derived-mode-p 'org-mode)
     (activate-mark)
@@ -73,12 +98,32 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
+
+;; (defun my-denote-template (template-file-name)
+;;   (lambda ()
+;;     (file-to-string (file-name-concat user-emacs-directory "templates" template-file-name))))
+;; ;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+
 (defun my-weekly-review-template ()
   ;; (interactive)
-        (file-to-string "~/Documents/org/gtd/templates/weekly_review.txt"))
-        ;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+  (file-to-string "~/Documents/org/gtd/templates/weekly_review.org"))
+;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
 
-(setq denote-templates '((weekly_review . my-weekly-review-template)))
+(defun my-daily-journal-template ()
+  ;; (interactive)
+  (file-to-string "templates/daily_journal.org"))
+
+(defun my-project-template ()
+  ;; (interactive)
+  (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+
+(setq denote-templates '((weekly_review . my-weekly-review-template)
+			 (daily_journal . my-daily-journal-template)
+			 (project . my-project-template)
+			 ;; (theproject . (my-denote-template "project.org"))
+			 ))
 
 ;; (message (file-to-string "~/Documents/org/gtd/templates/weekly_review.txt"))
 

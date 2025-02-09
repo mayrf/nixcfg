@@ -172,15 +172,21 @@ By default, Emacs creates automatic backups of files in their original directori
 (use-package evil
   :ensure t
   :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1))
+  (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
+          evil-want-keybinding nil
+          evil-vsplit-window-right t
+          evil-split-window-below t
+          evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
+    (evil-mode))
 
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
+  ;; Do not uncomment this unless you want to specify each and every mode
+  ;; that evil-collection should works with.  The following line is here 
+  ;; for documentation purposes in case you need it.  
+  ;; (setq evil-collection-mode-list '(calendar dashboard dired ediff info magit ibuffer))
+  (add-to-list 'evil-collection-mode-list 'help) ;; evilify help mode
   (evil-collection-init))
 
 (use-package evil-nerd-commenter
@@ -189,6 +195,15 @@ By default, Emacs creates automatic backups of files in their original directori
   (evilnc-default-hotkeys)
   (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
   (define-key evil-visual-state-map "gc" 'evilnc-comment-operator))
+
+;; Using RETURN to follow links in Org/Evil 
+;; Unmap keys in 'evil-maps if not done, (setq org-return-follows-link t) will not work
+;; (with-eval-after-load 'evil-maps
+;;   (define-key evil-motion-state-map (kbd "SPC") nil)
+;;   (define-key evil-motion-state-map (kbd "RET") nil)
+;;   (define-key evil-motion-state-map (kbd "TAB") nil))
+;; ;; Setting RETURN key in org-mode to follow links
+;;   (setq org-return-follows-link  t)
  #+end_src
  
 ** Dired
@@ -246,12 +261,24 @@ By default, Emacs creates automatic backups of files in their original directori
 (global-visual-line-mode t)
 (which-key-mode)
 #+end_src
+
 *** Navigation
 **** Minibuffer ESCAPE
 By default, Emacs requires you to hit ESC three times to escape quit the minibuffer.
 #+begin_src emacs-lisp :tangle "init.el"
 (global-set-key [escape] 'keyboard-escape-quit)
 #+end_src
+
+**** Consult
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package consult)
+#+end_src
+
+**** Buffer move
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package buffer-move)
+#+end_src
+
 *** Must have settings from System crafters:
 https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
 #+begin_src emacs-lisp :tangle "init.el"
@@ -265,8 +292,8 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
     ;; Move customization variables to a separate file and load it
     ;; Disable the damn thing by making it disposable.
     (setq custom-file (make-temp-file "emacs-custom-"))
-    (setq custom-file (locate-user-emacs-file "custom-vars.el"))
-    (load custom-file 'noerror 'nomessage)
+    ;; (setq custom-file (locate-user-emacs-file "custom-vars.el"))
+    ;; (load custom-file 'noerror 'nomessage)
 
     ;; Don't pop up UI dialogs when prompting
     ;;(setq use-dialog-box nil)
@@ -286,6 +313,15 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
     :config
     (load-theme 'ef-melissa-dark t nil))
   ;;(load-theme 'ef-melissa-dark)
+#+end_src
+
+** Zooming In/Out
+You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTRL plus the mouse wheel for zooming in/out.
+#+begin_src emacs-lisp :tangle "init.el"
+(keymap-global-set "C-=" 'text-scale-increase)
+(keymap-global-set "C--" 'text-scale-decrease)
+(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 #+end_src
 
 ** PDFs
@@ -334,38 +370,289 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
 
 * Key-bindings:
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
+;; (use-package general
+;;   :config
+;;   (general-evil-setup)
+;;   (general-create-definer my/leader
+;;     :states '(normal insert visual emacs)
+;;     :keymaps 'override
+;;     :prefix "SPC" ;; set leader
+;;     :global-prefix "M-SPC") ;; access leader in insert mode
+;;   (my/leader
+;;     "b" '(:ignore t :wk "buffer")
+;;     "bb" '(switch-to-buffer :wk "Switch buffer")
+;;     "bk" '(kill-this-buffer :wk "Kill this buffer")
+;;     "bn" '(next-buffer :wk "Next buffer")
+;;     "bp" '(previous-buffer :wk "Previous buffer")
+;;     "br" '(revert-buffer :wk "Reload buffer"))
+
+;;   (my/leader
+;;     "o" '(:ignore t :wk "Open")
+;;     "X" '(org-capture :wk "Org Capture")
+;;     "pp" '(project-switch-project :wk "Switch Project")
+;;     "SPC" '(project-find-file :wk "Find File in Project")
+;;     "oA" '(org-agenda :wk "Org Agenda"))
+
+;;   (my/leader
+;;     "d" '(:ignore t :wk "Dired")
+;;     "d d" '(dired :wk "Open dired")
+;;     "d j" '(dired-jump :wk "Dired jump to current")
+;;     "d n" '(neotree-dir :wk "Open directory in neotree")
+;;     "d p" '(peep-dired :wk "Peep-dired"))
+
+;;   (my/leader
+;;     "f" '(:ignore t :wk "file")
+;;     "ff" 'find-file
+;;     "fP" '((lambda () (interactive) (find-file "~/.config/emacs-vanilla/mayrf-emacs.org")) :wk "Open Config")
+;;     "fr" 'recentf)
+
+;;   (my/leader
+;;     ;; "h" '(:ignore t :wk "help")
+;;     "mq" '(org-set-tags-command :wk "Set org tags for Heading")
+
+#+end_src
+
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
 (use-package general
   :config
   (general-evil-setup)
+
+  ;; set up 'SPC' as the global leader key
   (general-create-definer my/leader
     :states '(normal insert visual emacs)
     :keymaps 'override
     :prefix "SPC" ;; set leader
     :global-prefix "M-SPC") ;; access leader in insert mode
+
   (my/leader
-    "b" '(:ignore t :wk "buffer")
-    "bb" '(switch-to-buffer :wk "Switch buffer")
-    "bk" '(kill-this-buffer :wk "Kill this buffer")
-    "bn" '(next-buffer :wk "Next buffer")
-    "bp" '(previous-buffer :wk "Previous buffer")
-    "br" '(revert-buffer :wk "Reload buffer"))
+    ;; "SPC" '(counsel-M-x :wk "Counsel M-x")
+    "." '(find-file :wk "Find file"))
+    ;; "=" '(perspective-map :wk "Perspective") ;; Lists all the perspective keybindings
+    ;; "TAB TAB" '(comment-line :wk "Comment lines")
+    ;; "u" '(universal-argument :wk "Universal argument"))
+
+   ;; (dt/leader-keys
+   ;;  "a" '(:ignore t :wk "A.I.")
+   ;;  "a a" '(ellama-ask-about :wk "Ask ellama about region")
+   ;;  "a e" '(:ignore t :wk "Ellama enhance")
+   ;;  "a e g" '(ellama-improve-grammar :wk "Ellama enhance wording")
+   ;;  "a e w" '(ellama-improve-wording :wk "Ellama enhance grammar")
+   ;;  "a i" '(ellama-chat :wk "Ask ellama")
+   ;;  "a p" '(ellama-provider-select :wk "Ellama provider select")
+   ;;  "a s" '(ellama-summarize :wk "Ellama summarize region")
+   ;;  "a t" '(ellama-translate :wk "Ellama translate region"))
+   
+  (my/leader
+    "b" '(:ignore t :wk "Bookmarks/Buffers")
+    "b b" '(switch-to-buffer :wk "Switch to buffer")
+    "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
+    "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
+    "b d" '(bookmark-delete :wk "Delete bookmark")
+    "b i" '(ibuffer :wk "Ibuffer")
+    "b k" '(kill-current-buffer :wk "Kill current buffer")
+    "b K" '(kill-some-buffers :wk "Kill multiple buffers")
+    "b l" '(list-bookmarks :wk "List bookmarks")
+    "b m" '(bookmark-set :wk "Set bookmark")
+    "b n" '(next-buffer :wk "Next buffer")
+    "b p" '(previous-buffer :wk "Previous buffer")
+    "b r" '(revert-buffer :wk "Reload buffer")
+    "b R" '(rename-buffer :wk "Rename buffer")
+    "b s" '(basic-save-buffer :wk "Save buffer")
+    "b S" '(save-some-buffers :wk "Save multiple buffers")
+    "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file"))
+
+  (my/leader
+    "d" '(:ignore t :wk "Dired")
+    "d d" '(dired :wk "Open dired")
+    "d f" '(wdired-finish-edit :wk "Writable dired finish edit")
+    "d j" '(dired-jump :wk "Dired jump to current")
+    "d n" '(neotree-dir :wk "Open directory in neotree")
+    "d p" '(peep-dired :wk "Peep-dired")
+    "d w" '(wdired-change-to-wdired-mode :wk "Writable dired"))
+
+  (my/leader
+    "e" '(:ignore t :wk "Ediff/Eshell/Eval/EWW")    
+    "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+    "e d" '(eval-defun :wk "Evaluate defun containing or after point")
+    "e e" '(eval-expression :wk "Evaluate and elisp expression")
+    "e f" '(ediff-files :wk "Run ediff on a pair of files")
+    "e F" '(ediff-files3 :wk "Run ediff on three files")
+    "e h" '(counsel-esh-history :which-key "Eshell history")
+    "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+    "e n" '(eshell-new :wk "Create new eshell buffer")
+    "e r" '(eval-region :wk "Evaluate elisp in region")
+    "e R" '(eww-reload :which-key "Reload current page in EWW")
+    "e s" '(eshell :which-key "Eshell")
+    "e w" '(eww :which-key "EWW emacs web wowser"))
+
+  (my/leader
+    "f" '(:ignore t :wk "Files")    
+    "SPC" '(project-find-file :wk "Find File in Project")
+    "f P" '((lambda () (interactive) (find-file "~/.config/emacs-vanilla/mayrf-emacs.org")) :wk "Open Config")
+    ;; "f c" '((lambda () (interactive)
+    ;;           (find-file "~/.config/emacs/config.org")) 
+    ;;         :wk "Open emacs config.org")
+    ;; "f e" '((lambda () (interactive)
+    ;;           (dired "~/.config/emacs/")) 
+    ;;         :wk "Open user-emacs-directory in dired")
+    "f d" '(find-grep-dired :wk "Search for string in files in DIR")
+    "f g" '(counsel-grep-or-swiper :wk "Search for string current file")
+    ;; "f i" '((lambda () (interactive)
+    ;;           (find-file "~/.config/emacs/init.el")) 
+    ;;         :wk "Open emacs init.el")
+
+    "f f" 'find-file
+    ;; "f f" '(consult-find :wk "Find a file")
+    ;; "f r" 'recentf)
+    ;; "f j" '(counsel-file-jump :wk "Jump to a file below current directory")
+    "f l" '(consult-locate :wk "Locate a file")
+    "f r" '(consult-recent-file :wk "Find recent files"))
+    ;; "f u" '(sudo-edit-find-file :wk "Sudo find file")
+    ;; "f U" '(sudo-edit :wk "Sudo edit file"))
+
+  (my/leader
+    "g" '(:ignore t :wk "Git")    
+    "g /" '(magit-displatch :wk "Magit dispatch")
+    "g ." '(magit-file-displatch :wk "Magit file dispatch")
+    "g b" '(magit-branch-checkout :wk "Switch branch")
+    "g c" '(:ignore t :wk "Create") 
+    "g c b" '(magit-branch-and-checkout :wk "Create branch and checkout")
+    "g c c" '(magit-commit-create :wk "Create commit")
+    "g c f" '(magit-commit-fixup :wk "Create fixup commit")
+    "g C" '(magit-clone :wk "Clone repo")
+    "g f" '(:ignore t :wk "Find") 
+    "g f c" '(magit-show-commit :wk "Show commit")
+    "g f f" '(magit-find-file :wk "Magit find file")
+    "g f g" '(magit-find-git-config-file :wk "Find gitconfig file")
+    "g F" '(magit-fetch :wk "Git fetch")
+    "g g" '(magit-status :wk "Magit status")
+    "g i" '(magit-init :wk "Initialize git repo")
+    "g l" '(magit-log-buffer-file :wk "Magit buffer log")
+    "g r" '(vc-revert :wk "Git revert file")
+    "g s" '(magit-stage-file :wk "Git stage file")
+    "g t" '(git-timemachine :wk "Git time machine")
+    "g u" '(magit-stage-file :wk "Git unstage file"))
+
+
+  (my/leader
+    "h" '(:ignore t :wk "Help")
+    ;; "h a" '(counsel-apropos :wk "Apropos")
+    "h b" '(describe-bindings :wk "Describe bindings")
+    "h c" '(describe-char :wk "Describe character under cursor")
+    "h d" '(:ignore t :wk "Emacs documentation")
+    "h d a" '(about-emacs :wk "About Emacs")
+    "h d d" '(view-emacs-debugging :wk "View Emacs debugging")
+    "h d f" '(view-emacs-FAQ :wk "View Emacs FAQ")
+    "h d m" '(info-emacs-manual :wk "The Emacs manual")
+    "h d n" '(view-emacs-news :wk "View Emacs news")
+    "h d o" '(describe-distribution :wk "How to obtain Emacs")
+    "h d p" '(view-emacs-problems :wk "View Emacs problems")
+    "h d t" '(view-emacs-todo :wk "View Emacs todo")
+    "h d w" '(describe-no-warranty :wk "Describe no warranty")
+    "h e" '(view-echo-area-messages :wk "View echo area messages")
+    "h f" '(describe-function :wk "Describe function")
+    "h F" '(describe-face :wk "Describe face")
+    "h g" '(describe-gnu-project :wk "Describe GNU Project")
+    "h i" '(info :wk "Info")
+    "h I" '(describe-input-method :wk "Describe input method")
+    "h k" '(describe-key :wk "Describe key")
+    "h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
+    "h L" '(describe-language-environment :wk "Describe language environment")
+    "h m" '(describe-mode :wk "Describe mode")
+    "h r" '(:ignore t :wk "Reload")
+    "h r r" 'my/reload-emacs
+    ;; "h r r" '((lambda () (interactive)
+    ;;             (load-file "~/.config/emacs/init.el")
+    ;;             (ignore (elpaca-process-queues)))
+    ;;           :wk "Reload emacs config")
+    "h t" '(load-theme :wk "Load theme")
+    "h v" '(describe-variable :wk "Describe variable")
+    "h w" '(where-is :wk "Prints keybinding for command if set")
+    "h x" '(describe-command :wk "Display full documentation for command"))
+
+  (my/leader
+    "m" '(:ignore t :wk "Org")
+    "X" '(org-capture :wk "Org Capture")
+    "m q" '(org-set-tags-command :wk "Set org tags for Heading")
+    "m a" '(org-agenda :wk "Org agenda")
+    "m e" '(org-export-dispatch :wk "Org export dispatch")
+    "m i" '(org-toggle-item :wk "Org toggle item")
+    "m t" '(org-todo :wk "Org todo")
+    "m B" '(org-babel-tangle :wk "Org babel tangle")
+    "m T" '(org-todo-list :wk "Org todo list"))
+
+  (my/leader
+    "m b" '(:ignore t :wk "Tables")
+    "m b -" '(org-table-insert-hline :wk "Insert hline in table"))
+
+  (my/leader
+    "m d" '(:ignore t :wk "Date/deadline")
+    "m d t" '(org-time-stamp :wk "Org time stamp"))
+
   (my/leader
     "o" '(:ignore t :wk "Open")
-    "oA" '(org-agenda :wk "Org Agenda"))
+    "o d" '(dashboard-open :wk "Dashboard")
+    "o e" '(elfeed :wk "Elfeed RSS")
+    "o f" '(make-frame :wk "Open buffer in new frame")
+    "o A" '(org-agenda :wk "Org Agenda")
+    "o F" '(select-frame-by-name :wk "Select frame by name"))
+
+  ;; projectile-command-map already has a ton of bindings 
+  ;; set for us, so no need to specify each individually.
+  (my/leader
+    "pp" '(project-switch-project :wk "Switch Project"))
+    ;; "p" '(project-prefix-map :wk "Projectile"))
+  
+  ;; (my/leader
+  ;;   "r" '(:ignore t :wk "Radio")
+  ;;   "r p" '(eradio-play :wk "Eradio play")
+  ;;   "r s" '(eradio-stop :wk "Eradio stop")
+  ;;   "r t" '(eradio-toggle :wk "Eradio toggle"))
+
+
+  ;; (my/leader
+  ;;   "s" '(:ignore t :wk "Search")
+  ;;   "s d" '(dictionary-search :wk "Search dictionary")
+  ;;   "s m" '(man :wk "Man pages")
+  ;;   "s o" '(pdf-occur :wk "Pdf search lines matching STRING")
+  ;;   "s t" '(tldr :wk "Lookup TLDR docs for a command")
+  ;;   "s w" '(woman :wk "Similar to man but doesn't require man"))
+
+  ;; (my/leader
+  ;;   "t" '(:ignore t :wk "Toggle")
+  ;;   "t e" '(eshell-toggle :wk "Toggle eshell")
+  ;;   "t f" '(flycheck-mode :wk "Toggle flycheck")
+  ;;   "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
+  ;;   "t n" '(neotree-toggle :wk "Toggle neotree file viewer")
+  ;;   "t o" '(org-mode :wk "Toggle org mode")
+  ;;   "t r" '(rainbow-mode :wk "Toggle rainbow mode")
+  ;;   "t t" '(visual-line-mode :wk "Toggle truncated lines")
+  ;;   "t v" '(vterm-toggle :wk "Toggle vterm"))
 
   (my/leader
-    "f" '(:ignore t :wk "file")
-    "ff" 'find-file
-    "fP" '((lambda () (interactive) (find-file "~/.config/emacs-vanilla/mayrf-emacs.org")) :wk "Open Config")
-    "fr" 'recentf)
-
-  (my/leader
-    "h" '(:ignore t :wk "help")
-    "hrr" 'my/reload-emacs
-    "hy" 'my/reload-emacs
-    "hf" '(describe-function :wk "Describe function")
-    "hv" '(describe-variable :wk "Describe variable")
-    "hk" '(describe-variable :wk "Describe key")))
+    "w" '(:ignore t :wk "Windows/Words")
+    ;; Window splits
+    "w c" '(evil-window-delete :wk "Close window")
+    "w n" '(evil-window-new :wk "New window")
+    "w s" '(evil-window-split :wk "Horizontal split window")
+    "w v" '(evil-window-vsplit :wk "Vertical split window")
+    ;; Window motions
+    "w h" '(evil-window-left :wk "Window left")
+    "w j" '(evil-window-down :wk "Window down")
+    "w k" '(evil-window-up :wk "Window up")
+    "w l" '(evil-window-right :wk "Window right")
+    "w w" '(evil-window-next :wk "Goto next window")
+    ;; Move Windows
+    "w H" '(buf-move-left :wk "Buffer move left")
+    "w J" '(buf-move-down :wk "Buffer move down")
+    "w K" '(buf-move-up :wk "Buffer move up")
+    "w L" '(buf-move-right :wk "Buffer move right")
+    ;; Words
+    "w d" '(downcase-word :wk "Downcase word")
+    "w u" '(upcase-word :wk "Upcase word")
+    "w =" '(count-words :wk "Count words/lines for buffer"))
+)
 #+end_src
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
@@ -405,8 +692,20 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
 (setq org-src-preserve-indentation t)
 (setq org-directory "~/Documents/org/")
-(setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
-(setq org-inbox-file (file-truename (file-name-concat org-directory "Inbox.org")))
+;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
+(setq org-agenda-files (directory-files-recursively (file-name-concat org-directory "Denotes/projects") "\\.org$"))
+(setq org-inbox-file (file-truename (file-name-concat org-directory "Denotes/Inbox.org")))
+(setq org-refile-targets '((nil :maxlevel . 9)
+			   (org-agenda-files :maxlevel . 1)))
+			    ;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
+			    
+                            ;; (("next.org"
+                            ;;  "read_review.org"
+                            ;;  "someday.org"
+                            ;;  ;; (org-refile-project-files :maxlevel . 1)
+                            ;;  "tickler.org"))))
+			    ;; (directory-files-recursively org-directory "Denotes\\.org$")
+
 (setq org-tag-alist
       '(;; Places
         ("@home" . ?H)
@@ -422,11 +721,13 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
         ("@writing" . ?w)
         ("@creative" . ?c)
         ("@reading" .?b)
+        ("@try" .?t)
         ("@media" .?m)
         ("@listening" .?l)
         ("@email" . ?e)
         ("@calls" . ?a)
-        ("@errands" . ?r)))
+        ("@errands" . ?r)
+        ("@order" . ?o)))
 (setq org-default-notes-file org-inbox-file)
 (setq org-capture-templates
    '(("f" "Fleeting note" item
@@ -441,13 +742,216 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
       :jump-to-captured t)
      ("t" "New task" entry
       (file+headline org-default-notes-file "Tasks")
-      "* TODO %i%?")))
+      "* TODO %i%?")
+     ("K" "Cliplink capture task" entry
+      (file+headline org-default-notes-file "Links")
+      ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
+      "* TODO %(org-cliplink-capture)" :empty-lines 1)
+     ))
 #+end_src
 ** Keybindings
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
 #+end_src
-** Org Babel
+** Org Bullets
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+(add-hook 'org-mode-hook 'org-indent-mode)
+(use-package org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+** DWIM-at-point
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+(defun +org/dwim-at-point (&optional arg)
+  "Do-what-I-mean at point.
 
+If on a:
+- checkbox list item or todo heading: toggle it.
+- citation: follow it
+- headline: cycle ARCHIVE subtrees, toggle latex fragments and inline images in
+  subtree; update statistics cookies/checkboxes and ToCs.
+- clock: update its time.
+- footnote reference: jump to the footnote's definition
+- footnote definition: jump to the first reference of this footnote
+- timestamp: open an agenda view for the time-stamp date/range at point.
+- table-row or a TBLFM: recalculate the table's formulas
+- table-cell: clear it and go into insert mode. If this is a formula cell,
+  recaluclate it instead.
+- babel-call: execute the source block
+- statistics-cookie: update it.
+- src block: execute it
+- latex fragment: toggle it.
+- link: follow it
+- otherwise, refresh all inline images in current tree."
+  (interactive "P")
+  (if (button-at (point))
+      (call-interactively #'push-button)
+    (let* ((context (org-element-context))
+           (type (org-element-type context)))
+      ;; skip over unimportant contexts
+      (while (and context (memq type '(verbatim code bold italic underline strike-through subscript superscript)))
+        (setq context (org-element-property :parent context)
+              type (org-element-type context)))
+      (pcase type
+        ((or `citation `citation-reference)
+         (org-cite-follow context arg))
+
+        (`headline
+         (cond ((memq (bound-and-true-p org-goto-map)
+                      (current-active-maps))
+                (org-goto-ret))
+               ((and (fboundp 'toc-org-insert-toc)
+                     (member "TOC" (org-get-tags)))
+                (toc-org-insert-toc)
+                (message "Updating table of contents"))
+               ((string= "ARCHIVE" (car-safe (org-get-tags)))
+                (org-force-cycle-archived))
+               ((or (org-element-property :todo-type context)
+                    (org-element-property :scheduled context))
+                (org-todo
+                 (if (eq (org-element-property :todo-type context) 'done)
+                     (or (car (+org-get-todo-keywords-for (org-element-property :todo-keyword context)))
+                         'todo)
+                   'done))))
+         ;; Update any metadata or inline previews in this subtree
+         (org-update-checkbox-count)
+         (org-update-parent-todo-statistics)
+         (when (and (fboundp 'toc-org-insert-toc)
+                    (member "TOC" (org-get-tags)))
+           (toc-org-insert-toc)
+           (message "Updating table of contents"))
+         (let* ((beg (if (org-before-first-heading-p)
+                         (line-beginning-position)
+                       (save-excursion (org-back-to-heading) (point))))
+                (end (if (org-before-first-heading-p)
+                         (line-end-position)
+                       (save-excursion (org-end-of-subtree) (point))))
+                (overlays (ignore-errors (overlays-in beg end)))
+                (latex-overlays
+                 (cl-find-if (lambda (o) (eq (overlay-get o 'org-overlay-type) 'org-latex-overlay))
+                             overlays))
+                (image-overlays
+                 (cl-find-if (lambda (o) (overlay-get o 'org-image-overlay))
+                             overlays)))
+           (+org--toggle-inline-images-in-subtree beg end)
+           (if (or image-overlays latex-overlays)
+               (org-clear-latex-preview beg end)
+             (org--latex-preview-region beg end))))
+
+        (`clock (org-clock-update-time-maybe))
+
+        (`footnote-reference
+         (org-footnote-goto-definition (org-element-property :label context)))
+
+        (`footnote-definition
+         (org-footnote-goto-previous-reference (org-element-property :label context)))
+
+        ((or `planning `timestamp)
+         (org-follow-timestamp-link))
+
+        ((or `table `table-row)
+         (if (org-at-TBLFM-p)
+             (org-table-calc-current-TBLFM)
+           (ignore-errors
+             (save-excursion
+               (goto-char (org-element-property :contents-begin context))
+               (org-call-with-arg 'org-table-recalculate (or arg t))))))
+
+        (`table-cell
+         (org-table-blank-field)
+         (org-table-recalculate arg)
+         (when (and (string-empty-p (string-trim (org-table-get-field)))
+                    (bound-and-true-p evil-local-mode))
+           (evil-change-state 'insert)))
+
+        ;; (`babel-call
+        ;;  (org-babel-lob-execute-maybe))
+
+        (`statistics-cookie
+         (save-excursion (org-update-statistics-cookies arg)))
+
+        ;; ((or `src-block `inline-src-block)
+        ;;  (org-babel-execute-src-block arg))
+
+        ((or `latex-fragment `latex-environment)
+         (org-latex-preview arg))
+
+        (`link
+         (let* ((lineage (org-element-lineage context '(link) t))
+                (path (org-element-property :path lineage)))
+           (if (or (equal (org-element-property :type lineage) "img")
+                   (and path (image-type-from-file-name path)))
+               (+org--toggle-inline-images-in-subtree
+                (org-element-property :begin lineage)
+                (org-element-property :end lineage))
+             (org-open-at-point arg))))
+
+        ((guard (org-element-property :checkbox (org-element-lineage context '(item) t)))
+         (org-toggle-checkbox))
+
+        (`paragraph
+         (+org--toggle-inline-images-in-subtree))
+
+        (_
+         (if (or (org-in-regexp org-ts-regexp-both nil t)
+                 (org-in-regexp org-tsr-regexp-both nil  t)
+                 (org-in-regexp org-link-any-re nil t))
+             (call-interactively #'org-open-at-point)
+           (+org--toggle-inline-images-in-subtree
+            (org-element-property :begin context)
+            (org-element-property :end context))))))))
+
+(defun +org--toggle-inline-images-in-subtree (&optional beg end refresh)
+  "Refresh inline image previews in the current heading/tree."
+  (let* ((beg (or beg
+                  (if (org-before-first-heading-p)
+                      (save-excursion (point-min))
+                    (save-excursion (org-back-to-heading) (point)))))
+         (end (or end
+                  (if (org-before-first-heading-p)
+                      (save-excursion (org-next-visible-heading 1) (point))
+                    (save-excursion (org-end-of-subtree) (point)))))
+         (overlays (cl-remove-if-not (lambda (ov) (overlay-get ov 'org-image-overlay))
+                                     (ignore-errors (overlays-in beg end)))))
+    (dolist (ov overlays nil)
+      (delete-overlay ov)
+      (setq org-inline-image-overlays (delete ov org-inline-image-overlays)))
+    (when (or refresh (not overlays))
+      (org-display-inline-images t t beg end)
+      t)))
+
+(defun +org-get-todo-keywords-for (&optional keyword)
+  "Returns the list of todo keywords that KEYWORD belongs to."
+  (when keyword
+    (cl-loop for (type . keyword-spec)
+             in (cl-remove-if-not #'listp org-todo-keywords)
+             for keywords =
+             (mapcar (lambda (x) (if (string-match "^\\([^(]+\\)(" x)
+                                     (match-string 1 x)
+                                   x))
+                     keyword-spec)
+             if (eq type 'sequence)
+             if (member keyword keywords)
+             return keywords)))
+
+
+#+end_src
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+;; (general-define-key
+;;  :keymaps 'org-mode-map
+;;  :states 'normal
+;;  "RET" '+org/dwim-at-point
+;;  )
+#+end_src
+
+** Org Cliplink
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+(use-package org-cliplink
+:after general
+:general (my/leader "mlc" 'org-cliplink))
+
+#+end_src
+** Org Babel
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
 (setq org-src-preserve-indentation t)
 #+end_src
@@ -486,7 +990,32 @@ This goal of this section is to make emacs behave inside src blocks like in the 
                  (file denote-journal-extras-path-to-new-or-existing-entry)
                  "* %U %?\n%i\n%a"
                  :kill-buffer t
-                 :empty-lines 1)))
+                 :empty-lines 1))
+  ;; TODO Add hook to automatically add the new file to agenda, until then, just reload config
+  (add-to-list 'org-capture-templates
+	       '("P" "New project (with Denote)" plain
+		 (file denote-last-path)
+		 (function
+		  (lambda ()
+                    (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
+			  ;; TODO Enable adding of additional keywords
+			  (denote-use-keywords '("project"))
+			  (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+			  (denote-prompts (denote-add-prompts '(keywords)))
+
+			  (denote-org-front-matter
+			   (concat "#+title:      %s\n"
+				   "#+date:       %s\n"
+				   "#+filetags:   %s\n"
+				   "#+identifier: %s\n"
+				   "#+category: %1$s\n"
+				   "\n")
+			   ))
+		      (denote-org-capture))))
+		 :no-save t
+		 :immediate-finish nil
+		 :kill-buffer t
+		 :jump-to-captured t)))
 (defun my-denote-region-org-structure-template (_beg _end)
   (when (derived-mode-p 'org-mode)
     (activate-mark)
@@ -539,12 +1068,32 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
+
+;; (defun my-denote-template (template-file-name)
+;;   (lambda ()
+;;     (file-to-string (file-name-concat user-emacs-directory "templates" template-file-name))))
+;; ;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+
 (defun my-weekly-review-template ()
   ;; (interactive)
-        (file-to-string "~/Documents/org/gtd/templates/weekly_review.txt"))
-        ;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+  (file-to-string "~/Documents/org/gtd/templates/weekly_review.org"))
+;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
 
-(setq denote-templates '((weekly_review . my-weekly-review-template)))
+(defun my-daily-journal-template ()
+  ;; (interactive)
+  (file-to-string "templates/daily_journal.org"))
+
+(defun my-project-template ()
+  ;; (interactive)
+  (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+;; (file-to-string((file-truename (file-name-concat org-directory "gtd/templates/weekly_review.txt")))))
+
+(setq denote-templates '((weekly_review . my-weekly-review-template)
+			 (daily_journal . my-daily-journal-template)
+			 (project . my-project-template)
+			 ;; (theproject . (my-denote-template "project.org"))
+			 ))
 
 ;; (message (file-to-string "~/Documents/org/gtd/templates/weekly_review.txt"))
 
@@ -557,12 +1106,9 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
 (provide 'mayrf-emacs-denote)
 #+end_src
-
 * Magit:
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magit.el" :mkdirp yes
-(use-package magit
-  :after general
-  :general (my/leader "gg" 'magit))
+(use-package magit)
 #+end_src
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magit.el" :mkdirp yes

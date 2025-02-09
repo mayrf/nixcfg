@@ -1,5 +1,3 @@
-(use-package magit
-  :after general
-  :general (my/leader "gg" 'magit))
+(use-package magit)
 
 (provide 'mayrf-emacs-magit)
