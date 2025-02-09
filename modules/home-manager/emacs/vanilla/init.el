@@ -61,6 +61,12 @@
                (display-buffer-no-window)
                (allow-no-window . t)))
 
+(use-package no-littering
+  :init
+  (let ((dir (no-littering-expand-var-file-name "lock-files/")))
+  (make-directory dir t)
+  (setq lock-file-name-transforms `((".*" ,dir t)))))
+
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 
 (defun org-babel-tangle-config ()
