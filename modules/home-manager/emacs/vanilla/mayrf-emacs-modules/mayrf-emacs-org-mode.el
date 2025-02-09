@@ -1,6 +1,7 @@
 (defun my/gtd-file (filename)
   (file-name-concat org-directory "gtd" filename))
 
+(setq org-reverse-note-order t)
 (setq org-src-preserve-indentation t)
 (setq org-directory "~/Documents/org/")
 
@@ -25,61 +26,61 @@
 			  "Inbox.org"
 			  ))))
 
-      ;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
-      (setq org-inbox-file (file-truename (file-name-concat org-directory "Denotes/Inbox.org")))
-      (setq org-refile-targets '((nil :maxlevel . 9)
-				 (org-agenda-files :maxlevel . 1)))
-      ;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
+;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
+(setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
+(setq org-refile-targets '((nil :maxlevel . 9)
+			   (org-agenda-files :maxlevel . 1)))
+;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
 
-      ;; (("next.org"
-      ;;  "read_review.org"
-      ;;  "someday.org"
-      ;;  ;; (org-refile-project-files :maxlevel . 1)
-      ;;  "tickler.org"))))
-      ;; (directory-files-recursively org-directory "Denotes\\.org$")
+;; (("next.org"
+;;  "read_review.org"
+;;  "someday.org"
+;;  ;; (org-refile-project-files :maxlevel . 1)
+;;  "tickler.org"))))
+;; (directory-files-recursively org-directory "Denotes\\.org$")
 
-      (setq org-tag-alist
-	    '(;; Places
-              ("@home" . ?H)
-              ("@work" . ?W)
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
 
-              ;; Devices
-              ("@computer" . ?C)
-              ("@phone" . ?P)
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
 
-              ;; Activities
-              ("@planning" . ?n)
-              ("@programming" . ?p)
-              ("@writing" . ?w)
-              ("@creative" . ?c)
-              ("@reading" .?b)
-              ("@try" .?t)
-              ("@media" .?m)
-              ("@listening" .?l)
-              ("@email" . ?e)
-              ("@calls" . ?a)
-              ("@errands" . ?r)
-              ("@order" . ?o)))
-      (setq org-default-notes-file org-inbox-file)
-      (setq org-capture-templates
-	    '(("f" "Fleeting note" item
-	       (file+headline org-default-notes-file "Notes")
-	       "- %?")
-	      ("p" "Permanent note" plain
-	       (file denote-last-path)
-	       #'denote-org-capture
-	       :no-save t
-	       :immediate-finish nil
-	       :kill-buffer t
-	       :jump-to-captured t)
-	      ("t" "New task" entry
-	       (file+headline org-default-notes-file "Tasks")
-	       "* TODO %i%?")
-	      ("K" "Cliplink capture task" entry
-	       (file+headline org-default-notes-file "Links")
-	       ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
-	       "* TODO %(org-cliplink-capture)" :empty-lines 1)
-	      ))
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@creative" . ?c)
+        ("@reading" .?b)
+        ("@try" .?t)
+        ("@media" .?m)
+        ("@listening" .?l)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r)
+        ("@order" . ?o)))
+(setq org-default-notes-file org-inbox-file)
+(setq org-capture-templates
+      '(("f" "Fleeting note" item
+	 (file+headline org-default-notes-file "Notes")
+	 "- %?")
+	("p" "Permanent note" plain
+	 (file denote-last-path)
+	 #'denote-org-capture
+	 :no-save t
+	 :immediate-finish nil
+	 :kill-buffer t
+	 :jump-to-captured t)
+	("t" "New task" entry
+	 (file+headline org-default-notes-file "Tasks")
+	 "* TODO %i%?")
+	("K" "Cliplink capture task" entry
+	 (file+headline org-default-notes-file "Links")
+	 ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
+	 "* TODO %(org-cliplink-capture)" :empty-lines 1)
+	))
 
 
 
@@ -266,8 +267,8 @@ If on a:
 ;;  )
 
 (use-package org-cliplink
-:after general
-:general (my/leader "mlc" 'org-cliplink))
+  :after general
+  :general (my/leader "mlc" 'org-cliplink))
 
 (setq org-src-preserve-indentation t)
 

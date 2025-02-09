@@ -191,39 +191,41 @@
 (global-visual-line-mode t)
 (which-key-mode)
 
+(set-face-attribute 'default nil :height 100)
+
 (global-set-key [escape] 'keyboard-escape-quit)
 
 (use-package consult)
 
 (use-package buffer-move)
 
-    (recentf-mode 1)
-      ;; Save what you enter into minibuffer prompts
-    (setq history-length 25)
-    (savehist-mode 1)
-    ;; Remember and restore the last cursor location of opened files
-    (save-place-mode 1)
+(recentf-mode 1)
+;; Save what you enter into minibuffer prompts
+(setq history-length 25)
+(savehist-mode 1)
+;; Remember and restore the last cursor location of opened files
+(save-place-mode 1)
 
-    ;; Move customization variables to a separate file and load it
-    ;; Disable the damn thing by making it disposable.
-    (setq custom-file (make-temp-file "emacs-custom-"))
-    ;; (setq custom-file (locate-user-emacs-file "custom-vars.el"))
-    ;; (load custom-file 'noerror 'nomessage)
+;; Move customization variables to a separate file and load it
+;; Disable the damn thing by making it disposable.
+(setq custom-file (make-temp-file "emacs-custom-"))
+;; (setq custom-file (locate-user-emacs-file "custom-vars.el"))
+;; (load custom-file 'noerror 'nomessage)
 
-    ;; Don't pop up UI dialogs when prompting
-    ;;(setq use-dialog-box nil)
-    ;; Revert buffers when the underlying file has changed
-    (global-auto-revert-mode 1)
-    ;; Revert Dired and other buffers
-    (setq global-auto-revert-non-file-buffers t)
+;; Don't pop up UI dialogs when prompting
+;;(setq use-dialog-box nil)
+;; Revert buffers when the underlying file has changed
+(global-auto-revert-mode 1)
+;; Revert Dired and other buffers
+(setq global-auto-revert-non-file-buffers t)
 
 
 
-  (setq custom-safe-themes t)
-  (use-package ef-themes
-    :config
-    (load-theme 'ef-melissa-dark t nil))
-  ;;(load-theme 'ef-melissa-dark)
+(setq custom-safe-themes t)
+(use-package ef-themes
+  :config
+  (load-theme 'ef-melissa-dark t nil))
+;;(load-theme 'ef-melissa-dark)
 
 (keymap-global-set "C-=" 'text-scale-increase)
 (keymap-global-set "C--" 'text-scale-decrease)
@@ -243,6 +245,6 @@
   :config (add-to-list 'revert-without-query ".pdf"))
 
 (add-hook 'pdf-view-mode-hook #'(lambda () (interactive) (display-line-numbers-mode -1)
-                                                         (blink-cursor-mode -1)
-                                                         ;; (doom-modeline-mode -1)
-							 ))
+                                  (blink-cursor-mode -1)
+                                  ;; (doom-modeline-mode -1)
+				  ))

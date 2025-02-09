@@ -271,7 +271,12 @@ By default, Emacs creates automatic backups of files in their original directori
 (which-key-mode)
 #+end_src
 
-*** Navigation
+*** Font
+**** Font face
+#+begin_src emacs-lisp :tangle "init.el"
+(set-face-attribute 'default nil :height 100)
+#+end_src
+*** navigation
 **** Minibuffer ESCAPE
 By default, Emacs requires you to hit ESC three times to escape quit the minibuffer.
 #+begin_src emacs-lisp :tangle "init.el"
@@ -291,25 +296,25 @@ By default, Emacs requires you to hit ESC three times to escape quit the minibuf
 *** Must have settings from System crafters:
 https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
 #+begin_src emacs-lisp :tangle "init.el"
-    (recentf-mode 1)
-      ;; Save what you enter into minibuffer prompts
-    (setq history-length 25)
-    (savehist-mode 1)
-    ;; Remember and restore the last cursor location of opened files
-    (save-place-mode 1)
+(recentf-mode 1)
+;; Save what you enter into minibuffer prompts
+(setq history-length 25)
+(savehist-mode 1)
+;; Remember and restore the last cursor location of opened files
+(save-place-mode 1)
 
-    ;; Move customization variables to a separate file and load it
-    ;; Disable the damn thing by making it disposable.
-    (setq custom-file (make-temp-file "emacs-custom-"))
-    ;; (setq custom-file (locate-user-emacs-file "custom-vars.el"))
-    ;; (load custom-file 'noerror 'nomessage)
+;; Move customization variables to a separate file and load it
+;; Disable the damn thing by making it disposable.
+(setq custom-file (make-temp-file "emacs-custom-"))
+;; (setq custom-file (locate-user-emacs-file "custom-vars.el"))
+;; (load custom-file 'noerror 'nomessage)
 
-    ;; Don't pop up UI dialogs when prompting
-    ;;(setq use-dialog-box nil)
-    ;; Revert buffers when the underlying file has changed
-    (global-auto-revert-mode 1)
-    ;; Revert Dired and other buffers
-    (setq global-auto-revert-non-file-buffers t)
+;; Don't pop up UI dialogs when prompting
+;;(setq use-dialog-box nil)
+;; Revert buffers when the underlying file has changed
+(global-auto-revert-mode 1)
+;; Revert Dired and other buffers
+(setq global-auto-revert-non-file-buffers t)
 
 #+end_src
 
@@ -317,11 +322,11 @@ https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
 #+end_src
 *** Themes:
 #+begin_src emacs-lisp :tangle "init.el"
-  (setq custom-safe-themes t)
-  (use-package ef-themes
-    :config
-    (load-theme 'ef-melissa-dark t nil))
-  ;;(load-theme 'ef-melissa-dark)
+(setq custom-safe-themes t)
+(use-package ef-themes
+  :config
+  (load-theme 'ef-melissa-dark t nil))
+;;(load-theme 'ef-melissa-dark)
 #+end_src
 
 ** Zooming In/Out
@@ -348,9 +353,9 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   :config (add-to-list 'revert-without-query ".pdf"))
 
 (add-hook 'pdf-view-mode-hook #'(lambda () (interactive) (display-line-numbers-mode -1)
-                                                         (blink-cursor-mode -1)
-                                                         ;; (doom-modeline-mode -1)
-							 ))
+                                  (blink-cursor-mode -1)
+                                  ;; (doom-modeline-mode -1)
+				  ))
 #+end_src
 * Style:
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-style.el" :mkdirp yes
@@ -379,50 +384,6 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 
 * Key-bindings:
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
-;; (use-package general
-;;   :config
-;;   (general-evil-setup)
-;;   (general-create-definer my/leader
-;;     :states '(normal insert visual emacs)
-;;     :keymaps 'override
-;;     :prefix "SPC" ;; set leader
-;;     :global-prefix "M-SPC") ;; access leader in insert mode
-;;   (my/leader
-;;     "b" '(:ignore t :wk "buffer")
-;;     "bb" '(switch-to-buffer :wk "Switch buffer")
-;;     "bk" '(kill-this-buffer :wk "Kill this buffer")
-;;     "bn" '(next-buffer :wk "Next buffer")
-;;     "bp" '(previous-buffer :wk "Previous buffer")
-;;     "br" '(revert-buffer :wk "Reload buffer"))
-
-;;   (my/leader
-;;     "o" '(:ignore t :wk "Open")
-;;     "X" '(org-capture :wk "Org Capture")
-;;     "pp" '(project-switch-project :wk "Switch Project")
-;;     "SPC" '(project-find-file :wk "Find File in Project")
-;;     "oA" '(org-agenda :wk "Org Agenda"))
-
-;;   (my/leader
-;;     "d" '(:ignore t :wk "Dired")
-;;     "d d" '(dired :wk "Open dired")
-;;     "d j" '(dired-jump :wk "Dired jump to current")
-;;     "d n" '(neotree-dir :wk "Open directory in neotree")
-;;     "d p" '(peep-dired :wk "Peep-dired"))
-
-;;   (my/leader
-;;     "f" '(:ignore t :wk "file")
-;;     "ff" 'find-file
-;;     "fP" '((lambda () (interactive) (find-file "~/.config/emacs-vanilla/mayrf-emacs.org")) :wk "Open Config")
-;;     "fr" 'recentf)
-
-;;   (my/leader
-;;     ;; "h" '(:ignore t :wk "help")
-;;     "mq" '(org-set-tags-command :wk "Set org tags for Heading")
-
-#+end_src
-
-
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
 (use-package general
   :config
   (general-evil-setup)
@@ -437,21 +398,21 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   (my/leader
     ;; "SPC" '(counsel-M-x :wk "Counsel M-x")
     "." '(find-file :wk "Find file"))
-    ;; "=" '(perspective-map :wk "Perspective") ;; Lists all the perspective keybindings
-    ;; "TAB TAB" '(comment-line :wk "Comment lines")
-    ;; "u" '(universal-argument :wk "Universal argument"))
+  ;; "=" '(perspective-map :wk "Perspective") ;; Lists all the perspective keybindings
+  ;; "TAB TAB" '(comment-line :wk "Comment lines")
+  ;; "u" '(universal-argument :wk "Universal argument"))
 
-   ;; (dt/leader-keys
-   ;;  "a" '(:ignore t :wk "A.I.")
-   ;;  "a a" '(ellama-ask-about :wk "Ask ellama about region")
-   ;;  "a e" '(:ignore t :wk "Ellama enhance")
-   ;;  "a e g" '(ellama-improve-grammar :wk "Ellama enhance wording")
-   ;;  "a e w" '(ellama-improve-wording :wk "Ellama enhance grammar")
-   ;;  "a i" '(ellama-chat :wk "Ask ellama")
-   ;;  "a p" '(ellama-provider-select :wk "Ellama provider select")
-   ;;  "a s" '(ellama-summarize :wk "Ellama summarize region")
-   ;;  "a t" '(ellama-translate :wk "Ellama translate region"))
-   
+  ;; (dt/leader-keys
+  ;;  "a" '(:ignore t :wk "A.I.")
+  ;;  "a a" '(ellama-ask-about :wk "Ask ellama about region")
+  ;;  "a e" '(:ignore t :wk "Ellama enhance")
+  ;;  "a e g" '(ellama-improve-grammar :wk "Ellama enhance wording")
+  ;;  "a e w" '(ellama-improve-wording :wk "Ellama enhance grammar")
+  ;;  "a i" '(ellama-chat :wk "Ask ellama")
+  ;;  "a p" '(ellama-provider-select :wk "Ellama provider select")
+  ;;  "a s" '(ellama-summarize :wk "Ellama summarize region")
+  ;;  "a t" '(ellama-translate :wk "Ellama translate region"))
+  
   (my/leader
     "b" '(:ignore t :wk "Bookmarks/Buffers")
     "b b" '(switch-to-buffer :wk "Switch to buffer")
@@ -517,8 +478,8 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
     ;; "f j" '(counsel-file-jump :wk "Jump to a file below current directory")
     "f l" '(consult-locate :wk "Locate a file")
     "f r" '(consult-recent-file :wk "Find recent files"))
-    ;; "f u" '(sudo-edit-find-file :wk "Sudo find file")
-    ;; "f U" '(sudo-edit :wk "Sudo edit file"))
+  ;; "f u" '(sudo-edit-find-file :wk "Sudo find file")
+  ;; "f U" '(sudo-edit :wk "Sudo edit file"))
 
   (my/leader
     "g" '(:ignore t :wk "Git")    
@@ -611,7 +572,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   ;; set for us, so no need to specify each individually.
   (my/leader
     "pp" '(project-switch-project :wk "Switch Project"))
-    ;; "p" '(project-prefix-map :wk "Projectile"))
+  ;; "p" '(project-prefix-map :wk "Projectile"))
   
   ;; (my/leader
   ;;   "r" '(:ignore t :wk "Radio")
@@ -627,7 +588,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   ;;   "s o" '(pdf-occur :wk "Pdf search lines matching STRING")
   ;;   "s t" '(tldr :wk "Lookup TLDR docs for a command")
   ;;   "s w" '(woman :wk "Similar to man but doesn't require man"))
-
+  (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   ;; (my/leader
   ;;   "t" '(:ignore t :wk "Toggle")
   ;;   "t e" '(eshell-toggle :wk "Toggle eshell")
@@ -646,6 +607,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
     "w n" '(evil-window-new :wk "New window")
     "w s" '(evil-window-split :wk "Horizontal split window")
     "w v" '(evil-window-vsplit :wk "Vertical split window")
+    "w m m" '(delete-other-windows :wk "Delete all other windows")
     ;; Window motions
     "w h" '(evil-window-left :wk "Window left")
     "w j" '(evil-window-down :wk "Window down")
@@ -661,7 +623,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
     "w d" '(downcase-word :wk "Downcase word")
     "w u" '(upcase-word :wk "Upcase word")
     "w =" '(count-words :wk "Count words/lines for buffer"))
-)
+  )
 #+end_src
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
@@ -671,15 +633,15 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 
 * completion:
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-completion.el" :mkdirp yes
-  (use-package vertico
-    :ensure t
-    :custom
-    ;; (vertico-scroll-margin 0) ;; Different scroll margin
-    (vertico-count 22) ;; Show more candidates
-    ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
-    ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
-    :init
-    (vertico-mode))
+(use-package vertico
+  :ensure t
+  :custom
+  ;; (vertico-scroll-margin 0) ;; Different scroll margin
+  (vertico-count 22) ;; Show more candidates
+  ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+  ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+  :init
+  (vertico-mode))
 #+end_src
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-completion.el" :mkdirp yes
@@ -702,6 +664,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 (defun my/gtd-file (filename)
   (file-name-concat org-directory "gtd" filename))
 
+(setq org-reverse-note-order t)
 (setq org-src-preserve-indentation t)
 (setq org-directory "~/Documents/org/")
 
@@ -726,61 +689,61 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 			  "Inbox.org"
 			  ))))
 
-      ;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
-      (setq org-inbox-file (file-truename (file-name-concat org-directory "Denotes/Inbox.org")))
-      (setq org-refile-targets '((nil :maxlevel . 9)
-				 (org-agenda-files :maxlevel . 1)))
-      ;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
+;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
+(setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
+(setq org-refile-targets '((nil :maxlevel . 9)
+			   (org-agenda-files :maxlevel . 1)))
+;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
 
-      ;; (("next.org"
-      ;;  "read_review.org"
-      ;;  "someday.org"
-      ;;  ;; (org-refile-project-files :maxlevel . 1)
-      ;;  "tickler.org"))))
-      ;; (directory-files-recursively org-directory "Denotes\\.org$")
+;; (("next.org"
+;;  "read_review.org"
+;;  "someday.org"
+;;  ;; (org-refile-project-files :maxlevel . 1)
+;;  "tickler.org"))))
+;; (directory-files-recursively org-directory "Denotes\\.org$")
 
-      (setq org-tag-alist
-	    '(;; Places
-              ("@home" . ?H)
-              ("@work" . ?W)
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
 
-              ;; Devices
-              ("@computer" . ?C)
-              ("@phone" . ?P)
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
 
-              ;; Activities
-              ("@planning" . ?n)
-              ("@programming" . ?p)
-              ("@writing" . ?w)
-              ("@creative" . ?c)
-              ("@reading" .?b)
-              ("@try" .?t)
-              ("@media" .?m)
-              ("@listening" .?l)
-              ("@email" . ?e)
-              ("@calls" . ?a)
-              ("@errands" . ?r)
-              ("@order" . ?o)))
-      (setq org-default-notes-file org-inbox-file)
-      (setq org-capture-templates
-	    '(("f" "Fleeting note" item
-	       (file+headline org-default-notes-file "Notes")
-	       "- %?")
-	      ("p" "Permanent note" plain
-	       (file denote-last-path)
-	       #'denote-org-capture
-	       :no-save t
-	       :immediate-finish nil
-	       :kill-buffer t
-	       :jump-to-captured t)
-	      ("t" "New task" entry
-	       (file+headline org-default-notes-file "Tasks")
-	       "* TODO %i%?")
-	      ("K" "Cliplink capture task" entry
-	       (file+headline org-default-notes-file "Links")
-	       ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
-	       "* TODO %(org-cliplink-capture)" :empty-lines 1)
-	      ))
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@creative" . ?c)
+        ("@reading" .?b)
+        ("@try" .?t)
+        ("@media" .?m)
+        ("@listening" .?l)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r)
+        ("@order" . ?o)))
+(setq org-default-notes-file org-inbox-file)
+(setq org-capture-templates
+      '(("f" "Fleeting note" item
+	 (file+headline org-default-notes-file "Notes")
+	 "- %?")
+	("p" "Permanent note" plain
+	 (file denote-last-path)
+	 #'denote-org-capture
+	 :no-save t
+	 :immediate-finish nil
+	 :kill-buffer t
+	 :jump-to-captured t)
+	("t" "New task" entry
+	 (file+headline org-default-notes-file "Tasks")
+	 "* TODO %i%?")
+	("K" "Cliplink capture task" entry
+	 (file+headline org-default-notes-file "Links")
+	 ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
+	 "* TODO %(org-cliplink-capture)" :empty-lines 1)
+	))
 #+end_src
 ** Keybindings
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
@@ -980,8 +943,8 @@ If on a:
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
 (use-package org-cliplink
-:after general
-:general (my/leader "mlc" 'org-cliplink))
+  :after general
+  :general (my/leader "mlc" 'org-cliplink))
 
 #+end_src
 ** Org Babel
@@ -1007,48 +970,49 @@ This goal of this section is to make emacs behave inside src blocks like in the 
   (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/")))
 
   )
-(with-eval-after-load 'org-capture
-  (add-to-list 'org-capture-templates
-               '("N" "New note with no prompts (with denote.el)" plain
-		 (file denote-last-path)
-		 (function
-                  (lambda ()
-                    (denote-org-capture-with-prompts nil nil nil)))
-		 :no-save t
-		 :immediate-finish nil
-		 :kill-buffer t
-		 :jump-to-captured t))
-  (add-to-list 'org-capture-templates
-               '("j" "Journal" entry
-                 (file denote-journal-extras-path-to-new-or-existing-entry)
-                 "* %U %?\n%i\n%a"
-                 :kill-buffer t
-                 :empty-lines 1))
-  ;; TODO Add hook to automatically add the new file to agenda, until then, just reload config
-  (add-to-list 'org-capture-templates
-	       '("P" "New project (with Denote)" plain
-		 (file denote-last-path)
-		 (function
-		  (lambda ()
-                    (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
-			  ;; TODO Enable adding of additional keywords
-			  (denote-use-keywords '("project"))
-			  (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
-			  (denote-prompts (denote-add-prompts '(keywords)))
+;; (with-eval-after-load 'org-capture
+(add-to-list 'org-capture-templates
+             '("N" "New note with no prompts (with denote.el)" plain
+	       (file denote-last-path)
+	       (function
+                (lambda ()
+                  (denote-org-capture-with-prompts nil nil nil)))
+	       :no-save t
+	       :immediate-finish nil
+	       :kill-buffer t
+	       :jump-to-captured t))
+(add-to-list 'org-capture-templates
+             '("j" "Journal" entry
+               (file denote-journal-extras-path-to-new-or-existing-entry)
+               "* %U %?\n%i\n%a"
+               :kill-buffer t
+               :empty-lines 1))
+;; TODO Add hook to automatically add the new file to agenda, until then, just reload config
+(add-to-list 'org-capture-templates
+	     '("P" "New project (with Denote)" plain
+	       (file denote-last-path)
+	       (function
+		(lambda ()
+                  (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
+			;; TODO Enable adding of additional keywords
+			(denote-use-keywords '("project"))
+			(denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+			(denote-prompts (denote-add-prompts '(keywords)))
 
-			  (denote-org-front-matter
-			   (concat "#+title:      %s\n"
-				   "#+date:       %s\n"
-				   "#+filetags:   %s\n"
-				   "#+identifier: %s\n"
-				   "#+category: %1$s\n"
-				   "\n")
-			   ))
-		      (denote-org-capture))))
-		 :no-save t
-		 :immediate-finish nil
-		 :kill-buffer t
-		 :jump-to-captured t)))
+			(denote-org-front-matter
+			 (concat "#+title:      %s\n"
+				 "#+date:       %s\n"
+				 "#+filetags:   %s\n"
+				 "#+identifier: %s\n"
+				 "#+category: %1$s\n"
+				 "\n")
+			 ))
+		    (denote-org-capture))))
+	       :no-save t
+	       :immediate-finish nil
+	       :kill-buffer t
+	       :jump-to-captured t))
+;; )
 (defun my-denote-region-org-structure-template (_beg _end)
   (when (derived-mode-p 'org-mode)
     (activate-mark)

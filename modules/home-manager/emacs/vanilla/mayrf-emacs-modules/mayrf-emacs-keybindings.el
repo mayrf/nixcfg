@@ -1,43 +1,3 @@
-;; (use-package general
-;;   :config
-;;   (general-evil-setup)
-;;   (general-create-definer my/leader
-;;     :states '(normal insert visual emacs)
-;;     :keymaps 'override
-;;     :prefix "SPC" ;; set leader
-;;     :global-prefix "M-SPC") ;; access leader in insert mode
-;;   (my/leader
-;;     "b" '(:ignore t :wk "buffer")
-;;     "bb" '(switch-to-buffer :wk "Switch buffer")
-;;     "bk" '(kill-this-buffer :wk "Kill this buffer")
-;;     "bn" '(next-buffer :wk "Next buffer")
-;;     "bp" '(previous-buffer :wk "Previous buffer")
-;;     "br" '(revert-buffer :wk "Reload buffer"))
-
-;;   (my/leader
-;;     "o" '(:ignore t :wk "Open")
-;;     "X" '(org-capture :wk "Org Capture")
-;;     "pp" '(project-switch-project :wk "Switch Project")
-;;     "SPC" '(project-find-file :wk "Find File in Project")
-;;     "oA" '(org-agenda :wk "Org Agenda"))
-
-;;   (my/leader
-;;     "d" '(:ignore t :wk "Dired")
-;;     "d d" '(dired :wk "Open dired")
-;;     "d j" '(dired-jump :wk "Dired jump to current")
-;;     "d n" '(neotree-dir :wk "Open directory in neotree")
-;;     "d p" '(peep-dired :wk "Peep-dired"))
-
-;;   (my/leader
-;;     "f" '(:ignore t :wk "file")
-;;     "ff" 'find-file
-;;     "fP" '((lambda () (interactive) (find-file "~/.config/emacs-vanilla/mayrf-emacs.org")) :wk "Open Config")
-;;     "fr" 'recentf)
-
-;;   (my/leader
-;;     ;; "h" '(:ignore t :wk "help")
-;;     "mq" '(org-set-tags-command :wk "Set org tags for Heading")
-
 (use-package general
   :config
   (general-evil-setup)
@@ -52,21 +12,21 @@
   (my/leader
     ;; "SPC" '(counsel-M-x :wk "Counsel M-x")
     "." '(find-file :wk "Find file"))
-    ;; "=" '(perspective-map :wk "Perspective") ;; Lists all the perspective keybindings
-    ;; "TAB TAB" '(comment-line :wk "Comment lines")
-    ;; "u" '(universal-argument :wk "Universal argument"))
+  ;; "=" '(perspective-map :wk "Perspective") ;; Lists all the perspective keybindings
+  ;; "TAB TAB" '(comment-line :wk "Comment lines")
+  ;; "u" '(universal-argument :wk "Universal argument"))
 
-   ;; (dt/leader-keys
-   ;;  "a" '(:ignore t :wk "A.I.")
-   ;;  "a a" '(ellama-ask-about :wk "Ask ellama about region")
-   ;;  "a e" '(:ignore t :wk "Ellama enhance")
-   ;;  "a e g" '(ellama-improve-grammar :wk "Ellama enhance wording")
-   ;;  "a e w" '(ellama-improve-wording :wk "Ellama enhance grammar")
-   ;;  "a i" '(ellama-chat :wk "Ask ellama")
-   ;;  "a p" '(ellama-provider-select :wk "Ellama provider select")
-   ;;  "a s" '(ellama-summarize :wk "Ellama summarize region")
-   ;;  "a t" '(ellama-translate :wk "Ellama translate region"))
-   
+  ;; (dt/leader-keys
+  ;;  "a" '(:ignore t :wk "A.I.")
+  ;;  "a a" '(ellama-ask-about :wk "Ask ellama about region")
+  ;;  "a e" '(:ignore t :wk "Ellama enhance")
+  ;;  "a e g" '(ellama-improve-grammar :wk "Ellama enhance wording")
+  ;;  "a e w" '(ellama-improve-wording :wk "Ellama enhance grammar")
+  ;;  "a i" '(ellama-chat :wk "Ask ellama")
+  ;;  "a p" '(ellama-provider-select :wk "Ellama provider select")
+  ;;  "a s" '(ellama-summarize :wk "Ellama summarize region")
+  ;;  "a t" '(ellama-translate :wk "Ellama translate region"))
+  
   (my/leader
     "b" '(:ignore t :wk "Bookmarks/Buffers")
     "b b" '(switch-to-buffer :wk "Switch to buffer")
@@ -132,8 +92,8 @@
     ;; "f j" '(counsel-file-jump :wk "Jump to a file below current directory")
     "f l" '(consult-locate :wk "Locate a file")
     "f r" '(consult-recent-file :wk "Find recent files"))
-    ;; "f u" '(sudo-edit-find-file :wk "Sudo find file")
-    ;; "f U" '(sudo-edit :wk "Sudo edit file"))
+  ;; "f u" '(sudo-edit-find-file :wk "Sudo find file")
+  ;; "f U" '(sudo-edit :wk "Sudo edit file"))
 
   (my/leader
     "g" '(:ignore t :wk "Git")    
@@ -226,7 +186,7 @@
   ;; set for us, so no need to specify each individually.
   (my/leader
     "pp" '(project-switch-project :wk "Switch Project"))
-    ;; "p" '(project-prefix-map :wk "Projectile"))
+  ;; "p" '(project-prefix-map :wk "Projectile"))
   
   ;; (my/leader
   ;;   "r" '(:ignore t :wk "Radio")
@@ -242,7 +202,7 @@
   ;;   "s o" '(pdf-occur :wk "Pdf search lines matching STRING")
   ;;   "s t" '(tldr :wk "Lookup TLDR docs for a command")
   ;;   "s w" '(woman :wk "Similar to man but doesn't require man"))
-
+  (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   ;; (my/leader
   ;;   "t" '(:ignore t :wk "Toggle")
   ;;   "t e" '(eshell-toggle :wk "Toggle eshell")
@@ -261,6 +221,7 @@
     "w n" '(evil-window-new :wk "New window")
     "w s" '(evil-window-split :wk "Horizontal split window")
     "w v" '(evil-window-vsplit :wk "Vertical split window")
+    "w m m" '(delete-other-windows :wk "Delete all other windows")
     ;; Window motions
     "w h" '(evil-window-left :wk "Window left")
     "w j" '(evil-window-down :wk "Window down")
@@ -276,6 +237,6 @@
     "w d" '(downcase-word :wk "Downcase word")
     "w u" '(upcase-word :wk "Upcase word")
     "w =" '(count-words :wk "Count words/lines for buffer"))
-)
+  )
 
 (provide 'mayrf-emacs-keybindings)

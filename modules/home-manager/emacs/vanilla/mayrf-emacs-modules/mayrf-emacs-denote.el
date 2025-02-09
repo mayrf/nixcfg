@@ -4,48 +4,49 @@
   (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/")))
 
   )
-(with-eval-after-load 'org-capture
-  (add-to-list 'org-capture-templates
-               '("N" "New note with no prompts (with denote.el)" plain
-		 (file denote-last-path)
-		 (function
-                  (lambda ()
-                    (denote-org-capture-with-prompts nil nil nil)))
-		 :no-save t
-		 :immediate-finish nil
-		 :kill-buffer t
-		 :jump-to-captured t))
-  (add-to-list 'org-capture-templates
-               '("j" "Journal" entry
-                 (file denote-journal-extras-path-to-new-or-existing-entry)
-                 "* %U %?\n%i\n%a"
-                 :kill-buffer t
-                 :empty-lines 1))
-  ;; TODO Add hook to automatically add the new file to agenda, until then, just reload config
-  (add-to-list 'org-capture-templates
-	       '("P" "New project (with Denote)" plain
-		 (file denote-last-path)
-		 (function
-		  (lambda ()
-                    (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
-			  ;; TODO Enable adding of additional keywords
-			  (denote-use-keywords '("project"))
-			  (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
-			  (denote-prompts (denote-add-prompts '(keywords)))
+;; (with-eval-after-load 'org-capture
+(add-to-list 'org-capture-templates
+             '("N" "New note with no prompts (with denote.el)" plain
+	       (file denote-last-path)
+	       (function
+                (lambda ()
+                  (denote-org-capture-with-prompts nil nil nil)))
+	       :no-save t
+	       :immediate-finish nil
+	       :kill-buffer t
+	       :jump-to-captured t))
+(add-to-list 'org-capture-templates
+             '("j" "Journal" entry
+               (file denote-journal-extras-path-to-new-or-existing-entry)
+               "* %U %?\n%i\n%a"
+               :kill-buffer t
+               :empty-lines 1))
+;; TODO Add hook to automatically add the new file to agenda, until then, just reload config
+(add-to-list 'org-capture-templates
+	     '("P" "New project (with Denote)" plain
+	       (file denote-last-path)
+	       (function
+		(lambda ()
+                  (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
+			;; TODO Enable adding of additional keywords
+			(denote-use-keywords '("project"))
+			(denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+			(denote-prompts (denote-add-prompts '(keywords)))
 
-			  (denote-org-front-matter
-			   (concat "#+title:      %s\n"
-				   "#+date:       %s\n"
-				   "#+filetags:   %s\n"
-				   "#+identifier: %s\n"
-				   "#+category: %1$s\n"
-				   "\n")
-			   ))
-		      (denote-org-capture))))
-		 :no-save t
-		 :immediate-finish nil
-		 :kill-buffer t
-		 :jump-to-captured t)))
+			(denote-org-front-matter
+			 (concat "#+title:      %s\n"
+				 "#+date:       %s\n"
+				 "#+filetags:   %s\n"
+				 "#+identifier: %s\n"
+				 "#+category: %1$s\n"
+				 "\n")
+			 ))
+		    (denote-org-capture))))
+	       :no-save t
+	       :immediate-finish nil
+	       :kill-buffer t
+	       :jump-to-captured t))
+;; )
 (defun my-denote-region-org-structure-template (_beg _end)
   (when (derived-mode-p 'org-mode)
     (activate-mark)
