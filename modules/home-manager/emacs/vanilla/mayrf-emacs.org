@@ -270,7 +270,10 @@ By default, Emacs creates automatic backups of files in their original directori
 (global-visual-line-mode t)
 (which-key-mode)
 #+end_src
-
+*** C-v inside minibuffer
+#+begin_src emacs-lisp :tangle "init.el"
+(define-key minibuffer-local-map (kbd "C-v") 'yank)
+#+end_src
 *** Font
 **** Font face
 #+begin_src emacs-lisp :tangle "init.el"
@@ -282,6 +285,7 @@ By default, Emacs requires you to hit ESC three times to escape quit the minibuf
 #+begin_src emacs-lisp :tangle "init.el"
 (global-set-key [escape] 'keyboard-escape-quit)
 #+end_src
+
 
 **** Consult
 #+begin_src emacs-lisp :tangle "init.el"
@@ -986,9 +990,9 @@ If on a:
 ** Org Cliplink
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
-(use-package org-cliplink
-  :after general
-  :general (my/leader "mlc" 'org-cliplink))
+(use-package org-cliplink)
+  ;; :after general
+  ;; :general (my/leader "mlc" 'org-cliplink))
 
 #+end_src
 ** Org Babel
@@ -1140,13 +1144,42 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 
 #+end_src
 
-#+begin_center
-
-#+end_center
 
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
 (provide 'mayrf-emacs-denote)
 #+end_src
+** Denote Citar
+
+#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
+(use-package citar
+  :custom
+  (citar-bibliography '("~/Documents/org/bib/references.bib")))
+
+
+;; Biblio package for adding BibTeX records and download publications
+(use-package biblio)
+
+(use-package org-ref)
+;; (require 'org-ref-url-utils)
+
+(use-package citar-denote
+  :custom
+  (citar-open-always-create-notes t)
+  :init
+  (citar-denote-mode))
+;; :bind
+;; (("C-c w b c" . citar-create-note)
+;;  ("C-c w b n" . citar-denote-open-note)
+;;  ("C-c w b x" . citar-denote-nocite)
+;;  :map org-mode-map
+;;  ("C-c w b k" . citar-denote-add-citekey)
+;;  ("C-c w b K" . citar-denote-remove-citekey)
+;;  ("C-c w b d" . citar-denote-dwim)
+;;  ("C-c w b e" . citar-denote-open-reference-entry)))
+#+end_src
+
+
+
 * Magit:
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magit.el" :mkdirp yes
 (use-package magit)

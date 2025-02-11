@@ -266,9 +266,9 @@ If on a:
 ;;  "RET" '+org/dwim-at-point
 ;;  )
 
-(use-package org-cliplink
-  :after general
-  :general (my/leader "mlc" 'org-cliplink))
+(use-package org-cliplink)
+  ;; :after general
+  ;; :general (my/leader "mlc" 'org-cliplink))
 
 (setq org-src-preserve-indentation t)
 

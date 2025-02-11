@@ -129,3 +129,29 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;; (message (file-to-string "~/Documents/org/gtd/templates/weekly_review.txt"))
 
 (provide 'mayrf-emacs-denote)
+
+(use-package citar
+  :custom
+  (citar-bibliography '("~/Documents/org/bib/references.bib")))
+
+
+;; Biblio package for adding BibTeX records and download publications
+(use-package biblio)
+
+(use-package org-ref)
+;; (require 'org-ref-url-utils)
+
+(use-package citar-denote
+  :custom
+  (citar-open-always-create-notes t)
+  :init
+  (citar-denote-mode))
+;; :bind
+;; (("C-c w b c" . citar-create-note)
+;;  ("C-c w b n" . citar-denote-open-note)
+;;  ("C-c w b x" . citar-denote-nocite)
+;;  :map org-mode-map
+;;  ("C-c w b k" . citar-denote-add-citekey)
+;;  ("C-c w b K" . citar-denote-remove-citekey)
+;;  ("C-c w b d" . citar-denote-dwim)
+;;  ("C-c w b e" . citar-denote-open-reference-entry)))
