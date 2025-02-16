@@ -16,8 +16,8 @@ This is my WIP vanilla Emacs config. The structure and content is heavily copied
 ;; )
 (scroll-bar-mode -1)               ; disable scrollbar
 (tool-bar-mode -1)                 ; disable toolbar
-;; (tooltip-mode -1)                  ; disable tooltips
-;; (menu-bar-mode -1)                 ; disable menubar
+(tooltip-mode -1)                  ; disable tooltips
+(menu-bar-mode -1)                 ; disable menubar
 #+end_src
 
 * Init
@@ -82,7 +82,7 @@ See [[https://github.com/progfolio/elpaca/wiki/Usage-with-Nix][Usage with Nix ·
 (elpaca `(,@elpaca-order))
 #+end_src
 
-**** Configuration
+**** Configuration  
 #+begin_src emacs-lisp :tangle "init.el"
 ;; Install use-package support
 (elpaca elpaca-use-package
@@ -98,6 +98,8 @@ See [[https://github.com/progfolio/elpaca/wiki/Usage-with-Nix][Usage with Nix ·
                (display-buffer-no-window)
                (allow-no-window . t)))
 #+end_src
+
+
 
 ** No littering
 #+begin_src emacs-lisp :tangle "init.el"
@@ -119,7 +121,7 @@ By default, Emacs creates automatic backups of files in their original directori
 #+begin_src emacs-lisp :tangle "init.el"
 (defun org-babel-tangle-config ()
   ;; (when (string-equal (buffer-file-name)
-  ;; 		      (expand-file-name "~/.config/emacs-vanilla/mayrf-emacs.org"))
+   ;; 		      (expand-file-name "~/.config/emacs-vanilla/mayrf-emacs.org"))
   (when (string-match "mayrf-emacs.org" (buffer-file-name))
     (let ((org-config-babel-evaluate nil))
       (org-babel-tangle))))
@@ -141,8 +143,8 @@ By default, Emacs creates automatic backups of files in their original directori
 (defun my/reload-emacs ()
   (interactive)
   ;; (org-babel-tangle "~/.config/emacs-vanilla/mayrf-emacs.org")
-  (my/reload-init-el)
-  (my/reload-modules))
+  (my/reload-init-el))
+  ;; (my/reload-modules))
 
 (defun my/reload-init-el ()
   (load-file "~/.config/emacs-vanilla/init.el"))
@@ -161,17 +163,17 @@ By default, Emacs creates automatic backups of files in their original directori
 ** Load modules
 
 #+begin_src emacs-lisp :tangle "init.el"
-  (mapc
-   (lambda (string)
-     (add-to-list 'load-path (locate-user-emacs-file string)))
-   ;;'("prot-lisp" "prot-emacs-modules"))
-   '("mayrf-lisp" "mayrf-emacs-modules"))
-(require 'mayrf-emacs-keybindings)
-(require 'mayrf-emacs-completion)
-(require 'mayrf-emacs-style)
-(require 'mayrf-emacs-org-mode)
-(require 'mayrf-emacs-denote)
-(require 'mayrf-emacs-magit)
+;;   (mapc
+;;    (lambda (string)
+;;      (add-to-list 'load-path (locate-user-emacs-file string)))
+;;    ;;'("prot-lisp" "prot-emacs-modules"))
+;;    '("mayrf-lisp" "mayrf-emacs-modules"))
+;; (require 'mayrf-emacs-keybindings)
+;; (require 'mayrf-emacs-completion)
+;; (require 'mayrf-emacs-style)
+;; (require 'mayrf-emacs-org-mode)
+;; (require 'mayrf-emacs-denote)
+;; (require 'mayrf-emacs-magit)
 
 
 #+end_src
@@ -253,16 +255,6 @@ By default, Emacs creates automatic backups of files in their original directori
   :config
   (setq elfeed-goodies/entry-pane-size 0.5))
 #+end_src
-** template
-
-#+begin_src emacs-lisp :tangle "init.el"
-#+end_src
-
-** template
-
-#+begin_src emacs-lisp :tangle "init.el"
-#+end_src
-
 
 ** General Settings
 *** Visual
@@ -362,7 +354,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 				  ))
 #+end_src
 * Style:
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-style.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (use-package nerd-icons
   :ensure t)
 
@@ -382,12 +374,10 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   :ensure t
   :hook
   (dired-mode . nerd-icons-dired-mode))
-
-(provide 'mayrf-emacs-style)
 #+end_src
 
 * Key-bindings:
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (use-package general
   :config
   (general-evil-setup)
@@ -631,25 +621,30 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   )
 #+end_src
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-keybindings.el" :mkdirp yes
-(provide 'mayrf-emacs-keybindings)
-
-#+end_src
-
 * completion:
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-completion.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (use-package vertico
   :ensure t
+  :init
+  (vertico-mode)
+  ;; TODO Why does this after-init hook not work as expected
+  ;; :hook
+  ;; (after-init . vertico-mode)
+  :bind
+  ( :map vertico-map
+    ("DEL" . vertico-directory-delete-char))
   :custom
   ;; (vertico-scroll-margin 0) ;; Different scroll margin
   (vertico-count 22) ;; Show more candidates
   ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
   ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
-  :init
-  (vertico-mode))
+  )
 #+end_src
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-completion.el" :mkdirp yes
+#+RESULTS:
+: vertico-directory-delete-char
+
+#+begin_src emacs-lisp :tangle "init.el"
 
 (use-package orderless
   :ensure t
@@ -660,11 +655,9 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 (use-package marginalia
   ;; :hook (after-init . marginalia-mode))
   :config (marginalia-mode))
-(provide 'mayrf-emacs-completion)
 #+end_src
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-completion.el" :mkdirp yes
-
+#+begin_src emacs-lisp :tangle "init.el"
 (use-package corfu
   ;; Optional customizations
   :custom
@@ -747,11 +740,16 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 ;; )
 #+end_src
 
-
 * Org-mode:
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package org
+  :ensure nil
+  :config
+  (add-hook 'org-capture-mode-hook 'evil-insert-state))
+  #+end_src
 ** Org Download
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 
 (use-package org-download
   :custom
@@ -764,7 +762,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 
 ** Org Sticky header mode
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 
 (use-package org-sticky-header
   :custom
@@ -778,7 +776,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 
 ** Variable
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 
 (defun my/gtd-file (filename)
   (file-name-concat org-directory "gtd" filename))
@@ -904,16 +902,15 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 	))
 #+end_src
 ** Keybindings
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
-#+end_src
-** Org Bullets
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+* Org Bullets
+#+begin_src emacs-lisp :tangle "init.el"
 (add-hook 'org-mode-hook 'org-indent-mode)
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
-** DWIM-at-point
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+** DWIM-at-point (from doom emacs)
+Copied from doom emacs [[https://github.com/doomemacs/doomemacs/blob/2bc052425ca45a41532be0648ebd976d1bd2e6c1/modules/lang/org/autoload/org.el#L151][doomemacs/modules/lang/org/autoload/org.el at 2bc052425ca45a41532be0648ebd976...]] 
+#+begin_src emacs-lisp :tangle "init.el"
 (defun +org/dwim-at-point (&optional arg)
   "Do-what-I-mean at point.
 
@@ -929,7 +926,7 @@ If on a:
 - table-row or a TBLFM: recalculate the table's formulas
 - table-cell: clear it and go into insert mode. If this is a formula cell,
   recaluclate it instead.
-- babel-call: execute the source block
+;;- babel-call: execute the source block
 - statistics-cookie: update it.
 - src block: execute it
 - latex fragment: toggle it.
@@ -1089,17 +1086,190 @@ If on a:
 
 #+end_src
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
-;; (general-define-key
-;;  :keymaps 'org-mode-map
-;;  :states 'normal
-;;  "RET" '+org/dwim-at-point
-;;  )
+#+begin_src emacs-lisp :tangle "init.el"
+(general-define-key
+ :keymaps 'org-mode-map
+ :states 'normal
+ "RET" #'+org/dwim-at-point
+ )
+#+end_src
+
+
+** +org/shift-return (from doom emacs)
+Copied from [[https://github.com/doomemacs/doomemacs/blob/2bc052425ca45a41532be0648ebd976d1bd2e6c1/modules/lang/org/autoload/org.el#L291][doomemacs/modules/lang/org/autoload/org.el at 2bc052425ca45a41532be0648ebd976...]]
+#+begin_src emacs-lisp :tangle "init.el"
+(defun +org/shift-return (&optional arg)
+  "Insert a literal newline, or dwim in tables.
+Executes `org-table-copy-down' if in table."
+  (interactive "p")
+  (if (org-at-table-p)
+      (org-table-copy-down arg)
+    (org-return nil arg)))
+#+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+(general-define-key
+ :keymaps 'org-mode-map
+ :states '(normal insert)
+ "S-<return>" #'+org/shift-return
+ )
+#+end_src
+
+** +org/insert-item-above/below (from doom emacs)
+Copied from [[https://github.com/doomemacs/doomemacs/blob/2bc052425ca45a41532be0648ebd976d1bd2e6c1/modules/lang/org/autoload/org.el#L304][doomemacs/modules/lang/org/autoload/org.el at 2bc052425ca45a41532be0648ebd976...]]
+#+begin_src emacs-lisp :tangle "init.el"
+(defun +org--insert-item (direction)
+  (let ((context (org-element-lineage
+                  (org-element-context)
+                  '(table table-row headline inlinetask item plain-list)
+                  t)))
+    (pcase (org-element-type context)
+      ;; Add a new list item (carrying over checkboxes if necessary)
+      ((or `item `plain-list)
+       (let ((orig-point (point)))
+         ;; Position determines where org-insert-todo-heading and `org-insert-item'
+         ;; insert the new list item.
+         (if (eq direction 'above)
+             (org-beginning-of-item)
+           (end-of-line))
+         (let* ((ctx-item? (eq 'item (org-element-type context)))
+                (ctx-cb (org-element-property :contents-begin context))
+                ;; Hack to handle edge case where the point is at the
+                ;; beginning of the first item
+                (beginning-of-list? (and (not ctx-item?)
+                                         (= ctx-cb orig-point)))
+                (item-context (if beginning-of-list?
+                                  (org-element-context)
+                                context))
+                ;; Horrible hack to handle edge case where the
+                ;; line of the bullet is empty
+                (ictx-cb (org-element-property :contents-begin item-context))
+                (empty? (and (eq direction 'below)
+                             ;; in case contents-begin is nil, or contents-begin
+                             ;; equals the position end of the line, the item is
+                             ;; empty
+                             (or (not ictx-cb)
+                                 (= ictx-cb
+                                    (1+ (point))))))
+                (pre-insert-point (point)))
+           ;; Insert dummy content, so that `org-insert-item'
+           ;; inserts content below this item
+           (when empty?
+             (insert " "))
+           (org-insert-item (org-element-property :checkbox context))
+           ;; Remove dummy content
+           (when empty?
+             (delete-region pre-insert-point (1+ pre-insert-point))))))
+      ;; Add a new table row
+      ((or `table `table-row)
+       (pcase direction
+         ('below (save-excursion (org-table-insert-row t))
+                 (org-table-next-row))
+         ('above (save-excursion (org-shiftmetadown))
+                 (+org/table-previous-row))))
+
+      ;; Otherwise, add a new heading, carrying over any todo state, if
+      ;; necessary.
+      (_
+       (let ((level (or (org-current-level) 1)))
+         ;; I intentionally avoid `org-insert-heading' and the like because they
+         ;; impose unpredictable whitespace rules depending on the cursor
+         ;; position. It's simpler to express this command's responsibility at a
+         ;; lower level than work around all the quirks in org's API.
+         (pcase direction
+           (`below
+            (let (org-insert-heading-respect-content)
+              (goto-char (line-end-position))
+              (org-end-of-subtree)
+              (insert "\n" (make-string level ?*) " ")))
+           (`above
+            (org-back-to-heading)
+            (insert (make-string level ?*) " ")
+            (save-excursion (insert "\n"))))
+         (run-hooks 'org-insert-heading-hook)
+         (when-let* ((todo-keyword (org-element-property :todo-keyword context))
+                     (todo-type    (org-element-property :todo-type context)))
+           (org-todo
+            (cond ((eq todo-type 'done)
+                   ;; Doesn't make sense to create more "DONE" headings
+                   (car (+org-get-todo-keywords-for todo-keyword)))
+                  (todo-keyword)
+                  ('todo)))))))
+
+    (when (org-invisible-p)
+      (org-show-hidden-entry))
+    (when (and (bound-and-true-p evil-local-mode)
+               (not (evil-emacs-state-p)))
+      (evil-insert 1))))
+
+(defun +org-get-todo-keywords-for (&optional keyword)
+  "Returns the list of todo keywords that KEYWORD belongs to."
+  (when keyword
+    (cl-loop for (type . keyword-spec)
+             in (cl-remove-if-not #'listp org-todo-keywords)
+             for keywords =
+             (mapcar (lambda (x) (if (string-match "^\\([^(]+\\)(" x)
+                                     (match-string 1 x)
+                                   x))
+                     keyword-spec)
+             if (eq type 'sequence)
+             if (member keyword keywords)
+             return keywords)))
+
+(defun +org/table-previous-row ()
+  "Go to the previous row (same column) in the current table. Before doing so,
+re-align the table if necessary. (Necessary because org-mode has a
+`org-table-next-row', but not `org-table-previous-row')"
+  (interactive)
+  (org-table-maybe-eval-formula)
+  (org-table-maybe-recalculate-line)
+  (if (and org-table-automatic-realign
+           org-table-may-need-update)
+      (org-table-align))
+  (let ((col (org-table-current-column)))
+    (beginning-of-line 0)
+    (when (or (not (org-at-table-p)) (org-at-table-hline-p))
+      (beginning-of-line))
+    (org-table-goto-column col)
+    (skip-chars-backward "^|\n\r")
+    (when (org-looking-at-p " ")
+      (forward-char))))
+
+
+;; I use these instead of `org-insert-item' or `org-insert-heading' because they
+;; impose bizarre whitespace rules depending on cursor location and many
+;; settings. These commands have a much simpler responsibility.
+(defun +org/insert-item-below (count)
+;; (defun +org/insert-item-below ()
+  "Inserts a new heading, table cell or item below the current one."
+  (interactive "p")
+  ;; (+org--insert-item 'below))
+  (dotimes (_ count) (+org--insert-item 'below)))
+
+(defun +org/insert-item-above (count)
+;; (defun +org/insert-item-above ()
+  "Inserts a new heading, table cell or item above the current one."
+  (interactive "p")
+  ;; (+org--insert-item 'above))
+  (dotimes (_ count) (+org--insert-item 'above)))
+
+
+    #+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+(general-define-key
+ :keymaps 'org-mode-map
+ :states '(normal insert)
+
+ "C-<return>" #'+org/insert-item-below
+ "C-S-<return>" #'+org/insert-item-above
+ "C-M-<return>" #'org-insert-subheading
+ )
 #+end_src
 
 ** Org Cliplink
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (use-package org-cliplink
   :config
   (my/leader "mlc" 'org-cliplink))
@@ -1107,23 +1277,21 @@ If on a:
 ;; :general 
 
 #+end_src
+
 ** Org Babel
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (setq org-src-preserve-indentation t)
 #+end_src
 
 This goal of this section is to make emacs behave inside src blocks like in the major mode of the language specified by the src block
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (setq org-src-tab-acts-natively t)
 #+end_src
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
-(provide 'mayrf-emacs-org-mode)
-#+end_src
 ** org-caldav
 #+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-org-mode.el" :mkdirp yes
 * Denote:
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (use-package denote
   :after org
   :config
@@ -1255,12 +1423,9 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 #+end_src
 
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
-(provide 'mayrf-emacs-denote)
-#+end_src
 ** Denote Citar
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-denote.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (use-package citar
   :custom
   (citar-bibliography '("~/Documents/org/bib/references.bib")))
@@ -1291,10 +1456,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 
 
 * Magit:
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magit.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "init.el"
 (use-package magit)
 #+end_src
 
-#+begin_src elisp :tangle "mayrf-emacs-modules/mayrf-emacs-magit.el" :mkdirp yes
-(provide 'mayrf-emacs-magit)
-#+end_src

@@ -5,5 +5,5 @@
 ;; )
 (scroll-bar-mode -1)               ; disable scrollbar
 (tool-bar-mode -1)                 ; disable toolbar
-;; (tooltip-mode -1)                  ; disable tooltips
-;; (menu-bar-mode -1)                 ; disable menubar
+(tooltip-mode -1)                  ; disable tooltips
+(menu-bar-mode -1)                 ; disable menubar
