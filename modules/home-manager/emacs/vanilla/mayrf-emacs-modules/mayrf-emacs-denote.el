@@ -1,9 +1,7 @@
 (use-package denote
   :after org
   :config
-  (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/")))
-
-  )
+  (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/"))))
 ;; (with-eval-after-load 'org-capture
 (add-to-list 'org-capture-templates
              '("N" "New note with no prompts (with denote.el)" plain

@@ -159,6 +159,7 @@
     "m" '(:ignore t :wk "Org")
     "X" '(org-capture :wk "Org Capture")
     "m q" '(org-set-tags-command :wk "Set org tags for Heading")
+    "m r r" '(org-refile :wk "Org regfile")
     "m a" '(org-agenda :wk "Org agenda")
     "m e" '(org-export-dispatch :wk "Org export dispatch")
     "m i" '(org-toggle-item :wk "Org toggle item")

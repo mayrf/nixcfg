@@ -1,3 +1,20 @@
+(use-package org-download
+  :custom
+  (org-download-image-dir (file-name-concat org-directory "blobs/org-download"))
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable))
+
+;; Drag-and-drop to `dired`
+
+(use-package org-sticky-header
+  :custom
+  (org-sticky-header-full-path 'full)
+  :config
+
+  (add-hook 'org-mode-hook 'org-sticky-header-mode))
+
+;; Drag-and-drop to `dired`
+
 (defun my/gtd-file (filename)
   (file-name-concat org-directory "gtd" filename))
 
@@ -26,10 +43,12 @@
 			  "Inbox.org"
 			  ))))
 
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+
 ;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
 (setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
 (setq org-refile-targets '((nil :maxlevel . 9)
-			   (org-agenda-files :maxlevel . 1)))
+			   (my-refile-files :maxlevel . 1)))
 ;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
 
 ;; (("next.org"
@@ -80,6 +99,43 @@
 	 (file+headline org-default-notes-file "Links")
 	 ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
 	 "* TODO %(org-cliplink-capture)" :empty-lines 1)
+        ("N" "New note with no prompts (with denote.el)" plain
+	 (file denote-last-path)
+	 (function
+          (lambda ()
+            (denote-org-capture-with-prompts nil nil nil)))
+	 :no-save t
+	 :immediate-finish nil
+	 :kill-buffer t
+	 :jump-to-captured t)
+	("j" "Journal" entry
+	 (file denote-journal-extras-path-to-new-or-existing-entry)
+	 "* %U %?\n%i\n%a"
+	 :kill-buffer t
+	 :empty-lines 1)
+	("P" "New project (with Denote)" plain
+	 (file denote-last-path)
+	 (function
+	  (lambda ()
+	    (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
+		  ;; TODO Enable adding of additional keywords
+		  (denote-use-keywords '("project"))
+		  (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+		  (denote-prompts (denote-add-prompts '(keywords)))
+
+		  (denote-org-front-matter
+		   (concat "#+title:      %s\n"
+			   "#+date:       %s\n"
+			   "#+filetags:   %s\n"
+			   "#+identifier: %s\n"
+			   "#+category: %1$s\n"
+			   "\n")
+		   ))
+	      (denote-org-capture))))
+	 :no-save t
+	 :immediate-finish nil
+	 :kill-buffer t
+	 :jump-to-captured t)
 	))
 
 
@@ -266,9 +322,11 @@ If on a:
 ;;  "RET" '+org/dwim-at-point
 ;;  )
 
-(use-package org-cliplink)
-  ;; :after general
-  ;; :general (my/leader "mlc" 'org-cliplink))
+(use-package org-cliplink
+  :config
+  (my/leader "mlc" 'org-cliplink))
+;; :after general
+;; :general
 
 (setq org-src-preserve-indentation t)
 

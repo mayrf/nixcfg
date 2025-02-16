@@ -193,7 +193,7 @@
 
 (define-key minibuffer-local-map (kbd "C-v") 'yank)
 
-(set-face-attribute 'default nil :height 100)
+(set-face-attribute 'default nil :height 110)
 
 (global-set-key [escape] 'keyboard-escape-quit)
 
