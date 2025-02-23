@@ -14,7 +14,6 @@ in {
         vscodevim.vim
         ms-python.python
         esbenp.prettier-vscode
-        rust-lang.rust-analyzer
         eamodio.gitlens
         bbenoist.nix
         brettm12345.nixfmt-vscode

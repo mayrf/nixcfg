@@ -76,6 +76,8 @@ in {
       files = [
         "/etc/machine-id"
         "/var/lib/swapfile"
+	# Locate
+	"/var/cache/locatedb"
         {
           file = "/var/keys/secret_file";
           parentDirectory = { mode = "u=rwx,g=,o="; };

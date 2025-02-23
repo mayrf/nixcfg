@@ -22,6 +22,7 @@
     tmux
     file
     nodejs
+    mlocate
     # TODO Make kubectl plugin installs declarative (example below: cnpg from "https://cloudnative-pg.io/documentation/1.24/kubectl-plugin/")
     # curl -sSfL \
     # https://github.com/cloudnative-pg/cloudnative-pg/raw/main/hack/install-cnpg-plugin.sh | \

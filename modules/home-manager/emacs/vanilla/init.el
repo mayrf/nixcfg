@@ -105,18 +105,6 @@
 ;;'("prot-lisp" "prot-emacs-modules"))
 ;;'("mayrf-lisp" "mayrf-emacs-modules"))
 
-;;   (mapc
-;;    (lambda (string)
-;;      (add-to-list 'load-path (locate-user-emacs-file string)))
-;;    ;;'("prot-lisp" "prot-emacs-modules"))
-;;    '("mayrf-lisp" "mayrf-emacs-modules"))
-;; (require 'mayrf-emacs-keybindings)
-;; (require 'mayrf-emacs-completion)
-;; (require 'mayrf-emacs-style)
-;; (require 'mayrf-emacs-org-mode)
-;; (require 'mayrf-emacs-denote)
-;; (require 'mayrf-emacs-magit)
-
 (use-package evil
   :ensure t
   :init
@@ -152,37 +140,6 @@
 ;;   (define-key evil-motion-state-map (kbd "TAB") nil))
 ;; ;; Setting RETURN key in org-mode to follow links
 ;;   (setq org-return-follows-link  t)
-
-(use-package dired-open
-  :config
-  (setq dired-open-extensions '(("gif" . "sxiv")
-                                ("jpg" . "sxiv")
-                                ("png" . "sxiv")
-                                ("mkv" . "mpv")
-                                ("mp4" . "mpv"))))
-
-(use-package peep-dired
-  :after dired
-  :hook (evil-normalize-keymaps . peep-dired-hook)
-  :config
-    (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
-    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
-    (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
-    (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
-)
-
-;; TODO Setup an use elfeed
-(use-package elfeed
-  :config
-  (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
-        elfeed-feeds (quote
-                       (("https://www.reddit.com/r/linux.rss" reddit linux)
-                        ("https://opensource.com/feed" opensource linux)))))
-(use-package elfeed-goodies
-  :init
-  (elfeed-goodies/setup)
-  :config
-  (setq elfeed-goodies/entry-pane-size 0.5))
 
 (global-visual-line-mode t)
 (which-key-mode)
@@ -230,6 +187,19 @@
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 
+;; TODO Setup an use elfeed
+(use-package elfeed
+  :config
+  (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
+        elfeed-feeds (quote
+                       (("https://www.reddit.com/r/linux.rss" reddit linux)
+                        ("https://opensource.com/feed" opensource linux)))))
+(use-package elfeed-goodies
+  :init
+  (elfeed-goodies/setup)
+  :config
+  (setq elfeed-goodies/entry-pane-size 0.5))
+
 (use-package pdf-tools
   :defer t
   :commands (pdf-loader-install)
@@ -246,6 +216,26 @@
                                   (blink-cursor-mode -1)
                                   ;; (doom-modeline-mode -1)
 				  ))
+
+(use-package dired-open
+  :config
+  (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
+  (setq dired-open-extensions '(("gif" . "sxiv")
+                                ("jpg" . "sxiv")
+                                ("png" . "sxiv")
+                                ("mkv" . "mpv")
+                                ("mp4" . "mpv"))))
+
+(use-package peep-dired
+  :after dired
+  :hook (evil-normalize-keymaps . peep-dired-hook)
+  :config
+  (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
+  (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
+  (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
+  )
 
 (use-package nerd-icons
   :ensure t)
@@ -360,10 +350,13 @@
     ;; "f r" 'recentf)
     ;; "f j" '(counsel-file-jump :wk "Jump to a file below current directory")
     "f l" '(consult-locate :wk "Locate a file")
-    "f r" '(consult-recent-file :wk "Find recent files"))
-  ;; "f u" '(sudo-edit-find-file :wk "Sudo find file")
-  ;; "f U" '(sudo-edit :wk "Sudo edit file"))
-
+    "f o" '(consult-outline :wk "Consult outline")
+    "f r" '(consult-recent-file :wk "Find recent files")
+    "/" '(consult-grep :wk "Grep for a file in project or DIR")
+    "f b" '(consult-buffer :wk "Consult buffer")
+    ;; "f u" '(sudo-edit-find-file :wk "Sudo find file")
+    ;; "f U" '(sudo-edit :wk "Sudo edit file"))
+    )
   (my/leader
     "g" '(:ignore t :wk "Git")    
     "g /" '(magit-displatch :wk "Magit dispatch")
@@ -630,6 +623,10 @@
 
 ;; Drag-and-drop to `dired`
 
+(add-hook 'org-mode-hook 'org-indent-mode)
+(use-package org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
 (use-package org-sticky-header
   :custom
   (org-sticky-header-full-path 'full)
@@ -638,6 +635,15 @@
   (add-hook 'org-mode-hook 'org-sticky-header-mode))
 
 ;; Drag-and-drop to `dired`
+
+(general-define-key
+ :keymaps 'org-mode-map
+ :states '(normal visual insert)
+ "M-h" #'org-metaleft
+ "M-l" #'org-metaright
+ "M-j" #'org-metadown
+ "M-k" #'org-metaup
+ )
 
 (defun my/gtd-file (filename)
   (file-name-concat org-directory "gtd" filename))
@@ -761,10 +767,6 @@
 	 :kill-buffer t
 	 :jump-to-captured t)
 	))
-
-(add-hook 'org-mode-hook 'org-indent-mode)
-(use-package org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (defun +org/dwim-at-point (&optional arg)
   "Do-what-I-mean at point.
@@ -1111,6 +1113,19 @@ re-align the table if necessary. (Necessary because org-mode has a
 (setq org-src-preserve-indentation t)
 
 (setq org-src-tab-acts-natively t)
+
+;; (use-package org-caldav
+;;   :config
+;;   (setq org-caldav-url "https://<nextcloudURL>/remote.php/dav/calendars/<CalenderName>")
+;;   ;; calendar ID on server
+;;   (setq org-caldav-calendar-id "personal")
+;;   ;; Org filename wherech new entries from calendar stored
+;;   (setq org-caldav-inbox "~/Documents/org/nextcloud-inbox.org")
+;;   ;; Additional Org files to check for calendar events
+;;   (setq org-caldav-files nil)
+;;   ;; Usually a good idea to set the timezone manually
+;;   (setq org-icalendar-timezone "Europe/Berlin")
+;;   :commands (org-caldav-sync))
 
 (use-package denote
   :after org
