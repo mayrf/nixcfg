@@ -196,6 +196,13 @@ By default, Emacs creates automatic backups of files in their original directori
 ;;   (setq org-return-follows-link  t)
  #+end_src
  
+** General.el
+
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package general)
+(message "General package loaded") ; Print 2nd message here
+#+end_src
+
 ** General Settings
 *** Visual
 #+begin_src emacs-lisp :tangle "init.el"
@@ -730,6 +737,13 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   :config
   (add-hook 'org-capture-mode-hook 'evil-insert-state))
   #+end_src
+** Structure templates
+#+begin_src emacs-lisp :tangle "init.el"
+;; (add-to-list 'org-structure-template-alist
+;; 	     '("i" . "emacs-lisp :tangle init.el"))
+
+#+end_src
+
 ** Org Download
 
 #+begin_src emacs-lisp :tangle "init.el"
@@ -742,7 +756,6 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 
 ;; Drag-and-drop to `dired`
 #+end_src
-
 ** Org Bullets
 #+begin_src emacs-lisp :tangle "init.el"
 (add-hook 'org-mode-hook 'org-indent-mode)
@@ -767,6 +780,8 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 ** Keybindings
 
 #+begin_src emacs-lisp :tangle "init.el"
+;; (require 'general)
+(message "Calling general-define-key")
 (general-define-key
  :keymaps 'org-mode-map
  :states '(normal visual insert)
@@ -1249,7 +1264,8 @@ re-align the table if necessary. (Necessary because org-mode has a
   (dotimes (_ count) (+org--insert-item 'above)))
 
 
-    #+end_src
+#+end_src
+
 
 #+begin_src emacs-lisp :tangle "init.el"
 (general-define-key
@@ -1268,8 +1284,6 @@ re-align the table if necessary. (Necessary because org-mode has a
 (use-package org-cliplink
   :config
   (my/leader "mlc" 'org-cliplink))
-;; :after general
-;; :general 
 
 #+end_src
 
@@ -1463,9 +1477,21 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 #+end_src
 
 
-
 * Magit
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package magit)
+#+end_src
+* IDE
+** Direnv mode
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package direnv
+ :config
+ (direnv-mode))
+#+end_src
+** GO
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package go-ts-mode
+  :mode ("\\.go" . go-ts-mode)
+  :hook ((go-ts-mode . eglot)))
 #+end_src
 

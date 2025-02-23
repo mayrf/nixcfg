@@ -141,6 +141,9 @@
 ;; ;; Setting RETURN key in org-mode to follow links
 ;;   (setq org-return-follows-link  t)
 
+(use-package general)
+(message "General package loaded") ; Print 2nd message here
+
 (global-visual-line-mode t)
 (which-key-mode)
 
@@ -615,6 +618,9 @@
   :config
   (add-hook 'org-capture-mode-hook 'evil-insert-state))
 
+;; (add-to-list 'org-structure-template-alist
+;; 	     '("i" . "emacs-lisp :tangle init.el"))
+
 (use-package org-download
   :custom
   (org-download-image-dir (file-name-concat org-directory "blobs/org-download"))
@@ -636,6 +642,8 @@
 
 ;; Drag-and-drop to `dired`
 
+;; (require 'general)
+(message "Calling general-define-key")
 (general-define-key
  :keymaps 'org-mode-map
  :states '(normal visual insert)
@@ -1107,8 +1115,6 @@ re-align the table if necessary. (Necessary because org-mode has a
 (use-package org-cliplink
   :config
   (my/leader "mlc" 'org-cliplink))
-;; :after general
-;; :general
 
 (setq org-src-preserve-indentation t)
 
@@ -1282,3 +1288,11 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;;  ("C-c w b e" . citar-denote-open-reference-entry)))
 
 (use-package magit)
+
+(use-package direnv
+ :config
+ (direnv-mode))
+
+(use-package go-ts-mode
+  :mode ("\\.go" . go-ts-mode)
+  :hook ((go-ts-mode . eglot)))
