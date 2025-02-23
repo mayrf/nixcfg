@@ -1,4 +1,4 @@
-;; (setq package-enable-at-startup nil
+(setq package-enable-at-startup nil)
 ;;      inhibit-startup-message   t
 ;;     frame-resize-pixelwise    t  ; fine resize
 ;;      package-native-compile    t ; native compile packages

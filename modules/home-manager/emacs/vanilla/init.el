@@ -109,11 +109,11 @@
   :ensure t
   :init
   (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
-          evil-want-keybinding nil
-          evil-vsplit-window-right t
-          evil-split-window-below t
-          evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
-    (evil-mode))
+        evil-want-keybinding nil
+        evil-vsplit-window-right t
+        evil-split-window-below t
+        evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
+  (evil-mode))
 
 (use-package evil-collection
   :after evil
@@ -140,9 +140,6 @@
 ;;   (define-key evil-motion-state-map (kbd "TAB") nil))
 ;; ;; Setting RETURN key in org-mode to follow links
 ;;   (setq org-return-follows-link  t)
-
-(use-package general)
-(message "General package loaded") ; Print 2nd message here
 
 (global-visual-line-mode t)
 (which-key-mode)
@@ -195,8 +192,8 @@
   :config
   (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
         elfeed-feeds (quote
-                       (("https://www.reddit.com/r/linux.rss" reddit linux)
-                        ("https://opensource.com/feed" opensource linux)))))
+                      (("https://www.reddit.com/r/linux.rss" reddit linux)
+                       ("https://opensource.com/feed" opensource linux)))))
 (use-package elfeed-goodies
   :init
   (elfeed-goodies/setup)
@@ -261,6 +258,7 @@
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package general
+  :ensure (:wait t)
   :config
   (general-evil-setup)
 
@@ -644,14 +642,17 @@
 
 ;; (require 'general)
 (message "Calling general-define-key")
-(general-define-key
- :keymaps 'org-mode-map
- :states '(normal visual insert)
- "M-h" #'org-metaleft
- "M-l" #'org-metaright
- "M-j" #'org-metadown
- "M-k" #'org-metaup
- )
+(use-package general
+  :ensure t
+  :config
+  (general-define-key
+   :keymaps 'org-mode-map
+   :states '(normal visual insert)
+   "M-h" #'org-metaleft
+   "M-l" #'org-metaright
+   "M-j" #'org-metadown
+   "M-k" #'org-metaup
+   ))
 
 (defun my/gtd-file (filename)
   (file-name-concat org-directory "gtd" filename))
@@ -1293,6 +1294,6 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
  :config
  (direnv-mode))
 
-(use-package go-ts-mode
-  :mode ("\\.go" . go-ts-mode)
-  :hook ((go-ts-mode . eglot)))
+;; (use-package go-ts-mode
+;;   :mode ("\\.go" . go-ts-mode)
+;;   :hook ((go-ts-mode . eglot)))

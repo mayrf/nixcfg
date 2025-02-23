@@ -9,7 +9,7 @@ This is my WIP vanilla Emacs config. The structure and content is heavily copied
 * Core
 ** Early Init 
 #+begin_src emacs-lisp :tangle "early-init.el"
-;; (setq package-enable-at-startup nil
+(setq package-enable-at-startup nil)
 ;;      inhibit-startup-message   t
 ;;     frame-resize-pixelwise    t  ; fine resize
 ;;      package-native-compile    t ; native compile packages
@@ -163,11 +163,11 @@ By default, Emacs creates automatic backups of files in their original directori
   :ensure t
   :init
   (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
-          evil-want-keybinding nil
-          evil-vsplit-window-right t
-          evil-split-window-below t
-          evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
-    (evil-mode))
+        evil-want-keybinding nil
+        evil-vsplit-window-right t
+        evil-split-window-below t
+        evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
+  (evil-mode))
 
 (use-package evil-collection
   :after evil
@@ -194,14 +194,9 @@ By default, Emacs creates automatic backups of files in their original directori
 ;;   (define-key evil-motion-state-map (kbd "TAB") nil))
 ;; ;; Setting RETURN key in org-mode to follow links
 ;;   (setq org-return-follows-link  t)
- #+end_src
+  #+end_src
  
 ** General.el
-
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package general)
-(message "General package loaded") ; Print 2nd message here
-#+end_src
 
 ** General Settings
 *** Visual
@@ -289,8 +284,8 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   :config
   (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
         elfeed-feeds (quote
-                       (("https://www.reddit.com/r/linux.rss" reddit linux)
-                        ("https://opensource.com/feed" opensource linux)))))
+                      (("https://www.reddit.com/r/linux.rss" reddit linux)
+                       ("https://opensource.com/feed" opensource linux)))))
 (use-package elfeed-goodies
   :init
   (elfeed-goodies/setup)
@@ -366,6 +361,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 * Key-bindings
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package general
+  :ensure (:wait t)
   :config
   (general-evil-setup)
 
@@ -736,7 +732,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   :ensure nil
   :config
   (add-hook 'org-capture-mode-hook 'evil-insert-state))
-  #+end_src
+#+end_src
 ** Structure templates
 #+begin_src emacs-lisp :tangle "init.el"
 ;; (add-to-list 'org-structure-template-alist
@@ -782,14 +778,17 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 #+begin_src emacs-lisp :tangle "init.el"
 ;; (require 'general)
 (message "Calling general-define-key")
-(general-define-key
- :keymaps 'org-mode-map
- :states '(normal visual insert)
- "M-h" #'org-metaleft
- "M-l" #'org-metaright
- "M-j" #'org-metadown
- "M-k" #'org-metaup
- )
+(use-package general
+  :ensure t
+  :config
+  (general-define-key
+   :keymaps 'org-mode-map
+   :states '(normal visual insert)
+   "M-h" #'org-metaleft
+   "M-l" #'org-metaright
+   "M-j" #'org-metadown
+   "M-k" #'org-metaup
+   ))
 #+end_src
 ** Variable
 
@@ -1490,8 +1489,8 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 #+end_src
 ** GO
 #+begin_src emacs-lisp :tangle "init.el"
-(use-package go-ts-mode
-  :mode ("\\.go" . go-ts-mode)
-  :hook ((go-ts-mode . eglot)))
+;; (use-package go-ts-mode
+;;   :mode ("\\.go" . go-ts-mode)
+;;   :hook ((go-ts-mode . eglot)))
 #+end_src
 

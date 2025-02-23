@@ -166,6 +166,9 @@ in {
       # nix
       nil
 
+      # go
+      gopls
+
       # typescript
       nodePackages_latest.eslint
       nodePackages_latest.prettier
