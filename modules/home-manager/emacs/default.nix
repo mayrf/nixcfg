@@ -166,9 +166,6 @@ in {
       # nix
       nil
 
-      # go
-      gopls
-
       # typescript
       nodePackages_latest.eslint
       nodePackages_latest.prettier
@@ -198,6 +195,9 @@ in {
 
       xclip
       poppler_utils
+
+      # go
+      gopls
     ];
 
     home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
@@ -213,4 +213,3 @@ in {
     # ekill() { emacsclient --eval '(kill-emacs)'; }
   };
 }
-

@@ -11,7 +11,7 @@ in {
       enable = true;
       viAlias = true;
       vimAlias = true;
-      # clipboard.register = "unnamedplus";
+      clipboard.register = "unnamedplus";
       globalOpts = {
         # Tab defaults (might get overwritten by an LSP server)
         tabstop = 4;
