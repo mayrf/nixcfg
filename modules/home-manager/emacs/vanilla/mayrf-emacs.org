@@ -198,10 +198,11 @@ By default, Emacs creates automatic backups of files in their original directori
  
 
 ** General Settings
-*** Visual
+** Visual
 #+begin_src emacs-lisp :tangle "init.el"
 (global-visual-line-mode t)
 (which-key-mode)
+(add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
 #+end_src
 *** C-v inside minibuffer
 #+begin_src emacs-lisp :tangle "init.el"
@@ -210,7 +211,17 @@ By default, Emacs creates automatic backups of files in their original directori
 *** Font
 **** Font face
 #+begin_src emacs-lisp :tangle "init.el"
-(set-face-attribute 'default nil :height 110)
+;; (set-frame-font "iMWritingMono Nerd Font" nil t)
+;; (set-frame-font "JetBrainsMono Nerd Font,JetBrainsMono NF" nil t)
+;; (set-frame-font "JetBrainsMono Nerd Font" nil t)
+;; (set-frame-font "CaskaydiaCove Nerd Font" nil t)
+(set-frame-font "GeistMono Nerd Font" nil t)
+
+
+
+
+
+(set-face-attribute 'default nil :height 130)
 #+end_src
 *** navigation
 **** Minibuffer ESCAPE

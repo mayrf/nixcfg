@@ -143,10 +143,21 @@
 
 (global-visual-line-mode t)
 (which-key-mode)
+(add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
 
 (define-key minibuffer-local-map (kbd "C-v") 'yank)
 
-(set-face-attribute 'default nil :height 110)
+;; (set-frame-font "iMWritingMono Nerd Font" nil t)
+;; (set-frame-font "JetBrainsMono Nerd Font,JetBrainsMono NF" nil t)
+;; (set-frame-font "JetBrainsMono Nerd Font" nil t)
+;; (set-frame-font "CaskaydiaCove Nerd Font" nil t)
+(set-frame-font "GeistMono Nerd Font" nil t)
+
+
+
+
+
+(set-face-attribute 'default nil :height 130)
 
 (global-set-key [escape] 'keyboard-escape-quit)
 
