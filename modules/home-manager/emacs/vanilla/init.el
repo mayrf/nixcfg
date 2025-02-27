@@ -1259,6 +1259,15 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 
 ;; (message (file-to-string "~/Documents/org/gtd/templates/weekly_review.txt"))
 
+(use-package consult-denote
+  :after denote
+  :config
+  (consult-denote-mode)
+  (setq consult-async-min-input 0)
+  (my/leader
+    "n r f" '(consult-denote-find :wk "Find denote note")
+))
+
 (use-package citar
   :custom
   (citar-bibliography '("~/Documents/org/bib/references.bib")))
@@ -1291,6 +1300,11 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
     "Soft reset current git repo to HEAD~1."
     (interactive)
     (magit-reset-soft "HEAD~1"))
+  ;; Add additional switches that seem common enough
+  (transient-append-suffix 'magit-fetch "-p"
+    '("-t" "Fetch all tags" ("-t" "--tags")))
+  (transient-append-suffix 'magit-pull "-r"
+    '("-a" "Autostash" "--autostash"))
   )
 
 ;; (setq treesit-language-source-alist

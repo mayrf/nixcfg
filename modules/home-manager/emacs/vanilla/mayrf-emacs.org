@@ -1440,6 +1440,19 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 
 #+end_src
 
+** Consult Denote
+
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package consult-denote
+  :after denote
+  :config
+  (consult-denote-mode)
+  (setq consult-async-min-input 0)
+  (my/leader
+    "n r f" '(consult-denote-find :wk "Find denote note")
+))
+	 
+#+end_src
 
 ** Denote Citar
 
@@ -1480,8 +1493,12 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
     "Soft reset current git repo to HEAD~1."
     (interactive)
     (magit-reset-soft "HEAD~1"))
+  ;; Add additional switches that seem common enough
+  (transient-append-suffix 'magit-fetch "-p"
+    '("-t" "Fetch all tags" ("-t" "--tags")))
+  (transient-append-suffix 'magit-pull "-r"
+    '("-a" "Autostash" "--autostash"))
   )
-#+end_src
 #+end_src
 * IDE
 ** Treesitter
