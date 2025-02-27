@@ -196,7 +196,6 @@ By default, Emacs creates automatic backups of files in their original directori
 ;;   (setq org-return-follows-link  t)
   #+end_src
  
-** General.el
 
 ** General Settings
 *** Visual
@@ -1485,16 +1484,49 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 #+end_src
 #+end_src
 * IDE
+** Treesitter
+#+begin_src emacs-lisp :tangle "init.el"
+;; (setq treesit-language-source-alist
+;;    '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+;;      (cmake "https://github.com/uyha/tree-sitter-cmake")
+;;      (css "https://github.com/tree-sitter/tree-sitter-css")
+;;      (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+;;      (go "https://github.com/tree-sitter/tree-sitter-go")
+;;      (html "https://github.com/tree-sitter/tree-sitter-html")
+;;      (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+;;      (json "https://github.com/tree-sitter/tree-sitter-json")
+;;      (make "https://github.com/alemuller/tree-sitter-make")
+;;      (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+;;      (python "https://github.com/tree-sitter/tree-sitter-python")
+;;      (toml "https://github.com/tree-sitter/tree-sitter-toml")
+;;      (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+;;      (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+;;      (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+#+end_src
+
+** Electric Parens
+#+begin_src emacs-lisp :tangle "init.el"
+(electric-pair-mode)
+#+end_src
 ** Direnv mode
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package direnv
  :config
  (direnv-mode))
 #+end_src
+** Editorconfig
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package editorconfig
+  :config
+  (editorconfig-mode 1))
+#+end_src
 ** GO
 #+begin_src emacs-lisp :tangle "init.el"
-;; (use-package go-ts-mode
-;;   :mode ("\\.go" . go-ts-mode)
-;;   :hook ((go-ts-mode . eglot)))
+(use-package go-ts-mode
+  :ensure nil
+  :mode ("\\.go\\'" . go-ts-mode)
+  :hook ((go-ts-mode . eglot-ensure))
+  ;; :config
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
 #+end_src
-
