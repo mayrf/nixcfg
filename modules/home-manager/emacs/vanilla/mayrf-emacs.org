@@ -776,11 +776,6 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 ** Keybindings
 
 #+begin_src emacs-lisp :tangle "init.el"
-;; (require 'general)
-(message "Calling general-define-key")
-(use-package general
-  :ensure t
-  :config
   (general-define-key
    :keymaps 'org-mode-map
    :states '(normal visual insert)
@@ -788,7 +783,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
    "M-l" #'org-metaright
    "M-j" #'org-metadown
    "M-k" #'org-metaup
-   ))
+   )
 #+end_src
 ** Variable
 
@@ -1478,7 +1473,14 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 
 * Magit
 #+begin_src emacs-lisp :tangle "init.el"
-(use-package magit)
+(use-package magit
+  :config
+  (defun my/magit-soft-reset-head~1 ()
+    "Soft reset current git repo to HEAD~1."
+    (interactive)
+    (magit-reset-soft "HEAD~1"))
+  )
+#+end_src
 #+end_src
 * IDE
 ** Direnv mode

@@ -640,11 +640,6 @@
 
 ;; Drag-and-drop to `dired`
 
-;; (require 'general)
-(message "Calling general-define-key")
-(use-package general
-  :ensure t
-  :config
   (general-define-key
    :keymaps 'org-mode-map
    :states '(normal visual insert)
@@ -652,7 +647,7 @@
    "M-l" #'org-metaright
    "M-j" #'org-metadown
    "M-k" #'org-metaup
-   ))
+   )
 
 (defun my/gtd-file (filename)
   (file-name-concat org-directory "gtd" filename))
@@ -1288,7 +1283,13 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;;  ("C-c w b d" . citar-denote-dwim)
 ;;  ("C-c w b e" . citar-denote-open-reference-entry)))
 
-(use-package magit)
+(use-package magit
+  :config
+  (defun my/magit-soft-reset-head~1 ()
+    "Soft reset current git repo to HEAD~1."
+    (interactive)
+    (magit-reset-soft "HEAD~1"))
+  )
 
 (use-package direnv
  :config
