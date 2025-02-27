@@ -238,6 +238,8 @@
   )
 
 (use-package nerd-icons
+  :custom
+  (nerd-icons-font-family "iMWritingMono Nerd Font")
   :ensure t)
 
 (use-package nerd-icons-completion
