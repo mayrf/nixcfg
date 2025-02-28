@@ -1318,6 +1318,10 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
     '("-a" "Autostash" "--autostash"))
   )
 
+;; (add-hook 'prog-mode-hook
+;;           (lambda ()
+;;             (add-hook 'before-save-hook 'eglot-format nil t)))
+
 ;; (setq treesit-language-source-alist
 ;;    '((bash "https://github.com/tree-sitter/tree-sitter-bash")
 ;;      (cmake "https://github.com/uyha/tree-sitter-cmake")
@@ -1350,5 +1354,24 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   :mode ("\\.go\\'" . go-ts-mode)
   :hook ((go-ts-mode . eglot-ensure))
   ;; :config
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+
+(use-package nix-mode
+  :mode "\\.nix\\'"
+  :hook ((nix-mode . eglot-ensure))
+  ;; :config
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+
+;; (dolist (mode '((nix-mode . ("nixd"))))
+;;   (add-to-list 'eglot-server-programs mode)))
+(load (locate-user-emacs-file "lisp/kcl-mode.el"))
+(use-package kcl-ts-mode
+  :ensure nil
+  :mode "\\.k\\'"
+  :hook ((kcl-ts-mode . eglot-ensure))
+  :config
+  (add-to-list 'eglot-server-programs '(kcl-ts-mode . ("kcl-language-server")))
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )

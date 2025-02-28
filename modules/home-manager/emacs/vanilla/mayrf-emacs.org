@@ -1512,6 +1512,12 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   )
 #+end_src
 * IDE
+** Format before save hook
+#+begin_src emacs-lisp :tangle "init.el"
+;; (add-hook 'prog-mode-hook
+;;           (lambda ()
+;;             (add-hook 'before-save-hook 'eglot-format nil t)))
+#+end_src
 ** Treesitter
 #+begin_src emacs-lisp :tangle "init.el"
 ;; (setq treesit-language-source-alist
@@ -1558,3 +1564,37 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )
 #+end_src
+
+
+
+
+** Nix
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package nix-mode
+  :mode "\\.nix\\'"
+  :hook ((nix-mode . eglot-ensure))
+  ;; :config
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+  #+end_src
+
+
+
+
+** kcl-lang
+#+begin_src emacs-lisp :tangle "init.el"
+
+;; (dolist (mode '((nix-mode . ("nixd"))))
+;;   (add-to-list 'eglot-server-programs mode)))
+(load (locate-user-emacs-file "lisp/kcl-mode.el"))
+(use-package kcl-ts-mode
+  :ensure nil
+  :mode "\\.k\\'"
+  :hook ((kcl-ts-mode . eglot-ensure))
+  :config
+  (add-to-list 'eglot-server-programs '(kcl-ts-mode . ("kcl-language-server")))
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+#+end_src
+
+
