@@ -150,8 +150,8 @@
 ;; (set-frame-font "iMWritingMono Nerd Font" nil t)
 ;; (set-frame-font "JetBrainsMono Nerd Font,JetBrainsMono NF" nil t)
 ;; (set-frame-font "JetBrainsMono Nerd Font" nil t)
-(set-frame-font "CaskaydiaCove Nerd Font" nil t)
-;; (set-frame-font "GeistMono Nerd Font" nil t)
+;; (set-frame-font "CaskaydiaCove Nerd Font" nil t)
+(set-frame-font "GeistMono Nerd Font" nil t)
 
 
 
@@ -1326,6 +1326,31 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
     '("-a" "Autostash" "--autostash"))
   )
 
+(use-package gptel)
+;; (gptel-make-ollama "Ollama"             ;Any name of your choosing
+;;   :host "localhost:11434"               ;Where it's running
+;;   :stream t                             ;Stream responses
+;;   :models '(llama3.1:latest))          ;List of models
+
+  (setq gptel-model 'llama3.1:latest
+  gptel-backend (gptel-make-ollama "Ollama"
+                 :host "localhost:11434"
+                 :stream t
+                 :models '(llama3.1:latest)))
+
+(use-package yasnippet 
+  :config
+  (setq yas-snippet-dirs
+	'("~/.config/emacs-vanilla/snippets"                 ;; personal snippets
+          ;; "/path/to/some/collection/"           ;; foo-mode and bar-mode snippet collection
+          ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+          ))
+
+  (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
+  )
+;; (setq yas-snippet-dirs '("~/.config/emacs-vanilla/snippets"))
+;; (yas-global-mode 1))
+
 ;; (add-hook 'prog-mode-hook
 ;;           (lambda ()
 ;;             (add-hook 'before-save-hook 'eglot-format nil t)))
@@ -1374,12 +1399,15 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 
 ;; (dolist (mode '((nix-mode . ("nixd"))))
 ;;   (add-to-list 'eglot-server-programs mode)))
+
 (load (locate-user-emacs-file "lisp/kcl-mode.el"))
 (use-package kcl-ts-mode
   :ensure nil
   :mode "\\.k\\'"
   :hook ((kcl-ts-mode . eglot-ensure))
-  :config
-  (add-to-list 'eglot-server-programs '(kcl-ts-mode . ("kcl-language-server")))
-  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+	       '(kcl-ts-mode . ("kcl-language-server")))
   )
