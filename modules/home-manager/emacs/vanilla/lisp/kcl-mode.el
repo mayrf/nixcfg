@@ -53,6 +53,11 @@
   :type 'integer
   :safe 'integerp)
 
+(defcustom kcl-ts-mode-indent-level 4
+  "Number of spaces for each indentation step in `kcl-ts-mode'."
+  :type 'integer
+  :safe 'integerp)
+
 (defvar kcl-ts--treesit-builtins
   ;; nix eval --impure --expr 'with builtins; filter (x: !(elem x [ "abort" "derivation" "import" "throw" ]) && isFunction builtins.${x}) (attrNames builtins)'
   '("add" "addErrorContext" "all" "any" "appendContext" "attrNames" "attrValues" "baseNameOf" "bitAnd" "bitOr" "bitXor" "break" "catAttrs" "ceil" "compareVersions" "concatLists" "concatMap" "concatStringsSep" "deepSeq" "derivationStrict" "dirOf" "div" "elem" "elemAt" "fetchGit" "fetchMercurial" "fetchTarball" "fetchTree" "fetchurl" "filter" "filterSource" "findFile" "floor" "foldl'" "fromJSON" "fromTOML" "functionArgs" "genList" "genericClosure" "getAttr" "getContext" "getEnv" "getFlake" "groupBy" "hasAttr" "hasContext" "hashFile" "hashString" "head" "intersectAttrs" "isAttrs" "isBool" "isFloat" "isFunction" "isInt" "isList" "isNull" "isPath" "isString" "length" "lessThan" "listToAttrs" "map" "mapAttrs" "match" "mul" "parseDrvName" "partition" "path" "pathExists" "placeholder" "readDir" "readFile" "removeAttrs" "replaceStrings" "scopedImport" "seq" "sort" "split" "splitVersion" "storePath" "stringLength" "sub" "substring" "tail" "toFile" "toJSON" "toPath" "toString" "toXML" "trace" "traceVerbose" "tryEval" "typeOf" "unsafeDiscardOutputDependency" "unsafeDiscardStringContext" "unsafeGetAttrPos" "zipAttrsWith"))
@@ -242,7 +247,7 @@ Return nil if there is no name or if NODE is not a defun node."
       (treesit-node-child-by-field-name node "attrpath") t))))
 
 ;;;###autoload
-(define-derived-mode kcl-ts-mode prog-mode "Nix"
+(define-derived-mode kcl-ts-mode prog-mode "kcl"
   "Major mode for editing Nix expressions, powered by treesitter.
 
 \\{kcl-ts-mode-map}"
@@ -262,6 +267,7 @@ Return nil if there is no name or if NODE is not a defun node."
 
     ;; Comments
     (setq-local comment-start "# ")
+    ;; (setq-local comment-start "# ")
     (setq-local comment-start-skip "#+\\s-*")
 
     ;; Indentation

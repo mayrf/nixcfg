@@ -142,8 +142,6 @@
     nfs-utils
 
     # libreoffice-fresh TODO Fix bug relating to "liberation-fonts-ttf-1.07"
-    unstable.nerd-fonts.im-writing
-    unstable.nerd-fonts.jetbrains-mono
-    unstable.nerd-fonts.fira-code
+
   ];
 }

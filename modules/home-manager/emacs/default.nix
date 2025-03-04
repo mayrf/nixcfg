@@ -198,6 +198,13 @@ in {
 
       # go
       gopls
+
+      #fonts
+      unstable.nerd-fonts.im-writing
+      unstable.nerd-fonts.jetbrains-mono
+      unstable.nerd-fonts.fira-code
+      unstable.nerd-fonts.caskaydia-cove
+      unstable.nerd-fonts.geist-mono
     ];
 
     home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];

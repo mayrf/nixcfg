@@ -169,6 +169,10 @@ By default, Emacs creates automatic backups of files in their original directori
         evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
   (evil-mode))
 
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode 1))
+
 (use-package evil-collection
   :after evil
   :config
@@ -221,7 +225,8 @@ By default, Emacs creates automatic backups of files in their original directori
 
 
 
-(set-face-attribute 'default nil :height 130)
+
+(set-face-attribute 'default nil :height 120)
 #+end_src
 *** navigation
 **** Minibuffer ESCAPE

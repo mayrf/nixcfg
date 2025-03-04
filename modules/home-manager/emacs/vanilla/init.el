@@ -115,6 +115,10 @@
         evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
   (evil-mode))
 
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode 1))
+
 (use-package evil-collection
   :after evil
   :config
@@ -157,7 +161,8 @@
 
 
 
-(set-face-attribute 'default nil :height 130)
+
+(set-face-attribute 'default nil :height 120)
 
 (global-set-key [escape] 'keyboard-escape-quit)
 
