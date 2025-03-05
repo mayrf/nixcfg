@@ -219,14 +219,33 @@ By default, Emacs creates automatic backups of files in their original directori
 ;; (set-frame-font "JetBrainsMono Nerd Font,JetBrainsMono NF" nil t)
 ;; (set-frame-font "JetBrainsMono Nerd Font" nil t)
 ;; (set-frame-font "CaskaydiaCove Nerd Font" nil t)
-(set-frame-font "GeistMono Nerd Font" nil t)
+(set-face-attribute 'default nil
+  :font "GeistMono Nerd Font"
+  :height 110
+  :weight 'medium)
+;; (set-face-attribute 'variable-pitch nil
+;;   :font "Ubuntu Nerd Font"
+;;   :height 120
+;;   :weight 'medium)
+;; (set-face-attribute 'fixed-pitch nil
+;;   :font "Source Code Pro"
+;;   :height 110
+;;   :weight 'medium)
+;; Makes commented text and keywords italics.
+;; This is working in emacsclient but not emacs.
+;; Your font must have an italic face available.
+(set-face-attribute 'font-lock-comment-face nil
+  :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil
+  :slant 'italic)
 
+;; Uncomment the following line if line spacing needs adjusting.
+(setq-default line-spacing 0.12)
 
-
-
-
-
-(set-face-attribute 'default nil :height 120)
+;; Needed if using emacsclient. Otherwise, your fonts will be smaller than expected.
+(add-to-list 'default-frame-alist '(font . "GeistMono Nerd Font-11"))
+;; changes certain keywords to symbols, such as lamda!
+(setq global-prettify-symbols-mode t)
 #+end_src
 *** navigation
 **** Minibuffer ESCAPE
@@ -1528,17 +1547,19 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 #+end_src
 * GPTel
 #+begin_src emacs-lisp :tangle "init.el"
-(use-package gptel)
+(use-package gptel
+  :config
+  (setq gptel-model 'llama3.1:latest
+	gptel-backend (gptel-make-ollama "Ollama"
+			:host "localhost:11434"
+			:stream t
+			:models '(llama3.1:latest)))
+  )
 ;; (gptel-make-ollama "Ollama"             ;Any name of your choosing
 ;;   :host "localhost:11434"               ;Where it's running
 ;;   :stream t                             ;Stream responses
 ;;   :models '(llama3.1:latest))          ;List of models
 
-  (setq gptel-model 'llama3.1:latest
-  gptel-backend (gptel-make-ollama "Ollama"
-                 :host "localhost:11434"
-                 :stream t
-                 :models '(llama3.1:latest)))
 #+end_src
 * IDE
 ** Yasnippet
