@@ -14,7 +14,8 @@
   # wsl.docker-desktop.enable = true;
   wsl.interop.includePath = false;
   # wsl.wslConf.network.generateHosts = false;
-  wsl.wslConf.network.generateResolvConf = false;
+  wsl.wslConf.network.generateResolvConf = true;
+  # wsl.wslConf.network.generateResolvConf = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

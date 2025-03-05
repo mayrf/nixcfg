@@ -253,8 +253,8 @@ Return nil if there is no name or if NODE is not a defun node."
 \\{kcl-ts-mode-map}"
   :syntax-table kcl-ts-mode--syntax-table
 
-  (when (treesit-ready-p 'nix)
-    (treesit-parser-create 'nix)
+  (when (treesit-ready-p 'kcl)
+    (treesit-parser-create 'kcl)
 
     ;; Font locking
     (setq-local treesit-font-lock-settings kcl-ts-mode--font-lock-settings)
