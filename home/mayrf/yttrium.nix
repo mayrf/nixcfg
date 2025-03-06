@@ -8,6 +8,7 @@
     ./features/terminal/foot.nix
     ./features/desktop/hyprland
     ./features/postman.nix
+    "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

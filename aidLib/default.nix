@@ -62,6 +62,7 @@ in rec {
               config.homePath
               inputs.impermanence.nixosModules.home-manager.impermanence
               inputs.nixvim.homeManagerModules.nixvim
+              # inputs.dotfiles-private.outputs.homeManagerModules
             ] ++ (builtins.attrValues outputs.homeManagerModules);
           };
         }
