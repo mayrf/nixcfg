@@ -202,6 +202,12 @@ By default, Emacs creates automatic backups of files in their original directori
  
 
 ** General Settings
+** Load env vars
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package load-env-vars
+  :config
+  (load-env-vars (file-name-concat user-emacs-directory ".env")))
+#+end_src
 ** Visual
 #+begin_src emacs-lisp :tangle "init.el"
 (global-visual-line-mode t)
@@ -1552,6 +1558,22 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
     '("-a" "Autostash" "--autostash"))
   )
 #+end_src
+
+** Magit Forge
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package forge
+  :after magit
+  :config
+  (setq auth-sources '("~/.authinfo")
+	work-gitforge-host (getenv "WORK_GITFORGE_HOST"))
+  (add-to-list 'forge-alist `( ,work-gitforge-host                       ; GITHOST
+			       ,(concat work-gitforge-host "/api/v4")                ; APIHOST
+			       ,work-gitforge-host                       ; WEBHOST and INSTANCE-ID
+			       forge-gitlab-repository)           ; CLASS
+	       )
+  )
+#+end_src
+
 * GPTel
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package gptel

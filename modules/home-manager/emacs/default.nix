@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, lib, host, configVars, ... }:
+{ config, pkgs, unstable, lib, host, configVars, private, ... }:
 with lib;
 let
   cfg = config.emacs;
@@ -206,6 +206,17 @@ in {
       unstable.nerd-fonts.caskaydia-cove
       unstable.nerd-fonts.geist-mono
     ];
+
+
+    xdg.configFile."emacs/.env".text = ''
+      WORK_GITFORGE_HOST=${private.work.gitForgeHost}
+    '';
+    programs.git.extraConfig = {
+      
+      gitlab.${private.work.gitForgeHost}.user =  "${private.work.gitUser}";
+    };
+
+
 
     home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
 

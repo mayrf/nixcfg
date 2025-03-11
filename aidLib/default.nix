@@ -37,7 +37,10 @@ let
     };
   };
 
-  specialArgs = { inherit outputs inputs unstable stable configVars; };
+  specialArgs = {
+    inherit outputs inputs unstable stable configVars;
+    inherit (inputs.dotfiles-private) private;
+  };
 in rec {
   relativeToRoot = lib.path.append ../.;
   mkSystem = config:

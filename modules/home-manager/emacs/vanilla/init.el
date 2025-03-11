@@ -145,6 +145,10 @@
 ;; ;; Setting RETURN key in org-mode to follow links
 ;;   (setq org-return-follows-link  t)
 
+(use-package load-env-vars
+  :config
+  (load-env-vars (file-name-concat user-emacs-directory ".env")))
+
 (global-visual-line-mode t)
 (which-key-mode)
 (add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
@@ -1353,6 +1357,18 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
     '("-t" "Fetch all tags" ("-t" "--tags")))
   (transient-append-suffix 'magit-pull "-r"
     '("-a" "Autostash" "--autostash"))
+  )
+
+(use-package forge
+  :after magit
+  :config
+  (setq auth-sources '("~/.authinfo")
+	work-gitforge-host (getenv "WORK_GITFORGE_HOST"))
+  (add-to-list 'forge-alist `( ,work-gitforge-host                       ; GITHOST
+			       ,(concat work-gitforge-host "/api/v4")                ; APIHOST
+			       ,work-gitforge-host                       ; WEBHOST and INSTANCE-ID
+			       forge-gitlab-repository)           ; CLASS
+	       )
   )
 
 (use-package gptel
