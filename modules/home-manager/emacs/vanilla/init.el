@@ -71,7 +71,7 @@
 
 (defun org-babel-tangle-config ()
   ;; (when (string-equal (buffer-file-name)
-   ;; 		      (expand-file-name "~/.config/emacs-vanilla/mayrf-emacs.org"))
+   ;; 		      (expand-file-name "~/.config/emacs/mayrf-emacs.org"))
   (when (string-match "mayrf-emacs.org" (buffer-file-name))
     (let ((org-config-babel-evaluate nil))
       (org-babel-tangle))))
@@ -88,12 +88,12 @@
 
 (defun my/reload-emacs ()
   (interactive)
-  ;; (org-babel-tangle "~/.config/emacs-vanilla/mayrf-emacs.org")
+  ;; (org-babel-tangle "~/.config/emacs/mayrf-emacs.org")
   (my/reload-init-el))
   ;; (my/reload-modules))
 
 (defun my/reload-init-el ()
-  (load-file "~/.config/emacs-vanilla/init.el"))
+  (load-file "~/.config/emacs/init.el"))
 
 
 (defun my/reload-modules ()
@@ -148,6 +148,8 @@
 (global-visual-line-mode t)
 (which-key-mode)
 (add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
+
+(setq visible-bell t)
 
 (define-key minibuffer-local-map (kbd "C-v") 'yank)
 
@@ -298,7 +300,7 @@
   (my/leader
     "f" '(:ignore t :wk "Files")    
     "SPC" '(project-find-file :wk "Find File in Project")
-    "f P" '((lambda () (interactive) (find-file "~/.config/emacs-vanilla/mayrf-emacs.org")) :wk "Open Config")
+    "f P" '((lambda () (interactive) (find-file "~/.config/emacs/mayrf-emacs.org")) :wk "Open Config")
     ;; "f c" '((lambda () (interactive)
     ;;           (find-file "~/.config/emacs/config.org")) 
     ;;         :wk "Open emacs config.org")
@@ -1337,7 +1339,10 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;;  ("C-c w b d" . citar-denote-dwim)
 ;;  ("C-c w b e" . citar-denote-open-reference-entry)))
 
+(use-package transient)
+
 (use-package magit
+  :after transient
   :config
   (defun my/magit-soft-reset-head~1 ()
     "Soft reset current git repo to HEAD~1."
@@ -1366,14 +1371,14 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (use-package yasnippet 
   :config
   (setq yas-snippet-dirs
-	'("~/.config/emacs-vanilla/snippets"                 ;; personal snippets
+	'("~/.config/emacs/snippets"                 ;; personal snippets
           ;; "/path/to/some/collection/"           ;; foo-mode and bar-mode snippet collection
           ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
           ))
 
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
   )
-;; (setq yas-snippet-dirs '("~/.config/emacs-vanilla/snippets"))
+;; (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
 ;; (yas-global-mode 1))
 
 ;; (add-hook 'prog-mode-hook

@@ -9,6 +9,7 @@ let
     inputs.stylix.nixosModules.stylix
     inputs.disko.nixosModules.default
     inputs.impermanence.nixosModules.impermanence
+    inputs.dotfiles-private.outputs.nixosModules
   ] ++ (builtins.attrValues outputs.nixosModules);
 
   unstable = import inputs.unstable {

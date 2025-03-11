@@ -25,12 +25,12 @@
 
 ;;; Commentary:
 
-;; A major mode for editing Nix expressions, powered by the new
+;; A major mode for editing Kcl expressions, powered by the new
 ;; built-in tree-sitter support in Emacs 29.1.
 
 ;;; Code:
-;; (unless (version< emacs-version "29.1")
-;;   (error "`kcl-ts-mode` requires at least Emacs 29 for tree-sitter support"))
+ ;; (unless (version< emacs-version "29.1")
+ ;;   (error "`kcl-ts-mode` requires at least Emacs 29 for tree-sitter support"))
 
 (require 'treesit)
 
@@ -69,11 +69,11 @@
 ;; Settings
 (defvar kcl-ts-mode--font-lock-settings
   (treesit-font-lock-rules
-   :language 'nix
+   :language 'kcl
    :feature 'bracket
    '(["(" ")" "[" "]" "{" "}"] @font-lock-bracket-face)
 
-   :language 'nix
+   :language 'kcl
    :feature 'comment
    '((comment) @font-lock-comment-face)
 
@@ -199,7 +199,7 @@ and for subsequent lines it's the previous line's indentation."
           bol)))))
 
 (defvar kcl-ts-mode-indent-rules
-  `((nix
+  `((kcl
      ((parent-is "source_code") column-0 0)
      ((node-is "]") parent-bol 0)
      ((node-is ")") parent-bol 0)

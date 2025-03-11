@@ -34,59 +34,59 @@ in {
       package = emacs;
     };
 
-    systemd.user.services.vanillaemacs = {
-      Unit = {
-        Description = "Emacs text editor with vanilla config";
-        Documentation =
-          "info:emacs man:emacs(1) https://gnu.org/software/emacs/";
+    # systemd.user.services.vanillaemacs = {
+    #   Unit = {
+    #     Description = "Emacs text editor with vanilla config";
+    #     Documentation =
+    #       "info:emacs man:emacs(1) https://gnu.org/software/emacs/";
 
-        # After = optional (cfg.startWithUserSession == "graphical")
-        #   "graphical-session.target";
-        # PartOf = optional (cfg.startWithUserSession == "graphical")
-        #   "graphical-session.target";
+    #     # After = optional (cfg.startWithUserSession == "graphical")
+    #     #   "graphical-session.target";
+    #     # PartOf = optional (cfg.startWithUserSession == "graphical")
+    #     #   "graphical-session.target";
 
-        # Avoid killing the Emacs session, which may be full of
-        # unsaved buffers.
-        X-RestartIfChanged = false;
-        # } // optionalAttrs needsSocketWorkaround {
-        # Emacs deletes its socket when shutting down, which systemd doesn't
-        # handle, resulting in a server without a socket.
-        # See https://github.com/nix-community/home-manager/issues/2018
-        # RefuseManualStart = true;
-      };
+    #     # Avoid killing the Emacs session, which may be full of
+    #     # unsaved buffers.
+    #     X-RestartIfChanged = false;
+    #     # } // optionalAttrs needsSocketWorkaround {
+    #     # Emacs deletes its socket when shutting down, which systemd doesn't
+    #     # handle, resulting in a server without a socket.
+    #     # See https://github.com/nix-community/home-manager/issues/2018
+    #     # RefuseManualStart = true;
+    #   };
 
-      Service = {
-        Type = "notify";
+    #   Service = {
+    #     Type = "notify";
 
-        # We wrap ExecStart in a login shell so Emacs starts with the user's
-        # environment, most importantly $PATH and $NIX_PROFILES. It may be
-        # worth investigating a more targeted approach for user services to
-        # import the user environment.
-        ExecStart = ''
-          ${pkgs.runtimeShell} -l -c "${emacsBinPath}/emacs --init-directory ${config.xdg.configHome}/emacs-vanilla --fg-daemon=vanilla"
-        '';
+    #     # We wrap ExecStart in a login shell so Emacs starts with the user's
+    #     # environment, most importantly $PATH and $NIX_PROFILES. It may be
+    #     # worth investigating a more targeted approach for user services to
+    #     # import the user environment.
+    #     ExecStart = ''
+    #       ${pkgs.runtimeShell} -l -c "${emacsBinPath}/emacs --init-directory ${config.xdg.configHome}/emacs-vanilla --fg-daemon=vanilla"
+    #     '';
 
-        # Emacs will exit with status 15 after having received SIGTERM, which
-        # is the default "KillSignal" value systemd uses to stop services.
-        SuccessExitStatus = 15;
+    #     # Emacs will exit with status 15 after having received SIGTERM, which
+    #     # is the default "KillSignal" value systemd uses to stop services.
+    #     SuccessExitStatus = 15;
 
-        Restart = "on-failure";
-        # } // optionalAttrs needsSocketWorkaround {
-        # Use read-only directory permissions to prevent emacs from
-        # deleting systemd's socket file before exiting.
-        # ExecStartPost = "${pkgs.coreutils}/bin/chmod --changes -w ${socketDir}";
-        # ExecStopPost = "${pkgs.coreutils}/bin/chmod --changes +w ${socketDir}";
-      };
-      # } // optionalAttrs (cfg.startWithUserSession != false) {
-      Install = {
-        WantedBy = [
-          # (if cfg.startWithUserSession == true then
-          "default.target"
-          # else
-          # "graphical-session.target")
-        ];
-      };
-    };
+    #     Restart = "on-failure";
+    #     # } // optionalAttrs needsSocketWorkaround {
+    #     # Use read-only directory permissions to prevent emacs from
+    #     # deleting systemd's socket file before exiting.
+    #     # ExecStartPost = "${pkgs.coreutils}/bin/chmod --changes -w ${socketDir}";
+    #     # ExecStopPost = "${pkgs.coreutils}/bin/chmod --changes +w ${socketDir}";
+    #   };
+    #   # } // optionalAttrs (cfg.startWithUserSession != false) {
+    #   Install = {
+    #     WantedBy = [
+    #       # (if cfg.startWithUserSession == true then
+    #       "default.target"
+    #       # else
+    #       # "graphical-session.target")
+    #     ];
+    #   };
+    # };
 
     home.activation = {
       doomEmacsActivationAction = ''
@@ -95,18 +95,18 @@ in {
             [ ! -d "$dir" ] || [ -z "$(ls "$dir")" ]
         }
 
-        VANILLA_EMACS_DIR="${config.xdg.configHome}/emacs-vanilla"
         EMACS_DIR="${config.xdg.configHome}/emacs"
+        DOOM_EMACS_DIR="${config.xdg.configHome}/emacs-doom"
         DOOM="${config.xdg.configHome}/doom"
 
-        if check_dir "$EMACS_DIR"; then
-            rm -rf $EMACS_DIR/*
-            ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $EMACS_DIR
+        if check_dir "$DOOM_EMACS_DIR"; then
+            rm -rf $DOOM_EMACS_DIR/*
+            ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $DOOM_EMACS_DIR
         fi
 
 
-        if check_dir "$VANILLA_EMACS_DIR"; then
-          ln -s ${flakeDir}/modules/home-manager/emacs/vanilla $VANILLA_EMACS_DIR
+        if check_dir "$EMACS_DIR"; then
+          ln -s ${flakeDir}/modules/home-manager/emacs/vanilla $EMACS_DIR
         fi
 
         if [ ! -e "$DOOM" ]; then
@@ -164,7 +164,7 @@ in {
       yaml-language-server
 
       # nix
-      nil
+      nixd
 
       # typescript
       nodePackages_latest.eslint
@@ -211,8 +211,8 @@ in {
 
     home.shellAliases = {
       "emacs" = "${emacs}/bin/emacs";
-      "vanilla-emacs" =
-        "${emacs}/bin/emacs --init-directory ${config.xdg.configHome}/emacs-vanilla &";
+      "doom-emacs" =
+        "${emacs}/bin/emacs --init-directory ${config.xdg.configHome}/emacs-doom &";
     };
     # e()     { pgrep emacs && emacsclient -n "$@" || emacs -nw "$@" }
     # ediff() { emacs -nw --eval "(ediff-files \"$1\" \"$2\")"; }
