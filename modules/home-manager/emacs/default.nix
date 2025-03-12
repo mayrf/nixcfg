@@ -207,16 +207,15 @@ in {
       unstable.nerd-fonts.geist-mono
     ];
 
+    sops.secrets."emacs/authinfo" = { };
 
     xdg.configFile."emacs/.env".text = ''
       WORK_GITFORGE_HOST=${private.work.gitForgeHost}
+      EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
     '';
     programs.git.extraConfig = {
-      
-      gitlab.${private.work.gitForgeHost}.user =  "${private.work.gitUser}";
+      gitlab.${private.work.gitForgeHost}.user = "${private.work.gitUser}";
     };
-
-
 
     home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
 

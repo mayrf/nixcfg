@@ -29,10 +29,12 @@ commit-and-push-nix-secrets:
   (cd {{SOPS_DIR}} && git add {{SOPS_FILE}} && git commit -m "Update secrets" && git push)  
   nix flake lock --update-input nix-secrets
 
-sops:
+
+sops SSH_KEY_PATH:
   (cd {{SOPS_DIR}} && git fetch && git rebase) || true
   echo "Editing {{SOPS_FILE}}"
-  nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops {{SOPS_FILE}}"
+  nix-shell -p sops --run "SOPS_AGE_KEY=$(nix-shell -p ssh-to-age --run 'cat {{SSH_KEY_PATH}} | ssh-to-age -private-key') ./scripts/sops_with_age_key.sh {{SOPS_FILE}} $(cat {{SSH_KEY_PATH}} | ssh-to-age -private-key)"
+
 
 rekey:
   cd {{SOPS_DIR}} && (\

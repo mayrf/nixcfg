@@ -10,5 +10,6 @@
   myProton = ./protonmail.nix;
   myGhostty = ./ghostty.nix;
   yazi = ./yazi.nix;
+  sops = ./sops.nix;
   email = ./email.nix;
 }
