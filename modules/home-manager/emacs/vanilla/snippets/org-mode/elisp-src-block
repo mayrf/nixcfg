@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Elisp src block 
-# key: <el
+# key: el
 # --
 
 #+begin_src emacs-lisp :tangle "init.el"

@@ -69,42 +69,6 @@
 
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 
-(defun org-babel-tangle-config ()
-  ;; (when (string-equal (buffer-file-name)
-   ;; 		      (expand-file-name "~/.config/emacs/mayrf-emacs.org"))
-  (when (string-match "mayrf-emacs.org" (buffer-file-name))
-    (let ((org-config-babel-evaluate nil))
-      (org-babel-tangle))))
-
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (add-hook 'after-save-hook #'org-babel-tangle-config)))
-
-(defun load-directory (dir)
-  (let ((load-it (lambda (f)
-		   (load-file (concat (file-name-as-directory dir) f)))
-		 ))
-    (mapc load-it (directory-files dir nil "\\.el$"))))
-
-(defun my/reload-emacs ()
-  (interactive)
-  ;; (org-babel-tangle "~/.config/emacs/mayrf-emacs.org")
-  (my/reload-init-el))
-  ;; (my/reload-modules))
-
-(defun my/reload-init-el ()
-  (load-file "~/.config/emacs/init.el"))
-
-
-(defun my/reload-modules ()
-  (interactive)
-  (load-directory (locate-user-emacs-file "mayrf-emacs-modules")))
-;; (mapc
-;;  (lambda (string)
-;;    (add-to-list 'load-path (locate-user-emacs-file string)))
-;;'("prot-lisp" "prot-emacs-modules"))
-;;'("mayrf-lisp" "mayrf-emacs-modules"))
-
 (use-package evil
   :ensure t
   :init
@@ -148,6 +112,42 @@
 (use-package load-env-vars
   :config
   (load-env-vars (file-name-concat user-emacs-directory ".env")))
+
+(defun org-babel-tangle-config ()
+  ;; (when (string-equal (buffer-file-name)
+   ;; 		      (expand-file-name "~/.config/emacs/mayrf-emacs.org"))
+  (when (string-match "mayrf-emacs.org" (buffer-file-name))
+    (let ((org-config-babel-evaluate nil))
+      (org-babel-tangle))))
+
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (add-hook 'after-save-hook #'org-babel-tangle-config)))
+
+(defun load-directory (dir)
+  (let ((load-it (lambda (f)
+		   (load-file (concat (file-name-as-directory dir) f)))
+		 ))
+    (mapc load-it (directory-files dir nil "\\.el$"))))
+
+(defun my/reload-emacs ()
+  (interactive)
+  ;; (org-babel-tangle "~/.config/emacs/mayrf-emacs.org")
+  (my/reload-init-el))
+  ;; (my/reload-modules))
+
+(defun my/reload-init-el ()
+  (load-file "~/.config/emacs/init.el"))
+
+
+(defun my/reload-modules ()
+  (interactive)
+  (load-directory (locate-user-emacs-file "mayrf-emacs-modules")))
+;; (mapc
+;;  (lambda (string)
+;;    (add-to-list 'load-path (locate-user-emacs-file string)))
+;;'("prot-lisp" "prot-emacs-modules"))
+;;'("mayrf-lisp" "mayrf-emacs-modules"))
 
 (global-visual-line-mode t)
 (which-key-mode)
@@ -713,11 +713,11 @@
 		      "read_review.org"
 		      )))
 
-(setq org-agenda-files (append
-			(directory-files-recursively
-			 (file-name-concat org-directory "Denotes/projects") "\\.org$")
-			my-gtd-files
-			))
+;; (setq org-agenda-files (append
+;; 			(directory-files-recursively
+;; 			 (file-name-concat org-directory "Denotes/projects") "\\.org$")
+;; 			my-gtd-files
+;; 			))
 
 (setq my-refile-files (append
 		       org-agenda-files
@@ -743,28 +743,6 @@
 ;;  "tickler.org"))))
 ;; (directory-files-recursively org-directory "Denotes\\.org$")
 
-(setq org-tag-alist
-      '(;; Places
-        ("@home" . ?H)
-        ("@work" . ?W)
-
-        ;; Devices
-        ("@computer" . ?C)
-        ("@phone" . ?P)
-
-        ;; Activities
-        ("@planning" . ?n)
-        ("@programming" . ?p)
-        ("@writing" . ?w)
-        ("@creative" . ?c)
-        ("@reading" .?b)
-        ("@try" .?t)
-        ("@media" .?m)
-        ("@listening" .?l)
-        ("@email" . ?e)
-        ("@calls" . ?a)
-        ("@errands" . ?r)
-        ("@order" . ?o)))
 (setq org-default-notes-file org-inbox-file)
 (setq org-capture-templates
       '(("f" "Fleeting note" item
@@ -1183,6 +1161,10 @@ re-align the table if necessary. (Necessary because org-mode has a
 (use-package denote
   :after org
   :config
+  (my/leader
+    "n r f" '(denote-open-or-create :wk "Open or create note")
+    "n r i" '(denote-link-or-create :wk "Link or create to note")
+    "n r R" '(denote-rename-file-using-front-matter :wk "Rename note using front matter"))
   (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/"))))
 ;; (with-eval-after-load 'org-capture
 (add-to-list 'org-capture-templates
@@ -1209,7 +1191,7 @@ re-align the table if necessary. (Necessary because org-mode has a
 		(lambda ()
                   (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
 			;; TODO Enable adding of additional keywords
-			(denote-use-keywords '("project"))
+			(denote-use-keywords '("pra"))
 			(denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
 			(denote-prompts (denote-add-prompts '(keywords)))
 
@@ -1313,9 +1295,9 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   :config
   (consult-denote-mode)
   (setq consult-async-min-input 0)
-  (my/leader
-    "n r f" '(consult-denote-find :wk "Find denote note")
-))
+  ;; (my/leader
+  ;;   "n r f" '(consult-denote-find :wk "Find denote note"))
+)
 
 (use-package citar
   :custom
@@ -1342,6 +1324,152 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;;  ("C-c w b K" . citar-denote-remove-citekey)
 ;;  ("C-c w b d" . citar-denote-dwim)
 ;;  ("C-c w b e" . citar-denote-open-reference-entry)))
+
+(defvar my/denote-keyword-alist
+  '(
+    ( “pra” . "Active Project" )
+    ( “prb” . "Backlogged Project" )
+    ( “prc” . "Completed Project" )
+    ( “ply” . "Planning yearly" )
+    ( “plm” . "Planning monthly" )
+    ( “plw” . "Planning weekly" )
+    ( “kh” . "kind ..." )
+    ( “kt” . "kind Topic" )
+    ( “kp” . "kind ..." )
+    ( “kl” . "kind ..." )
+    ( “ka” . "kind ..." )
+    ( “kap” . "" )
+    ( “kcp” . "" )
+    ( “kca” . "" )
+    ( “kcc” . "" )
+    ( “kra” . "Kind reference Article" )
+    ( “krb” . "Kind reference Book" )
+    ( “krv” . "Kind reference Video" )
+    ( “rn” . "" )
+    ))
+
+(setq denote-infer-keywords
+      nil
+      denote-known-keywords
+      (mapcar #'car my/denote-keyword-alist))
+
+(setq-default org-tag-alist
+              '((:startgroup)
+                ("Areas")
+                (:grouptags)
+                ("@home" . ?H)
+                ("@work" . ?W)
+                (:endgroup)
+
+                (:startgrouptag . nil)
+                ("Contexts")
+                (:grouptags)
+                ("@computer" . ?C)
+                ("@mobile" . ?M)
+                ("@calls" . ?A)
+                ("@errands" . ?E)
+                (:endgrouptag)
+
+                ;; Task Types
+                (:startgrouptag . nil)
+                ("Types")
+                (:grouptags)
+                ("@planning" . ?n)
+                ("@programming" . ?p)
+                ("@easy" . ?e)
+                ("@hacking" . ?h)
+                ("@writing" . ?w)
+                ("@creative" . ?v)
+		("@reading" .?b)
+                ("@media" .?m)
+                ("@listening" .?l)
+                ("@accounting" . ?a)
+		("@try" .?t)
+                ("@email" . ?m)
+                ("@system" . ?s)
+                ("@calls" . ?a)
+                ("@order" . ?o)
+                (:endgrouptag)
+
+                ;; Workflow states
+                (:startgroup . nil)
+                ("States")
+                (:grouptags)
+                ("@plan" . ?p)
+                ("@review" . ?r)
+                ("@followup" . ?f)
+                (:endgroup)))
+
+;; Only make context tags inheritable (what about noexport?)
+(setq org-use-tag-inheritance "^@")
+
+;;; ----- Time Tracking -----
+
+;; ;; Clock in on the current task when setting a timer
+;; (add-hook 'org-timer-set-hook #'org-clock-in)
+
+;; ;; Clock out of the current task when the timer is complete
+;; (add-hook 'org-timer-done-hook #'org-clock-out)
+
+;;; ----- Agenda Configuration -----
+
+(defun my/gtd-file (filename)
+  (file-name-concat org-directory "gtd" filename))
+
+(setq org-reverse-note-order t)
+(setq org-src-preserve-indentation t)
+(setq org-directory "~/Documents/org/")
+
+(setq my/base-agenda-files (mapcar
+		    #'my/gtd-file
+		    '(
+		      ;; "next.org"
+		      ;; "read_review.org"
+		      "projects.org"
+		      )))
+
+;; (defvar my/base-agenda-files '("Inbox.org" "Schedule.org")
+  ;; "The base agenda files that will always be included.")
+
+(setq org-agenda-span 'day
+      org-agenda-start-with-log-mode t
+      org-agenda-files my/base-agenda-files
+      org-agenda-window-setup 'current-window)
+
+;; Make done tasks show up in the agenda log
+(setq org-log-done 'time
+      org-log-into-drawer t)
+
+;;; ----- Denote Integration -----
+
+(defun my/refresh-agenda-files ()
+  (interactive)
+  (setq org-agenda-files
+        (append (denote-directory-files "_pra")
+                my/base-agenda-files)))
+
+(defun my/goto-weekly-note ()
+  (interactive)
+  (let* ((note-title (format-time-string "%Y-W%V"))
+         (existing-notes
+          (denote-directory-files (format "-%s" note-title) nil t)))
+    (if existing-notes
+        (find-file (car existing-notes))
+      (denote note-title '("plw")))))
+
+(with-eval-after-load 'denote
+  ;; Quick access commands
+  (keymap-set global-map "C-c n w" #'my/goto-weekly-note)
+  (my/leader
+    ;; "SPC" '(counsel-M-x :wk "Counsel M-x")
+    "n r w" '(my/goto-weekly-note :wk "Go to weekly note"))
+
+  ;; Refresh agenda files the first time
+  (my/refresh-agenda-files)
+
+  ;; Update agenda files after notes are created or renamed
+  (add-hook 'denote-after-rename-file-hook #'my/refresh-agenda-files)
+  (add-hook 'denote-after-new-note-hook #'my/refresh-agenda-files))
 
 (use-package transient)
 
