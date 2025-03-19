@@ -12,6 +12,7 @@
   home.persistence."${configVars.persistDir}/home/${configVars.username}" =
     if (isImpermanent == true) then {
       directories = [ ".config/fabric" ];
+      allowOther = false;
       # files = [ ".screenrc" ];
     } else
       { };

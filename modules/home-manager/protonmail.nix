@@ -12,6 +12,7 @@ in {
     ];
     home.persistence."${configVars.persistDir}/home/${configVars.username}" = {
       directories = [ ".local/share/protonmail" ".config/Proton Mail" ];
+      allowOther = false;
       # files = [ ".screenrc" ];
     };
   };

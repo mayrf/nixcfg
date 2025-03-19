@@ -126,7 +126,7 @@ in {
 
           ".local/share/oterm"
 
-          ".config/emacs"
+          ".config/emacs-doom"
 
           ".config/Signal"
 

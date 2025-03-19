@@ -12,10 +12,13 @@
     };
   };
 
+  stylix.targets.emacs.enable = false;
+
   home = {
     username = lib.mkDefault "mayrf";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
-    stateVersion = lib.mkDefault "24.11";
+    # stateVersion = lib.mkDefault "24.11";
+    stateVersion = lib.mkDefault "25.05";
     sessionPath = [ "$HOME/.local/bin" ];
   };
   # For virtualisation
