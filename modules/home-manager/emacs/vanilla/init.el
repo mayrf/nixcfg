@@ -568,7 +568,7 @@
   ;; (vertico-scroll-margin 0) ;; Different scroll margin
   (vertico-count 22) ;; Show more candidates
   ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
-  ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+  (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
   )
 
 (use-package orderless
@@ -665,7 +665,8 @@
 (use-package org
   :ensure nil
   :config
-  (add-hook 'org-capture-mode-hook 'evil-insert-state))
+  (add-hook 'org-capture-mode-hook 'evil-insert-state)
+  (setq org-src-fontify-natively t))
 
 ;; (add-to-list 'org-structure-template-alist
 ;; 	     '("i" . "emacs-lisp :tangle init.el"))

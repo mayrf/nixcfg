@@ -676,12 +676,10 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   ;; (vertico-scroll-margin 0) ;; Different scroll margin
   (vertico-count 22) ;; Show more candidates
   ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
-  ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+  (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
   )
 #+end_src
 
-#+RESULTS:
-: vertico-directory-delete-char
 
 #+begin_src emacs-lisp :tangle "init.el"
 
@@ -784,7 +782,10 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 (use-package org
   :ensure nil
   :config
-  (add-hook 'org-capture-mode-hook 'evil-insert-state))
+  (add-hook 'org-capture-mode-hook 'evil-insert-state)
+  (setq org-src-fontify-natively t))
+
+
 #+end_src
 ** Structure templates
 #+begin_src emacs-lisp :tangle "init.el"

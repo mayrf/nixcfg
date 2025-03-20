@@ -48,6 +48,7 @@
   xdg.portal.enable = true;
   xdg.portal.configPackages = [ pkgs.xdg-desktop-portal-gtk ];
   environment.systemPackages = with pkgs; [
+    fd
     busybox
     bluetuith
     vim

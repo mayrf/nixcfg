@@ -29,6 +29,8 @@
     };
 
     stylix.url = "github:danth/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+
 
     nix-secrets = {
       url = "git+ssh://git@github.com/mayrf/sops.git?ref=main&shallow=1";
