@@ -52,9 +52,10 @@
           resolution = "${toString m.width}x${toString m.height}@${
               toString m.refreshRate
             }";
-          position = "${toString m.x}x${toString m.y}";
+          position = if m.x == null && m.y == null then "auto" else "${toString (if m.x != null then m.x else 0)}x${toString (if m.y != null then m.y else 0)}";
+          transform = if m.transform != null then ",transform, ${m.transform}" else "";
         in "${m.name},${
-          if m.enabled then "${resolution},${position},1" else "disable"
+          if m.enabled then "${resolution},${position},1${transform}" else "disable"
         }") (config.monitors);
       workspace = map (m: "${m.name},${m.workspace}")
         (lib.filter (m: m.enabled && m.workspace != null) config.monitors);
@@ -203,7 +204,8 @@
 
       $scratchpadsize = size 80% 85%
 
-      bind=SUPER,Z,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term respawn not needed"; else alacritty --class scratch_term; fi
+      # bind=SUPER,Z,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term respawn not needed"; else alacritty --class scratch_term; fi
+      bind=SUPER,Z,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term respawn not needed"; else ghostty --class scratch_term; fi
       bind=SUPER,Z,togglespecialworkspace,scratch_term
 
       $scratch_term = class:^(scratch_term)$

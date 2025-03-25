@@ -33,16 +33,21 @@ in
           default = 60;
         };
         x = mkOption {
-          type = types.int;
-          default = 0;
+          type = types.nullOr types.int;
+          default = null;
         };
         y = mkOption {
-          type = types.int;
-          default = 0;
+          type = types.nullOr types.int;
+          default = null;
         };
         enabled = mkOption {
           type = types.bool;
           default = true;
+        };
+        transform = mkOption {
+          type = types.nullOr types.str;
+          example = 1;
+          default = null;
         };
         workspace = mkOption {
           type = types.nullOr types.str;
