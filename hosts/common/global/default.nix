@@ -32,7 +32,7 @@
     variables = {
       TERMINAL = "alacritty";
       BROWSER = "librewolf";
-      EDIOR = "nvim";
+      EDITOR = "nvim";
       VISUAL = "nvim";
     };
   };
