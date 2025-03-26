@@ -124,13 +124,15 @@
     pinentry-qt # GnuPG s interface to passphrase input
     ipscan
     offlineimap
-    (python3.withPackages (ps: with ps; [ jupyter ]))
+    # (python3.withPackages (ps: with ps; [ jupyter ]))
+    python3
     borgbackup
     borgmatic
     sshfs
     jq
     ijq
     compose2nix
+    postgresql
 
     # kubernetes related
     fluxcd
