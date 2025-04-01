@@ -57,9 +57,8 @@
         #"aarch64-darwin"
       ];
       # inherit (self) outputs;
-      configVars = import ./vars { inherit inputs; };
       aidLib = import ./aidLib/default.nix {
-        inherit inputs configVars;
+        inherit inputs;
         lib = inputs.nixpkgs.lib;
       };
     in {
@@ -70,29 +69,14 @@
       nixosModules = import ./modules/nixos;
       templates = import ./templates;
       nixosConfigurations = {
-        radium = aidLib.mkSystem {
-          user = "mayrf";
-          host = "radium";
-          #TODO Fix this switch
-          isImpermanent = false;
+        radium = aidLib.mkSystem "radium" {
           nixosPath = ./hosts/radium;
-          homePath = ./home/mayrf/radium.nix;
         };
-        yttrium = aidLib.mkSystem {
-          user = "mayrf";
-          host = "yttrium";
-          #TODO Fix this switch
-          isImpermanent = true;
+        yttrium = aidLib.mkSystem "yttrium" {
           nixosPath = ./hosts/yttrium;
-          homePath = ./home/mayrf/yttrium.nix;
         };
-        helium = aidLib.mkSystem {
-          user = "mayrf";
-          host = "helium";
-          #TODO Fix this switch
-          isImpermanent = false;
+        helium = aidLib.mkSystem "helium" {
           nixosPath = ./hosts/helium;
-          homePath = ./home/mayrf/helium.nix;
         };
       };
     };

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, configVars, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let
   cfg = config.mymodules.impermanence;
@@ -34,8 +34,8 @@ in {
       umount /btrfs_tmp
     '';
 
-    fileSystems.${configVars.persistDirRoot}.neededForBoot = true;
-    environment.persistence.${configVars.persistDir} = {
+    fileSystems.${config.hostSpec.persistDirRoot}.neededForBoot = true;
+    environment.persistence.${config.hostSpec.persistDir} = {
       hideMounts = true;
       directories = [
         "/var/log"
@@ -84,7 +84,7 @@ in {
         }
       ];
 
-      users.${configVars.username} = {
+      users.${config.hostSpec.username} = {
         directories = [
           "Downloads"
           "Music"

@@ -1,6 +1,10 @@
 { config, pkgs, inputs, ... }: {
 
-  imports = [ ./sops.nix ./theming.nix ];
+  imports = [ ./sops.nix ./theming.nix ../../../modules/common/host-spec.nix ];
+
+  networking = {
+    hostName = config.hostSpec.hostName; # Define your hostname.
+  };
 
   security.sudo.wheelNeedsPassword = false;
   time.timeZone = "Europe/Berlin";
@@ -32,7 +36,7 @@
     variables = {
       TERMINAL = "alacritty";
       BROWSER = "librewolf";
-      EDITOR = "vim"; 
+      EDITOR = "vim";
       VISUAL = "nvim";
     };
   };

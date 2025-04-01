@@ -1,6 +1,6 @@
-{ config, lib, pkgs, host, configVars, ... }:
-
-{
+{ pkgs, hostSpec, ... }:
+let host = hostSpec.hostName;
+in {
   home.shellAliases = {
     "rbs" = "sudo nixos-rebuild switch --flake $FLAKE#${host}";
 
@@ -31,7 +31,7 @@
     FLAKE = if host != "yttrium" then
       "$HOME/.config/nixcfg"
     else
-      "${configVars.flakeDir}";
+      "${hostSpec.flakeDir}";
   };
   home.packages = with pkgs; [ nh nix-output-monitor nvd ];
   programs = {

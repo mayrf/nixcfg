@@ -1,7 +1,7 @@
-{ config, lib, pkgs, inputs, host, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
   secretsPath = builtins.toString inputs.nix-secrets;
-  ageKey = if host != "yttrium" then
+  ageKey = if config.hostSpec.hostName != "yttrium" then
     "/home/mayrf/.ssh/id_ed25519"
   else
     "/persist/system/home/mayrf/.ssh/id_ed25519";

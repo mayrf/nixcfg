@@ -1,4 +1,4 @@
-{ pkgs, host, config, ... }:
+{ pkgs, config, ... }:
 
 {
 
@@ -11,6 +11,12 @@
     ../common/linux.nix
    # (import ./disko.nix { device = "/dev/sda"; })
   ];
+
+  hostSpec = {
+    isMinimal = false;
+    username = "mayrf";
+    hostName = "helium";
+  };
 
   mymodules.docker.enable = true;
   mymodules.virtualisation.enable = true;
@@ -26,9 +32,6 @@
     binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
   };
 
-  networking = {
-    hostName = host; # Define your hostname.
-  };
 
   system.stateVersion = "24.11"; # Did you read the comment?
 }

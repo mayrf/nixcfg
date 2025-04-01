@@ -44,10 +44,28 @@
       in if pkgs.stdenv.isLinux then "/home/${user}" else "/Users/${user}";
     };
     # FIXME: This should probably just switch to an impermenance option?
-    persistFolder = lib.mkOption {
+    persistDir = lib.mkOption {
       type = lib.types.str;
       description = "The folder to persist data if impermenance is enabled";
       default = "/persist";
+    };
+
+    persistDirRoot = lib.mkOption {
+      type = lib.types.str;
+      description = "The folder to persist root data if impermenance is enabled";
+      default = "/persist";
+    };
+    persistDirNoBak = lib.mkOption {
+      type = lib.types.str;
+      description = "The folder to persist data which should not be backed up if impermenance is enabled";
+      default = "/persist/no_bak";
+    };
+
+    # TODO make the be dervived from other values by default
+    isImpermanent = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Used to indicate a impermanence used by host";
     };
     isMinimal = lib.mkOption {
       type = lib.types.bool;

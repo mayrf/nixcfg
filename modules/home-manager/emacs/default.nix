@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, lib, host, configVars, private, ... }:
+{ config, pkgs, unstable, lib, private, hostSpec, ... }:
 with lib;
 let
   cfg = config.emacs;
@@ -18,7 +18,7 @@ let
   # to work without wrapping it.
   socketDir = "%t/emacs";
   flakeDir =
-    if host != "yttrium" then "~/.config/nixcfg" else "${configVars.flakeDir}";
+    if hostSpec.hostName != "yttrium" then "~/.config/nixcfg" else "${hostSpec.flakeDir}";
 in {
   options.emacs = { enable = mkEnableOption "my emacs user config"; };
   config = mkIf cfg.enable {

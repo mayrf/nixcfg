@@ -1,8 +1,8 @@
-{ config, lib, host, inputs, ... }:
+{ config, lib, inputs, hostSpec, ... }:
 with lib;
 let cfg = config.mySops;
   secretsPath = builtins.toString inputs.nix-secrets;
-  ageKey = if host != "yttrium" then
+  ageKey = if hostSpec.hostName != "yttrium" then
     "/home/mayrf/.ssh/id_ed25519"
   else
     "/persist/system/home/mayrf/.ssh/id_ed25519";

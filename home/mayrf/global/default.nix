@@ -4,7 +4,12 @@ let
   inherit (inputs.nix-colors.lib-contrib { inherit pkgs; })
     colorschemeFromPicture nixWallpaperFromScheme;
 in {
-  imports = [ inputs.nix-colors.homeManagerModule ./shell.nix ./mimeApps.nix ];
+  imports = [
+    inputs.nix-colors.homeManagerModule
+    ./shell.nix
+    ./mimeApps.nix
+    ../../../modules/common/host-spec.nix
+  ];
 
   myvim.enable = true;
   mySops.enable = true;

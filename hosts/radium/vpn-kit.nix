@@ -1,4 +1,4 @@
-{ pkgs, host, ... }: {
+{ pkgs, ... }: {
   systemd.services = {
     wsl-vpnkit-auto = {
       enable = true;
