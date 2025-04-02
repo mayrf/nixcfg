@@ -49,7 +49,11 @@
       description = "The folder to persist data if impermenance is enabled";
       default = "/persist";
     };
-
+    flakeDir = lib.mkOption {
+      type = lib.types.str;
+      description = "The folder to persist data if impermenance is enabled";
+      default = "$HOME/.config/nixcfg";
+    };
     persistDirRoot = lib.mkOption {
       type = lib.types.str;
       description = "The folder to persist root data if impermenance is enabled";

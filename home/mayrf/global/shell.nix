@@ -28,10 +28,7 @@ in {
   };
   home.sessionVariables = {
     FONTS = "$HOME/.local/share/fonts";
-    FLAKE = if host != "yttrium" then
-      "$HOME/.config/nixcfg"
-    else
-      "${hostSpec.flakeDir}";
+    FLAKE = "${hostSpec.flakeDir}";
   };
   home.packages = with pkgs; [ nh nix-output-monitor nvd ];
   programs = {

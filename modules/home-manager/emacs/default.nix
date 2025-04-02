@@ -17,8 +17,6 @@ let
   # Match the default socket path for the Emacs version so emacsclient continues
   # to work without wrapping it.
   socketDir = "%t/emacs";
-  flakeDir =
-    if hostSpec.hostName != "yttrium" then "~/.config/nixcfg" else "${hostSpec.flakeDir}";
 in {
   options.emacs = { enable = mkEnableOption "my emacs user config"; };
   config = mkIf cfg.enable {
@@ -106,11 +104,11 @@ in {
 
 
         if check_dir "$EMACS_DIR"; then
-          ln -s ${flakeDir}/modules/home-manager/emacs/vanilla $EMACS_DIR
+          ln -s ${hostSpec.flakeDir}/modules/home-manager/emacs/vanilla $EMACS_DIR
         fi
 
         if [ ! -e "$DOOM" ]; then
-          ln -s ${flakeDir}/modules/home-manager/emacs/doom $DOOM
+          ln -s ${hostSpec.flakeDir}/modules/home-manager/emacs/doom $DOOM
           # yes | $EMACS_DIR/bin/doom install
         fi
       '';

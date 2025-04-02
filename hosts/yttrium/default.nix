@@ -4,9 +4,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-
     ../common/global
-    ../common/users/mayrf
     ../common/optional/pipewire.nix
     ../common/optional/lutris.nix
     ../common/linux.nix
@@ -18,6 +16,7 @@
     isMinimal = false;
     username = "mayrf";
     hostName = "yttrium";
+    flakeDir = "/etc/nixos";
     isImpermanent = true;
   };
 
