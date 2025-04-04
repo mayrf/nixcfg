@@ -5,6 +5,7 @@
       "hosts/common/users/primary"
       "hosts/common/users/primary/nixos.nix"
       "hosts/common/global/ensure-config-repo.nix"
+      "hosts/common/global/shell.nix"
     ])
   ];
 
