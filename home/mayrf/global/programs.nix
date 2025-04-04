@@ -35,6 +35,7 @@
     kubernetes-helm
     sxiv
     devbox
+    flox
     outputs.packages.x86_64-linux.kcl-language-server
 
     # lutris
