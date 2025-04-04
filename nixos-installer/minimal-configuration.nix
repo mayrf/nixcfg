@@ -41,7 +41,7 @@
   };
 
   environment.systemPackages =
-    builtins.attrValues { inherit (pkgs) wget curl rsync; };
+    builtins.attrValues { inherit (pkgs) wget curl rsync vim; };
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
