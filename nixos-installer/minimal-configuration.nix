@@ -1,9 +1,10 @@
-{ lib, pkgs, aidLib, ... }: {
+{ lib, pkgs, aidLib, device, ... }: { 
   imports = lib.flatten [
     (map aidLib.relativeToRoot [
       "modules/common/host-spec.nix"
       "hosts/common/users/primary"
       "hosts/common/users/primary/nixos.nix"
+      "hosts/common/global/ensure-config-repo.nix"
     ])
   ];
 
@@ -12,16 +13,7 @@
     username = "mayrf";
   };
 
-  fileSystems."/boot".options =
-    [ "umask=0077" ]; # Removes permissions and security warnings.
-  # boot.loader.efi.canTouchEfiVariables = true;
-  # boot.loader.systemd-boot = {
-  #   enable = true;
-  #   # we use Git for version control, so we don't need to keep too many generations.
-  #   configurationLimit = lib.mkDefault 3;
-  #   # pick the highest resolution for systemd-boot's console.
-  #   consoleMode = lib.mkDefault "max";
-  # };
+
   boot.initrd.systemd.enable = true;
 
   networking = {
@@ -55,4 +47,15 @@
     warn-dirty = false;
   };
   system.stateVersion = "25.05";
-}
+} // (if device != null then {
+  fileSystems."/boot".options = [ "umask=0077" ]; # Removes permissions and security warnings.
+  # boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.systemd-boot = {
+  #   enable = true;
+  #   # we use Git for version control, so we don't need to keep too many generations.
+  #   configurationLimit = lib.mkDefault 3;
+  #   # pick the highest resolution for systemd-boot's console.
+  #   consoleMode = lib.mkDefault "max";
+  # };
+    }
+      else {})

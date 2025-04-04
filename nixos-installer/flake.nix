@@ -7,6 +7,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     disko.url =
       "github:nix-community/disko"; # Declarative partitioning and formatting
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
@@ -21,24 +25,25 @@
         #   (self: super: { custom = import ../lib { inherit (nixpkgs) lib; }; });
         #
         aidLib = import ../aidLib/default.nix {
-          inherit (nixpkgs) lib inputs configVars;
+          inherit (nixpkgs) lib inputs;
         };
       };
       # This mkHost is way better: https://github.com/linyinfeng/dotfiles/blob/8785bdb188504cfda3daae9c3f70a6935e35c4df/flake/hosts.nix#L358
       newConfig = name: device:
         (nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = minimalSpecialArgs;
+          specialArgs = minimalSpecialArgs // { inherit device; };
           modules = [
             inputs.disko.nixosModules.disko
+            inputs.nixos-wsl.nixosModules.wsl
             # ../hosts/common/disks/standard-disk-config.nix
             # { _module.args = { inherit disk withSwap swapSize; }; }
             ./minimal-configuration.nix
             ../hosts/${name}/hardware-configuration.nix
             # ../hosts/${name}/disko.nix
             # { inherit device; }
-            (import ../hosts/${name}/disko.nix { inherit device; })
-
+             
+            (if device != null then import ../hosts/${name}/disko.nix { inherit device; } else {})
             { networking.hostName = name; }
           ];
         });
@@ -47,6 +52,7 @@
         # host = newConfig "name" disk" "withSwap" "swapSize"
         # Swap size is in GiB
         helium = newConfig "helium" "/dev/sda";
+        radium = newConfig "radium" null;
         # grief = newConfig "grief" "/dev/vda" false "0";
         # guppy = newConfig "guppy" "/dev/vda" false "0";
 

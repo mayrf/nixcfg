@@ -1,6 +1,6 @@
 { config, pkgs, inputs, ... }: {
 
-  imports = [ ./sops.nix ./theming.nix ../../../modules/common/host-spec.nix ];
+  imports = [ ./sops.nix ./theming.nix ../../../modules/common/host-spec.nix ./ensure-config-repo.nix];
 
   networking = {
     hostName = config.hostSpec.hostName; # Define your hostname.
