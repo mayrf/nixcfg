@@ -36,7 +36,6 @@ in {
 
     packages = [ pkgs.home-manager ];
 
-    shell = pkgs.zsh;
     extraGroups = lib.flatten [
       "wheel"
       (ifTheyExist [
@@ -53,6 +52,8 @@ in {
         "deluge"
       ])
     ];
+  } // lib.optionalAttrs (!hostSpec.isMinimal) {
+    shell =  pkgs.zsh;
   };
 
   # No matter what environment we are in we want these tools for root, and the user(s)

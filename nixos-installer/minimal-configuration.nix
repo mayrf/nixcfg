@@ -5,7 +5,6 @@
       "hosts/common/users/primary"
       "hosts/common/users/primary/nixos.nix"
       "hosts/common/global/ensure-config-repo.nix"
-      "hosts/common/global/shell.nix"
     ])
   ];
 
@@ -13,8 +12,6 @@
     isMinimal = lib.mkForce true;
     username = "mayrf";
   };
-
-
   boot.initrd.systemd.enable = true;
 
   networking = {

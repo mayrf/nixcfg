@@ -36,14 +36,10 @@
           modules = [
             inputs.disko.nixosModules.disko
             inputs.nixos-wsl.nixosModules.wsl
-            # ../hosts/common/disks/standard-disk-config.nix
-            # { _module.args = { inherit disk withSwap swapSize; }; }
             ./minimal-configuration.nix
             ../hosts/${name}/hardware-configuration.nix
-            # ../hosts/${name}/disko.nix
-            # { inherit device; }
-             
             (if device != null then import ../hosts/${name}/disko.nix { inherit device; } else {})
+            (if name == "radium" then import ../hosts/${name}/proxy-vars.nix else {})
             { networking.hostName = name; }
           ];
         });
@@ -53,7 +49,6 @@
         # Swap size is in GiB
         helium = newConfig "helium" "/dev/sda";
         radium = newConfig "radium" null;
-        # grief = newConfig "grief" "/dev/vda" false "0";
         # guppy = newConfig "guppy" "/dev/vda" false "0";
 
         #TODO:(gusto) uncomment when gusto gets moved to disko, until then flake check errors on this because gustos current hw config doesn't match the disko spec that installer uses

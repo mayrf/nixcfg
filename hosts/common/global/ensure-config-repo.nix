@@ -1,30 +1,28 @@
 { pkgs, config, lib, ... }:
-# options.my.gitRepo.path = lib.mkOption {
-#   type = lib.types.str;
-#   description = "Path to the Git repository.";
-# };
-
-let path = "/home/mayrf/.config/nixcfg";
+let
+  path = config.hostSpec.flakeDir;
+  user = config.hostSpec.username;
 in {
   systemd.tmpfiles.rules = [
-    "d  /home/mayrf/.config/ 0755 mayrf users -"
-    "d  /home/mayrf/.config/nixcfg 0755 mayrf users -"
+    "d  /home/${user}/.config/ 0755 ${user} users -"
+    # "d  /home/${user}/.config/nixcfg 0755 mayrf users -"
   ];
   systemd.services.ensure-git-repo = {
-    description = "Ensure Git repository exists";
+    description = "Ensure nixos condig git repository exists";
     after = [ "network-online.target" ]; # Ensure network is up
     wants = [ "network-online.target" ];
     unitConfig = { StartLimitIntervalSec = 0; };
     serviceConfig = {
       Type = "oneshot";
-      User = "mayrf"; # Or a specific user
+      User = "${user}"; # Or a specific user
       Group = "users";
-      WorkingDirectory = path;
-      ExecStart = "${pkgs.git}/bin/git clone https://github.com/mayrf/nixcfg .";
-      #Only run ExecStart if a .git folder does NOT exist
-      # ConditionPathExists="!${config.my.gitRepo.path}/.git";
-      ConditionPathExists = "!${path}/.git";
     };
+    script = ''
+      if [ -z "$(ls -A ${path})" ]; then
+        # Directory is empty
+        "${pkgs.git}/bin/git clone https://github.com/mayrf/nixcfg ${path}"
+      fi
+    '';
     wantedBy = [ "multi-user.target" ];
   };
 }

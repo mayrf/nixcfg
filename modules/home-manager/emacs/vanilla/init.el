@@ -324,7 +324,7 @@
     "f l" '(consult-locate :wk "Locate a file")
     "f o" '(consult-outline :wk "Consult outline")
     "f r" '(consult-recent-file :wk "Find recent files")
-    "/" '(consult-grep :wk "Grep for a file in project or DIR")
+    "/" '(consult-git-grep :wk "Grep for a file in project or DIR") ;; changes from consult-grep and this wouldn't respect .gitingore
     "f b" '(consult-buffer :wk "Consult buffer")
     ;; "f u" '(sudo-edit-find-file :wk "Sudo find file")
     ;; "f U" '(sudo-edit :wk "Sudo edit file"))

@@ -7,7 +7,9 @@
     ../common/users/primary
     ../common/users/primary/nixos.nix
     ./vpn-kit.nix
+    ./proxy-vars.nix
   ];
+  # privModules.workProxies.enable = true;
 
   hostSpec = {
     isMinimal = false;
@@ -16,7 +18,6 @@
   };
 
   mymodules.docker.enable = true;
-  privModules.workProxies.enable = true;
 
 
   environment.systemPackages = with pkgs; [ wsl-vpnkit ];
