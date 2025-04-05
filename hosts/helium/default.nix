@@ -6,6 +6,8 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../common/global
+    ../common/users/primary
+    ../common/users/primary/nixos.nix
     ../common/optional/pipewire.nix
     ../common/linux.nix
    # (import ./disko.nix { device = "/dev/sda"; })
