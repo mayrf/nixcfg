@@ -19,6 +19,7 @@
 
   # No matter what environment we are in we want these tools for root, and the user(s)
   programs.git.enable = true;
+  programs.zsh.enable = true;
 
   # Select internationalisation properties.
   console = {

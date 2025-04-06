@@ -4,6 +4,7 @@
   imports = [
     ./global
     ./linux
+    ../features/cli
     ./features/terminal/alacritty.nix
     ./features/terminal/foot.nix
     ./features/desktop/hyprland

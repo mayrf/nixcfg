@@ -5,11 +5,12 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../common/global
-    ../common/users/primary
-    ../common/users/primary/nixos.nix
+    ../common
+    ../common/users
+    ../common/optional/lutris.nix
+    ../common/optional/ensure-config-repo.nix
     ../common/optional/pipewire.nix
-    ../common/linux.nix
+    ../common/optional/theming.nix
    # (import ./disko.nix { device = "/dev/sda"; })
   ];
 
@@ -29,5 +30,5 @@
   };
 
 
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = config.hostSpec.sysStateVersion; # Did you read the comment?
 }

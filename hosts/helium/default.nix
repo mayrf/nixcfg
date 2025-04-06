@@ -5,11 +5,13 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../common/global
-    ../common/users/primary
-    ../common/users/primary/nixos.nix
+    ../common
+    ../common/users
+    ../common/optional/ensure-config-repo.nix
+    ../common/optional/keyd.nix
     ../common/optional/pipewire.nix
-    ../common/linux.nix
+    ../common/optional/sops.nix
+    ../common/optional/theming.nix
    # (import ./disko.nix { device = "/dev/sda"; })
   ];
 
@@ -33,6 +35,5 @@
     binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
   };
 
-
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = config.hostSpec.sysStateVersion; # Did you read the comment?
 }
