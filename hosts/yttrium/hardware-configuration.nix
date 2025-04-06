@@ -4,52 +4,19 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    ./hardware-configuration-additional.nix
+  ];
 
   boot.initrd.availableKernelModules =
-    [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ "amdgpu" ];
+    [ "nvme" "xhci_pci" "ahci" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
-  boot.loader = {
-    # grub = {
-    #   enable = true;
-    #   device = "nodev";
-    #   # useOSProber = true;
-    #   configurationLimit = 10;
-    # };
-    systemd-boot = {
-      configurationLimit = 10;
-      enable = true;
-    };
-    efi = { canTouchEfiVariables = true; };
-  };
 
-  # fileSystems."/" = {
-  #   device = "/dev/disk/by-label/nixos";
-  #   fsType = "ext4";
-  # };
-
-  # boot.initrd.luks.devices."cryptroot".device =
-  #   # "/dev/disk/by-uuid/67b692b5-68aa-4b4d-bab8-86eda9f7bb87";
-  #   "/dev/disk/by-uuid/7656cd6e-c132-4cae-839e-0cd53b704317";
-
-  # fileSystems."/boot" = {
-  #   device = "/dev/disk/by-label/boot";
-  #   fsType = "vfat";
-  # };
-
-  #swapDevices = [{
-  #  device = "/var/lib/swapfile";
-  #  size = 16 * 1024;
-  #}];
-  services.fstrim.enable = true;
-
-  # Power/cpu savings
-  # https://nixos.wiki/wiki/Laptop
-  services.auto-cpufreq.enable = true;
-  services.thermald.enable = true;
-  services.system76-scheduler.settings.cfsProfiles.enable = true;
+  swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -61,5 +28,5 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.graphics.enable32Bit = true;
+
 }

@@ -36,6 +36,7 @@ in {
 
   nix = {
     package = lib.mkDefault pkgs.nix;
+    # package = pkgs.nixVersions.latest;
     settings = {
       warn-dirty = false;
       keep-outputs = true;

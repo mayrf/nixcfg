@@ -47,7 +47,7 @@
     persistDir = lib.mkOption {
       type = lib.types.str;
       description = "The folder to persist data if impermenance is enabled";
-      default = "/persist";
+      default = "/persist/system";
     };
     flakeDir = lib.mkOption {
       type = lib.types.str;

@@ -29,7 +29,7 @@
   mymodules.vpn.configFile = config.sops.secrets."wireguard/x220_conf".path;
 
   boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
     binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
   };
 
