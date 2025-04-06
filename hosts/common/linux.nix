@@ -1,5 +1,6 @@
 { config, pkgs, ... }: {
-  imports = [ optional/sddm.nix optional/keyd.nix ];
+  imports = [ optional/sddm.nix optional/keyd.nix optional/sops.nix ];
+    
 
   boot.supportedFilesystems = [ "ntfs" ];
 

@@ -12,30 +12,10 @@ let
     inputs.dotfiles-private.outputs.nixosModules
   ] ++ (builtins.attrValues outputs.nixosModules);
 
-  unstable = import inputs.unstable {
-    system = "x86_64-linux"; # System Architecture
-    # config.allowUnfree = true;
-    config = {
-      allowUnfree = true;
-      allowBroken = true;
-      allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [ ];
 
-    };
-  };
-
-  stable = import inputs.stable {
-    system = "x86_64-linux"; # System Architecture
-    config = {
-      allowUnfree = true;
-      allowBroken = true;
-      allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [ ];
-    };
-  };
 
   specialArgs = {
-    inherit outputs inputs unstable stable;
+    inherit outputs inputs ;
     inherit (inputs.dotfiles-private) private;
   };
 in rec {

@@ -1,4 +1,4 @@
-{ pkgs, lib, stable, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
@@ -37,7 +37,7 @@
 
   services.ollama = {
     rocmOverrideGfx = "10.3.0";
-    package = stable.ollama-rocm;
+    package = pkgs.stable.ollama-rocm;
     enable = true;
     acceleration = "rocm";
   };

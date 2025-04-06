@@ -1,4 +1,4 @@
-{ config, unstable, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let cfg = config.lf;
 in {

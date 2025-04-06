@@ -1,9 +1,8 @@
-{ config, pkgs, inputs, ... }: {
+{ config, pkgs, inputs, outputs, ... }: {
 
   imports = [
-    ./sops.nix
-    ./theming.nix
     ../../../modules/common/host-spec.nix
+    ./theming.nix
     ./ensure-config-repo.nix
   ];
 
@@ -23,7 +22,11 @@
   };
 
   # services.openssh.enable = true;
+
+
+  #gnome stuff
   services.gvfs.enable = true; #Belongs to gnome and nautilus, maybe try to turn off
+  programs.dconf.enable = true;
 
 
 
@@ -41,21 +44,20 @@
 
 
 
+
+  security.polkit.enable = true;
+
+
+  security.rtkit.enable = true;
+  xdg.portal.enable = true;
+  xdg.portal.configPackages = [ pkgs.xdg-desktop-portal-gtk ];
+
   networking = {
     hostName = config.hostSpec.hostName; # Define your hostname.
   };
 
   security.sudo.wheelNeedsPassword = false;
   time.timeZone = "Europe/Berlin";
-
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = (_: true);
-    };
-  };
-  security.polkit.enable = true;
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   services = {
@@ -64,9 +66,6 @@
     gnome.gnome-keyring.enable = true;
   };
 
-  security.rtkit.enable = true;
-  xdg.portal.enable = true;
-  xdg.portal.configPackages = [ pkgs.xdg-desktop-portal-gtk ];
   environment.systemPackages = with pkgs; [
     fd
     busybox
@@ -81,6 +80,7 @@
     # pkgs-stable.rustdesk
     libsForQt5.polkit-kde-agent
   ];
+
   fonts.packages = with pkgs; [
     vistafonts
     noto-fonts
@@ -95,6 +95,18 @@
     roboto
   ];
 
+  nixpkgs = {
+    overlays = [
+      inputs.emacs-overlay.overlays.emacs
+      outputs.overlays.additions
+      outputs.overlays.stable-packages
+      outputs.overlays.unstable-packages
+    ];
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = (_: true);
+    };
+  };
   nix.optimise.automatic = true;
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
@@ -111,5 +123,4 @@
     };
   };
 
-  programs.dconf.enable = true;
 }

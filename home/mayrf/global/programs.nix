@@ -1,4 +1,4 @@
-{ pkgs, stable, outputs, hostSpec, ... }: {
+{ pkgs, outputs, hostSpec, ... }: {
 
   programs = {
     zathura = {
@@ -35,7 +35,6 @@
     kubernetes-helm
     sxiv
     devbox
-    outputs.packages.x86_64-linux.kcl-language-server
 
     # lutris
     # Cli tools
@@ -141,8 +140,8 @@
     kubernetes-helm
     kcl
     k9s
-    outputs.packages.x86_64-linux.kcl-language-server
-    outputs.packages.x86_64-linux.httpyac
+    kcl-language-server
+    httpyac
 
     nfs-utils
 

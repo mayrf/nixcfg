@@ -1,10 +1,10 @@
 # User config applicable to both nixos and darwin
-{ inputs, pkgs, config, lib, outputs, unstable, stable, ... }:
+{ inputs, pkgs, config, lib, outputs, ... }:
 let
   hostSpec = config.hostSpec;
   pubKeys = lib.filesystem.listFilesRecursive ./keys;
   specialArgs = {
-    inherit outputs inputs unstable stable;
+    inherit outputs inputs;
     inherit (inputs.dotfiles-private) private;
   };
 in {

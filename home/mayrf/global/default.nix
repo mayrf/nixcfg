@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, config, ... }:
+{ inputs, lib, pkgs, config, outputs, ... }:
 let
   inherit (inputs.nix-colors) colorSchemes;
   inherit (inputs.nix-colors.lib-contrib { inherit pkgs; })
@@ -25,7 +25,12 @@ in {
   };
 
   nixpkgs = {
-    overlays = [ inputs.emacs-overlay.overlays.emacs ];
+    overlays = [
+      inputs.emacs-overlay.overlays.emacs
+      outputs.overlays.additions
+      outputs.overlays.stable-packages
+      outputs.overlays.unstable-packages
+    ];
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, stable, configVars, ... }:
+{ config, pkgs, lib, configVars, ... }:
 with lib;
 let cfg = config.myProton;
 in {
@@ -6,8 +6,8 @@ in {
   config = mkIf cfg.enable {
 
     home.packages = [
-      stable.protonmail-bridge
-      stable.protonmail-bridge-gui
+      pkgs.stable.protonmail-bridge
+      pkgs.stable.protonmail-bridge-gui
       pkgs.protonmail-desktop
     ];
     home.persistence."${configVars.persistDir}/home/${configVars.username}" = {

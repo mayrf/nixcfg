@@ -1,4 +1,4 @@
-{ config, pkgs, stable, lib, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let cfg = config.myGhostty;
 in {

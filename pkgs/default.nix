@@ -1,6 +1,6 @@
 # You can build these directly using 'nix build .#example'
 
-{ pkgs ? import <nixpkgs> { } }: rec {
+{ pkgs ? import <nixpkgs> { }, ... }: rec {
   kcl-language-server = pkgs.callPackage ./kcl-language-server { };
   httpyac = pkgs.callPackage ./httpyac { };
   kcl-lsp = pkgs.kclvm.overrideAttrs {

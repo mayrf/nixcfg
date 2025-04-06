@@ -2,13 +2,13 @@
   description = "mayrf's NixOs configuration";
 
   inputs = {
-    dotfiles-private.url = "git+ssh://git@codeberg.org/mayrf/dotfiles-private.git";
-
+    dotfiles-private.url =
+      "git+ssh://git@codeberg.org/mayrf/dotfiles-private.git";
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    stable.url = "github:nixos/nixpkgs/nixos-24.11";
-    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
       # url = "github:nix-community/home-manager/release-24.11";
@@ -31,7 +31,6 @@
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
 
-
     nix-secrets = {
       url = "git+ssh://git@github.com/mayrf/sops.git?ref=main&shallow=1";
       flake = false;
@@ -46,11 +45,11 @@
     nixvim = {
       url = "github:nix-community/nixvim";
       # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, ... }@inputs:
+  outputs = { self, nixpkgs, ... }@inputs:
     let
       forAllSystems = inputs.nixpkgs.lib.genAttrs [
         "x86_64-linux"
@@ -62,25 +61,21 @@
         lib = inputs.nixpkgs.lib;
       };
     in {
-      packages = forAllSystems (system:
-        let pkgs = inputs.nixpkgs.legacyPackages.${system};
-        in import ./pkgs { inherit pkgs; });
+      packages =
+        forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+
+      # packages = forAllSystems (system:
+      #   let pkgs = inputs.nixpkgs.legacyPackages.${system};
+      #   in import ./pkgs { inherit pkgs; });
+      overlays = import ./overlays { inherit inputs; };
       homeManagerModules = import ./modules/home-manager;
       nixosModules = import ./modules/nixos;
       templates = import ./templates;
       nixosConfigurations = {
-        radium = aidLib.mkSystem "radium" {
-          nixosPath = ./hosts/radium;
-        };
-        yttrium = aidLib.mkSystem "yttrium" {
-          nixosPath = ./hosts/yttrium;
-        };
-        helium = aidLib.mkSystem "helium" {
-          nixosPath = ./hosts/helium;
-        };
-        kalium = aidLib.mkSystem "kalium" {
-          nixosPath = ./hosts/kalium;
-        };
+        radium = aidLib.mkSystem "radium" { nixosPath = ./hosts/radium; };
+        yttrium = aidLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };
+        helium = aidLib.mkSystem "helium" { nixosPath = ./hosts/helium; };
+        kalium = aidLib.mkSystem "kalium" { nixosPath = ./hosts/kalium; };
       };
     };
 }
