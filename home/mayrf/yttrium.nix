@@ -13,6 +13,7 @@
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
+  features = { cli = { zsh.enable = true; }; };
 
   lf.enable = true;
   vscode.enable = true;

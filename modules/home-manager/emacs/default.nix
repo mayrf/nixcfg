@@ -183,7 +183,7 @@ in {
       hunspellDicts.en_GB-ize
 
       # python
-      poetry
+      stable.poetry
       ruff
       python311Packages.isort
       python311Packages.pylint

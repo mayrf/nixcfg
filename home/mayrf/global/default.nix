@@ -6,7 +6,6 @@ let
 in {
   imports = [
     inputs.nix-colors.homeManagerModule
-    ./shell.nix
     ./mimeApps.nix
     ../../../modules/common/host-spec.nix
   ];
