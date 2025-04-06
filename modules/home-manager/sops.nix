@@ -3,9 +3,9 @@ with lib;
 let cfg = config.mySops;
   secretsPath = builtins.toString inputs.nix-secrets;
   ageKey = if hostSpec.isImpermanent  then
-    "/home/${hostSpec.username}/.ssh/id_ed25519"
+    "/persist/system/home/${hostSpec.username}/.ssh/id_ed25519"
   else
-    "/persist/system/home/${hostSpec.username}/.ssh/id_ed25519";
+    "/home/${hostSpec.username}/.ssh/id_ed25519";
 in {
   options.mySops = { enable = mkEnableOption "my sops user config"; };
   config = mkIf cfg.enable {

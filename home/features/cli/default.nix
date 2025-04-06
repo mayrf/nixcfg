@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ./zsh.nix ];
+  imports = [ ./zsh.nix ./fzf.nix ];
   programs.zoxide = { enable = true; };
   programs.eza = {
     enable = true;

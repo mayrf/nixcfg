@@ -5,6 +5,7 @@
     ./global
     ./linux
     ../features/cli
+    ../features/desktop
     ./features/terminal/alacritty.nix
     ./features/terminal/foot.nix
     ./features/desktop/hyprland
@@ -13,7 +14,12 @@
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
-  features = { cli = { zsh.enable = true; }; };
+  features = {
+    cli = {
+      zsh.enable = true;
+      fzf.enable = true;
+    };
+  };
 
   lf.enable = true;
   vscode.enable = true;

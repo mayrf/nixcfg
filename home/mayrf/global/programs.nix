@@ -56,7 +56,6 @@
     sops
     sxiv
     devbox
-    fzf
     # TODO add Scripts like:
     # pandoc -f markdown -t org -o ${md%.*}.org ${md};
     pandoc
