@@ -5,7 +5,6 @@ let
 in {
   systemd.tmpfiles.rules = [
     "d  /home/${user}/.config/ 0755 ${user} users -"
-    # "d  /home/${user}/.config/nixcfg 0755 mayrf users -"
   ];
   systemd.services.ensure-git-repo = {
     description = "Ensure nixos condig git repository exists";

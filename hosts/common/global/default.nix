@@ -7,18 +7,46 @@
     ./ensure-config-repo.nix
   ];
 
+  # optional
+  services.flatpak.enable = true;
+  # services.udev.packages = [ pkgs.yubikey-personalization ];
+
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+  services.blueman.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  # services.openssh.enable = true;
+  services.gvfs.enable = true; #Belongs to gnome and nautilus, maybe try to turn off
+
+
+
+
+  # Extra file
+  environment = {
+    variables = {
+      TERMINAL = "alacritty";
+      BROWSER = "librewolf";
+      EDITOR = "vim";
+      VISUAL = "nvim";
+    };
+  };
+
+
+
+
   networking = {
     hostName = config.hostSpec.hostName; # Define your hostname.
   };
 
   security.sudo.wheelNeedsPassword = false;
   time.timeZone = "Europe/Berlin";
-  services.udev.packages = [ pkgs.yubikey-personalization ];
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
 
   nixpkgs = {
     config = {
@@ -30,28 +58,11 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-  services.flatpak.enable = true;
   services = {
     locate.enable = true;
-    blueman.enable = true;
     # Gnome Keyring, store keys for apps like nextcloud client
     gnome.gnome-keyring.enable = true;
   };
-  environment = {
-    variables = {
-      TERMINAL = "alacritty";
-      BROWSER = "librewolf";
-      EDITOR = "vim";
-      VISUAL = "nvim";
-    };
-  };
-  services.openssh.enable = true;
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
-  services.gvfs.enable = true;
 
   security.rtkit.enable = true;
   xdg.portal.enable = true;
@@ -90,7 +101,7 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       keep-outputs = true;
-      allowed-users = [ "mayrf" ];
+      allowed-users = [ "${config.hostSpec.username}" ];
       substituters =
         [ "https://hyprland.cachix.org" "https://nix-community.cachix.org/" ];
       trusted-public-keys = [

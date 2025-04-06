@@ -78,6 +78,9 @@
         helium = aidLib.mkSystem "helium" {
           nixosPath = ./hosts/helium;
         };
+        kalium = aidLib.mkSystem "kalium" {
+          nixosPath = ./hosts/kalium;
+        };
       };
     };
 }

@@ -6,6 +6,6 @@ in {
   config = mkIf cfg.enable {
 
     home.packages = with pkgs; [ oauth2ms isync cyrus-sasl-xoauth2 ];
-    xdg.configFile = { "isyncrs".source = ./isyncrc; };
+    # xdg.configFile = { "isyncrs".source = ./isyncrc; };
   };
 }
