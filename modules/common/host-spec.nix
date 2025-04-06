@@ -9,6 +9,12 @@
       type = lib.types.str;
       description = "The hostname of the host";
     };
+
+    sysStateVersion = lib.mkOption {
+      type = lib.types.str;
+      description = "The system state version of the system";
+      default = "25.05";
+    };
     email = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       description = "The email of the user";

@@ -1,19 +1,8 @@
-{ pkgs, lib, ... }:
-
+{  ... }:
 {
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ../common/global
-    ../common/users/primary
-    ../common/users/primary/nixos.nix
-    ../common/optional/pipewire.nix
-    ../common/optional/lutris.nix
-    ../common/linux.nix
-    ../common/optional/sddm.nix
-    (import ./disko.nix { device = "/dev/nvme0n1"; })
+    ./configuration.nix
   ];
-
   hostSpec = {
     isMinimal = false;
     username = "mayrf";
@@ -22,28 +11,6 @@
     persistDir = "/persist/system";
     persistDirRoot = "/persist";
     isImpermanent = true;
+    sysStateVersion = "25.05";
   };
-
-  mymodules.docker.enable = true;
-  mymodules.open-webui.enable = true;
-  mymodules.virtualisation.enable = true;
-  mymodules.gaming.enable = true;
-  mymodules.impermanence.enable = true;
-
-  boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
-    binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
-  };
-
-  services.ollama = {
-    rocmOverrideGfx = "10.3.0";
-    package = pkgs.stable.ollama-rocm;
-    enable = true;
-    acceleration = "rocm";
-  };
-
-  hardware.ledger.enable = true;
-
-  system.stateVersion = "25.05"; # Did you read the comment?
-
 }

@@ -12,4 +12,5 @@
   yazi = ./yazi.nix;
   sops = ./sops.nix;
   email = ./email.nix;
+  host-Spec = ../common/host-spec.nix;
 }

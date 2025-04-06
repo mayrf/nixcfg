@@ -6,4 +6,5 @@
   vpn = ./vpn.nix;
   virtualisation = ./virtualisation.nix;
   open-webui = ./open-webui.nix;
+  host-Spec = ../common/host-spec.nix;
 }
