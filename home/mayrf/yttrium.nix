@@ -8,7 +8,6 @@
     ../features/desktop
     ./features/terminal/alacritty.nix
     ./features/terminal/foot.nix
-    ./features/desktop/hyprland
     ./features/postman.nix
     "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
@@ -18,6 +17,14 @@
     cli = {
       zsh.enable = true;
       fzf.enable = true;
+    };
+    desktop = {
+      wayland.enable = true;
+      waybar.enable = true;
+      hyprland.enable = true;
+      gammastep.enable = true;
+      mako.enable = true;
+      wofi.enable = true;
     };
   };
 

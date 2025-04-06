@@ -19,6 +19,8 @@ in {
     description = "${username}";
     # initialPassword = "changeme";
     hashedPasswordFile = sopsHashedPasswordFile; # Blank if sops is not working.
+    shell = pkgs.zsh;
+
 
     packages = [ pkgs.home-manager ];
     # These get placed into /etc/ssh/authorized_keys.d/<name> on nixos
