@@ -135,6 +135,7 @@
     # kubernetes related
     fluxcd
     kubectl
+    kubectl-cnpg
     argocd
     kubernetes-helm
     kcl

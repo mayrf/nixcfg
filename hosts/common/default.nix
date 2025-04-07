@@ -47,10 +47,6 @@
   services.flatpak.enable = true;
   # services.udev.packages = [ pkgs.yubikey-personalization ];
 
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
   services.blueman.enable = true;
   services.avahi = {
     enable = true;
@@ -58,13 +54,18 @@
     openFirewall = true;
   };
 
-  # services.openssh.enable = true;
 
 
   #gnome stuff
   services.gvfs.enable = true; #Belongs to gnome and nautilus, maybe try to turn off
   programs.dconf.enable = true;
-
+  # needed for gnome keyring / docker credentials
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+  services.openssh.enable = true;
+  security.pam.services = { swaylock = { }; };
 
 
 
@@ -116,6 +117,8 @@
     libsForQt5.qt5.qtwayland
     # pkgs-stable.rustdesk
     libsForQt5.polkit-kde-agent
+    pass
+    gnupg
   ];
 
   fonts.packages = with pkgs; [

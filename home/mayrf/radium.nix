@@ -6,7 +6,7 @@
     ./linux
     ./features/terminal/kitty.nix
     ../features/cli
-    ../features/desktop
+    # ../features/desktop
   ];
 
   features = {
