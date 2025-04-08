@@ -1,6 +1,6 @@
-{ lib, pkgs, aidLib, device, ... }: { 
+{ lib, pkgs, myLib, device, ... }: { 
   imports = lib.flatten [
-    (map aidLib.relativeToRoot [
+    (map myLib.relativeToRoot [
       "modules/common/host-spec.nix"
       "hosts/common/users/primary"
       "hosts/common/users/primary/nixos.nix"

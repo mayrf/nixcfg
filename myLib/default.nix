@@ -1,6 +1,6 @@
 { lib, inputs }:
 let
-  aidLib = (import ./default.nix) { inherit inputs; };
+  myLib = (import ./default.nix) { inherit inputs; };
   outputs = inputs.self.outputs;
   commonNixosModules = [
     inputs.sops-nix.nixosModules.sops

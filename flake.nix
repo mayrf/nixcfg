@@ -56,7 +56,7 @@
         #"aarch64-darwin"
       ];
       # inherit (self) outputs;
-      aidLib = import ./aidLib/default.nix {
+      myLib = import ./myLib/default.nix {
         inherit inputs;
         lib = inputs.nixpkgs.lib;
       };
@@ -72,10 +72,10 @@
       nixosModules = import ./modules/nixos;
       templates = import ./templates;
       nixosConfigurations = {
-        radium = aidLib.mkSystem "radium" { nixosPath = ./hosts/radium; };
-        yttrium = aidLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };
-        helium = aidLib.mkSystem "helium" { nixosPath = ./hosts/helium; };
-        kalium = aidLib.mkSystem "kalium" { nixosPath = ./hosts/kalium; };
+        radium = myLib.mkSystem "radium" { nixosPath = ./hosts/radium; };
+        yttrium = myLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };
+        helium = myLib.mkSystem "helium" { nixosPath = ./hosts/helium; };
+        kalium = myLib.mkSystem "kalium" { nixosPath = ./hosts/kalium; };
       };
     };
 }

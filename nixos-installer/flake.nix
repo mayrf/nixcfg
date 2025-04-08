@@ -24,7 +24,7 @@
         # lib = nixpkgs.lib.extend
         #   (self: super: { custom = import ../lib { inherit (nixpkgs) lib; }; });
         #
-        aidLib = import ../aidLib/default.nix {
+        myLib = import ../myLib/default.nix {
           inherit (nixpkgs) lib inputs;
         };
       };
