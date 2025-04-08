@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.myGhostty;
+let cfg = config.features.terminal.ghostty;
 in {
-  options.myGhostty = { enable = mkEnableOption "my ghostty config"; };
+  options.features.terminal.ghostty.enable = mkEnableOption "my ghostty config";
   config = mkIf cfg.enable {
     programs.ghostty = {
       enable = true;

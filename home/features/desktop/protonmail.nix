@@ -1,8 +1,8 @@
 { config, pkgs, lib, configVars, ... }:
 with lib;
-let cfg = config.myProton;
+let cfg = config.features.desktop.protonmail;
 in {
-  options.myProton = { enable = mkEnableOption "my protonmail user config"; };
+  options.features.desktop.protonmail.enable = mkEnableOption "my protonmail user config"; 
   config = mkIf cfg.enable {
 
     home.packages = [

@@ -21,14 +21,14 @@
     hostName = "helium";
   };
 
-  mymodules.docker.enable = true;
-  mymodules.virtualisation.enable = true;
-  mymodules.laptop.enable = true;
-  # mymodules.impermanence.enable = true;
+  features.docker.enable = true;
+  features.virtualisation.enable = true;
+  features.laptop.enable = true;
+  # features.impermanence.enable = true;
 
   sops.secrets."wireguard/x220_conf" = { };
-  mymodules.vpn.enable = true;
-  mymodules.vpn.configFile = config.sops.secrets."wireguard/x220_conf".path;
+  features.vpn.enable = true;
+  features.vpn.configFile = config.sops.secrets."wireguard/x220_conf".path;
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_6_14;

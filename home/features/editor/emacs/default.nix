@@ -1,7 +1,7 @@
 { config, pkgs, lib, private, hostSpec, ... }:
 with lib;
 let
-  cfg = config.emacs;
+  cfg = config.features.editor.emacs;
 
   # package = pkgs.emacs-unstable;
   # emacs = pkgs.emacs-unstable.override {
@@ -18,7 +18,7 @@ let
   # to work without wrapping it.
   socketDir = "%t/emacs";
 in {
-  options.emacs = { enable = mkEnableOption "my emacs user config"; };
+  options.features.editor.emacs.enable = mkEnableOption "my emacs user config";
   config = mkIf cfg.enable {
 
     # Emacs
@@ -104,11 +104,11 @@ in {
 
 
         if check_dir "$EMACS_DIR"; then
-          ln -s ${hostSpec.flakeDir}/modules/home-manager/emacs/vanilla $EMACS_DIR
+          ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/vanilla $EMACS_DIR
         fi
 
         if [ ! -e "$DOOM" ]; then
-          ln -s ${hostSpec.flakeDir}/modules/home-manager/emacs/doom $DOOM
+          ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/doom $DOOM
           # yes | $EMACS_DIR/bin/doom install
         fi
       '';

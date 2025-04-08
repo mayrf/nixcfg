@@ -23,6 +23,9 @@
       wofi.enable = true;
       nextcloud-client.enable = true;
       virtualisation.enable = true;
+      librewolf.enable = true;
+      gpg.enable = true;
+      zathura.enable = true;
     };
     terminal = {
       alacritty.enable = true;

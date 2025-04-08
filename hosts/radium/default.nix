@@ -8,9 +8,9 @@
     ../common/optional/ensure-config-repo.nix
     ../common/optional/sops.nix
     ./vpn-kit.nix
-    ./proxy-vars.nix
+    # ./proxy-vars.nix
   ];
-  # privModules.workProxies.enable = true;
+  privModules.workProxies.enable = true;
 
   hostSpec = {
     isMinimal = false;
@@ -18,7 +18,7 @@
     hostName = "radium";
   };
 
-  mymodules.docker.enable = true;
+  features.docker.enable = true;
 
 
   environment.systemPackages = with pkgs; [ wsl-vpnkit ];

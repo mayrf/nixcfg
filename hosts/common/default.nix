@@ -1,5 +1,13 @@
 { config, pkgs, inputs, outputs, ... }: {
 
+  imports = [
+    # ../../modules/common/host-spec.nix
+    # ./theming.nix
+    # ./ensure-config-repo.nix
+    ../../modules/common/host-spec.nix
+    ../features
+    inputs.home-manager.nixosModules.home-manager
+  ];
     
 
   boot.supportedFilesystems = [ "ntfs" ];
@@ -36,12 +44,6 @@
     General = { Enable = "Source,Sink,Media,Socket"; };
   };
 
-  imports = [
-    # ../../modules/common/host-spec.nix
-    # ./theming.nix
-    # ./ensure-config-repo.nix
-    inputs.home-manager.nixosModules.home-manager
-  ];
 
   # optional
   services.flatpak.enable = true;
@@ -105,6 +107,20 @@
   };
 
   environment.systemPackages = with pkgs; [
+
+    file
+    urlencode
+    nmap
+    mlocate
+    openssl
+    tldr
+    unzip # Zip Files
+    htop
+    trash-cli
+    jq
+    tree
+    zip # Zip
+    rsync # Syncer - $ rsync -r dir1/ dir2/
     fd
     busybox
     bluetuith
@@ -119,6 +135,10 @@
     libsForQt5.polkit-kde-agent
     pass
     gnupg
+    #Utils
+    borgbackup
+    borgmatic
+    sshfs
   ];
 
   fonts.packages = with pkgs; [

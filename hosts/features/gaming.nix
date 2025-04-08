@@ -1,8 +1,8 @@
 { config, pkgs, lib,  ... }:
 with lib;
-let cfg = config.mymodules.gaming;
+let cfg = config.features.gaming;
 in {
-  options.mymodules.gaming = { enable = mkEnableOption "my gaming config"; };
+  options.features.gaming = { enable = mkEnableOption "my gaming config"; };
   config = mkIf cfg.enable {
     hardware.graphics = {
       enable = true;

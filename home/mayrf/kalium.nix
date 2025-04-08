@@ -21,6 +21,9 @@
       gammastep.enable = true;
       mako.enable = true;
       wofi.enable = true;
+      librewolf.enable = true;
+      gpg.enable = true;
+      zathura.enable = true;
     };
     terminal = {
       alacritty.enable = true;

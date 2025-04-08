@@ -1,5 +1,16 @@
 { pkgs, ... }: {
-  imports = [ ./zsh.nix ./fzf.nix ];
+  imports = [
+    ./zsh.nix
+    ./fzf.nix
+    ./ai.nix
+    ./k8s.nix
+    ./media.nix
+    ./development.nix
+    ./yazi.nix
+    ./lf
+    ./git
+    ./sops.nix
+  ];
   programs.zoxide = { enable = true; };
   programs.eza = {
     enable = true;
@@ -14,6 +25,7 @@
     fd
     htop
     # httpie
+    btop
     jq
     procs
     ripgrep

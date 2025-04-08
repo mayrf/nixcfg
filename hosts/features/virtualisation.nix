@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.mymodules.virtualisation;
+let cfg = config.features.virtualisation;
 in {
-  options.mymodules.virtualisation = {
+  options.features.virtualisation = {
     enable = mkEnableOption "my virtualisation machine config";
   };
   config = mkIf cfg.enable {

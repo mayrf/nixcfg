@@ -1,10 +1,8 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.mymodules.docker;
+let cfg = config.features.docker;
 in {
-  options.mymodules.docker = {
-    enable = mkEnableOption "my docker machine config";
-  };
+  options.features.docker.enable = mkEnableOption "my docker machine config";
   config = mkIf cfg.enable {
     # virtualisation.docker.enable = true;
     virtualisation.docker.rootless = {

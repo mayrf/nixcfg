@@ -10,6 +10,8 @@ in {
   options.features.desktop.email.enable = mkEnableOption "email config";
 
   config = mkIf cfg.enable {
+    home.packages = [ gnupg offlineimap oauth2ms isync cyrus-sasl-xoauth2 ];
+    # xdg.configFile = { "isyncrs".source = ./isyncrc; };
     programs = {
       mu.enable = true;
       msmtp.enable = true;

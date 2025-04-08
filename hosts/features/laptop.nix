@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.mymodules.laptop;
+let cfg = config.features.laptop;
 in {
-  options.mymodules.laptop = { enable = mkEnableOption "my laptop config"; };
+  options.features.laptop = { enable = mkEnableOption "my laptop config"; };
   config = mkIf cfg.enable {
 
     # Better scheduling for CPU cycles - thanks System76!!!

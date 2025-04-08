@@ -6,6 +6,7 @@
     ../features/cli
     ../features/desktop
     ../features/terminal
+    ../features/editor
     "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
 
@@ -14,9 +15,21 @@
     cli = {
       zsh.enable = true;
       fzf.enable = true;
+      ai.enable = true;
+      development.enable = true;
+      k8s.enable = true;
+      yazi.enable = true;
+      lf.enable = true;
+      git.enable = true;
+    };
+    editor = {
+      nvim.enable = true;
+      emacs.enable = true;
+      vscode.enable = true;
     };
     desktop = {
       wayland.enable = true;
+      email.enable = true;
       waybar.enable = true;
       hyprland.enable = true;
       gammastep.enable = true;
@@ -25,18 +38,21 @@
       nextcloud-client.enable = true;
       virtualisation.enable = true;
       postman.enable = true;
+      librewolf.enable = true;
+      gpg.enable = true;
+      zathura.enable = true;
+      learning.enable = true;
+      media.enable = true;
+      social.enable = true;
+      productivity.enable = true;
     };
     terminal = {
       alacritty.enable = true;
       foot.enable = true;
+      ghostty.enable = true;
     };
   };
 
-  lf.enable = true;
-  vscode.enable = true;
-  emacs.enable = true;
-  git.enable = true;
-  email.enable = true;
   wayland.windowManager.hyprland = {
     settings = {
       monitor = [
@@ -54,6 +70,14 @@
       ];
     };
   };
+  home.packages = with pkgs; [
+    urbit
+    # Productivity
+    exercism
+    vimgolf
+    img2pdf
+    gparted
+  ];
   #  home.persistence."/persist/home" = {
   #    directories = [
   #      "Downloads"

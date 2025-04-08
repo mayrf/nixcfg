@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  cfg = config.mymodules.impermanence;
+  cfg = config.features.impermanence;
   persistenceDir = lib.types.option
     inputs.impermanence.persistence."/persist/no_bak".directories;
 in {
-  options.mymodules.impermanence = {
+  options.features.impermanence = {
     enable = mkEnableOption "my impermanence config";
   };
   config = mkIf cfg.enable {

@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.mymodules.vpn;
+let cfg = config.features.vpn;
 in {
-  options.mymodules.vpn = {
+  options.features.vpn = {
     enable = mkEnableOption "my vpn config";
     configFile = mkOption {
       type = types.path;

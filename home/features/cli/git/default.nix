@@ -1,8 +1,9 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.git;
+let cfg = config.features.cli.git;
 in {
-  options.git = { enable = mkEnableOption "my git user config"; };
+  options.features.cli.git.enable = mkEnableOption "my git user config";
+
   config = mkIf cfg.enable {
     # commit message stolen from https://gist.github.com/lisawolderiksen/a7b99d94c92c6671181611be1641c733
     xdg.configFile."git/commitTemplate.txt".source = ./commitTemplate.txt;

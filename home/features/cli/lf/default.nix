@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.lf;
+let cfg = config.features.cli.lf;
 in {
-  options.lf = { enable = mkEnableOption "my lf user config"; };
+  options.features.cli.lf.enable = mkEnableOption "my lf user config";
   config = mkIf cfg.enable {
     xdg.configFile = {
       "lf/lfrc".source = ./lfrc;

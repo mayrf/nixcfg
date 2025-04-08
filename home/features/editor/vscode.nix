@@ -1,10 +1,9 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.vscode;
+let cfg = config.features.editor.vscode;
 in {
-  options.vscode = { enable = mkEnableOption "my vscode user config"; };
+  options.features.editor.vscode.enable = mkEnableOption "my vscode user config";
   config = mkIf cfg.enable {
-
     nixpkgs.config.allowUnfree = true;
     programs.vscode = {
       enable = true;

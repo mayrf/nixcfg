@@ -1,7 +1,7 @@
 { config, pkgs,  lib, ... }:
 with lib;
 let
-  cfg = config.yazi;
+  cfg = config.features.cli.yazi;
   # yazi-plugins = pkgs.fetchFromGitHub {
   #   owner = "yazi-rs";
   #   repo = "plugins";
@@ -9,7 +9,7 @@ let
   #   # hash = "sha256-...";
   # };
 in {
-  options.yazi = { enable = mkEnableOption "my yazi config"; };
+  options.features.cli.yazi.enable = mkEnableOption "my yazi config";
   config = mkIf cfg.enable {
     programs.yazi = {
       enable = true;

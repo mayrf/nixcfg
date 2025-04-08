@@ -20,9 +20,9 @@
     hostName = "kalium";
   };
 
-  mymodules.docker.enable = true;
-  mymodules.virtualisation.enable = true;
-  mymodules.laptop.enable = true;
+  features.docker.enable = true;
+  features.virtualisation.enable = true;
+  features.laptop.enable = true;
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_6_14;

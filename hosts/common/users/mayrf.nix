@@ -71,7 +71,7 @@ in {
         inputs.impermanence.nixosModules.home-manager.impermanence
         inputs.nixvim.homeManagerModules.nixvim
         inputs.sops-nix.homeManagerModules.sops
-      ] ++ (builtins.attrValues outputs.homeManagerModules));
+      ]);
   };
 
   # programs.nix-ld.enable = true;

@@ -25,11 +25,11 @@
     sysStateVersion = "25.05";
   };
 
-  mymodules.docker.enable = true;
-  mymodules.open-webui.enable = true;
-  mymodules.virtualisation.enable = true;
-  mymodules.gaming.enable = true;
-  mymodules.impermanence.enable = true;
+  features.docker.enable = true;
+  features.open-webui.enable = true;
+  features.virtualisation.enable = true;
+  features.gaming.enable = true;
+  features.impermanence.enable = true;
   privModules.common.enable = true;
 
   boot = {
@@ -44,5 +44,9 @@
     acceleration = "rocm";
   };
 
+
+  environment.systemPackages = with pkgs; [
+    nfs-utils
+  ];
   system.stateVersion = config.hostSpec.sysStateVersion; # Did you read the comment?
 }

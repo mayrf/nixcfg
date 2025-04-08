@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   imports = [
     ./wayland.nix
     ./hyprland.nix
@@ -11,8 +11,18 @@
     ./email.nix
     ./postman.nix
     ./teams.nix
+    ./zathura.nix
+    ./librewolf.nix
+    ./productivity.nix
+    ./gpg.nix
+    ./learning.nix
+    ./media.nix
+    ./social.nix
+    ./protonmail.nix
+    ./fonts.nix
   ];
 
   home.packages = with pkgs; [
+    pinentry-qt # GnuPG s interface to passphrase input
   ];
 }

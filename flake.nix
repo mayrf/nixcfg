@@ -69,8 +69,6 @@
       #   in import ./pkgs { inherit pkgs; });
       overlays = import ./overlays { inherit inputs; };
       homeManagerModules = import ./modules/home-manager;
-      nixosModules = import ./modules/nixos;
-      templates = import ./templates;
       nixosConfigurations = {
         radium = myLib.mkSystem "radium" { nixosPath = ./hosts/radium; };
         yttrium = myLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };

@@ -10,8 +10,7 @@ let
     inputs.disko.nixosModules.default
     inputs.impermanence.nixosModules.impermanence
     inputs.dotfiles-private.outputs.nixosModules
-  ] ++ (builtins.attrValues outputs.nixosModules);
-
+  ];
 
 
   specialArgs = {

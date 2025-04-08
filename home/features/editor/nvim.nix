@@ -1,8 +1,8 @@
 { config, pkgs, lib, inputs, ... }:
 with lib;
-let cfg = config.myvim;
+let cfg = config.features.editor.nvim;
 in {
-  options.myvim = { enable = mkEnableOption "my myvim user config"; };
+  options.features.editor.nvim = { enable = mkEnableOption "my myvim user config"; };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [ nixd alejandra gnumake ];
 

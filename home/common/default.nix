@@ -1,14 +1,11 @@
 { inputs, lib, pkgs, config, outputs, hostSpec, ... }:
 let
   inherit (inputs.nix-colors) colorSchemes;
-  # inherit (inputs.nix-colors.lib-contrib { inherit pkgs; })
-  #   colorschemeFromPicture nixWallpaperFromScheme;
 in {
   imports = [
     inputs.nix-colors.homeManagerModule
-    ./mime-apps.nix
     ../../modules/common/host-spec.nix
-    ./programs.nix
+    ./mime-apps.nix
   ];
 
 
@@ -26,11 +23,6 @@ in {
     stateVersion = lib.mkDefault "25.05";
     sessionPath = [ "$HOME/.local/bin" ];
   };
-  myvim.enable = true;
-  mySops.enable = true;
-  myGhostty.enable = true;
-  # myProton.enable = true;
-  yazi.enable = true;
 
   home.file = {
     ".local/bin" = {

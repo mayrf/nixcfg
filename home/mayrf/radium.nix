@@ -1,26 +1,26 @@
 { inputs, ... }:
 
 {
-  imports = [
-    ../common
-    ../features/terminal
-    ../features/cli
-    # ../features/desktop
-  ];
+  imports =
+    [ ../common ../features/terminal ../features/cli ../features/editor ];
 
   features = {
     cli = {
       zsh.enable = true;
       fzf.enable = true;
+      ai.enable = true;
+      development.enable = true;
+      k8s.enable = true;
+      lf.enable = true;
+      git.enable = true;
+      sops.enable = true;
+      yazi.enable = true;
     };
-    terminal = {
-      kitty.enable = true;
+    editor = {
+      emacs.enable = true;
+      nvim.enable = true;
     };
   };
-  lf.enable = true;
-  # vscode.enable = true;
-  emacs.enable = true;
-  git.enable = true;
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
 

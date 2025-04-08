@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.mymodules.open-webui;
+let cfg = config.features.open-webui;
 in {
-  options.mymodules.open-webui = {
+  options.features.open-webui = {
     enable = mkEnableOption "my open-webui config";
   };
   config = mkIf cfg.enable {
