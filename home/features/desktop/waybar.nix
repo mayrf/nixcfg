@@ -58,8 +58,8 @@ in {
         primary = {
           layer = "bottom";
           position = "bottom";
-          output = builtins.map (m: m.name)
-            (builtins.filter (m: !m.noBar) config.monitors);
+          # output = builtins.map (m: m.name)
+          #   (builtins.filter (m: !m.noBar) config.monitors);
           modules-left = [ "custom/menu" "hyprland/workspaces" ];
           modules-center = [
             "cpu"

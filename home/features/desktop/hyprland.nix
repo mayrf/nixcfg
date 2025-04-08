@@ -178,9 +178,9 @@ in {
         editor = "${pkgs.emacs}/bin/emacsclient -c";
         vanilla_emacs = "${pkgs.emacs}/bin/emacsclient -s vanilla -c";
         hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+      #   exec=${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill
+      # '' + ''
       in ''
-        exec=${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill
-      '' + ''
         exec-once=wl-paste --type text --watch cliphist store # Stores only text data
         exec-once=wl-paste --type image --watch cliphist store # Stores only image data
         exec-once=${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
