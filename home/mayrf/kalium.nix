@@ -2,16 +2,34 @@
 
 {
   imports = [
-    ./global
-    ./linux
-    ./features/terminal/alacritty.nix
-    ./features/terminal/foot.nix
-    ./features/terminal/kitty.nix
+    ../common
+    ../features/cli
+    ../features/desktop
+    ../features/terminal
+    "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
+
+  features = {
+    cli = {
+      zsh.enable = true;
+      fzf.enable = true;
+    };
+    desktop = {
+      wayland.enable = true;
+      waybar.enable = true;
+      hyprland.enable = true;
+      gammastep.enable = true;
+      mako.enable = true;
+      wofi.enable = true;
+    };
+    terminal = {
+      alacritty.enable = true;
+      foot.enable = true;
+    };
+  };
 
   lf.enable = true;
   vscode.enable = true;
-  emacs.enable = true;
   git.enable = true;
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

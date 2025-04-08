@@ -2,9 +2,8 @@
 
 {
   imports = [
-    ./global
-    ./linux
-    ./features/terminal/kitty.nix
+    ../common
+    ../features/terminal
     ../features/cli
     # ../features/desktop
   ];
@@ -13,6 +12,9 @@
     cli = {
       zsh.enable = true;
       fzf.enable = true;
+    };
+    terminal = {
+      kitty.enable = true;
     };
   };
   lf.enable = true;

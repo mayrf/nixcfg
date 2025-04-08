@@ -2,12 +2,10 @@
 
 {
   imports = [
-    ./global
-    ./linux
+    ../common
     ../features/cli
     ../features/desktop
     ../features/terminal
-    ./features/postman.nix
     "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
 
@@ -24,6 +22,9 @@
       gammastep.enable = true;
       mako.enable = true;
       wofi.enable = true;
+      nextcloud-client.enable = true;
+      virtualisation.enable = true;
+      postman.enable = true;
     };
     terminal = {
       alacritty.enable = true;
