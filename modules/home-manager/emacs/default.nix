@@ -207,6 +207,11 @@ in {
 
     sops.secrets."emacs/authinfo" = { };
 
+
+        # if check_dir "$EMACS_DIR"; then
+        #   ln -s ${hostSpec.flakeDir}/modules/home-manager/emacs/vanilla $EMACS_DIR
+        # fi
+
     xdg.configFile."emacs/.env".text = ''
       WORK_GITFORGE_HOST=${private.work.gitForgeHost}
       EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}

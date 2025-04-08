@@ -6,8 +6,7 @@
     ./linux
     ../features/cli
     ../features/desktop
-    ./features/terminal/alacritty.nix
-    ./features/terminal/foot.nix
+    ../features/terminal
     ./features/postman.nix
     "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
@@ -26,6 +25,10 @@
       mako.enable = true;
       wofi.enable = true;
     };
+    terminal = {
+      alacritty.enable = true;
+      foot.enable = true;
+    };
   };
 
   lf.enable = true;
@@ -33,34 +36,23 @@
   emacs.enable = true;
   git.enable = true;
   email.enable = true;
-
-  #  ------   ------
-  # | DP-1 | | DP-3 |
-  #  ------   ------
-  #
-  monitors = [
-    {
-      # DP-1
-      name = "HDMI-A-1";
-      width = 2560;
-      height = 1440;
-      x = 0;
-      y = 0;
-      workspace = "1";
-      primary = true;
-    }
-    {
-      # DP-1
-      name = "DP-2";
-      width = 2560;
-      height = 1440;
-      workspace = "1";
-      x = 2560;
-      y = -560;
-      transform = "3";
-      # primary = true;
-    }
-  ];
+  wayland.windowManager.hyprland = {
+    settings = {
+      monitor = [
+        "HDMI-A-1,2560x1440@60,0x0,1"
+        "DP-2,2560x1440@60,2560x-560,1,transform,3"
+      ];
+      workspace = [
+        "1, monitor:HDMI-A-1, default:true"
+        "2, monitor:HDMI-A-1"
+        "3, monitor:HDMI-A-1"
+        "4, monitor:DP-2"
+        "5, monitor:HDMI-A-1"
+        "6, monitor:DP-2"
+        "7, monitor:DP-2"
+      ];
+    };
+  };
   #  home.persistence."/persist/home" = {
   #    directories = [
   #      "Downloads"

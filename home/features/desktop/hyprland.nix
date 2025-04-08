@@ -1,20 +1,6 @@
 { config, lib, inputs, pkgs, ... }:
 with lib;
-let
-  cfg = config.features.desktop.hyprland;
-  workspaces = (map toString (lib.range 0 9))
-    ++ (map (n: "F${toString n}") (lib.range 1 12));
-  # Map keys to hyprland directions
-  directions = rec {
-    left = "l";
-    right = "r";
-    up = "u";
-    down = "d";
-    h = left;
-    l = right;
-    k = up;
-    j = down;
-  };
+let cfg = config.features.desktop.hyprland;
 in {
   options.features.desktop.hyprland.enable = mkEnableOption "hyprland config";
 
@@ -81,94 +67,86 @@ in {
       };  '';
     home.packages = with pkgs; [ cliphist hyprpicker brightnessctl xorg.xhost ];
 
-    wayland.windowManager.hyprland.settings = {
-
-      bind = [
-        "SUPER,mouse:272,movewindow"
-        # "SUPER,mouse:273,resizewindow"
-
-        "SUPERSHIFT,q,killactive"
-
-        "SUPER,s,togglesplit"
-        "SUPER,f,fullscreen,1"
-        "SUPERSHIFT,f,fullscreen,0"
-        "SUPERSHIFT,space,togglefloating"
-
-        "SUPER,h,splitratio,-0.1"
-        "SUPER,minus,splitratio,-0.25"
-        "SUPERSHIFT,minus,splitratio,-0.3333333"
-
-        "SUPER,l,splitratio,0.1"
-        "SUPER,equal,splitratio,0.25"
-        "SUPERSHIFT,equal,splitratio,0.3333333"
-
-        "SUPER,g,togglegroup"
-        "SUPER,apostrophe,changegroupactive,f"
-        "SUPERSHIFT,apostrophe,changegroupactive,b"
-
-        "SUPER,u,togglespecialworkspace"
-        "SUPERSHIFT,u,movetoworkspace,special"
-
-        "SUPERSHIFT,Backspace,exec, wofi-shutdown "
-      ] ++
-        # Change workspace
-        (map (n: "SUPER,${n},workspace,name:${n}") workspaces) ++
-        # Move window to workspace
-        (map (n: "SUPERSHIFT,${n},movetoworkspacesilent,name:${n}") workspaces)
-        ++
-        # Move focus
-        # (lib.mapAttrsToList (key: direction:
-        #   "SUPER,${key},movefocus,${direction}"
-        # ) directions) ++
-        [
-          "SUPER, Space, layoutmsg,swapwithmaster"
-          "SUPER, J, layoutmsg, cyclenext"
-          "SUPER, K, layoutmsg, cycleprev"
-        ] ++
-        # Swap windows
-        (lib.mapAttrsToList
-          (key: direction: "SUPERSHIFT,${key},swapwindow,${direction}")
-          directions) ++
-        # Move monitor focus
-        (lib.mapAttrsToList
-          (key: direction: "SUPERCONTROL,${key},focusmonitor,${direction}")
-          directions) ++
-        # Move window to other monitor
-        (lib.mapAttrsToList (key: direction:
-          "SUPERCONTROLSHIFT,${key},movewindow,mon:${direction}") directions) ++
-        # Move workspace to other monitor
-        (lib.mapAttrsToList (key: direction:
-          "SUPERALT,${key},movecurrentworkspacetomonitor,${direction}")
-          directions);
-    };
-    wayland.windowManager.hyprland = {
+    wayland.windowManager.hyprland = let
+      workspaces = (map toString (lib.range 0 9))
+        ++ (map (n: "F${toString n}") (lib.range 1 12));
+      # Map keys to hyprland directions
+      directions = rec {
+        left = "l";
+        right = "r";
+        up = "u";
+        down = "d";
+        h = left;
+        l = right;
+        k = up;
+        j = down;
+      };
+    in {
       package =
         inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       enable = true;
 
       settings = {
-        monitor = map (m:
-          let
-            resolution = "${toString m.width}x${toString m.height}@${
-                toString m.refreshRate
-              }";
-            position = if m.x == null && m.y == null then
-              "auto"
-            else
-              "${toString (if m.x != null then m.x else 0)}x${
-                toString (if m.y != null then m.y else 0)
-              }";
-            transform =
-              if m.transform != null then ",transform, ${m.transform}" else "";
-          in "${m.name},${
-            if m.enabled then
-              "${resolution},${position},1${transform}"
-            else
-              "disable"
-          }") (config.monitors);
-        workspace = map (m: "${m.name},${m.workspace}")
-          (lib.filter (m: m.enabled && m.workspace != null) config.monitors);
+        bind = [
+          "SUPER,mouse:272,movewindow"
+          # "SUPER,mouse:273,resizewindow"
+
+          "SUPERSHIFT,q,killactive"
+
+          "SUPER,s,togglesplit"
+          "SUPER,f,fullscreen,1"
+          "SUPERSHIFT,f,fullscreen,0"
+          "SUPERSHIFT,space,togglefloating"
+
+          "SUPER,h,splitratio,-0.1"
+          "SUPER,minus,splitratio,-0.25"
+          "SUPERSHIFT,minus,splitratio,-0.3333333"
+
+          "SUPER,l,splitratio,0.1"
+          "SUPER,equal,splitratio,0.25"
+          "SUPERSHIFT,equal,splitratio,0.3333333"
+
+          "SUPER,g,togglegroup"
+          "SUPER,apostrophe,changegroupactive,f"
+          "SUPERSHIFT,apostrophe,changegroupactive,b"
+
+          "SUPER,u,togglespecialworkspace"
+          "SUPERSHIFT,u,movetoworkspace,special"
+
+          "SUPERSHIFT,Backspace,exec, wofi-shutdown "
+        ] ++
+          # Change workspace
+          (map (n: "SUPER,${n},workspace,name:${n}") workspaces) ++
+          # Move window to workspace
+          (map (n: "SUPERSHIFT,${n},movetoworkspacesilent,name:${n}")
+            workspaces) ++
+          # Move focus
+          # (lib.mapAttrsToList (key: direction:
+          #   "SUPER,${key},movefocus,${direction}"
+          # ) directions) ++
+          [
+            "SUPER, Space, layoutmsg,swapwithmaster"
+            "SUPER, J, layoutmsg, cyclenext"
+            "SUPER, K, layoutmsg, cycleprev"
+          ] ++
+          # Swap windows
+          (lib.mapAttrsToList
+            (key: direction: "SUPERSHIFT,${key},swapwindow,${direction}")
+            directions) ++
+          # Move monitor focus
+          (lib.mapAttrsToList
+            (key: direction: "SUPERCONTROL,${key},focusmonitor,${direction}")
+            directions) ++
+          # Move window to other monitor
+          (lib.mapAttrsToList (key: direction:
+            "SUPERCONTROLSHIFT,${key},movewindow,mon:${direction}") directions)
+          ++
+          # Move workspace to other monitor
+          (lib.mapAttrsToList (key: direction:
+            "SUPERALT,${key},movecurrentworkspacetomonitor,${direction}")
+            directions);
       };
+
       # This is order sensitive, so it has to come here.
       extraConfig = let
         swaylock = "${config.programs.swaylock.package}/bin/swaylock";
@@ -337,197 +315,24 @@ in {
       '';
     };
 
-    # wayland.windowManager.hyprland.settings = {
-    #   xwayland = {
-    #     force_zero_scaling = true;
-    #   };
-
-    #   exec-once = [
-    #     "waybar"
-    #     "hyprpaper"
-    #     "hypridle"
-    #     "wl-paste -p -t text --watch clipman store -P --histpath=\"~/.local/share/clipman-primary.json\""
-    #   ];
-
-    #   env = [
-    #     "XCURSOR_SIZE,32"
-    #     "WLR_NO_HARDWARE_CURSORS,1"
-    #     "GTK_THEME,Dracula"
-    #   ];
-
-    #   input = {
-    #     kb_layout = "de,us";
-    #     kb_variant = "";
-    #     kb_model = "";
-    #     kb_rules = "";
-    #     kb_options = "ctrl:nocaps";
-    #     follow_mouse = 1;
-
-    #     touchpad = {
-    #       natural_scroll = true;
-    #     };
-
-    #     sensitivity = 0;
-    #   };
-
-    #   general = {
-    #     gaps_in = 5;
-    #     gaps_out = 5;
-    #     border_size = 1;
-    #     "col.active_border" = "rgba(9742b5ee) rgba(9742b5ee) 45deg";
-    #     "col.inactive_border" = "rgba(595959aa)";
-    #     layout = "dwindle";
-    #   };
-
-    #   decoration = {
-    #     "col.shadow" = "rgba(1E202966)";
-    #     drop_shadow = true;
-    #     shadow_range = 60;
-    #     shadow_offset = "1 2";
-    #     shadow_render_power = 3;
-    #     shadow_scale = 0.97;
-    #     rounding = 8;
-    #     blur = {
-    #       enabled = true;
-    #       size = 3;
-    #       passes = 3;
-    #     };
-    #     active_opacity = 0.9;
-    #     inactive_opacity = 0.5;
-    #   };
-
-    #   animations = {
-    #     enabled = true;
-    #     bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-    #     animation = [
-    #       "windows, 1, 7, myBezier"
-    #       "windowsOut, 1, 7, default, popin 80%"
-    #       "border, 1, 10, default"
-    #       "borderangle, 1, 8, default"
-    #       "fade, 1, 7, default"
-    #       "workspaces, 1, 6, default"
-    #     ];
-    #   };
-
-    #   dwindle = {
-    #     pseudotile = true;
-    #     preserve_split = true;
-    #   };
-
-    #   master = {};
-
-    #   gestures = {
-    #     workspace_swipe = false;
-    #   };
-
-    #   windowrule = [
-    #     "float, file_progress"
-    #     "float, confirm"
-    #     "float, dialog"
-    #     "float, download"
-    #     "float, notification"
-    #     "float, error"
-    #     "float, splash"
-    #     "float, confirmreset"
-    #     "float, title:Open File"
-    #     "float, title:branchdialog"
-    #     "float, Lxappearance"
-    #     "float, Wofi"
-    #     "float, dunst"
-    #     "animation none,Wofi"
-    #     "float,viewnior"
-    #     "float,feh"
-    #     "float, pavucontrol-qt"
-    #     "float, pavucontrol"
-    #     "float, file-roller"
-    #     "fullscreen, wlogout"
-    #     "float, title:wlogout"
-    #     "fullscreen, title:wlogout"
-    #     "idleinhibit focus, mpv"
-    #     "idleinhibit fullscreen, firefox"
-    #     "float, title:^(Media viewer)$"
-    #     "float, title:^(Volume Control)$"
-    #     "float, title:^(Picture-in-Picture)$"
-    #     "size 800 600, title:^(Volume Control)$"
-    #     "move 75 44%, title:^(Volume Control)$"
-    #   ];
-
-    #   "$mainMod" = "SUPER";
-
-    #   bind = [
-    #     "$mainMod, return, exec, kitty -e zellij-ps"
-    #     "$mainMod, t, exec, kitty -e fish -c 'neofetch; exec fish'"
-    #     "$mainMod SHIFT, e, exec, kitty -e zellij_nvim"
-    #     "$mainMod, o, exec, thunar"
-    #     "$mainMod, Escape, exec, wlogout -p layer-shell"
-    #     "$mainMod, Space, togglefloating"
-    #     "$mainMod, q, killactive"
-    #     "$mainMod, M, exit"
-    #     "$mainMod, F, fullscreen"
-    #     "$mainMod, V, togglefloating"
-    #     "$mainMod, D, exec, wofi --show drun --allow-images"
-    #     "$mainMod SHIFT, S, exec, bemoji"
-    #     "$mainMod, P, exec, wofi-pass"
-    #     "$mainMod SHIFT, P, pseudo"
-    #     "$mainMod, J, togglesplit"
-    #     "$mainMod, left, movefocus, l"
-    #     "$mainMod, right, movefocus, r"
-    #     "$mainMod, up, movefocus, u"
-    #     "$mainMod, down, movefocus, d"
-    #     "$mainMod, 1, workspace, 1"
-    #     "$mainMod, 2, workspace, 2"
-    #     "$mainMod, 3, workspace, 3"
-    #     "$mainMod, 4, workspace, 4"
-    #     "$mainMod, 5, workspace, 5"
-    #     "$mainMod, 6, workspace, 6"
-    #     "$mainMod, 7, workspace, 7"
-    #     "$mainMod, 8, workspace, 8"
-    #     "$mainMod, 9, workspace, 9"
-    #     "$mainMod, 0, workspace, 10"
-    #     "$mainMod SHIFT, 1, movetoworkspace, 1"
-    #     "$mainMod SHIFT, 2, movetoworkspace, 2"
-    #     "$mainMod SHIFT, 3, movetoworkspace, 3"
-    #     "$mainMod SHIFT, 4, movetoworkspace, 4"
-    #     "$mainMod SHIFT, 5, movetoworkspace, 5"
-    #     "$mainMod SHIFT, 6, movetoworkspace, 6"
-    #     "$mainMod SHIFT, 7, movetoworkspace, 7"
-    #     "$mainMod SHIFT, 8, movetoworkspace, 8"
-    #     "$mainMod SHIFT, 9, movetoworkspace, 9"
-    #     "$mainMod SHIFT, 0, movetoworkspace, 10"
-    #     "$mainMod, mouse_down, workspace, e+1"
-    #     "$mainMod, mouse_up, workspace, e-1"
-    #   ];
-
-    #   bindm = [
-    #     "$mainMod, mouse:272, movewindow"
-    #     "$mainMod, mouse:273, resizewindow"
-    #   ];
-
-    #   windowrulev2 = [
-    #     "workspace 1,class:(Emacs)"
-    #     "workspace 3,opacity 1.0, class:(brave-browser)"
-    #     "workspace 4,class:(com.obsproject.Studio)"
-    #   ];
-    # };
-
     # Stolen from https://github.com/alebastr/sway-systemd/commit/0fdb2c4b10beb6079acd6073c5b3014bd58d3b74
-    # systemd.user.targets.hyprland-session-shutdown = {
-    #   Unit = {
-    #     Description = "Shutdown running Hyprland session";
-    #     DefaultDependencies = "no";
-    #     StopWhenUnneeded = "true";
+    systemd.user.targets.hyprland-session-shutdown = {
+      Unit = {
+        Description = "Shutdown running Hyprland session";
+        DefaultDependencies = "no";
+        StopWhenUnneeded = "true";
 
-    #     Conflicts = [
-    #       "graphical-session.target"
-    #       "graphical-session-pre.target"
-    #       "hyprland-session.target"
-    #     ];
-    #     After = [
-    #       "graphical-session.target"
-    #       "graphical-session-pre.target"
-    #       "hyprland-session.target"
-    #     ];
-    #   };
-    # };
+        Conflicts = [
+          "graphical-session.target"
+          "graphical-session-pre.target"
+          "hyprland-session.target"
+        ];
+        After = [
+          "graphical-session.target"
+          "graphical-session-pre.target"
+          "hyprland-session.target"
+        ];
+      };
+    };
   };
 }
