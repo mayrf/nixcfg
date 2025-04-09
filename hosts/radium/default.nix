@@ -1,16 +1,20 @@
-{ pkgs, config, ... }:
+{ pkgs, config, inputs, ... }:
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../common
     ../common/users
-    ../common/optional/ensure-config-repo.nix
-    ../common/optional/sops.nix
     ./vpn-kit.nix
+    inputs.dotfiles-private.outputs.nixosModules
     # ./proxy-vars.nix
   ];
   privModules.workProxies.enable = true;
+
+  features = {
+    ensure-config-repo.enable = true; 
+    sops.enable = true; 
+  };
 
   hostSpec = {
     isMinimal = false;

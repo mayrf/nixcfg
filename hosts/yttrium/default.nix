@@ -1,16 +1,11 @@
-{ pkgs, config, ... }:
+{ pkgs, config, inputs, ... }:
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../common
     ../common/users
-    ../common/optional/lutris.nix
-    ../common/optional/ensure-config-repo.nix
-    ../common/optional/keyd.nix
-    ../common/optional/pipewire.nix
-    ../common/optional/sops.nix
-    ../common/optional/theming.nix
+    inputs.dotfiles-private.outputs.nixosModules
     (import ./disko.nix { device = "/dev/nvme0n1"; })
   ];
 
@@ -25,6 +20,13 @@
     sysStateVersion = "25.05";
   };
 
+  features = {
+    ensure-config-repo.enable = true; 
+    keyd.enable = true; 
+    pipewire.enable = true; 
+    sops.enable = true; 
+    theming.enable = true; 
+  };
   features.docker.enable = true;
   features.open-webui.enable = true;
   features.virtualisation.enable = true;

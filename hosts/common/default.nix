@@ -1,9 +1,6 @@
 { config, pkgs, inputs, outputs, ... }: {
 
   imports = [
-    # ../../modules/common/host-spec.nix
-    # ./theming.nix
-    # ./ensure-config-repo.nix
     ../../modules/common/host-spec.nix
     ../features
     inputs.home-manager.nixosModules.home-manager

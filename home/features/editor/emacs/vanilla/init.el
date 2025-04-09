@@ -1555,6 +1555,15 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;;   :stream t                             ;Stream responses
 ;;   :models '(llama3.1:latest))          ;List of models
 
+(use-package dap-mode
+  :config
+  (dap-auto-configure-mode)
+
+  :bind
+  (("<f7>" . dap-step-in)
+   ("<f8>" . dap-next)
+   ("<f9>" . dap-continue)))
+
 (use-package yasnippet 
   :config
   (setq yas-snippet-dirs
@@ -1591,6 +1600,14 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
      (kcl "https://github.com/kcl-lang/tree-sitter-kcl")
      ))
 
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (setq treesit-auto-langs '(javascript typescript tsx css html))
+  (treesit-auto-add-to-auto-mode-alist '(javascript typescript tsx css html))
+  (global-treesit-auto-mode))
+
 (electric-pair-mode)
 
 (use-package direnv
@@ -1608,6 +1625,29 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   ;; :config
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )
+
+(use-package typescript-ts-mode
+  :ensure nil
+  :mode ("\\.ts\\'" . typescript-ts-mode)
+  :mode ("\\.js\\'" . typescript-ts-mode)
+  :hook ((typescript-ts-mode . eglot-ensure))
+  ;; :config
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+(use-package tsx-ts-mode
+  :ensure nil
+  :mode ("\\.tsx\\'" . tsx-ts-mode)
+  :hook ((tsx-ts-mode . eglot-ensure))
+  ;; :config
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+
+(use-package flycheck
+  :hook (lsp-mode . flycheck-mode)
+  :bind (:map flycheck-mode-map
+              ("M-n" . flycheck-previous-error)
+              ("M-p" . flycheck-next-error))
+  :custom (flycheck-display-errors-delay .3))
 
 (use-package nix-mode
   :mode "\\.nix\\'"

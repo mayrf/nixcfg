@@ -1,7 +1,7 @@
 { config, pkgs, inputs, outputs, lib, ... }:
 let
   sopsHashedPasswordFile = lib.optionalString
-    (!config.hostSpec.isMinimal && config.hostSpec.hostName != "iso")
+    (!config.hostSpec.isMinimal && config.hostSpec.hostName != "iso" && config.features.sops.enable == true)
     config.sops.secrets."${config.hostSpec.username}/hashedPassword".path;
   username = config.hostSpec.username;
 
@@ -17,7 +17,7 @@ in {
     home = "/home/${username}";
     isNormalUser = true;
     description = "${username}";
-    # initialPassword = "changeme";
+    initialPassword = "changeme";
     hashedPasswordFile = sopsHashedPasswordFile; # Blank if sops is not working.
     shell = pkgs.zsh;
 

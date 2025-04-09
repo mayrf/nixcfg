@@ -7,11 +7,7 @@
     ./hardware-configuration.nix
     ../common
     ../common/users
-    ../common/optional/lutris.nix
-    ../common/optional/ensure-config-repo.nix
-    ../common/optional/pipewire.nix
-    ../common/optional/theming.nix
-   # (import ./disko.nix { device = "/dev/sda"; })
+    (import ./disko.nix { device = "/dev/sda"; })
   ];
 
   hostSpec = {
@@ -20,13 +16,12 @@
     hostName = "kalium";
   };
 
-  features.docker.enable = true;
-  features.virtualisation.enable = true;
+  # features.docker.enable = true;
+  # features.virtualisation.enable = true;
   features.laptop.enable = true;
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
-    # binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
   };
 
 

@@ -156,31 +156,6 @@ in {
             on-click = "";
           };
           "custom/separator" = { exec = "echo '|'"; };
-          # "custom/tailscale-ping" = {
-          #   interval = 2;
-          #   return-type = "json";
-          #   exec = let
-          #     inherit (builtins) concatStringsSep attrNames;
-          #     # hosts = attrNames outputs.nixosConfigurations;
-          #     homeMachine = "merope";
-          #     remoteMachine = "alcyone";
-          #   in jsonOutput "tailscale-ping" {
-          #     # Build variables for each host
-          #     pre = ''
-          #       set -o pipefail
-          #       ${concatStringsSep "\n" (map (host: ''
-          #         ping_${host}="$(${timeout} 2 ${ping} -c 1 -q ${host} 2>/dev/null | ${tail} -1 | ${cut} -d '/' -f5 | ${cut} -d '.' -f1)ms" || ping_${host}="Disconnected"
-          #       '') hosts)}
-          #     '';
-          #     # Access a remote machine's and a home machine's ping
-          #     text = "  $ping_${remoteMachine} /  $ping_${homeMachine}";
-          #     # Show pings from all machines
-          #     tooltip = concatStringsSep "\n"
-          #       (map (host: "${host}: $ping_${host}") hosts);
-          #   };
-          #   format = "{}";
-          #   on-click = "";
-          # };
           "custom/menu" = {
             return-type = "json";
             exec = jsonOutput "menu" {

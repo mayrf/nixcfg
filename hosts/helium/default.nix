@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, inputs, ... }:
 
 {
 
@@ -7,13 +7,17 @@
     ./hardware-configuration.nix
     ../common
     ../common/users
-    ../common/optional/ensure-config-repo.nix
-    ../common/optional/keyd.nix
-    ../common/optional/pipewire.nix
-    ../common/optional/sops.nix
-    ../common/optional/theming.nix
-   # (import ./disko.nix { device = "/dev/sda"; })
+    inputs.dotfiles-private.outputs.nixosModules
+    (import ./disko.nix { device = "/dev/sda"; })
   ];
+
+  features = {
+    ensure-config-repo.enable = true; 
+    keyd.enable = true; 
+    pipewire.enable = true; 
+    sops.enable = true; 
+    theming.enable = true; 
+  };
 
   hostSpec = {
     isMinimal = false;

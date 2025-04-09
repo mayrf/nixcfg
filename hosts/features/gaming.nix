@@ -1,4 +1,4 @@
-{ config, pkgs, lib,  ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let cfg = config.features.gaming;
 in {
@@ -24,8 +24,17 @@ in {
       protonup
       lutris
       stable.heroic
+      wine
       # bottles
     ];
+
+    systemd.extraConfig = ''
+      DefaultLimitNOFILE=1048576
+    '';
+
+    systemd.user.extraConfig = ''
+      DefaultLimitNOFILE=1048576
+    '';
 
     programs.gamemode.enable = true;
 

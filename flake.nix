@@ -64,11 +64,7 @@
       packages =
         forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
 
-      # packages = forAllSystems (system:
-      #   let pkgs = inputs.nixpkgs.legacyPackages.${system};
-      #   in import ./pkgs { inherit pkgs; });
       overlays = import ./overlays { inherit inputs; };
-      homeManagerModules = import ./modules/home-manager;
       nixosConfigurations = {
         radium = myLib.mkSystem "radium" { nixosPath = ./hosts/radium; };
         yttrium = myLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };
