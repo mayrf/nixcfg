@@ -15,7 +15,6 @@ in {
       defaultSopsFile = "${secretsPath}/secrets/secrets.yaml";
       defaultSopsFormat = "yaml";
       validateSopsFiles = false;
-
       age.sshKeyPaths = [ ageKey ];
     };
   };
