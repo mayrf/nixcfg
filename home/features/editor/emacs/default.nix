@@ -86,14 +86,31 @@ in {
     #   };
     # };
 
-    home.activation = {
+    home.activation = let
+      source = "${hostSpec.flakeDir}/home/features/editor/emacs/vanilla";
+        target =  "${config.xdg.configHome}/emacs";
+    in {
+      emacsActivationAction = ''
+        link_repo() {
+          ln -sf ${source} ${target}
+        }
+        if [ ! -d "${target}" ] || [ -z "$(ls "${target}")" ]; then 
+            link_repo
+        elif [ ! -L "${target}" ]; then
+            TEMP_DIR=$(mktemp -d)
+            mv ${target}/{.,}* $TEMP_DIR
+            link_repo
+            mv $TEMP_DIR/{.,}* ${target}
+            rm -r $TEMP_DIR
+        fi
+'';
       doomEmacsActivationAction = ''
         check_dir() {
             local dir="$1"
             [ ! -d "$dir" ] || [ -z "$(ls "$dir")" ]
         }
 
-        EMACS_DIR="${config.xdg.configHome}/emacs"
+        # EMACS_DIR="${config.xdg.configHome}/emacs"
         DOOM_EMACS_DIR="${config.xdg.configHome}/emacs-doom"
         DOOM="${config.xdg.configHome}/doom"
 
@@ -103,9 +120,9 @@ in {
         fi
 
 
-        if check_dir "$EMACS_DIR"; then
-          ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/vanilla $EMACS_DIR
-        fi
+        # if check_dir "$EMACS_DIR"; then
+        #   ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/vanilla $EMACS_DIR
+        # fi
 
         if [ ! -e "$DOOM" ]; then
           ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/doom $DOOM
