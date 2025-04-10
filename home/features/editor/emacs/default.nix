@@ -92,6 +92,7 @@ in {
     in {
       emacsActivationAction = ''
         link_repo() {
+	  rm -r ${target}
           ln -sf ${source} ${target}
         }
         if [ ! -d "${target}" ] || [ -z "$(ls "${target}")" ]; then 
