@@ -1,10 +1,18 @@
 { inputs, ... }:
 
 {
-  imports =
-    [ ../common ../features/terminal ../features/cli ../features/editor ];
+  imports = [
+    ../common
+    ../features
+    ../features/terminal
+    ../features/cli
+    ../features/editor
+  ];
 
   features = {
+    ensure-secrets-repo.enable = true;
+    ensure-private-config-repo.enable = true;
+    ensure-config-repo.enable = true;
     cli = {
       zsh.enable = true;
       fzf.enable = true;

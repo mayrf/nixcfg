@@ -722,9 +722,11 @@ The following snippet sets up a hook for all Org task state changes and then cop
                         (org-agenda-overriding-header "\nInbox\n")))
             (tags "CLOSED>=\"<today>\""
                   ((org-agenda-overriding-header "\nCompleted today\n")))))))
-
-
   (setq org-log-done 'time))
+  (setq org-agenda-custom-commands
+	'(("p" "Planning" tags-todo "@planning")))
+
+
 #+end_src
 ** Denote
 #+begin_src emacs-lisp :tangle yes

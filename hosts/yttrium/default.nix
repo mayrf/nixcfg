@@ -1,5 +1,4 @@
-{ pkgs, config, inputs, ... }:
-{
+{ pkgs, config, inputs, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -13,7 +12,7 @@
     isMinimal = false;
     username = "mayrf";
     hostName = "yttrium";
-    flakeDir = "/etc/nixos";
+    # flakeDir = "/etc/nixos";
     persistDir = "/persist/system";
     persistDirRoot = "/persist";
     isImpermanent = true;
@@ -21,17 +20,18 @@
   };
 
   features = {
-    ensure-config-repo.enable = true; 
-    keyd.enable = true; 
-    pipewire.enable = true; 
-    sops.enable = true; 
-    theming.enable = true; 
+    keyd.enable = true;
+    pipewire.enable = true;
+    sops.enable = true;
+    theming.enable = true;
+    printing.enable = true;
+    docker.enable = true;
+    open-webui.enable = true;
+    virtualisation.enable = true;
+    gaming.enable = true;
+    impermanence.enable = true;
   };
-  features.docker.enable = true;
-  features.open-webui.enable = true;
-  features.virtualisation.enable = true;
-  features.gaming.enable = true;
-  features.impermanence.enable = true;
+
   privModules.common.enable = true;
 
   boot = {
@@ -46,9 +46,7 @@
     acceleration = "rocm";
   };
 
-
-  environment.systemPackages = with pkgs; [
-    nfs-utils
-  ];
-  system.stateVersion = config.hostSpec.sysStateVersion; # Did you read the comment?
+  environment.systemPackages = with pkgs; [ nfs-utils ];
+  system.stateVersion =
+    config.hostSpec.sysStateVersion; # Did you read the comment?
 }

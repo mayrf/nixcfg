@@ -3,6 +3,7 @@
 {
   imports = [
     ../common
+    ../features
     ../features/cli
     ../features/desktop
     ../features/terminal
@@ -12,6 +13,9 @@
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
   features = {
+    ensure-secrets-repo.enable = true;
+    ensure-private-config-repo.enable = true;
+    ensure-config-repo.enable = true;
     cli = {
       zsh.enable = true;
       fzf.enable = true;

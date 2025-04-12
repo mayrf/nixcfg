@@ -1,5 +1,5 @@
-SOPS_FILE := "~/code/sops/secrets/secrets.yaml"
-SOPS_DIR := "~/code/sops"
+SOPS_FILE := "~/.config/nix-secrets/secrets/secrets.yaml"
+SOPS_DIR := "~/.config/nix-secrets"
 
 # default recipe to display help information
 default:

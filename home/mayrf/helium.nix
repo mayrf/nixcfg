@@ -3,16 +3,31 @@
 {
   imports = [
     ../common
+    ../features
     ../features/cli
     ../features/desktop
     ../features/terminal
+    ../features/editor
     "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
 
   features = {
+    ensure-secrets-repo.enable = true;
+    ensure-private-config-repo.enable = true;
+    ensure-config-repo.enable = true;
     cli = {
       zsh.enable = true;
       fzf.enable = true;
+      # ai.enable = true;
+      development.enable = true;
+      k8s.enable = true;
+      yazi.enable = true;
+      lf.enable = true;
+      git.enable = true;
+      # If this is not activated, I get a weird error: This is probably because something tries to access sops while it is not configured. This error should be avoided.
+      # Failed assertions:
+      # - mayrf profile: No key source configured for sops. Either set services.openssh.enable or set sops.age.keyFile or sops.gnupg.home or sops.gnupg.qubes-split-gpg.enable
+      sops.enable = true;
     };
     desktop = {
       wayland.enable = true;
@@ -23,20 +38,24 @@
       wofi.enable = true;
       nextcloud-client.enable = true;
       virtualisation.enable = true;
+      postman.enable = true;
       librewolf.enable = true;
       gpg.enable = true;
       zathura.enable = true;
+      learning.enable = true;
+      media.enable = true;
+      social.enable = true;
+      productivity.enable = true;
     };
     terminal = {
-      alacritty.enable = true;
-      foot.enable = true;
+      ghostty.enable = true;
+    };
+    editor = {
+      nvim.enable = true;
+      emacs.enable = true;
+      vscode.enable = true;
     };
   };
-
-  lf.enable = true;
-  vscode.enable = true;
-  emacs.enable = true;
-  git.enable = true;
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
 

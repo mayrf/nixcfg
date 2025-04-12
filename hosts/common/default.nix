@@ -5,9 +5,6 @@
     ../features
     inputs.home-manager.nixosModules.home-manager
   ];
-    
-
-  boot.supportedFilesystems = [ "ntfs" ];
 
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
@@ -31,16 +28,10 @@
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-  services.printing.drivers =
-    [ pkgs.gutenprint pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper ];
-
   hardware.bluetooth.enable = true;
   hardware.bluetooth.settings = {
     General = { Enable = "Source,Sink,Media,Socket"; };
   };
-
 
   # optional
   services.flatpak.enable = true;
@@ -53,10 +44,9 @@
     openFirewall = true;
   };
 
-
-
   #gnome stuff
-  services.gvfs.enable = true; #Belongs to gnome and nautilus, maybe try to turn off
+  services.gvfs.enable =
+    true; # Belongs to gnome and nautilus, maybe try to turn off
   programs.dconf.enable = true;
   # needed for gnome keyring / docker credentials
   programs.gnupg.agent = {
@@ -66,28 +56,25 @@
   services.openssh.enable = true;
   security.pam.services = { swaylock = { }; };
 
-
-
   # Extra file
   environment = {
     variables = {
-      TERMINAL = "alacritty";
+      TERMINAL = "ghostty";
       BROWSER = "librewolf";
       EDITOR = "vim";
       VISUAL = "nvim";
     };
   };
 
-
-
-
-
   security.polkit.enable = true;
-
 
   security.rtkit.enable = true;
   xdg.portal.enable = true;
-  xdg.portal.configPackages = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.configPackages = [
+    pkgs.xdg-desktop-portal-gtk
+    pkgs.xdg-desktop-portal-hyprland
+    pkgs.xdg-desktop-portal-wlr
+  ];
 
   networking = {
     hostName = config.hostSpec.hostName; # Define your hostname.
@@ -115,6 +102,7 @@
     htop
     trash-cli
     jq
+    yq
     tree
     zip # Zip
     rsync # Syncer - $ rsync -r dir1/ dir2/
@@ -170,7 +158,8 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       keep-outputs = true;
-      allowed-users = [ "${config.hostSpec.username}" ];
+      # allowed-users = [ "root" "${config.hostSpec.username}" ];
+      trusted-users = [ "root" "${config.hostSpec.username}" ];
       substituters =
         [ "https://hyprland.cachix.org" "https://nix-community.cachix.org/" ];
       trusted-public-keys = [

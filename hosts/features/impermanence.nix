@@ -139,6 +139,9 @@ in {
 
           ".config/sops"
           ".config/calibre"
+          ".config/nixcfg"
+          ".config/nix-secrets"
+          ".config/dotfiles-private"
 
           ".ollama"
 

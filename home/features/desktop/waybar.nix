@@ -5,24 +5,8 @@ let
   # Dependencies
   cat = "${pkgs.coreutils}/bin/cat";
   cut = "${pkgs.coreutils}/bin/cut";
-  find = "${pkgs.findutils}/bin/find";
   grep = "${pkgs.gnugrep}/bin/grep";
-  perl = "${pkgs.perl}/bin/perl";
-  pgrep = "${pkgs.procps}/bin/pgrep";
-  sed = "${pkgs.gnused}/bin/sed";
-  tail = "${pkgs.coreutils}/bin/tail";
-  wc = "${pkgs.coreutils}/bin/wc";
-  xargs = "${pkgs.findutils}/bin/xargs";
-  timeout = "${pkgs.coreutils}/bin/timeout";
-  ping = "${pkgs.iputils}/bin/ping";
-
   jq = "${pkgs.jq}/bin/jq";
-  xml = "${pkgs.xmlstarlet}/bin/xml";
-  gamemoded = "${pkgs.gamemode}/bin/gamemoded";
-  systemctl = "${pkgs.systemd}/bin/systemctl";
-  journalctl = "${pkgs.systemd}/bin/journalctl";
-  playerctl = "${pkgs.playerctl}/bin/playerctl";
-  playerctld = "${pkgs.playerctl}/bin/playerctld";
   pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
   wofi = "${pkgs.wofi}/bin/wofi";
 
@@ -47,28 +31,29 @@ in {
   options.features.desktop.waybar.enable = mkEnableOption "waybar config";
 
   config = mkIf cfg.enable {
+    home.packages = [
+      pkgs.pulseaudio
+    ];
     programs.waybar = {
       enable = true;
-      # package = pkgs.waybar.overrideAttrs (oa: {
-      # mesonFlags = (oa.mesonFlags or [ ]) ++ [ "-Dexperimental=true" ];
-      # });
       systemd.enable = true;
       settings = {
-
-        primary = {
+        mainbar = {
           layer = "bottom";
           position = "bottom";
-          # output = builtins.map (m: m.name)
-          #   (builtins.filter (m: !m.noBar) config.monitors);
-          modules-left = [ "custom/menu" "hyprland/workspaces" ];
+          modules-left = [ "hyprland/workspaces" "hyprland/submap" ];
+          # modules-left = [ "custom/menu" "hyprland/workspaces" ];
+          # modules-center = [ "hyprland/window" ];
+          # modules-right = [ "battery" "custom/separator" "clock" ];
+
           modules-center = [
             "cpu"
             "custom/separator"
             "memory"
             "custom/separator"
             "clock"
-            "custom/separator"
-            "pulseaudio"
+            # "custom/separator"
+            # "pulseaudio" # breaks bar on kalium
           ];
           modules-right = [
             "hyprland/window"
@@ -81,8 +66,14 @@ in {
             "custom/separator"
             "custom/hostname"
           ];
+          battery = {
+            format = "{capacity}% {icon}";
+            "format-icons" = [ "" "" "" "" "" ];
+            interval = 60; # default: 60
+            format-charging = "󰂄 {capacity}%";
+          };
 
-          "wlr/workspaces" = { on-click = "activate"; };
+          clock = { "format-alt" = "{:%a, %d. %b  %H:%M}"; };
           "hyprland/window" = {
             rewrite = {
               "(.*) - Brave" = "Brave  - $1";
@@ -96,24 +87,19 @@ in {
               "vim (.*)" = "  $1";
             };
           };
-          clock = {
-            format = "{:%d/%m %H:%M}";
-            tooltip-format = ''
-              <big>{:%Y %B}</big>
-              <tt><small>{calendar}</small></tt>'';
-          };
-          cpu = { format = "   {usage}%"; };
+
+          cpu = { format = "󰍛   {usage}%"; };
           "custom/gpu" = {
             interval = 5;
             return-type = "json";
             exec = jsonOutput "gpu" {
-              text = "$(${cat} /sys/class/drm/card0/device/gpu_busy_percent)";
+              text = "$(${cat} /sys/class/drm/card1/device/gpu_busy_percent)";
               tooltip = "GPU Usage";
             };
             format = "󰒋  {}%";
           };
           memory = {
-            format = "󰍛  {}%";
+            format = "  {}%";
             interval = 5;
           };
           pulseaudio = {
@@ -127,22 +113,6 @@ in {
             };
             on-click = pavucontrol;
           };
-          idle_inhibitor = {
-            format = "{icon}";
-            format-icons = {
-              activated = "󰒳";
-              deactivated = "󰒲";
-            };
-          };
-          battery = {
-            bat = "BAT0";
-            interval = 10;
-            format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
-            format = "{icon} {capacity}%";
-            format-charging = "󰂄 {capacity}%";
-            onclick = "";
-          };
-          "sway/window" = { max-length = 20; };
           network = {
             interval = 3;
             format-wifi = "   {essid}";
@@ -166,122 +136,6 @@ in {
             on-click = "${wofi} -S drun -x 10 -y 10 -W 25% -H 60%";
           };
           "custom/hostname" = { exec = "echo $USER@$HOSTNAME"; };
-          "custom/unread-mail" = {
-            interval = 5;
-            return-type = "json";
-            exec = jsonOutput "unread-mail" {
-              pre = ''
-                count=$(${find} ~/Mail/*/Inbox/new -type f | ${wc} -l)
-                if [ "$count" == "0" ]; then
-                  subjects="No new mail"
-                  status="read"
-                else
-                  subjects=$(\
-                    ${grep} -h "Subject: " -r ~/Mail/*/Inbox/new | ${cut} -d ':' -f2- | \
-                    ${perl} -CS -MEncode -ne 'print decode("MIME-Header", $_)' | ${xml} esc | ${sed} -e 's/^/\-/'\
-                  )
-                  status="unread"
-                fi
-                if ${pgrep} mbsync &>/dev/null; then
-                  status="syncing"
-                fi
-              '';
-              text = "$count";
-              tooltip = "$subjects";
-              alt = "$status";
-            };
-            format = "{icon}  ({})";
-            format-icons = {
-              "read" = "󰇯";
-              "unread" = "󰇮";
-              "syncing" = "󰁪";
-            };
-          };
-          "custom/gamemode" = {
-            exec-if = "${gamemoded} --status | ${grep} 'is active' -q";
-            interval = 2;
-            return-type = "json";
-            exec = jsonOutput "gamemode" { tooltip = "Gamemode is active"; };
-            format = " ";
-          };
-          "custom/gammastep" = {
-            interval = 5;
-            return-type = "json";
-            exec = jsonOutput "gammastep" {
-              pre = ''
-                if unit_status="$(${systemctl} --user is-active gammastep)"; then
-                  status="$unit_status ($(${journalctl} --user -u gammastep.service -g 'Period: ' | ${tail} -1 | ${cut} -d ':' -f6 | ${xargs}))"
-                else
-                  status="$unit_status"
-                fi
-              '';
-              alt = "\${status:-inactive}";
-              tooltip = "Gammastep is $status";
-            };
-            format = "{icon}";
-            format-icons = {
-              "activating" = "󰁪 ";
-              "deactivating" = "󰁪 ";
-              "inactive" = "? ";
-              "active (Night)" = " ";
-              "active (Nighttime)" = " ";
-              "active (Transition (Night)" = " ";
-              "active (Transition (Nighttime)" = " ";
-              "active (Day)" = " ";
-              "active (Daytime)" = " ";
-              "active (Transition (Day)" = " ";
-              "active (Transition (Daytime)" = " ";
-            };
-            on-click =
-              "${systemctl} --user is-active gammastep && ${systemctl} --user stop gammastep || ${systemctl} --user start gammastep";
-          };
-          "custom/currentplayer" = {
-            interval = 2;
-            return-type = "json";
-            exec = jsonOutput "currentplayer" {
-              pre = ''
-                player="$(${playerctl} status -f "{{playerName}}" 2>/dev/null || echo "No player active" | ${cut} -d '.' -f1)"
-                count="$(${playerctl} -l | ${wc} -l)"
-                if ((count > 1)); then
-                  more=" +$((count - 1))"
-                else
-                  more=""
-                fi
-              '';
-              alt = "$player";
-              tooltip = "$player ($count available)";
-              text = "$more";
-            };
-            format = "{icon}{}";
-            format-icons = {
-              "No player active" = " ";
-              "Celluloid" = "󰎁 ";
-              "spotify" = " 󰓇";
-              "ncspot" = " 󰓇";
-              "qutebrowser" = "󰖟";
-              "firefox" = " ";
-              "discord" = " 󰙯 ";
-              "sublimemusic" = " ";
-              "kdeconnect" = "󰄡 ";
-            };
-            on-click = "${playerctld} shift";
-            on-click-right = "${playerctld} unshift";
-          };
-          "custom/player" = {
-            exec-if = "${playerctl} status";
-            exec = ''
-              ${playerctl} metadata --format '{"text": "{{artist}} - {{title}}", "alt": "{{status}}", "tooltip": "{{title}} ({{artist}} - {{album}})"}' '';
-            return-type = "json";
-            interval = 2;
-            max-length = 30;
-            format = "{icon} {}";
-            format-icons = {
-              "Playing" = "󰐊";
-              "Paused" = "󰏤 ";
-              "Stopped" = "󰓛";
-            };
-            on-click = "${playerctl} play-pause";
-          };
         };
       };
       # Cheatsheet:
@@ -294,45 +148,51 @@ in {
         # css
       in ''
         * {
-            /* border: none; */
-            border-radius: 0;
             /* font-family: JetBrainsMono Nerd Font Mono; */
 
-            font-family: Roboto, ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family};
+            font-family: Roboto, ${config.fontProfiles.regular.family}, ${config.fontProfiles.monospace.family}; 
+            padding: 0 7px;
+            border: none;
+            border-radius: 0;
+            font-family: FiraCode Nerd Font;
+            font-weight: bold;
             font-size: 13px;
             min-height: 0;
-            padding: 0 7px;
         }
-
         #custom-separator {
           padding: 0 0;
           color: #000000;
         }
 
-        #workspaces button {
-            padding: 0 5px;
-            background-color: transparent;
-            color: #ffffff;
-        }
-
-        #workspaces button:hover {
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        #workspaces button.active {
-            background-color: #64727D;
-            /* box-shadow: inset 0 -3px #ffffff; */
-        }
-
-        #workspaces button.urgent {
-            background-color: #eb4d4b;
-        }
-
         #tray {
-          color: #${palette.base05};
+          /* color: #${palette.base05}; */
+          color: #000000;
         }
-
       '';
+
+      # #workspaces button {
+      #     padding: 0 5px;
+      #     background-color: transparent;
+      #     color: #ffffff;
+      # }
+
+      #   #workspaces button:hover {
+      #       background: rgba(0, 0, 0, 0.4);
+      #   }
+
+      #   #workspaces button.active {
+      #       background-color: #64727D;
+      #       /* box-shadow: inset 0 -3px #ffffff; */
+      #   }
+
+      #   #workspaces button.urgent {
+      #       background-color: #eb4d4b;
+      #   }
+
+      #   #tray {
+      #     /* color: #${palette.base05}; */
+      #     color: #000000;
+      #   }
     };
   };
 }

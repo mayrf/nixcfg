@@ -16,14 +16,15 @@
     hostName = "kalium";
   };
 
-  # features.docker.enable = true;
-  # features.virtualisation.enable = true;
-  features.laptop.enable = true;
 
-  boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
+  features = {
+    gaming.enable = true;
   };
 
+  features.laptop.enable = true;
 
-  system.stateVersion = config.hostSpec.sysStateVersion; # Did you read the comment?
+  boot = { kernelPackages = pkgs.linuxKernel.packages.linux_6_14; };
+
+  system.stateVersion =
+    config.hostSpec.sysStateVersion; # Did you read the comment?
 }

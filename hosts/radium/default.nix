@@ -12,7 +12,6 @@
   privModules.workProxies.enable = true;
 
   features = {
-    ensure-config-repo.enable = true; 
     sops.enable = true; 
   };
 

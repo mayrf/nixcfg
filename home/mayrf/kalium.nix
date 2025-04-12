@@ -3,6 +3,7 @@
 {
   imports = [
     ../common
+    ../features
     ../features/cli
     ../features/desktop
     ../features/terminal
@@ -29,6 +30,11 @@
       ghostty.enable = true;
     };
   };
+
+  # programs.waybar = {
+  #   enable = true;
+  #   systemd.enable = true;
+  # };
 
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

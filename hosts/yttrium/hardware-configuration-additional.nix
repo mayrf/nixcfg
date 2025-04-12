@@ -5,6 +5,7 @@
 
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.supportedFilesystems = [ "ntfs" ];
   boot.loader = {
     systemd-boot = {
       configurationLimit = 10;
@@ -16,7 +17,19 @@
 
   # Power/cpu savings
   # https://nixos.wiki/wiki/Laptop
-  # services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.settings = {
+    battery = {
+      governor = "powersave";
+      turbo = "never";
+      energy_performance_preference = "power";
+    };
+    charger = {
+      governor = "powersave";
+      turbo = "never";
+      energy_performance_preference = "power";
+    };
+  };
   services.thermald.enable = true;
   services.system76-scheduler.settings.cfsProfiles.enable = true;
   hardware.graphics.enable32Bit = true;

@@ -8,17 +8,15 @@ let
   ifTheyExist = groups:
     builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
   pubKeys = lib.filesystem.listFilesRecursive ./keys;
+  useSops = config.features.sops.enable;
 in {
 
-  users.mutableUsers =
-    false; # Only allow declarative credentials; Required for password to be set via sops during system activation!
+  users.mutableUsers = useSops != true; # if false; # Only allow declarative credentials; Required for password to be set via sops during system activation!
 
   users.users.${username} = {
     home = "/home/${username}";
     isNormalUser = true;
     description = "${username}";
-    initialPassword = "changeme";
-    hashedPasswordFile = sopsHashedPasswordFile; # Blank if sops is not working.
     shell = pkgs.zsh;
 
 
@@ -50,6 +48,10 @@ in {
   } // lib.optionalAttrs
     (config.hostSpec.isMinimal || config.hostSpec.hostName == "iso") {
       password = "nixos";
+    } // lib.optionalAttrs useSops {
+      hashedPasswordFile = config.sops.secrets."${config.hostSpec.username}/hashedPassword".path;
+    } // lib.optionalAttrs (!config.hostSpec.isMinimal && !useSops) {
+      initialPassword = "changeme";
     };
   systemd.tmpfiles.rules = let
     user = config.users.users.${username}.name;

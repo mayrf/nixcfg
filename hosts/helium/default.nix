@@ -12,23 +12,27 @@
   ];
 
   features = {
-    ensure-config-repo.enable = true;
     keyd.enable = true;
     pipewire.enable = true;
     sops.enable = true;
     theming.enable = true;
+    printing.enable = true;
+    docker.enable = true;
+    # virtualisation.enable = true;
+    laptop.enable = true;
+    impermanence.enable = true;
   };
+
+  privModules.common.enable = true;
 
   hostSpec = {
     isMinimal = false;
     username = "mayrf";
     hostName = "helium";
-  };
-  features = {
-    docker.enable = true;
-    virtualisation.enable = true;
-    laptop.enable = true;
-    impermanence.enable = true;
+    persistDir = "/persist/system";
+    persistDirRoot = "/persist";
+    isImpermanent = true;
+    sysStateVersion = "25.05";
   };
 
   sops.secrets."wireguard/x220_conf" = { };
