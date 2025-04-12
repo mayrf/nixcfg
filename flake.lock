@@ -831,17 +831,15 @@
       "locked": {
         "lastModified": 1741766815,
         "narHash": "sha256-52iAbrIkhs22Lo3V6w5Fc/0/OIKvThOfApBltBAHdm4=",
-        "ref": "main",
+        "ref": "refs/heads/master",
         "rev": "7b5cc7d1bb3b029b57dc3cd8609079e1f5e45e8b",
-        "shallow": true,
+        "revCount": 27,
         "type": "git",
-        "url": "ssh://git@github.com/mayrf/sops.git"
+        "url": "ssh://git@codeberg.org/mayrf/nix-secrets.git"
       },
       "original": {
-        "ref": "main",
-        "shallow": true,
         "type": "git",
-        "url": "ssh://git@github.com/mayrf/sops.git"
+        "url": "ssh://git@codeberg.org/mayrf/nix-secrets.git"
       }
     },
     "nixos-wsl": {

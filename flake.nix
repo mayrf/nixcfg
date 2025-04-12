@@ -32,7 +32,7 @@
     stylix.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-secrets = {
-      url = "git+ssh://git@github.com/mayrf/sops.git?ref=main&shallow=1";
+      url = "git+ssh://git@codeberg.org/mayrf/nix-secrets.git";
       flake = false;
     };
     disko = {

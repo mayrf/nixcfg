@@ -1674,6 +1674,6 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (use-package yaml-pro
   ;; :hook
   ;; (yaml-ts-mode . #'yaml-pro mode 100)
-  :mode ("\\.yaml\\'" . yaml-ts-mode)
-  :mode ("\\.yml\\'" . yaml-ts-mode)
+  :mode ("\\.yaml\\'" . yaml-pro-ts-mode)
+  :mode ("\\.yml\\'" . yaml-pro-ts-mode)
   )
