@@ -87,6 +87,7 @@ in {
       enable = true;
 
       settings = {
+        ecosystem."no_update_news" = true;
         bind = [
           "SUPER,mouse:272,movewindow"
           # "SUPER,mouse:273,resizewindow"
@@ -209,6 +210,7 @@ in {
           gaps_in=1
           gaps_out=1
           layout=master
+          # layout=dwindle
         }
 
         group {

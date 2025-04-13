@@ -775,6 +775,7 @@
 
 ;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
 (setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
+(setq org-next-file (file-truename (file-name-concat org-directory "gtd/next.org")))
 (setq org-refile-targets '((nil :maxlevel . 9)
 			   (my-refile-files :maxlevel . 1)))
 ;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
@@ -791,13 +792,13 @@
       '(("f" "Fleeting note" item
 	 (file+headline org-default-notes-file "Notes")
 	 "- %?")
-	("p" "Permanent note" plain
-	 (file denote-last-path)
-	 #'denote-org-capture
-	 :no-save t
-	 :immediate-finish nil
-	 :kill-buffer t
-	 :jump-to-captured t)
+	;; ("p" "Permanent note" plain
+	;;  (file denote-last-path)
+	;;  #'denote-org-capture
+	;;  :no-save t
+	;;  :immediate-finish nil
+	;;  :kill-buffer t
+	;;  :jump-to-captured t)
 	("t" "New task" entry
 	 (file+headline org-default-notes-file "Tasks")
 	 "* TODO %i%?")
@@ -1466,9 +1467,9 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (setq my/base-agenda-files (mapcar
 		    #'my/gtd-file
 		    '(
-		      ;; "next.org"
+		      "next.org"
 		      ;; "read_review.org"
-		      "projects.org"
+		      ;; "projects.org"
 		      )))
 
 ;; (defvar my/base-agenda-files '("Inbox.org" "Schedule.org")
@@ -1513,6 +1514,67 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   ;; Update agenda files after notes are created or renamed
   (add-hook 'denote-after-rename-file-hook #'my/refresh-agenda-files)
   (add-hook 'denote-after-new-note-hook #'my/refresh-agenda-files))
+
+(setq org-agenda-custom-commands
+      '(
+	("p" "Planning" tags-todo "@planning")
+	("n" "next" todo "NEXT")
+        ("u" "untagged Tasks" tags-todo "-{.*}")
+	))
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "|" "DONE(d)" "CANC(c)")
+        ))
+
+(setq org-stuck-projects
+      '("+TODO=\"PROJ\"" ("TODO") nil "") )
+
+(defun my/org-promote-next-todo-to-next ()
+  "Promote the next TODO item to NEXT if the current item is set to DONE."
+  (when (string= org-state "DONE")
+    (save-excursion
+      (when (org-next-visible-heading 1)
+        (let ((current-heading (thing-at-point 'line)))
+          (when (string-match "^\\*+ +TODO " current-heading)
+            (replace-regexp-in-string "TODO" "NEXT" current-heading nil 'literal)
+            (org-todo "NEXT")))))))
+
+(add-hook 'org-after-todo-state-change-hook 'my/org-promote-next-todo-to-next)
+
+(defun my/org-demote-next-next-to-todo ()
+  "Promote the next TODO item to NEXT if the current item is set to DONE."
+  (when (string= org-state "TODO")
+    (save-excursion
+      (when (org-next-visible-heading 1)
+        (let ((current-heading (thing-at-point 'line)))
+          (when (string-match "^\\*+ +NEXT " current-heading)
+            (replace-regexp-in-string "NEXT" "TODO" current-heading nil 'literal)
+            (org-todo "TODO")))))))
+
+(add-hook 'org-after-todo-state-change-hook 'my/org-demote-next-next-to-todo)
+
+(defun my/org-add-category-from-proj ()
+  "Add a :CATEGORY: property if TODO keyword is PROJ, using the rest of the heading."
+  (interactive)
+  (when (org-at-heading-p)
+    (let* ((todo (org-get-todo-state))
+	   (category (org-get-category))
+           (headline (nth 4 (org-heading-components))))
+      (if
+	  (and todo (string= todo "PROJ"))
+          (org-set-property "CATEGORY" headline)
+	(when (and category (string= category headline))
+	  (org-delete-property "CATEGORY")
+	  )
+	))))
+
+(add-hook 'org-after-todo-state-change-hook 'my/org-add-category-from-proj)
+
+(add-to-list
+ 'org-capture-templates
+ '("p" "Project" entry
+   (file org-next-file)
+   "* PROJ %^{Brief Description}\n:PROPERTIES:\n:CATEGORY: %^{Id}\n:END:\nAdded: %U\n%?" :empty-lines 1 :prepend t))
 
 (use-package transient)
 

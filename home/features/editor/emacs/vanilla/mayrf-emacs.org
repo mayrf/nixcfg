@@ -916,6 +916,7 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 
 ;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
 (setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
+(setq org-next-file (file-truename (file-name-concat org-directory "gtd/next.org")))
 (setq org-refile-targets '((nil :maxlevel . 9)
 			   (my-refile-files :maxlevel . 1)))
 ;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
@@ -932,13 +933,13 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
       '(("f" "Fleeting note" item
 	 (file+headline org-default-notes-file "Notes")
 	 "- %?")
-	("p" "Permanent note" plain
-	 (file denote-last-path)
-	 #'denote-org-capture
-	 :no-save t
-	 :immediate-finish nil
-	 :kill-buffer t
-	 :jump-to-captured t)
+	;; ("p" "Permanent note" plain
+	;;  (file denote-last-path)
+	;;  #'denote-org-capture
+	;;  :no-save t
+	;;  :immediate-finish nil
+	;;  :kill-buffer t
+	;;  :jump-to-captured t)
 	("t" "New task" entry
 	 (file+headline org-default-notes-file "Tasks")
 	 "* TODO %i%?")
@@ -1664,9 +1665,9 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (setq my/base-agenda-files (mapcar
 		    #'my/gtd-file
 		    '(
-		      ;; "next.org"
+		      "next.org"
 		      ;; "read_review.org"
-		      "projects.org"
+		      ;; "projects.org"
 		      )))
 
 ;; (defvar my/base-agenda-files '("Inbox.org" "Schedule.org")
@@ -1712,6 +1713,84 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   (add-hook 'denote-after-rename-file-hook #'my/refresh-agenda-files)
   (add-hook 'denote-after-new-note-hook #'my/refresh-agenda-files))
 #+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+(setq org-agenda-custom-commands
+      '(
+	("p" "Planning" tags-todo "@planning")
+	("n" "next" todo "NEXT")
+        ("u" "untagged Tasks" tags-todo "-{.*}")
+	))
+#+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "|" "DONE(d)" "CANC(c)")
+        ))
+
+(setq org-stuck-projects
+      '("+TODO=\"PROJ\"" ("TODO") nil "") )
+#+end_src
+
+if current item: TODO -> DONE and next item is TODO, then next item: TODO -> NEXT
+#+begin_src emacs-lisp :tangle "init.el"
+(defun my/org-promote-next-todo-to-next ()
+  "Promote the next TODO item to NEXT if the current item is set to DONE."
+  (when (string= org-state "DONE")
+    (save-excursion
+      (when (org-next-visible-heading 1)
+        (let ((current-heading (thing-at-point 'line)))
+          (when (string-match "^\\*+ +TODO " current-heading)
+            (replace-regexp-in-string "TODO" "NEXT" current-heading nil 'literal)
+            (org-todo "NEXT")))))))
+
+(add-hook 'org-after-todo-state-change-hook 'my/org-promote-next-todo-to-next)
+#+end_src
+
+if current item: DONE -> TODO and next item is NEXT, then next item: NEXT -> TODO
+#+begin_src emacs-lisp :tangle "init.el"
+(defun my/org-demote-next-next-to-todo ()
+  "Promote the next TODO item to NEXT if the current item is set to DONE."
+  (when (string= org-state "TODO")
+    (save-excursion
+      (when (org-next-visible-heading 1)
+        (let ((current-heading (thing-at-point 'line)))
+          (when (string-match "^\\*+ +NEXT " current-heading)
+            (replace-regexp-in-string "NEXT" "TODO" current-heading nil 'literal)
+            (org-todo "TODO")))))))
+
+(add-hook 'org-after-todo-state-change-hook 'my/org-demote-next-next-to-todo)
+#+end_src
+
+if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
+#+begin_src emacs-lisp :tangle "init.el"
+(defun my/org-add-category-from-proj ()
+  "Add a :CATEGORY: property if TODO keyword is PROJ, using the rest of the heading."
+  (interactive)
+  (when (org-at-heading-p)
+    (let* ((todo (org-get-todo-state))
+	   (category (org-get-category))
+           (headline (nth 4 (org-heading-components))))
+      (if
+	  (and todo (string= todo "PROJ"))
+          (org-set-property "CATEGORY" headline)
+	(when (and category (string= category headline))
+	  (org-delete-property "CATEGORY")
+	  )
+	))))
+
+(add-hook 'org-after-todo-state-change-hook 'my/org-add-category-from-proj)
+#+end_src
+
+
+#+begin_src emacs-lisp :tangle "init.el"
+(add-to-list
+ 'org-capture-templates
+ '("p" "Project" entry
+   (file org-next-file)
+   "* PROJ %^{Brief Description}\n:PROPERTIES:\n:CATEGORY: %^{Id}\n:END:\nAdded: %U\n%?" :empty-lines 1 :prepend t))
+#+end_src
+
 * Magit
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package transient)

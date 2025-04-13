@@ -699,35 +699,42 @@ The following snippet sets up a hook for all Org task state changes and then cop
                (not (org-entry-get nil "ACTIVATED")))
       (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
   (add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
-  (setq org-agenda-custom-commands
-        '(("g" "Get Things Done (GTD)"
-           ((agenda ""
-                    ((org-agenda-skip-function
-                      '(org-agenda-skip-entry-if 'deadline))
-                     (org-deadline-warning-days 0)))
-            (todo "NEXT"
-                  ((org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'deadline))
-                   (org-agenda-prefix-format "  %i %-12:c [%e] ")
-                   (org-agenda-overriding-header "\nTasks\n")))
-            (agenda nil
-                    ((org-agenda-entry-types '(:deadline))
-                     (org-agenda-format-date "")
-                     (org-deadline-warning-days 7)
-                     (org-agenda-skip-function
-                      '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
-                     (org-agenda-overriding-header "\nDeadlines")))
-            (tags-todo "inbox"
-                       ((org-agenda-prefix-format "  %?-12t% s")
-                        (org-agenda-overriding-header "\nInbox\n")))
-            (tags "CLOSED>=\"<today>\""
-                  ((org-agenda-overriding-header "\nCompleted today\n")))))))
+  ;; (setq org-agenda-custom-commands
+  ;;       '(("g" "Get Things Done (GTD)"
+  ;;          ((agenda ""
+  ;;                   ((org-agenda-skip-function
+  ;;                     '(org-agenda-skip-entry-if 'deadline))
+  ;;                    (org-deadline-warning-days 0)))
+  ;;           (todo "NEXT"
+  ;;                 ((org-agenda-skip-function
+  ;;                   '(org-agenda-skip-entry-if 'deadline))
+  ;;                  (org-agenda-prefix-format "  %i %-12:c [%e] ")
+  ;;                  (org-agenda-overriding-header "\nTasks\n")))
+  ;;           (agenda nil
+  ;;                   ((org-agenda-entry-types '(:deadline))
+  ;;                    (org-agenda-format-date "")
+  ;;                    (org-deadline-warning-days 7)
+  ;;                    (org-agenda-skip-function
+  ;;                     '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
+  ;;                    (org-agenda-overriding-header "\nDeadlines")))
+  ;;           (tags-todo "inbox"
+  ;;                      ((org-agenda-prefix-format "  %?-12t% s")
+  ;;                       (org-agenda-overriding-header "\nInbox\n")))
+  ;;           (tags "CLOSED>=\"<today>\""
+  ;;                 ((org-agenda-overriding-header "\nCompleted today\n")))))))
   (setq org-log-done 'time))
-  (setq org-agenda-custom-commands
-	'(("p" "Planning" tags-todo "@planning")))
 
 
 #+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+(setq org-agenda-custom-commands
+      '(
+	("p" "Planning" tags-todo "@planning")
+        ("u" "untagged Tasks" tags-todo "-{.*}")
+	))
+#+end_src
+
 ** Denote
 #+begin_src emacs-lisp :tangle yes
 ;; (package-install 'denote)
