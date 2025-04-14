@@ -776,8 +776,8 @@
 ;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
 (setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
 (setq org-next-file (file-truename (file-name-concat org-directory "gtd/next.org")))
-(setq org-refile-targets '((nil :maxlevel . 9)
-			   (my-refile-files :maxlevel . 1)))
+(setq org-refile-targets `((nil :maxlevel . 9)
+			   (,my-refile-files :maxlevel . 1)))
 ;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
 
 ;; (("next.org"
@@ -1397,56 +1397,6 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
       denote-known-keywords
       (mapcar #'car my/denote-keyword-alist))
 
-(setq-default org-tag-alist
-              '((:startgroup)
-                ("Areas")
-                (:grouptags)
-                ("@home" . ?H)
-                ("@work" . ?W)
-                (:endgroup)
-
-                (:startgrouptag . nil)
-                ("Contexts")
-                (:grouptags)
-                ("@computer" . ?C)
-                ("@mobile" . ?M)
-                ("@calls" . ?A)
-                ("@errands" . ?E)
-                (:endgrouptag)
-
-                ;; Task Types
-                (:startgrouptag . nil)
-                ("Types")
-                (:grouptags)
-                ("@planning" . ?n)
-                ("@programming" . ?p)
-                ("@easy" . ?e)
-                ("@hacking" . ?h)
-                ("@writing" . ?w)
-                ("@creative" . ?v)
-		("@reading" .?b)
-                ("@media" .?m)
-                ("@listening" .?l)
-                ("@accounting" . ?a)
-		("@try" .?t)
-                ("@email" . ?m)
-                ("@system" . ?s)
-                ("@calls" . ?a)
-                ("@order" . ?o)
-                (:endgrouptag)
-
-                ;; Workflow states
-                (:startgroup . nil)
-                ("States")
-                (:grouptags)
-                ("@plan" . ?p)
-                ("@review" . ?r)
-                ("@followup" . ?f)
-                (:endgroup)))
-
-;; Only make context tags inheritable (what about noexport?)
-(setq org-use-tag-inheritance "^@")
-
 ;;; ----- Time Tracking -----
 
 ;; ;; Clock in on the current task when setting a timer
@@ -1515,6 +1465,109 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   (add-hook 'denote-after-rename-file-hook #'my/refresh-agenda-files)
   (add-hook 'denote-after-new-note-hook #'my/refresh-agenda-files))
 
+(setq-default org-tag-alist
+              '(("@home" . ?H)
+                ("@work" . ?W)
+                ("@event" . ?E)
+
+                ("@computer" . ?C)
+                ("@phone" . ?M)
+                ("@digital" . ?d)
+                ("@calls" . ?c)
+                ("@errands" . ?e)
+
+                 ("@planning" . ?p)
+                 ("@media" .?m)
+                 ("@system" . ?s)
+		))
+                ;; (:startgrouptag . nil)
+                ;; ("Contexts")
+                ;; (:grouptags)
+                ;; ("@computer" . ?C)
+                ;; ("@mobile" . ?M)
+                ;; ("@calls" . ?A)
+                ;; ("@errands" . ?E)
+                ;; (:endgrouptag)
+
+                ;; ;; Task Types
+                ;; (:startgrouptag . nil)
+                ;; ("Types")
+                ;; (:grouptags)
+                ;; ("@planning" . ?n)
+                ;; ("@programming" . ?p)
+                ;; ("@easy" . ?e)
+                ;; ("@hacking" . ?h)
+                ;; ("@writing" . ?w)
+                ;; ("@creative" . ?v)
+		;; ("@reading" .?b)
+                ;; ("@media" .?m)
+                ;; ("@listening" .?l)
+                ;; ("@accounting" . ?a)
+		;; ("@try" .?t)
+                ;; ("@email" . ?m)
+                ;; ("@system" . ?s)
+                ;; ("@calls" . ?a)
+                ;; ("@order" . ?o)
+                ;; (:endgrouptag)
+
+                ;; ;; Workflow states
+                ;; (:startgroup . nil)
+                ;; ("States")
+                ;; ("@plan" . ?p)
+                ;; ("@review" . ?r)
+                ;; ("@followup" . ?f)
+
+
+		
+              ;; '((:startgroup)
+              ;;   ("Areas")
+              ;;   (:grouptags)
+              ;;   ("@home" . ?H)
+              ;;   ("@work" . ?W)
+              ;;   (:endgroup)
+
+              ;;   (:startgrouptag . nil)
+              ;;   ("Contexts")
+              ;;   (:grouptags)
+              ;;   ("@computer" . ?C)
+              ;;   ("@mobile" . ?M)
+              ;;   ("@calls" . ?A)
+              ;;   ("@errands" . ?E)
+              ;;   (:endgrouptag)
+
+              ;;   ;; Task Types
+              ;;   (:startgrouptag . nil)
+              ;;   ("Types")
+              ;;   (:grouptags)
+              ;;   ("@planning" . ?n)
+              ;;   ("@programming" . ?p)
+              ;;   ("@easy" . ?e)
+              ;;   ("@hacking" . ?h)
+              ;;   ("@writing" . ?w)
+              ;;   ("@creative" . ?v)
+	      ;; 	("@reading" .?b)
+              ;;   ("@media" .?m)
+              ;;   ("@listening" .?l)
+              ;;   ("@accounting" . ?a)
+	      ;; 	("@try" .?t)
+              ;;   ("@email" . ?m)
+              ;;   ("@system" . ?s)
+              ;;   ("@calls" . ?a)
+              ;;   ("@order" . ?o)
+              ;;   (:endgrouptag)
+
+              ;;   ;; Workflow states
+              ;;   (:startgroup . nil)
+              ;;   ("States")
+              ;;   (:grouptags)
+              ;;   ("@plan" . ?p)
+              ;;   ("@review" . ?r)
+              ;;   ("@followup" . ?f)
+              ;;   (:endgroup)))
+
+;; Only make context tags inheritable (what about noexport?)
+(setq org-use-tag-inheritance "^@")
+
 (setq org-agenda-custom-commands
       '(
 	("p" "Planning" tags-todo "@planning")
@@ -1527,7 +1580,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
         ))
 
 (setq org-stuck-projects
-      '("+TODO=\"PROJ\"" ("TODO") nil "") )
+      '("+TODO=\"PROJ\"" ("NEXT") nil "") )
 
 (defun my/org-promote-next-todo-to-next ()
   "Promote the next TODO item to NEXT if the current item is set to DONE."
