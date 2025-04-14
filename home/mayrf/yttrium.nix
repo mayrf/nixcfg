@@ -16,6 +16,7 @@
     ensure-secrets-repo.enable = true;
     ensure-private-config-repo.enable = true;
     ensure-config-repo.enable = true;
+    flatpak.enable = true;
     cli = {
       zsh.enable = true;
       fzf.enable = true;

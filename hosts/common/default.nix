@@ -34,7 +34,6 @@
   };
 
   # optional
-  services.flatpak.enable = true;
   # services.udev.packages = [ pkgs.yubikey-personalization ];
 
   services.blueman.enable = true;
@@ -69,12 +68,6 @@
   security.polkit.enable = true;
 
   security.rtkit.enable = true;
-  xdg.portal.enable = true;
-  xdg.portal.configPackages = [
-    pkgs.xdg-desktop-portal-gtk
-    pkgs.xdg-desktop-portal-hyprland
-    pkgs.xdg-desktop-portal-wlr
-  ];
 
   networking = {
     hostName = config.hostSpec.hostName; # Define your hostname.

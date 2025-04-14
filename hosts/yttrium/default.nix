@@ -20,6 +20,7 @@
   };
 
   features = {
+    flatpak.enable = true;
     keyd.enable = true;
     pipewire.enable = true;
     sops.enable = true;

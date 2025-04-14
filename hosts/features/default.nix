@@ -13,5 +13,6 @@
     ./sops.nix
     ./theming.nix
     ./printing.nix
+    ./flatpak.nix
   ];
 }

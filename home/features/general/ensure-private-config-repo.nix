@@ -1,7 +1,7 @@
 { pkgs, config, lib, hostSpec, ... }:
 with lib;
 let
-  cfg = config.features.ensure-secrets-repo;
+  cfg = config.features.ensure-private-config-repo;
   path = "${config.xdg.configHome}/dotfiles-private";
   # path = "/home/${user}/.config/dotfiles-private";
   source = "git@codeberg.org:mayrf/dotfiles-private.git";

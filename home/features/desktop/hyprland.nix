@@ -6,6 +6,13 @@ in {
 
   config = mkIf cfg.enable {
 
+    xdg.portal.enable = true;
+    xdg.portal.configPackages = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal-wlr
+    ];
+
     fontProfiles = {
       enable = true;
       monospace = {
@@ -179,8 +186,8 @@ in {
         editor = "${pkgs.emacs}/bin/emacsclient -c";
         vanilla_emacs = "${pkgs.emacs}/bin/emacsclient -s vanilla -c";
         hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-      #   exec=${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill
-      # '' + ''
+        #   exec=${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill
+        # '' + ''
       in ''
         exec-once=wl-paste --type text --watch cliphist store # Stores only text data
         exec-once=wl-paste --type image --watch cliphist store # Stores only image data

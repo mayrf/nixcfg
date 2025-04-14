@@ -1,7 +1,7 @@
 { pkgs, config, lib, hostSpec, ... }:
 with lib;
 let
-  cfg = config.features.ensure-secrets-repo;
+  cfg = config.features.ensure-config-repo;
   path = "${config.xdg.configHome}/nixcfg";
   # path = "/home/${user}/.config/nix-secrets";
   source = "git@github.com:mayrf/nixcfg.git";
