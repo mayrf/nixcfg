@@ -215,6 +215,12 @@ in {
       # go
       gopls
 
+      # just
+      just
+      # just-lsp
+
+
+
       #fonts
       unstable.nerd-fonts.im-writing
       unstable.nerd-fonts.jetbrains-mono

@@ -3,6 +3,7 @@
 { pkgs ? import <nixpkgs> { }, ... }: rec {
   kcl-language-server = pkgs.callPackage ./kcl-language-server { };
   httpyac = pkgs.callPackage ./httpyac { };
+  just-lsp = pkgs.callPackage ./just-lsp { };
   kcl-lsp = pkgs.kclvm.overrideAttrs {
     postInstall = "";
 
