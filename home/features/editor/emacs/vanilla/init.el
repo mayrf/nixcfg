@@ -162,8 +162,9 @@
 ;; (set-frame-font "JetBrainsMono Nerd Font" nil t)
 ;; (set-frame-font "CaskaydiaCove Nerd Font" nil t)
 (set-face-attribute 'default nil
-  :font "GeistMono Nerd Font"
-  :height 110
+  ;; :font "GeistMono Nerd Font"
+  :font "JetBrainsMono Nerd Font"
+  :height 100
   :weight 'medium)
 ;; (set-face-attribute 'variable-pitch nil
 ;;   :font "Ubuntu Nerd Font"
@@ -1692,10 +1693,10 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
                     :background nil
-                    :height 140
+                    ;; :height 100
                     :italic t)))
   :config
-  (global-blamer-mode 1))
+  (global-blamer-mode 0))
 
 (use-package yasnippet 
   :config
@@ -1731,6 +1732,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
      (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
      (yaml "https://github.com/ikatyang/tree-sitter-yaml")
      (kcl "https://github.com/kcl-lang/tree-sitter-kcl")
+     (just "https://github.com/IndianBoy42/tree-sitter-just")
      ))
 
 (use-package treesit-auto
@@ -1758,6 +1760,14 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   ;; :config
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )
+
+(use-package just-ts-mode
+  ;; :mode ("justfile\\'" . just-ts-mode)
+  :hook ((just-ts-mode . eglot-ensure))
+  )
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;;                '(just-ts-mode . ("just-lsp" "--stdio"))))
 
 (use-package typescript-ts-mode
   :ensure nil
@@ -1807,6 +1817,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (use-package yaml-pro
   ;; :hook
   ;; (yaml-ts-mode . #'yaml-pro mode 100)
-  :mode ("\\.yaml\\'" . yaml-pro-ts-mode)
-  :mode ("\\.yml\\'" . yaml-pro-ts-mode)
+  :mode ("\\.yaml\\'" . yaml-ts-mode)
+  :mode ("\\.yml\\'" . yaml-ts-mode)
+  :hook(yaml-ts-mode . yaml-pro-ts-mode)
   )

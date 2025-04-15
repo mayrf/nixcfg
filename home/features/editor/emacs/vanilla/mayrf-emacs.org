@@ -227,8 +227,9 @@ By default, Emacs creates automatic backups of files in their original directori
 ;; (set-frame-font "JetBrainsMono Nerd Font" nil t)
 ;; (set-frame-font "CaskaydiaCove Nerd Font" nil t)
 (set-face-attribute 'default nil
-  :font "GeistMono Nerd Font"
-  :height 110
+  ;; :font "GeistMono Nerd Font"
+  :font "JetBrainsMono Nerd Font"
+  :height 100
   :weight 'medium)
 ;; (set-face-attribute 'variable-pitch nil
 ;;   :font "Ubuntu Nerd Font"
@@ -1922,10 +1923,10 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
                     :background nil
-                    :height 140
+                    ;; :height 100
                     :italic t)))
   :config
-  (global-blamer-mode 1))
+  (global-blamer-mode 0))
 #+end_src
 ** Yasnippet
 #+begin_src emacs-lisp :tangle "init.el"
@@ -1967,6 +1968,7 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
      (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
      (yaml "https://github.com/ikatyang/tree-sitter-yaml")
      (kcl "https://github.com/kcl-lang/tree-sitter-kcl")
+     (just "https://github.com/IndianBoy42/tree-sitter-just")
      ))
 
 (use-package treesit-auto
@@ -2005,6 +2007,18 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   ;; :config
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )
+#+end_src
+
+** Justfile
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package just-ts-mode
+  ;; :mode ("justfile\\'" . just-ts-mode)
+  :hook ((just-ts-mode . eglot-ensure))
+  )
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;;                '(just-ts-mode . ("just-lsp" "--stdio"))))
+
 #+end_src
 
 ** Typescript/Javascript
@@ -2072,8 +2086,9 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
 (use-package yaml-pro
   ;; :hook
   ;; (yaml-ts-mode . #'yaml-pro mode 100)
-  :mode ("\\.yaml\\'" . yaml-pro-ts-mode)
-  :mode ("\\.yml\\'" . yaml-pro-ts-mode)
+  :mode ("\\.yaml\\'" . yaml-ts-mode)
+  :mode ("\\.yml\\'" . yaml-ts-mode)
+  :hook(yaml-ts-mode . yaml-pro-ts-mode)
   )
   #+end_src
 
