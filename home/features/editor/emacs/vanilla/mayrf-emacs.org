@@ -917,7 +917,8 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 ;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
 (setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
 (setq org-next-file (file-truename (file-name-concat org-directory "gtd/next.org")))
-(setq org-refile-targets `((nil :maxlevel . 9)
+(setq org-refile-targets `(
+			   ;; (nil :maxlevel . 9)
 			   (,my-refile-files :maxlevel . 1)))
 ;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
 
@@ -1675,6 +1676,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
                 ("@calls" . ?c)
                 ("@errands" . ?e)
 
+		 ("@reading" .?b)
                  ("@planning" . ?p)
                  ("@media" .?m)
                  ("@system" . ?s)
