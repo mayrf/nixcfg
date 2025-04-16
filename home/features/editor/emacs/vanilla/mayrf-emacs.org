@@ -9,6 +9,11 @@ This is my WIP vanilla Emacs config. The structure and content is heavily copied
 * Core
 ** Early Init 
 #+begin_src emacs-lisp :tangle "early-init.el"
+;; -*- lexical-binding: t; -*-
+#+end_src
+
+#+begin_src emacs-lisp :tangle "early-init.el"
+
 (setq package-enable-at-startup nil)
 ;;      inhibit-startup-message   t
 ;;     frame-resize-pixelwise    t  ; fine resize
@@ -23,6 +28,10 @@ This is my WIP vanilla Emacs config. The structure and content is heavily copied
 ** Elpaca
 *** NixOs specific fix
 See [[https://github.com/progfolio/elpaca/wiki/Usage-with-Nix][Usage with Nix · progfolio/elpaca Wiki · GitHub]]
+#+begin_src emacs-lisp :tangle "init.el"
+;; -*- lexical-binding: t; -*-
+#+end_src
+
 #+begin_src emacs-lisp :tangle "init.el"
 (defun my/nixos-p ()
   "Return t if operating system is NixOS, nil otherwise."
@@ -251,7 +260,9 @@ By default, Emacs creates automatic backups of files in their original directori
 (setq-default line-spacing 0.12)
 
 ;; Needed if using emacsclient. Otherwise, your fonts will be smaller than expected.
-(add-to-list 'default-frame-alist '(font . "GeistMono Nerd Font-11"))
+;; (add-to-list 'default-frame-alist '(font . "GeistMono Nerd Font-11"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font-10"))
+
 ;; changes certain keywords to symbols, such as lamda!
 (setq global-prettify-symbols-mode t)
 #+end_src
@@ -1933,7 +1944,7 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   (blamer-min-offset 70)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
-                    :background nil
+                    ;; :background nil
                     ;; :height 100
                     :italic t)))
   :config

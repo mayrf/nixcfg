@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (setq package-enable-at-startup nil)
 ;;      inhibit-startup-message   t
 ;;     frame-resize-pixelwise    t  ; fine resize

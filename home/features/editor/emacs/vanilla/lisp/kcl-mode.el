@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; ;; Inspired by https://github.com/nix-community/nix-ts-mode/blob/trunk/nix-ts-mode.el
 
 ;; ;;; kcl-ts-mode.el --- Major mode for Nix expressions, powered by tree-sitter -*- lexical-binding: t -*-
@@ -285,7 +287,8 @@
 ;; ;;   (when (functionp 'derived-mode-add-parents)
 ;; ;;     (derived-mode-add-parents 'kcl-ts-mode '(nix-mode))))
 ;;    )
-(defvar kcl-ts-font-lock-rules
+;; (defvar kcl-ts-font-lock-rules
+(setq kcl-ts-font-lock-rules
   '(
     ;; :language html
     ;;   :override t
@@ -298,14 +301,42 @@
       ((comment) @font-lock-comment-face)
 
       :language kcl
-      :feature bracket
-      ;; (["(" ")" "[" "]" "{" "}"] @font-lock-bracket-face)
-      (["(" ")" "[" "]" "{" "}"] @font-lock-constant-face)
-
-      :language kcl
       :override t
-      :feature call_expr
-      ((call_expr) @font-lock-function-call-face)
+      :feature bracket
+      (["(" ")" "[" "]" "{" "}"] @font-lock-bracket-face)
+      ;; (["(" ")" "[" "]" "{" "}"] @font-lock-constant-face)
+
+     :language kcl 
+     :feature call_expr
+     ((config_entry
+         [(identifier) (selector_expr)] @font-lock-property-name-face))
+
+     :language kcl 
+     :feature function
+     ((call_expr
+        function:
+         (identifier) @font-lock-function-call-face))
+        ;; (identifier) @font-lock-string-face))
+;; @font-lock-string-face
+         ;; (member_expression
+         ;;  property: (property_identifier) @font-lock-function-call-face)]))
+
+     :language kcl
+     :feature string
+     ;; :override t
+     ((string) @font-lock-string-face)
+     ;; ((string_fragment) @font-lock-string-face
+     ;;  (string_expression
+     ;;   ("\"" @font-lock-string-face))
+     ;;  (indented_string_expression
+     ;;   ("''" @font-lock-string-face))
+     ;;  (interpolation
+     ;;   (["${" "}"] @font-lock-misc-punctuation-face)))
+
+      ;; :language kcl
+      ;; :override t
+      ;; :feature call_expr
+      ;; ((call_expr) @font-lock-function-call-face)
 
       ))
 
@@ -351,13 +382,9 @@
 
     ;; This handles indentation -- again, more on that below.
     (setq-local treesit-font-lock-feature-list
-                '((comment)
-                  (call_expr)
-                  (assign_stmt)
-                  (bracket)
-                  (constant tag attribute)
-                  (declaration)
-                  (delimiter)))
+                '((comment bracket constant tag attribute)
+                  (call_expr function declaration delimiter)
+                  (assign_stmt keyword string path)))
     ;; ... everything else we talk about go here also ...
     (defcustom kcl-ts-mode-indent-offset 4
       "Number of spaces for each indentation step in `kcl-ts-mode'."
@@ -422,3 +449,9 @@
 ;; ;; Local Variables:
 ;; ;; indent-tabs-mode: nil
 ;; ;; End:
+
+(defun kcl-reload ()
+  (interactive)
+  (load-file "~/.config/nixcfg/home/features/editor/emacs/vanilla/lisp/kcl-mode.el")
+  (kcl-ts-mode)
+  )

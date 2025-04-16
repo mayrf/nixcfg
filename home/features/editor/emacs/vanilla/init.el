@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defun my/nixos-p ()
   "Return t if operating system is NixOS, nil otherwise."
   (string-match-p "NixOS" (shell-command-to-string "uname -v")))
@@ -186,7 +188,9 @@
 (setq-default line-spacing 0.12)
 
 ;; Needed if using emacsclient. Otherwise, your fonts will be smaller than expected.
-(add-to-list 'default-frame-alist '(font . "GeistMono Nerd Font-11"))
+;; (add-to-list 'default-frame-alist '(font . "GeistMono Nerd Font-11"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font-10"))
+
 ;; changes certain keywords to symbols, such as lamda!
 (setq global-prettify-symbols-mode t)
 
@@ -1702,7 +1706,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   (blamer-min-offset 70)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
-                    :background nil
+                    ;; :background nil
                     ;; :height 100
                     :italic t)))
   :config
