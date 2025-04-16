@@ -508,8 +508,18 @@
 (use-package vterm
   :ensure nil
   :config
+  (defun my/vterm-in-parent-directory ()
+    "Open vterm and change to the parent directory of current buffer."
+    (interactive)
+    (let ((parent-dir (file-name-directory (or (buffer-file-name) default-directory))))
+      (vterm)
+      ;; Clear any existing input first
+      (vterm-send-key "u" nil nil t) ;; Ctrl+u to clear the line
+      (vterm-send-string (concat "cd " (shell-quote-argument parent-dir)))
+      (vterm-send-return)))
   (my/leader
-    " o t" '(vterm :wk "open vterm"))
+    " o t" '(my/vterm-in-parent-directory :wk "open vterm and cd to dir of current buffer"))
+    " o T" '(vterm :wk "open vterm")
   )
 ;; :load-path  "path/to/emacs-libvterm/")
 
@@ -1819,5 +1829,5 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   ;; (yaml-ts-mode . #'yaml-pro mode 100)
   :mode ("\\.yaml\\'" . yaml-ts-mode)
   :mode ("\\.yml\\'" . yaml-ts-mode)
-  :hook(yaml-ts-mode . yaml-pro-ts-mode)
+  :hook ((yaml-ts-mode . yaml-pro-ts-mode))
   )
