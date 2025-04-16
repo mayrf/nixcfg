@@ -8,6 +8,7 @@
     ./virtualisation.nix
     ./open-webui.nix
     ./keyd.nix
+    ./kanata.nix
     ./sddm.nix
     ./pipewire.nix
     ./sops.nix

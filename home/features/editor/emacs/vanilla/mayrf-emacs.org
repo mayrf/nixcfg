@@ -1639,6 +1639,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 		    #'my/gtd-file
 		    '(
 		      "next.org"
+		      "agenda.org"
 		      ;; "read_review.org"
 		      ;; "projects.org"
 		      )))
@@ -1921,6 +1922,18 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
 
 #+end_src
 * IDE
+** Eglot
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package eglot
+  :ensure nil 
+  :config
+  (my/leader
+    "l" '(:ignore t :wk "Org")
+    "l f" '(eglot-format :wk "format buffer")
+    "l r" '(eglot-rename :wk "rename symbol")
+    "l a" '(eglot-code-actions :wk "lsp code actions")
+    ))
+#+end_src
 ** dap-mode
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package dap-mode

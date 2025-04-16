@@ -1434,6 +1434,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 		    #'my/gtd-file
 		    '(
 		      "next.org"
+		      "agenda.org"
 		      ;; "read_review.org"
 		      ;; "projects.org"
 		      )))
@@ -1686,6 +1687,16 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;;   :host "localhost:11434"               ;Where it's running
 ;;   :stream t                             ;Stream responses
 ;;   :models '(llama3.1:latest))          ;List of models
+
+(use-package eglot
+  :ensure nil 
+  :config
+  (my/leader
+    "l" '(:ignore t :wk "Org")
+    "l f" '(eglot-format :wk "format buffer")
+    "l r" '(eglot-rename :wk "rename symbol")
+    "l a" '(eglot-code-actions :wk "lsp code actions")
+    ))
 
 (use-package dap-mode
   :config
