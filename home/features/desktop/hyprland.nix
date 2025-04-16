@@ -7,11 +7,7 @@ in {
   config = mkIf cfg.enable {
 
     xdg.portal.enable = true;
-    xdg.portal.configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-wlr
-    ];
+    xdg.portal.config.common.default = "*";
 
     fontProfiles = {
       enable = true;
@@ -91,6 +87,8 @@ in {
     in {
       package =
         inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      portalPackage =
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       enable = true;
 
       settings = {

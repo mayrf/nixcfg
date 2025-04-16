@@ -9,7 +9,6 @@
       type = lib.types.str;
       description = "The hostname of the host";
     };
-
     sysStateVersion = lib.mkOption {
       type = lib.types.str;
       description = "The system state version of the system";
@@ -53,24 +52,13 @@
     persistDir = lib.mkOption {
       type = lib.types.str;
       description = "The folder to persist data if impermenance is enabled";
-      default = "/persist/system";
+      default = "/persist";
     };
     flakeDir = lib.mkOption {
       type = lib.types.str;
       description = "The folder to persist data if impermenance is enabled";
       default = "$HOME/.config/nixcfg";
     };
-    persistDirRoot = lib.mkOption {
-      type = lib.types.str;
-      description = "The folder to persist root data if impermenance is enabled";
-      default = "/persist";
-    };
-    persistDirNoBak = lib.mkOption {
-      type = lib.types.str;
-      description = "The folder to persist data which should not be backed up if impermenance is enabled";
-      default = "/persist/no_bak";
-    };
-
     # TODO make the be dervived from other values by default
     isImpermanent = lib.mkOption {
       type = lib.types.bool;
@@ -81,50 +69,6 @@
       type = lib.types.bool;
       default = false;
       description = "Used to indicate a minimal host";
-    };
-    isProduction = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Used to indicate a production host";
-    };
-    isServer = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Used to indicate a server host";
-    };
-    isWork = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Used to indicate a host that uses work resources";
-    };
-    # Sometimes we can't use pkgs.stdenv.isLinux due to infinite recursion
-    isDarwin = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Used to indicate a host that is darwin";
-    };
-    useYubikey = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Used to indicate if the host uses a yubikey";
-    };
-    voiceCoding = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Used to indicate a host that uses voice coding";
-    };
-
-    # FIXME: Maybe make this display sub options or something later
-    hdr = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Used to indicate a host that uses HDR";
-    };
-    scaling = lib.mkOption {
-      type = lib.types.str;
-      default = "1";
-      description =
-        "Used to indicate what scaling to use. Floating point number";
     };
   };
 }

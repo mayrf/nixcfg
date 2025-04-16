@@ -12,9 +12,7 @@
     isMinimal = false;
     username = "mayrf";
     hostName = "yttrium";
-    # flakeDir = "/etc/nixos";
-    persistDir = "/persist/system";
-    persistDirRoot = "/persist";
+    persistDir = "/persist";
     isImpermanent = true;
     sysStateVersion = "25.05";
   };

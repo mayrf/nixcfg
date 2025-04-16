@@ -5,7 +5,7 @@ in {
   options.features.cli.ai.enable = mkEnableOption "enable ai cli programs";
 
   config = mkIf cfg.enable {
-    home.persistence."${hostSpec.persistDir}/home/${hostSpec.username}" =
+    home.persistence."${hostSpec.persistDir}/system/home/${hostSpec.username}" =
       if (hostSpec.isImpermanent == true) then {
         directories = [ ".config/fabric" ];
         allowOther = false;

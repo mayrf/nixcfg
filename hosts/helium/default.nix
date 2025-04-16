@@ -29,8 +29,7 @@
     isMinimal = false;
     username = "mayrf";
     hostName = "helium";
-    persistDir = "/persist/system";
-    persistDirRoot = "/persist";
+    persistDir = "/persist";
     isImpermanent = true;
     sysStateVersion = "25.05";
   };

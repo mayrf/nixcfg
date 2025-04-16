@@ -10,7 +10,7 @@ in {
       pkgs.stable.protonmail-bridge-gui
       pkgs.protonmail-desktop
     ];
-    home.persistence."${configVars.persistDir}/home/${configVars.username}" = {
+    home.persistence."${configVars.persistDir}/system/home/${configVars.username}" = {
       directories = [ ".local/share/protonmail" ".config/Proton Mail" ];
       allowOther = false;
       # files = [ ".screenrc" ];

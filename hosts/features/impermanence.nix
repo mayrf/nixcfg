@@ -34,8 +34,8 @@ in {
       umount /btrfs_tmp
     '';
 
-    fileSystems.${config.hostSpec.persistDirRoot}.neededForBoot = true;
-    environment.persistence.${config.hostSpec.persistDir} = {
+    fileSystems.${config.hostSpec.persistDir}.neededForBoot = true;
+    environment.persistence."${config.hostSpec.persistDir}/system" = {
       hideMounts = true;
       directories = [
         "/var/log"

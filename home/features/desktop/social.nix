@@ -7,7 +7,7 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-        signal-desktop
+        signal-desktop-source
         hexchat
     ];
   };
