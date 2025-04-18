@@ -307,6 +307,10 @@
     "e w" '(eww :which-key "EWW emacs web wowser"))
 
   (my/leader
+    "c" '(:ignore t :wk "Code")    
+    "c n" '(compile :wk "Compile")
+    "c c" '(recompile :wk "Recompile"))
+  (my/leader
     "f" '(:ignore t :wk "Files")    
     "SPC" '(project-find-file :wk "Find File in Project")
     "f P" '((lambda () (interactive) (find-file "~/.config/emacs/mayrf-emacs.org")) :wk "Open Config")

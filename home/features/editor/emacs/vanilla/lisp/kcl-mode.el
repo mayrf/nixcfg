@@ -397,15 +397,23 @@
       :safe 'integerp)
     (setq treesit--indent-verbose t)
 
-    (defvar kcl-ts-mode-indent-rules
+    ;; (defvar kcl-ts-mode-indent-rules
+    (setq kcl-ts-mode-indent-rules
       `((kcl
-         ((parent-is "assign_stmt") parent kcl-ts-mode-indent-offset)
+         ((node-is "}") parent-bol 0)
+         ((node-is "]") parent-bol 0)
+         ((node-is ")") parent-bol 0)
+         ((parent-is "assign_stmt") parent-bol kcl-ts-mode-indent-offset)
+         ((parent-is "{") parent-bol kcl-ts-mode-indent-offset)
+         ((parent-is "config_expr") parent-bol kcl-ts-mode-indent-offset)
+         ((parent-is "if_stmt") parent-bol kcl-ts-mode-indent-offset)
+         ((parent-is "list_expr") parent-bol kcl-ts-mode-indent-offset)
+         ((node-is "config_entry") first-sibling 0)
+         ;; (no-node parent-bol 0)
+         ;; (no-node parent-bol kcl-ts-mode-indent-offset)
          ;; ((parent-is "source_code") column-0 0)
          ;; ((node-is "]") parent-bol 0)
          ;; ((node-is ")") parent-bol 0)
-         ;; ((node-is "}") parent-bol 0)
-         ;; ((node-is "then") parent-bol 0)
-         ;; ((node-is "else") parent-bol 0)
          ;; ((node-is ";") parent-bol 0)
          ;; ((node-is "^in$") parent-bol 0)
          ;; ((node-is "binding_set") parent-bol kcl-ts-mode-indent-offset)
@@ -420,7 +428,8 @@
          ;; ((parent-is "apply_expression") parent-bol kcl-ts-mode-indent-offset)
          ;; ((parent-is "parenthesized_expression") parent-bol kcl-ts-mode-indent-offset)
          ((parent-is "formals") parent-bol kcl-ts-mode-indent-offset)))
-      "Tree-sitter indent rules for `kcl-ts-mode'.")
+      )
+      ;; "Tree-sitter indent rules for `kcl-ts-mode'.")
 
 
 
@@ -455,3 +464,107 @@
   (load-file "~/.config/nixcfg/home/features/editor/emacs/vanilla/lisp/kcl-mode.el")
   (kcl-ts-mode)
   )
+
+(defun process-region-with-command (command)
+  "Process the currently marked region with a CLI command and display output in a popup buffer.
+   If no region is selected, process the entire buffer.
+   COMMAND can include pipes, redirection, and other shell features."
+  (interactive "sCommand: ")
+  (let* ((use-whole-buffer (not (use-region-p)))
+         (region-beginning (if use-whole-buffer (point-min) (region-beginning)))
+         (region-end (if use-whole-buffer (point-max) (region-end)))
+         (region-text (buffer-substring-no-properties region-beginning region-end))
+         (buffer-name (format "*%s Output*" command))
+         (buffer (get-buffer-create buffer-name)))
+
+    ;; Clear the buffer if it already exists
+    (with-current-buffer buffer
+      (erase-buffer))
+    ;; Create a temporary file for the input
+    (let ((temp-file (make-temp-file "emacs-region-")))
+      (unwind-protect
+          (progn
+            ;; Write region/buffer content to temp file
+            (with-temp-file temp-file
+              (insert region-text))
+            
+            ;; Execute command and capture output directly to buffer
+            (with-current-buffer buffer
+              (call-process-shell-command 
+               (format "cat %s | %s" 
+                       (shell-quote-argument temp-file) 
+                       command)
+               nil t)))
+        ;; Clean up temp file
+        (when (file-exists-p temp-file)
+          (delete-file temp-file))))
+    
+    ;; Display the buffer
+    (display-buffer buffer '(display-buffer-pop-up-window . nil))
+    
+    ;; Provide feedback about what was processed
+    (message (if use-whole-buffer 
+                 "Processed entire buffer with '%s'" 
+               "Processed region with '%s'")
+             command)))
+(defun process-region-with-command-replace (command)
+  "Process the currently marked region with a CLI command and replace with the output.
+   If no region is selected, process the entire buffer."
+  (interactive)
+  (let* (
+         ;; (command (read-string "Command: "))
+         (use-whole-buffer (not (use-region-p)))
+         (region-beginning (if use-whole-buffer (point-min) (region-beginning)))
+         (region-end (if use-whole-buffer (point-max) (region-end)))
+         (region-text (buffer-substring-no-properties region-beginning region-end))
+         (output nil))
+    
+    ;; Create a temporary file for the input
+    (let ((temp-file (make-temp-file "emacs-region-")))
+      (unwind-protect
+          (progn
+            ;; Write region/buffer content to temp file
+            (with-temp-file temp-file
+              (insert region-text))
+            
+            ;; Execute command and capture output
+            (setq output
+                  (with-temp-buffer
+                    (call-process-shell-command 
+                     (format "cat %s | %s" 
+                             (shell-quote-argument temp-file) 
+                             command)
+                     nil t)
+                    (buffer-string))))
+        ;; Clean up temp file
+        (when (file-exists-p temp-file)
+          (delete-file temp-file))))
+    
+    ;; Replace the region with the output
+    (delete-region region-beginning region-end)
+    (goto-char region-beginning)
+    (insert output)
+    
+    ;; Provide feedback
+    (message (if use-whole-buffer 
+                 "Processed and replaced entire buffer with '%s'" 
+               "Processed and replaced region with '%s'")
+             command)))
+
+(setq kcl-import-yaml-command
+            "cat > temp_input
+             kcl import -m yaml temp_input --output temp_output --force
+             cat temp_output | tail -n +6
+             rm temp_input temp_output"
+            )
+
+(defun region-to-kcl ()
+  "Run the selected region through jq and display the output in a popup buffer."
+  (interactive)
+  (process-region-with-command kcl-import-yaml-command))
+
+
+(defun region-to-kcl-replace ()
+  "Run the selected region through jq and display the output in a popup buffer."
+  (interactive)
+  (process-region-with-command-replace kcl-import-yaml-command))
