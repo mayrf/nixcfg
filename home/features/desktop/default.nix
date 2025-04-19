@@ -20,6 +20,7 @@
     ./social.nix
     ./protonmail.nix
     ./fonts.nix
+    ./zen-browser.nix
   ];
 
   home.packages = with pkgs; [

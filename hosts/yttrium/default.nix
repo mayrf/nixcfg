@@ -29,6 +29,7 @@
     virtualisation.enable = true;
     gaming.enable = true;
     impermanence.enable = true;
+    winapps.enable = true;
   };
 
   privModules.common.enable = true;
@@ -45,7 +46,8 @@
     acceleration = "rocm";
   };
 
-  environment.systemPackages = with pkgs; [ nfs-utils ];
+  environment.systemPackages = [ pkgs.nfs-utils ];
+
   system.stateVersion =
     config.hostSpec.sysStateVersion; # Did you read the comment?
 }

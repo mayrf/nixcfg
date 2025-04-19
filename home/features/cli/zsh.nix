@@ -26,6 +26,7 @@ in {
       enable = true;
       autocd = true;
       historySubstringSearch.enable = true;
+      autosuggestion.enable = true;
       history = {
         ignoreDups = true;
         size = 100000;
@@ -91,7 +92,7 @@ in {
       "ec_term" = "ec_func_term";
       "ec_van" = "ec_vanilla_func";
       "k" = "kubectl";
-      "check-impermanence" = ''
+      "impermanence-check" = ''
         sudo fd --one-file-system --base-directory / --type f --hidden --exclude "{tmp,etc/passwd}"'';
     };
   };

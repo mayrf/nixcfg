@@ -53,7 +53,7 @@
     editor = {
       nvim.enable = true;
       emacs.enable = true;
-      vscode.enable = true;
+      # vscode.enable = true;
     };
   };
 

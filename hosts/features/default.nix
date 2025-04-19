@@ -15,5 +15,6 @@
     ./theming.nix
     ./printing.nix
     ./flatpak.nix
+    ./winapps.nix
   ];
 }

@@ -16,6 +16,7 @@
     ensure-secrets-repo.enable = true;
     ensure-private-config-repo.enable = true;
     ensure-config-repo.enable = true;
+    impermanence.enable = true;
     cli = {
       zsh.enable = true;
       fzf.enable = true;
@@ -33,7 +34,6 @@
     editor = {
       nvim.enable = true;
       emacs.enable = true;
-      vscode.enable = true;
     };
     desktop = {
       wayland.enable = true;
@@ -53,6 +53,7 @@
       media.enable = true;
       social.enable = true;
       productivity.enable = true;
+      zen-browser.enable = true;
     };
     terminal = {
       alacritty.enable = true;
@@ -86,25 +87,4 @@
     img2pdf
     gparted
   ];
-  #  home.persistence."/persist/home" = {
-  #    directories = [
-  #      "Downloads"
-  #      "Music"
-  #      "Pictures"
-  #      "Documents"
-  #      "Videos"
-  #      "VirtualBox VMs"
-  #      ".gnupg"
-  #      ".ssh"
-  #      ".nixops"
-  #      ".local/share/keyrings"
-  #      ".local/share/direnv"
-  #      {
-  #        directory = ".local/share/Steam";
-  #        method = "symlink";
-  #      }
-  #    ];
-  #    files = [ ".screenrc" ];
-  #    allowOther = true;
-  #  };
 }

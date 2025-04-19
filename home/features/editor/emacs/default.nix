@@ -227,6 +227,10 @@ in {
       unstable.nerd-fonts.fira-code
       unstable.nerd-fonts.caskaydia-cove
       unstable.nerd-fonts.geist-mono
+
+
+      # ai 
+      # aider-chat
     ];
 
     sops.secrets."emacs/authinfo" = { };
