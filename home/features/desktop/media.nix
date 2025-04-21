@@ -6,6 +6,24 @@ in {
     mkEnableOption "enable media gui programs";
 
   config = mkIf cfg.enable {
+
+    features.impermanence.files = [
+      # Brave
+      ".config/kwalletrc"
+    ];
+    features.impermanence.directories = [
+      # Brave
+      ".local/share/kwalletd/"
+      ".config/BraveSoftware"
+      ".cache/BraveSoftware"
+
+      # For nautilus bookmarks
+      # ".config/gtk-3.0/bookmarks"
+      ".config/gtk-3.0"
+      ".local/share/nautilus"
+
+      ".config/FreeTube"
+    ];
     home.packages = with pkgs; [
       minitube
       mpv

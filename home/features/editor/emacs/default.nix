@@ -20,6 +20,10 @@ let
 in {
   options.features.editor.emacs.enable = mkEnableOption "my emacs user config";
   config = mkIf cfg.enable {
+    features.impermanence.directories = [
+      # ".config/emacs"
+      ".config/emacs-doom"
+    ];
 
     # Emacs
     services.emacs = {
@@ -88,23 +92,23 @@ in {
 
     home.activation = let
       source = "${hostSpec.flakeDir}/home/features/editor/emacs/vanilla";
-        target =  "${config.xdg.configHome}/emacs";
+      target = "${config.xdg.configHome}/emacs";
     in {
       emacsActivationAction = ''
-        link_repo() {
-	  rm -r ${target}
-          ln -sf ${source} ${target}
-        }
-        if [ ! -d "${target}" ] || [ -z "$(ls "${target}")" ]; then 
-            link_repo
-        elif [ ! -L "${target}" ]; then
-            TEMP_DIR=$(mktemp -d)
-            mv ${target}/{.,}* $TEMP_DIR
-            link_repo
-            mv $TEMP_DIR/{.,}* ${target}
-            rm -r $TEMP_DIR
-        fi
-'';
+                link_repo() {
+        	  rm -r ${target}
+                  ln -sf ${source} ${target}
+                }
+                if [ ! -d "${target}" ] || [ -z "$(ls "${target}")" ]; then 
+                    link_repo
+                elif [ ! -L "${target}" ]; then
+                    TEMP_DIR=$(mktemp -d)
+                    mv ${target}/{.,}* $TEMP_DIR
+                    link_repo
+                    mv $TEMP_DIR/{.,}* ${target}
+                    rm -r $TEMP_DIR
+                fi
+      '';
       doomEmacsActivationAction = ''
         check_dir() {
             local dir="$1"
@@ -219,8 +223,6 @@ in {
       just
       # just-lsp
 
-
-
       #fonts
       unstable.nerd-fonts.im-writing
       unstable.nerd-fonts.jetbrains-mono
@@ -228,17 +230,15 @@ in {
       unstable.nerd-fonts.caskaydia-cove
       unstable.nerd-fonts.geist-mono
 
-
       # ai 
       # aider-chat
     ];
 
     sops.secrets."emacs/authinfo" = { };
 
-
-        # if check_dir "$EMACS_DIR"; then
-        #   ln -s ${hostSpec.flakeDir}/modules/home-manager/emacs/vanilla $EMACS_DIR
-        # fi
+    # if check_dir "$EMACS_DIR"; then
+    #   ln -s ${hostSpec.flakeDir}/modules/home-manager/emacs/vanilla $EMACS_DIR
+    # fi
 
     xdg.configFile."emacs/.env".text = ''
       WORK_GITFORGE_HOST=${private.work.gitForgeHost}

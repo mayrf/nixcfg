@@ -152,96 +152,15 @@ in {
 
       users.${config.hostSpec.username} = {
         directories = [
-          "Downloads"
-          "Music"
-          "Pictures"
-          "Documents"
-          "playground"
-          "Videos"
-          "code"
-          "cloud"
-          ".ssh"
-          ".gnupg"
-          # docker / distrobox
-          ".local/share/containers"
-
           "VirtualBox VMs"
-
-          ".librewolf"
-
-          ".thunderbird"
-
-          ".local/share/keyrings"
-
-          ".local/share/direnv"
-
           ".local/share/Steam"
-
-          ".local/share/fonts"
-
-          ".local/share/nautilus"
-          # For nautilus bookmarks
-          # ".config/gtk-3.0/bookmarks"
-          ".config/gtk-3.0"
-
-          ".local/share/gnucash"
-
-          ".local/share/Anki2"
-
           ".steam"
-
-          ".local/share/oterm"
-
-          ".config/emacs-doom"
-          # ".config/emacs"
-
-          ".config/Signal"
-
-          ".config/git"
-
-          ".config/Nextcloud"
-
-          ".config/keepassxc"
-
-          ".config/sops"
-          ".config/calibre"
-          ".config/nixcfg"
-          ".config/nix-secrets"
-          ".config/dotfiles-private"
-
           ".ollama"
-
-          ".cache/keepassxc"
-
-          # Brave
-          ".config/BraveSoftware"
-          ".cache/BraveSoftware"
-          ".local/share/kwalletd/"
-
-          ".config/FreeTube"
-
-          ".local/share/Nextcloud/"
-
-          ".config/libreoffice"
-
-          #{
-          #  directory = ".local/share/Steam";
-          #  method = "symlink";
-          #}
           # private stuff
           ".sparrow"
           ".local/share/Bisq2"
         ];
-        files = [
-          ".zsh_history"
-          ".git-credentials"
-
-          ".kube/config"
-          # Brave
-          ".config/kwalletrc"
-        ];
-        # allowOther = true;
-      };
+     };
     };
     programs.fuse.userAllowOther = true;
   };

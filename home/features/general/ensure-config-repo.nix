@@ -10,6 +10,9 @@ in {
   options.features.ensure-config-repo.enable =
     mkEnableOption "my ensure that config secrets repo is present on machine";
   config = mkIf cfg.enable {
+
+    features.impermanence.directories = [ ".config/nixcfg" ];
+
     systemd.user.tmpfiles.rules =
       [ "d  /home/${user}/.config/ 0755 ${user} users -" ];
     systemd.user.services.ensure-config-repo = {

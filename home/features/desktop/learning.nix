@@ -6,9 +6,8 @@ in {
     mkEnableOption "enable learning gui programs";
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      anki-bin
-      tipp10
-    ];
+    features.impermanence.directories = [ ".local/share/Anki2" ];
+
+    home.packages = with pkgs; [ anki-bin tipp10 ];
   };
 }

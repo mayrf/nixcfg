@@ -6,6 +6,16 @@ in {
     mkEnableOption "enable productivity gui programs";
 
   config = mkIf cfg.enable {
+
+    features.impermanence.directories = [
+          ".config/calibre"
+          ".thunderbird"
+          ".local/share/gnucash"
+          ".config/keepassxc"
+          ".cache/keepassxc"
+          ".config/libreoffice"
+    ];
+
     home.packages = with pkgs; [
       calibre
       drawio
@@ -18,7 +28,6 @@ in {
       gimp
       stable.gnucash
       stable.ardour
-      nextcloud-client
       onlyoffice-bin
       temurin-jre-bin-21
       libreoffice-qt6-fresh

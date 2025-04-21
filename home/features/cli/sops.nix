@@ -10,6 +10,8 @@ let
 in {
   options.features.cli.sops.enable = mkEnableOption "my sops user config";
   config = mkIf cfg.enable {
+
+    features.impermanence.directories = [ ".config/sops" ];
     # services.openssh.enable = true;
     sops = {
       defaultSopsFile = "${secretsPath}/secrets/secrets.yaml";

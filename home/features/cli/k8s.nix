@@ -5,6 +5,8 @@ in {
   options.features.cli.k8s.enable = mkEnableOption "enable k8s cli programs";
 
   config = mkIf cfg.enable {
+
+    features.impermanence.files = [ ".kube/config" ];
     home.packages = with pkgs; [
       fluxcd
       kubectl

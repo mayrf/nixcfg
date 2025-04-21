@@ -7,6 +7,10 @@ in {
 
   config = mkIf cfg.enable {
 
+    features.impermanence.files = [ ".zsh_history" ];
+
+    features.impermanence.directories = [ ".local/share/direnv" ];
+
     home.sessionVariables = {
       FONTS = "$HOME/.local/share/fonts";
       FLAKE = "${hostSpec.flakeDir}";

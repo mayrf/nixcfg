@@ -6,9 +6,9 @@ in {
     mkEnableOption "enable social gui programs";
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-        signal-desktop-source
-        hexchat
-    ];
+
+    features.impermanence.directories = [ ".config/Signal" ];
+
+    home.packages = with pkgs; [ signal-desktop-source hexchat ];
   };
 }

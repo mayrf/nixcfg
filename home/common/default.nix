@@ -1,13 +1,11 @@
 { inputs, lib, pkgs, config, outputs, hostSpec, ... }:
-let
-  inherit (inputs.nix-colors) colorSchemes;
+let inherit (inputs.nix-colors) colorSchemes;
 in {
   imports = [
     inputs.nix-colors.homeManagerModule
     ../../modules/common/host-spec.nix
     ./mime-apps.nix
   ];
-
 
   services = {
     gpg-agent = {
@@ -23,6 +21,25 @@ in {
     stateVersion = lib.mkDefault "25.05";
     sessionPath = [ "$HOME/.local/bin" ];
   };
+
+  features.impermanence.directories = [
+
+    # docker / distrobox
+    ".local/share/containers"
+
+    ".ssh"
+    ".gnupg"
+    ".local/share/keyrings"
+    "Downloads"
+    "Music"
+    "Pictures"
+    "Documents"
+    "playground"
+    "Videos"
+    "code"
+    "cloud"
+    ".local/share/fonts"
+  ];
 
   home.file = {
     ".local/bin" = {
@@ -84,7 +101,6 @@ in {
     home-manager.enable = true;
     git.enable = true;
   };
-
 
   home.file.".colorscheme".text = config.colorscheme.slug;
 

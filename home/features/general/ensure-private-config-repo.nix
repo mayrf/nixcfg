@@ -10,10 +10,14 @@ in {
   options.features.ensure-private-config-repo.enable =
     mkEnableOption "my ensure that config secrets repo is present on machine";
   config = mkIf cfg.enable {
+    features.impermanence.directories = [ ".config/dotfiles-private" ];
+
     systemd.user.tmpfiles.rules =
       [ "d  /home/${user}/.config/ 0755 ${user} users -" ];
     systemd.user.services.ensure-private-config-repo = {
-      Unit = { Description = "Ensure nixos private config git repository exists."; };
+      Unit = {
+        Description = "Ensure nixos private config git repository exists.";
+      };
       Install = { WantedBy = [ "default.target" ]; };
       Service = {
         ExecStart = "${pkgs.writeShellScript "watch-store" ''

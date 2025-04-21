@@ -6,6 +6,9 @@ in {
     mkEnableOption "nextcloud-client config";
 
   config = mkIf cfg.enable {
+
+    features.impermanence.directories =
+      [ ".local/share/Nextcloud/" ".config/Nextcloud" ];
     services = {
       nextcloud-client = {
         enable = true;
