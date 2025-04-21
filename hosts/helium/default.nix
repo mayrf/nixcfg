@@ -8,6 +8,7 @@
     ../common
     ../common/users
     inputs.dotfiles-private.outputs.nixosModules
+    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x220
     (import ./disko.nix { device = "/dev/sda"; })
   ];
 

@@ -2,9 +2,12 @@
 with lib;
 let cfg = config.features.editor.nvim;
 in {
-  options.features.editor.nvim = { enable = mkEnableOption "my myvim user config"; };
+  imports = [ inputs.nixvim.homeManagerModules.nixvim ];
+  options.features.editor.nvim = {
+    enable = mkEnableOption "my myvim user config";
+  };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ nixd alejandra gnumake ];
+    home.packages = with pkgs; [ neovim nixd alejandra gnumake ];
 
     programs.nixvim = {
       #imports = [./keymaps.nix];

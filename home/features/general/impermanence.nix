@@ -1,7 +1,8 @@
-{ config, pkgs, lib, hostSpec, ... }:
+{ config, pkgs, lib, hostSpec, inputs, ... }:
 with lib;
 let cfg = config.features.impermanence;
 in {
+  imports = [ inputs.impermanence.nixosModules.home-manager.impermanence ];
   options.features.impermanence = {
     enable = mkEnableOption "my impermanence config";
     directories = mkOption {

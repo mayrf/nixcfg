@@ -8,6 +8,7 @@ let
   else
     "/home/${hostSpec.username}/.ssh/id_ed25519";
 in {
+  imports = [ inputs.sops-nix.homeManagerModules.sops ];
   options.features.cli.sops.enable = mkEnableOption "my sops user config";
   config = mkIf cfg.enable {
 

@@ -2,9 +2,11 @@
   description = "mayrf's NixOs configuration";
 
   inputs = {
-    dotfiles-private.url =
-      "git+ssh://git@codeberg.org/mayrf/dotfiles-private.git";
-
+    dotfiles-private = {
+      url = "git+ssh://git@codeberg.org/mayrf/dotfiles-private.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";

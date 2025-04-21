@@ -70,9 +70,6 @@ in {
     users.${username}.imports = lib.flatten
       (lib.optional (!config.hostSpec.isMinimal) [
         ../../../home/${username}/${config.hostSpec.hostName}.nix
-        inputs.impermanence.nixosModules.home-manager.impermanence
-        inputs.nixvim.homeManagerModules.nixvim
-        inputs.sops-nix.homeManagerModules.sops
       ]);
   };
 
