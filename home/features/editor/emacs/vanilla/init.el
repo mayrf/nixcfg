@@ -787,6 +787,7 @@
 			#'my/gtd-file
 			'("someday.org"
 			  "inbox_phone.org"
+			  "read_review.org"
 			  "Inbox.org"
 			  ))))
 
@@ -1600,7 +1601,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 	))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "|" "DONE(d)" "CANC(c)")
+      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "PROJ(p)" "|" "DONE(d)" "CANCELED(c)")
         ))
 
 (setq org-stuck-projects
