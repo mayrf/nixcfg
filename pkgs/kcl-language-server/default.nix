@@ -2,27 +2,16 @@
 , rustc, }:
 rustPlatform.buildRustPackage rec {
   pname = "kcl-language-server";
-  version = "0.9.3";
+  version = "0.11.2";
 
   src = fetchFromGitHub {
     owner = "kcl-lang";
     repo = "kcl";
     rev = "v${version}";
-    # hash = "sha256-slU3n7YCV5VfvXArzlcITb9epdu/gyXlAWq9KLjGdJA=";
-    hash = "sha256-nk5oJRTBRj0LE2URJqno8AoZ+/342C2tEt8d6k2MAc8=";
+    hash = "sha256-6XDLxTpgENhP7F51kicAJB7BNMtX4cONKJApAhqgdno=";
   };
-
-  # sourceRoot = "source/kclvm/tools/src/LSP";
   sourceRoot = "source/kclvm";
-  cargoLock = {
-    lockFile = ./Cargo.lock;
-    outputHashes = {
-      "inkwell-0.2.0" = "sha256-JxSlhShb3JPhsXK8nGFi2uGPp8XqZUSiqniLBrhr+sM=";
-      "protoc-bin-vendored-3.1.0" =
-        "sha256-RRqpPMJygpKGG5NYzD93iy4htpVqFhYMmfPgbRtpUqg=";
-    };
-  };
-  # cargoPatches = [ ./cargo.lock.patch ];
+  cargoHash = "sha256-eJ3Gh2l6T2DxJRQRHamPOr/ILtzsqFB497DdXVJ90RE=";
 
   buildInputs = [ rustc ] ++ lib.optionals stdenv.isDarwin [
     darwin.apple_sdk.frameworks.Security
@@ -41,21 +30,6 @@ rustPlatform.buildRustPackage rec {
   PROTOC = "${protobuf}/bin/protoc";
   PROTOC_INCLUDE = "${protobuf}/include";
 
-  meta = with lib; {
-    description = "A lsp-server for the KCL programming language";
-    homepage = "https://github.com/kcl-lang/lsp";
-    license = licenses.asl20;
-    platforms = platforms.linux ++ platforms.darwin;
-    maintainers = with maintainers; [ selfuryon peefy ];
-  };
-
-  # Customize phases as needed
-  # preBuild = ''
-  #   echo "Entering the application's subdirectory"
-  #   cd tools/src/LSP
-  # '';
-
-  # Define the build phase
   buildPhase = ''
     echo "Building the application"
     cargo build --package kcl-language-server --release
@@ -65,5 +39,13 @@ rustPlatform.buildRustPackage rec {
     mkdir -p $out/bin
     cp target/release/kcl-language-server $out/bin/
   '';
+
+  meta = with lib; {
+    description = "A lsp-server for the KCL programming language";
+    homepage = "https://github.com/kcl-lang/lsp";
+    license = licenses.asl20;
+    platforms = platforms.linux ++ platforms.darwin;
+    maintainers = with maintainers; [ selfuryon peefy ];
+  };
 
 }
