@@ -11,15 +11,15 @@ in {
     # Enable TLP (better than gnomes internal power manager)
     #
     # 10.04.25: Breaks because of dependency devscripts_2.23.7.tar.xz being unavailable
-    # services.tlp = {
-    #   enable = true;
-    #   settings = {
-    #     CPU_BOOST_ON_AC = 1;
-    #     CPU_BOOST_ON_BAT = 0;
-    #     CPU_SCALING_GOVERNOR_ON_AC = "performance";
-    #     CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-    #   };
-    # };
+    services.tlp = {
+      enable = lib.mkForce false;
+      # settings = {
+      #   CPU_BOOST_ON_AC = 1;
+      #   CPU_BOOST_ON_BAT = 0;
+      #   CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      #   CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      # };
+    };
 
   services.auto-cpufreq.enable = true;
   services.auto-cpufreq.settings = {

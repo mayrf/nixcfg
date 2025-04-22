@@ -84,10 +84,15 @@ in {
 
       "optimize" = ''
         nix-env --list-generations
-                nix-env --delete-generations +1
-                sudo nix-collect-garbage -d
-                nix-collect-garbage -d
-                sudo nix-store --optimise'';
+        nix-env --delete-generations +1
+        sudo nix-collect-garbage -d
+        nix-collect-garbage -d
+        sudo nix-store --optimise
+      '';
+      "fix-nixstore" = ''
+        sudo nix-store --verify --check-contents
+        sudo nix-store --gc
+      '';
       # "emacs" = "emacsclient -c";
       "rlwb" = "pkill -USR2 waybar";
       "fcd" = ''cd "$(find -type d | fzf)"'';
