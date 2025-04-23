@@ -19,6 +19,7 @@ in {
       python3
       compose2nix
       postgresql
+      mariadb
       nerdctl
       httpyac
       sops

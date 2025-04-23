@@ -9,6 +9,7 @@ in {
     features.impermanence.files = [ ".kube/config" ];
     home.packages = with pkgs; [
       fluxcd
+      kind
       kubectl
       kubectl-cnpg
       argocd

@@ -7,12 +7,12 @@
     ../common/users
     ./vpn-kit.nix
     inputs.dotfiles-private.outputs.nixosModules
-    # ./proxy-vars.nix
   ];
   privModules.workProxies.enable = true;
 
   features = {
     sops.enable = true; 
+    docker.enable = true;
   };
 
   hostSpec = {
@@ -20,9 +20,6 @@
     username = "mayrf";
     hostName = "radium";
   };
-
-  features.docker.enable = true;
-
 
   environment.systemPackages = with pkgs; [ wsl-vpnkit ];
 }
