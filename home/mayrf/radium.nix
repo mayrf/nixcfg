@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -29,6 +29,10 @@
       nvim.enable = true;
     };
   };
+
+  home.packages = with pkgs; [
+      mariadb
+  ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
 

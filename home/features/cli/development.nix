@@ -14,12 +14,10 @@ in {
       devbox
       git
       git-crypt
-      dbeaver-bin
       just
       python3
       compose2nix
       postgresql
-      mariadb
       nerdctl
       httpyac
       sops
