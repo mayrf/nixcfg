@@ -11,7 +11,7 @@ let
   # emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
   emacs = ((pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages
     # (epkgs: [ epkgs.vterm epkgs.emacsql-sqlite epkgs.pdf-tools ]));
-    (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools ]));
+    (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools epkgs.org ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";
   emacsBinPath = "${emacs}/bin";
   # Match the default socket path for the Emacs version so emacsclient continues

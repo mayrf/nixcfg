@@ -19,6 +19,7 @@ in {
       kcl-language-server
       kubernetes-helm
       argocd
+      kargo
       stable.argocd-autopilot
     ];
   };

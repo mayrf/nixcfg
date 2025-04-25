@@ -725,6 +725,13 @@
 
 (use-package org
   :ensure nil
+  :init
+  (add-hook 'org-mode-hook (lambda ()
+                             ;; (fset 'tex-font-lock-suscript 'ignore)
+                             (org-babel-do-load-languages
+                              'org-babel-load-languages
+                              '((python . t)
+                                (shell . t)))))
   :config
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
   (setq org-src-fontify-natively t))
@@ -1206,6 +1213,52 @@ re-align the table if necessary. (Necessary because org-mode has a
   :config
   (my/leader "mlc" 'org-cliplink))
 
+(use-package org
+  :ensure nil
+  :config
+  (defun my/vterm-execute-current-line ()
+    "Insert text in vterm and execute.
+   If region is active, execute the selected text.
+   Otherwise, execute current line and any continuation lines marked with backslash."
+    (interactive)
+    (require 'vterm)
+    (eval-when-compile (require 'subr-x))
+    (let ((command
+           (if (use-region-p)
+               ;; Use the selected region
+               (string-trim (buffer-substring (region-beginning) (region-end)))
+             ;; No region, so get current line and any continuation lines
+             (let ((start-point (save-excursion
+                                  (beginning-of-line)
+                                  (point)))
+                   (end-point nil))
+               (save-excursion
+		 (beginning-of-line)
+		 (while (and (not (eobp))
+                             (or (not end-point)
+				 (and (> (point) start-point)
+                                      (save-excursion
+					(end-of-line 0)  ; Move to end of previous line
+					(looking-back "\\\\" (- (point) 1))))))
+                   (end-of-line)
+                   (setq end-point (point))
+                   (unless (eobp) (forward-line 1)))
+		 (string-trim (buffer-substring start-point end-point)))))))
+      (let ((buf (current-buffer)))
+	(unless (get-buffer vterm-buffer-name)
+          (vterm))
+	(display-buffer vterm-buffer-name t)
+	(switch-to-buffer-other-window vterm-buffer-name)
+	(vterm--goto-line -1)
+	(message command)
+	(vterm-send-string command)
+	(vterm-send-return)
+	(switch-to-buffer-other-window buf))))
+
+  (my/leader
+    "m b t" '(my/vterm-execute-current-line :wk "Send and execute region/line to vterm")
+    ))
+
 (setq org-src-preserve-indentation t)
 
 (setq org-src-tab-acts-natively t)
@@ -1222,6 +1275,8 @@ re-align the table if necessary. (Necessary because org-mode has a
 ;;   ;; Usually a good idea to set the timezone manually
 ;;   (setq org-icalendar-timezone "Europe/Berlin")
 ;;   :commands (org-caldav-sync))
+
+(use-package olivetti)
 
 (use-package denote
   :after org
