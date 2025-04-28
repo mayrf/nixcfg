@@ -30,9 +30,11 @@
     gaming.enable = true;
     impermanence.enable = true;
     winapps.enable = true;
+    private = {
+      common.enable = true;
+      vpn.enable = true;
+    };
   };
-
-  privModules.common.enable = true;
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
@@ -50,4 +52,5 @@
 
   system.stateVersion =
     config.hostSpec.sysStateVersion; # Did you read the comment?
+
 }

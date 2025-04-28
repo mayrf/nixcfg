@@ -8,11 +8,13 @@
     ./vpn-kit.nix
     inputs.dotfiles-private.outputs.nixosModules
   ];
-  privModules.workProxies.enable = true;
 
   features = {
     sops.enable = true; 
     docker.enable = true;
+    private = {
+      workProxies.enable = true;
+    };
   };
 
   hostSpec = {

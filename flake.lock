@@ -145,11 +145,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745423023,
-        "narHash": "sha256-XC9TC4PgSS+hXTIE366d9eQuBZFl4FtVa8q97Tk+79w=",
+        "lastModified": 1745817780,
+        "narHash": "sha256-J4AG6E1jPIGO9GxsBGI1qdWAc9vqUXvoD7T+MI1tU8w=",
         "ref": "refs/heads/master",
-        "rev": "78b53623089d29be5a93cf7dc4ad79f5f735711e",
-        "revCount": 9,
+        "rev": "5cecb2131f543e50d2455e13762900834b73098f",
+        "revCount": 10,
         "type": "git",
         "url": "ssh://git@codeberg.org/mayrf/dotfiles-private.git"
       },
@@ -884,11 +884,11 @@
     "nix-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1744485423,
-        "narHash": "sha256-LQHvaSRc5hd5y0zJXW3r+Nn2ZBiNY3mGsU2GCleemAY=",
+        "lastModified": 1745754731,
+        "narHash": "sha256-NXiISEtxJW9/uzlyPgSH8UhsVuJPUWh3EAwexGMiVic=",
         "ref": "refs/heads/master",
-        "rev": "e3e98e5bae1aac7d6c899b72edeb861ff97bd899",
-        "revCount": 28,
+        "rev": "fe074b6a58879bf7ae0d00a90d00cc45a4cbffbb",
+        "revCount": 29,
         "type": "git",
         "url": "ssh://git@codeberg.org/mayrf/nix-secrets.git"
       },

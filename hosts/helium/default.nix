@@ -23,9 +23,12 @@
     # virtualisation.enable = true;
     laptop.enable = true;
     impermanence.enable = true;
+    private = {
+      common.enable = true;
+      vpn.enable = true;
+    };
   };
 
-  privModules.common.enable = true;
 
   hostSpec = {
     isMinimal = false;
