@@ -15,6 +15,7 @@ in {
       argocd
       kubernetes-helm
       kcl
+      docker-credential-helpers # needed for kcl packages
       k9s
       kcl-language-server
       kubernetes-helm

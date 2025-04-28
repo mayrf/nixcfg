@@ -21,11 +21,11 @@ in {
 
     # virtualisation.containerd.enable = true;
 
-    # environment.systemPackages = with pkgs; [
-    #   docker-compose
-    #   distrobox
-    #   docker-credential-helpers
-    # ];
+    environment.systemPackages = with pkgs; [
+      docker-compose
+      distrobox
+      docker-credential-helpers
+    ];
     # virtualisation.podman = {
     #   enable = true;
     #   dockerCompat = true;
