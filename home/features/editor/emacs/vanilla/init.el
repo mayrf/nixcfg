@@ -403,7 +403,7 @@
     "X" '(org-capture :wk "Org Capture")
     "m q" '(org-set-tags-command :wk "Set org tags for Heading")
     "m r r" '(org-refile :wk "Org regfile")
-    "m a" '(org-agenda :wk "Org agenda")
+    "m a" '(org-archive-subtree :wk "Archive org subtree")
     "m e" '(org-export-dispatch :wk "Org export dispatch")
     "m i" '(org-toggle-item :wk "Org toggle item")
     "m t" '(org-todo :wk "Org todo")
@@ -416,6 +416,8 @@
 
   (my/leader
     "m d" '(:ignore t :wk "Date/deadline")
+    "m d s" '(org-schedule :wk "Org schedule")
+    "m d d" '(org-deadline :wk "Org dealine")
     "m d t" '(org-time-stamp :wk "Org time stamp"))
 
   (my/leader
