@@ -18,6 +18,52 @@ let
 in {
   options.features.impermanence = {
     enable = mkEnableOption "my impermanence config";
+    directories_no_bak = mkOption {
+      # type = types.listOf
+      #   (types.coercedTo types.str (directory: { inherit directory; })
+      #     (submodule {
+      #       options = {
+      #         directory = mkOption {
+      #           type = str;
+      #           description = "The directory path to be linked.";
+      #         };
+      #         method = mkOption {
+      #           type = types.enum [ "bindfs" "symlink" ];
+      #           default = config.defaultDirectoryMethod;
+      #           description = ''
+      #             The linking method to be used for this specific
+      #             directory entry. See
+      #             <literal>defaultDirectoryMethod</literal> for more
+      #             information on the tradeoffs.
+      #           '';
+      #         };
+      #       };
+      # }));
+
+      # type = lib.types.listOf li
+      default = [ ];
+      example = [
+        "Downloads"
+        "Music"
+        "Pictures"
+        "Documents"
+        "Videos"
+        "VirtualBox VMs"
+        ".gnupg"
+        ".ssh"
+        ".local/share/keyrings"
+        ".local/share/direnv"
+        {
+          directory = ".local/share/Steam";
+          method = "symlink";
+        }
+      ];
+      description = ''
+        A list of directories in your home directory that
+        you want to link to persistent storage. You may optionally
+        specify the linking method each directory should use.
+      '';
+    };
     directories = mkOption {
       # type = types.listOf
       #   (types.coercedTo types.str (directory: { inherit directory; })
@@ -100,6 +146,20 @@ in {
     '';
 
     fileSystems.${config.hostSpec.persistDir}.neededForBoot = true;
+
+    systemd.tmpfiles.rules = [
+      "d  /persist/no_bak 0755 root root -"
+      "d  /persist/no_bak/home 0755 ${config.hostSpec.username} users -"
+      "d  /persist/no_bak/home/${config.hostSpec.username} 0755 ${config.hostSpec.username} users -"
+    ];
+
+    environment.persistence."${config.hostSpec.persistDir}/no_bak" = {
+      hideMounts = true;
+      directories = [
+        "/var/lib/flatpak"
+      ] ++ cfg.directories_no_bak;
+    };
+
     environment.persistence."${config.hostSpec.persistDir}/system" = {
       hideMounts = true;
       directories = [
@@ -112,20 +172,12 @@ in {
 
         # Cups
 
-        "/var/lib/flatpak"
 
         {
           directory = "/var/lib/colord";
           user = "colord";
           group = "colord";
           mode = "u=rwx,g=rx,o=";
-        }
-
-        {
-          directory = "/etc/nixos";
-          user = "mayrf";
-          group = "users";
-          mode = "0777";
         }
 
         "/var/lib/private/open-webui"

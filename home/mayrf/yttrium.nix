@@ -17,6 +17,7 @@
     ensure-private-config-repo.enable = true;
     ensure-config-repo.enable = true;
     impermanence.enable = true;
+    impermanence.directories_no_bak = [ ".local/share/docker" ];
     cli = {
       zsh.enable = true;
       fzf.enable = true;

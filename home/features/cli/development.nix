@@ -11,7 +11,7 @@ in {
       nodejs
       yarn
       devbox
-      devbox
+      devenv
       git
       git-crypt
       just

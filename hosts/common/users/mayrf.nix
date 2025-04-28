@@ -27,6 +27,7 @@ in {
 
     extraGroups = lib.flatten [
       "wheel"
+      "docker"
       (ifTheyExist [
         "flatpak"
         "input"
@@ -35,7 +36,6 @@ in {
         "plugdev"
         "audio"
         "video"
-        "docker"
         "git"
         "networkmanager"
         "network"

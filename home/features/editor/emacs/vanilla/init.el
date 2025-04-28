@@ -1854,12 +1854,15 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
      (just "https://github.com/IndianBoy42/tree-sitter-just")
      ))
 
+;; TODO Find a way to have grammars installed declarativly
 (use-package treesit-auto
   :custom
-  (treesit-auto-install 'prompt)
+  ;; (treesit-auto-install 'prompt)
+  (treesit-auto-install t)
   :config
-  (setq treesit-auto-langs '(javascript typescript tsx css html))
-  (treesit-auto-add-to-auto-mode-alist '(javascript typescript tsx css html))
+  ;; (setq treesit-auto-langs '(javascript typescript tsx css html))
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  ;; (treesit-auto-add-to-auto-mode-alist '(javascript typescript tsx css html))
   (global-treesit-auto-mode))
 
 (electric-pair-mode)
