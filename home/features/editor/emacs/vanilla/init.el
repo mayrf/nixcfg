@@ -528,8 +528,8 @@
       (vterm-send-string (concat "cd " (shell-quote-argument parent-dir)))
       (vterm-send-return)))
   (my/leader
-    " o t" '(my/vterm-in-parent-directory :wk "open vterm and cd to dir of current buffer"))
-    " o T" '(vterm :wk "open vterm")
+    " o t" '(my/vterm-in-parent-directory :wk "open vterm and cd to dir of current buffer")
+    " o T" '(vterm :wk "open vterm"))
   )
 ;; :load-path  "path/to/emacs-libvterm/")
 
