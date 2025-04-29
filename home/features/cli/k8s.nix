@@ -6,7 +6,7 @@ in {
 
   config = mkIf cfg.enable {
 
-    features.impermanence.files = [ ".kube/config" ];
+    features.impermanence.directories = [ ".kube" ];
     home.packages = with pkgs; [
       fluxcd
       kind
@@ -22,6 +22,7 @@ in {
       argocd
       kargo
       stable.argocd-autopilot
+      minikube
     ];
   };
 }

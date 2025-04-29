@@ -20,7 +20,6 @@
     theming.enable = true;
     printing.enable = true;
     docker.enable = true;
-    # virtualisation.enable = true;
     laptop.enable = true;
     impermanence.enable = true;
     private = {
@@ -43,11 +42,6 @@
   features.vpn = {
     enable = true;
     configFile = config.sops.secrets."wireguard/x220_conf".path;
-  };
-
-  boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
-    binfmt.emulatedSystems = [ "aarch64-linux" "i686-linux" ];
   };
 
   system.stateVersion =
