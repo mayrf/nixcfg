@@ -82,6 +82,7 @@
         yttrium = myLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };
         helium = myLib.mkSystem "helium" { nixosPath = ./hosts/helium; };
         kalium = myLib.mkSystem "kalium" { nixosPath = ./hosts/kalium; };
+        valium = myLib.mkSystem "valium" { nixosPath = ./hosts/valium; };
       };
     };
 }
