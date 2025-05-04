@@ -2027,17 +2027,17 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
 
 ** Magit Forge
 #+begin_src emacs-lisp :tangle "init.el"
-(use-package forge
-  :after magit
-  :config
-  (setq auth-sources '("~/.authinfo")
-	work-gitforge-host (getenv "WORK_GITFORGE_HOST"))
-  (add-to-list 'forge-alist `( ,work-gitforge-host                       ; GITHOST
-			       ,(concat work-gitforge-host "/api/v4")                ; APIHOST
-			       ,work-gitforge-host                       ; WEBHOST and INSTANCE-ID
-			       forge-gitlab-repository)           ; CLASS
-	       )
-  )
+;; (use-package forge
+;;   :after magit
+;;   :config
+;;   (setq auth-sources '("~/.authinfo")
+;; 	work-gitforge-host (getenv "WORK_GITFORGE_HOST"))
+;;   (add-to-list 'forge-alist `( ,work-gitforge-host                       ; GITHOST
+;; 			       ,(concat work-gitforge-host "/api/v4")                ; APIHOST
+;; 			       ,work-gitforge-host                       ; WEBHOST and INSTANCE-ID
+;; 			       forge-gitlab-repository)           ; CLASS
+;; 	       )
+;;   )
 #+end_src
 
 * GPTel
@@ -2229,6 +2229,8 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   ;; :config
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )
+(dolist (mode '((nix-mode . ("nixd"))))
+  (add-to-list 'eglot-server-programs mode))
 
   #+end_src
 
@@ -2237,8 +2239,6 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
 ** kcl-lang
 #+begin_src emacs-lisp :tangle "init.el"
 
-;; (dolist (mode '((nix-mode . ("nixd"))))
-;;   (add-to-list 'eglot-server-programs mode)))
 
 (load (locate-user-emacs-file "lisp/kcl-mode.el"))
 (use-package kcl-ts-mode
@@ -2266,3 +2266,4 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   #+end_src
 
 
+  

@@ -10,7 +10,7 @@ in {
   services = {
     gpg-agent = {
       enable = true;
-      pinentryPackage = pkgs.pinentry-qt;
+      pinentry.package = pkgs.pinentry-qt;
     };
   };
   stylix.targets.emacs.enable = false;
@@ -64,8 +64,7 @@ in {
   };
 
   nix = {
-    package = lib.mkDefault pkgs.nix;
-    # package = pkgs.nixVersions.latest;
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
       warn-dirty = false;
       keep-outputs = true;

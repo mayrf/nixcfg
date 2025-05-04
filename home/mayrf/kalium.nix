@@ -31,10 +31,6 @@
     };
   };
 
-  # programs.waybar = {
-  #   enable = true;
-  #   systemd.enable = true;
-  # };
 
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

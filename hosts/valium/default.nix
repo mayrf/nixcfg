@@ -13,12 +13,12 @@
   hostSpec = {
     isMinimal = false;
     username = "mayrf";
-    hostName = "kalium";
+    hostName = "valium";
   };
 
 
   features = {
-    # gaming.enable = true;
+    gaming.enable = true;
   };
 
   # features.laptop.enable = true;

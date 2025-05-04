@@ -16,24 +16,19 @@
       yazi.enable = true;
       git.enable = true;
     };
-    desktop = {
-      wayland.enable = true;
-      waybar.enable = true;
-      hyprland.enable = true;
-      gammastep.enable = true;
-      mako.enable = true;
-      wofi.enable = true;
-      librewolf.enable = true;
-      gpg.enable = true;
-    };
+    # desktop = {
+    #   wayland.enable = true;
+    #   waybar.enable = true;
+    #   hyprland.enable = true;
+    #   gammastep.enable = true;
+    #   mako.enable = true;
+    #   wofi.enable = true;
+    #   librewolf.enable = true;
+    #   gpg.enable = true;
+    # };
     terminal = {
       ghostty.enable = true;
     };
-  };
-
-  programs.waybar = {
-    enable = true;
-    systemd.enable = true;
   };
 
 

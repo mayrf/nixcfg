@@ -13,7 +13,7 @@ in {
 
     home.sessionVariables = {
       FONTS = "$HOME/.local/share/fonts";
-      FLAKE = "${hostSpec.flakeDir}";
+      NH_FLAKE = "${hostSpec.flakeDir}";
     };
     home.packages = with pkgs; [ nh nix-output-monitor nvd ];
     programs.starship = {
@@ -35,7 +35,7 @@ in {
         ignoreDups = true;
         size = 100000;
       };
-      initExtra = ''
+      initContent = ''
             source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
             eval "$(direnv hook zsh)"
 

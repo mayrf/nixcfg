@@ -1759,17 +1759,17 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
     '("-a" "Autostash" "--autostash"))
   )
 
-(use-package forge
-  :after magit
-  :config
-  (setq auth-sources '("~/.authinfo")
-	work-gitforge-host (getenv "WORK_GITFORGE_HOST"))
-  (add-to-list 'forge-alist `( ,work-gitforge-host                       ; GITHOST
-			       ,(concat work-gitforge-host "/api/v4")                ; APIHOST
-			       ,work-gitforge-host                       ; WEBHOST and INSTANCE-ID
-			       forge-gitlab-repository)           ; CLASS
-	       )
-  )
+;; (use-package forge
+;;   :after magit
+;;   :config
+;;   (setq auth-sources '("~/.authinfo")
+;; 	work-gitforge-host (getenv "WORK_GITFORGE_HOST"))
+;;   (add-to-list 'forge-alist `( ,work-gitforge-host                       ; GITHOST
+;; 			       ,(concat work-gitforge-host "/api/v4")                ; APIHOST
+;; 			       ,work-gitforge-host                       ; WEBHOST and INSTANCE-ID
+;; 			       forge-gitlab-repository)           ; CLASS
+;; 	       )
+;;   )
 
 (use-package gptel
   :config
@@ -1922,9 +1922,8 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   ;; :config
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )
-
-;; (dolist (mode '((nix-mode . ("nixd"))))
-;;   (add-to-list 'eglot-server-programs mode)))
+(dolist (mode '((nix-mode . ("nixd"))))
+  (add-to-list 'eglot-server-programs mode))
 
 (load (locate-user-emacs-file "lisp/kcl-mode.el"))
 (use-package kcl-ts-mode

@@ -9,6 +9,7 @@ in {
 
     features.impermanence.directories =
       [ ".local/share/Nextcloud/" ".config/Nextcloud" ];
+    home.packages = with pkgs; [ nextcloud-client ];
     services = {
       nextcloud-client = {
         enable = true;

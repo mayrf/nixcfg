@@ -118,13 +118,13 @@ in {
     home.persistence."${hostSpec.persistDir}/no_bak/home/${hostSpec.username}" =
       {
         # hideMounts = true;
-        allowOther = false;
+        allowOther = true;
         directories = [ ] ++ cfg.directories_no_bak;
       };
 
     home.persistence."${hostSpec.persistDir}/system/home/${hostSpec.username}" =
       {
-        allowOther = false;
+        allowOther = true;
         directories = [ ] ++ cfg.directories;
         files = [ ".screenrc" ] ++ cfg.files;
       };
