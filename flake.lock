@@ -145,11 +145,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1746476521,
-        "narHash": "sha256-Sn1nKDlucXIUHUllxkca33YzvRo1EWH08Z8O4+nNcC0=",
+        "lastModified": 1746477352,
+        "narHash": "sha256-+zZkcQFXjAZPPwLzhsDIWOKOWWeHVa2WlI2TMT1MrPE=",
         "ref": "refs/heads/master",
-        "rev": "dc78a2aa229cbbd0fa6f0bdd61a7e73e9cfbfa1f",
-        "revCount": 11,
+        "rev": "bb901ef3f7cca38cc507e9bb16bd7409a51d4be7",
+        "revCount": 12,
         "type": "git",
         "url": "ssh://git@codeberg.org/mayrf/dotfiles-private.git"
       },
