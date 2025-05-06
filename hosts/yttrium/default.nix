@@ -1,4 +1,4 @@
-{ pkgs, config, inputs, ... }: {
+{ pkgs, config, inputs, stable, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -24,6 +24,7 @@
     sops.enable = true;
     theming.enable = true;
     printing.enable = true;
+    bluetooth.enable = true;
     docker.enable = true;
     open-webui.enable = true;
     virtualisation.enable = true;
@@ -42,8 +43,35 @@
     enable = true;
     acceleration = "rocm";
   };
+  features.impermanence.directories = [
+    "/var/lib/private/open-webui"
+    {
+      directory = "/var/lib/private";
+      mode = "u=rwx,g=,o=";
+    }
+    {
+      directory = "/var/lib/private/ollama";
+      mode = "0700";
+    }
+  ];
 
-  environment.systemPackages = [ pkgs.nfs-utils ];
+  environment.systemPackages = [
+    pkgs.nfs-utils
+    # pkgs.brscan4
+    # pkgs.stable.brscan4
+  ];
+  hardware.sane = {
+    enable = true;
+    brscan4 = {
+      enable = true;
+      netDevices = {
+        office1 = {
+          ip = "192.168.0.109";
+          model = "MFC-L2800DW";
+        };
+      };
+    };
+  };
 
   system.stateVersion =
     config.hostSpec.sysStateVersion; # Did you read the comment?

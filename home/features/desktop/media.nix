@@ -24,6 +24,9 @@ in {
 
       ".config/FreeTube"
     ];
+
+    # services.gvfs.enable =
+    #   true; # Belongs to gnome and nautilus, maybe try to turn off
     home.packages = with pkgs; [
       minitube
       mpv

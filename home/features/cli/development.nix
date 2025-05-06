@@ -23,6 +23,7 @@ in {
       sops
       age
       statix # Lints and suggestions for the nix programming language TODO: Use
+      nixfmt-classic
       # (python3.withPackages (ps: with ps; [ jupyter ]))
       minio-client
       # TODO add Scripts like:

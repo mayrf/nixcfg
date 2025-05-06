@@ -9,7 +9,6 @@ in {
     features.impermanence.directories = [ ".kube" ];
     home.packages = with pkgs; [
       fluxcd
-      kind
       kubectl
       kubectl-cnpg
       argocd
@@ -23,6 +22,8 @@ in {
       kargo
       stable.argocd-autopilot
       minikube
+      kind
     ];
+    home.sessionVariables = { KIND_EXPERIMENTAL_PROVIDER = "podman"; };
   };
 }

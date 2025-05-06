@@ -24,9 +24,6 @@ in {
 
   features.impermanence.directories = [
 
-    # docker / distrobox
-    ".local/share/containers"
-
     ".ssh"
     ".gnupg"
     ".local/share/keyrings"
@@ -98,7 +95,6 @@ in {
 
   programs = {
     home-manager.enable = true;
-    git.enable = true;
   };
 
   home.file.".colorscheme".text = config.colorscheme.slug;

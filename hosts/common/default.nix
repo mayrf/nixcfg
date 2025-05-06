@@ -10,13 +10,13 @@
     true; # Easiest to use and most distros use this by default.
   hardware.graphics = {
     enable = true;
-    extraPackages = with pkgs; [
-      # Not sure if I need all these...
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
+    # extraPackages = with pkgs; [
+    #   # Not sure if I need all these...
+    #   intel-media-driver # LIBVA_DRIVER_NAME=iHD
+    #   vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+    #   vaapiVdpau
+    #   libvdpau-va-gl
+    # ];
   };
 
   # No matter what environment we are in we want these tools for root, and the user(s)
@@ -28,24 +28,12 @@
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.settings = {
-    General = { Enable = "Source,Sink,Media,Socket"; };
-  };
 
   # optional
   # services.udev.packages = [ pkgs.yubikey-personalization ];
 
-  services.blueman.enable = true;
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
 
   #gnome stuff
-  services.gvfs.enable =
-    true; # Belongs to gnome and nautilus, maybe try to turn off
   programs.dconf.enable = true;
   # needed for gnome keyring / docker credentials
   programs.gnupg.agent = {
@@ -53,7 +41,6 @@
     enableSSHSupport = true;
   };
   services.openssh.enable = true;
-  security.pam.services = { swaylock = { }; };
 
   # Extra file
   environment = {
@@ -103,17 +90,13 @@
     busybox
     bluetuith
     vim
-    wireguard-tools
-    nixfmt-classic
     wget
-    system-config-printer
-    riseup-vpn
     libsForQt5.qt5.qtwayland
-    # pkgs-stable.rustdesk
     libsForQt5.polkit-kde-agent
     pass
     gnupg
     #Utils
+
     borgbackup
     borgmatic
     sshfs
@@ -145,7 +128,7 @@
       allowUnfreePredicate = (_: true);
     };
   };
-  nix.optimise.automatic = true;
+
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {

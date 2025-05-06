@@ -13,5 +13,10 @@ in {
       pkgs.brgenml1lpr
       pkgs.brgenml1cupswrapper
     ];
+
+    environment.systemPackages = [
+      pkgs.system-config-printer
+    ];
   };
+
 }

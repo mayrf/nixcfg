@@ -21,6 +21,7 @@
     printing.enable = true;
     docker.enable = true;
     laptop.enable = true;
+    bluetooth.enable = true;
     impermanence.enable = true;
     private = {
       common.enable = true;

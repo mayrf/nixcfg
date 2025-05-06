@@ -27,7 +27,6 @@ in {
 
     extraGroups = lib.flatten [
       "wheel"
-      "docker"
       (ifTheyExist [
         "flatpak"
         "input"

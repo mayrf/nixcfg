@@ -16,5 +16,6 @@
     ./printing.nix
     ./flatpak.nix
     ./winapps.nix
+    ./bluetooth.nix
   ];
 }

@@ -18,6 +18,7 @@
     ensure-config-repo.enable = true;
     impermanence.enable = true;
     impermanence.directories_no_bak = [ ".local/share/docker" ];
+    # podman.enable = true;
     cli = {
       zsh.enable = true;
       fzf.enable = true;

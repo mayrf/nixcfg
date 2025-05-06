@@ -155,39 +155,24 @@ in {
 
     environment.persistence."${config.hostSpec.persistDir}/no_bak" = {
       hideMounts = true;
-      directories = [
-        "/var/lib/flatpak"
-      ] ++ cfg.directories_no_bak;
+      directories = [ "/var/lib/flatpak" ] ++ cfg.directories_no_bak;
     };
 
     environment.persistence."${config.hostSpec.persistDir}/system" = {
       hideMounts = true;
       directories = [
         "/var/log"
-        "/var/lib/bluetooth"
         "/var/lib/nixos"
         "/var/lib/systemd/coredump"
         "/etc/NetworkManager/system-connections"
         "/etc/ssh"
 
         # Cups
-
-
         {
           directory = "/var/lib/colord";
           user = "colord";
           group = "colord";
           mode = "u=rwx,g=rx,o=";
-        }
-
-        "/var/lib/private/open-webui"
-        {
-          directory = "/var/lib/private";
-          mode = "u=rwx,g=,o=";
-        }
-        {
-          directory = "/var/lib/private/ollama";
-          mode = "0700";
         }
       ] ++ cfg.directories;
 
@@ -208,11 +193,9 @@ in {
           ".local/share/Steam"
           ".steam"
           ".ollama"
-          # private stuff
-          ".sparrow"
-          ".local/share/Bisq2"
+          ".local/share/containers"
         ];
-     };
+      };
     };
     programs.fuse.userAllowOther = true;
   };

@@ -14,6 +14,7 @@ in {
     home.sessionVariables = {
       FONTS = "$HOME/.local/share/fonts";
       NH_FLAKE = "${hostSpec.flakeDir}";
+      FLAKE = "${hostSpec.flakeDir}";
     };
     home.packages = with pkgs; [ nh nix-output-monitor nvd ];
     programs.starship = {

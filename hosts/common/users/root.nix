@@ -12,7 +12,6 @@
     openssh.authorizedKeys.keys =
       config.users.users.${config.hostSpec.username}.openssh.authorizedKeys.keys;
 
-  # environment.systemPackages = [ pkgs.just pkgs.rsync ];
   };
 } // lib.optionalAttrs (inputs ? "home-manager") {
   home-manager.users.root = lib.optionalAttrs (!config.hostSpec.isMinimal) {
