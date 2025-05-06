@@ -32,6 +32,7 @@
 
   home.packages = with pkgs; [
       mariadb
+      mysql-shell
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
