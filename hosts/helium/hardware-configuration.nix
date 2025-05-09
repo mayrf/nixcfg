@@ -25,24 +25,14 @@
     };
   };
 
-  # fileSystems."/" = {
-  #   device = "/dev/disk/by-label/nixos";
-  #   fsType = "ext4";
-  # };
+  features.impermanence.directories = [
+    "/var/lib/swap"
+  ];
 
-  # boot.initrd.luks.devices."crypt".device =
-  #   "/dev/disk/by-uuid/63269954-250b-4521-8e83-9edb0a0233f2";
-
-  # fileSystems."/boot" = {
-  #   #      device = "/dev/disk/by-uuid/BFBC-D8CE";
-  #   device = "/dev/disk/by-label/boot";
-  #   fsType = "vfat";
-  # };
-
-  # swapDevices = [{
-  #   device = "/var/lib/swapfile";
-  #   size = 16 * 1024;
-  # }];
+  swapDevices = [{
+    device = "/var/lib/swap/swapfile";
+    size = 16 * 1024;
+  }];
   services.fstrim.enable = true;
 
   networking.useDHCP = lib.mkDefault true;

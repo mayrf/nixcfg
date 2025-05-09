@@ -178,7 +178,7 @@ in {
 
       files = [
         "/etc/machine-id"
-        "/var/lib/swapfile"
+        # "/var/lib/swapfile"
         # Locate
         "/var/cache/locatedb"
         {
