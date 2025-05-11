@@ -8,6 +8,10 @@ in {
 
     features.impermanence.directories =
       [ ".config/fabric" ".local/share/oterm" ];
-    home.packages = with pkgs; [ oterm fabric-ai ];
+    home.packages = with pkgs; [
+      oterm
+      fabric-ai
+      # stable.aider-chat
+    ];
   };
 }

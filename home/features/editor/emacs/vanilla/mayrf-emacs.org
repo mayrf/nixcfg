@@ -1912,13 +1912,16 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
           (todo ".*" ((org-agenda-files (mapcar
 					 #'my/gtd-file
 					 '( "Inbox.org" "inbox_phone.org")))
-                      (org-agenda-overriding-header "Unprocessed Inbox Items")))))
+                      ;; (org-agenda-overriding-header "Unprocessed Inbox Items")
+		      ))))
 
 	("n" "next" todo "NEXT")
         ("u" "untagged Tasks" tags-todo "-{.*}")
-	("i" "Inbox"
-         ((todo ".*" ((org-agenda-files '("~//Inbox.org"))
-                      (org-agenda-overriding-header "Unprocessed Inbox Items")))))
+        ("i" "Inbox"
+         ((todo "" ((org-agenda-files '("~/Documents/org/gtd/Inbox.org"))
+                    ;; (org-agenda-overriding-header "Unprocessed Inbox Items")
+		    ))))
+
 	("d" "Daily Agenda"
          ((agenda "" ((org-agenda-span 'day)
                       (org-deadline-warning-days 7)))

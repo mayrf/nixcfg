@@ -91,8 +91,10 @@ in {
         sudo nix-store --optimise
       '';
       "fix-nixstore" = ''
-        sudo nix-store --verify --check-contents
         sudo nix-store --gc
+        nix-store --gc
+        sudo nix-store --verify --check-contents --repair
+        nix-store --verify --check-contents --repair
       '';
       # "emacs" = "emacsclient -c";
       "rlwb" = "pkill -USR2 waybar";
