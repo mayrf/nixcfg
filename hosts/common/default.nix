@@ -60,6 +60,10 @@
     hostName = config.hostSpec.hostName; # Define your hostname.
   };
 
+  # boot.kernelPackages = pkgs.linuxKernel.kernels.linux_6_14;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
+
+
   security.sudo.wheelNeedsPassword = false;
   time.timeZone = "Europe/Berlin";
   # Select internationalisation properties.
