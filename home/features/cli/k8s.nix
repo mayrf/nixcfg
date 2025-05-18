@@ -14,6 +14,7 @@ in {
       argocd
       kubernetes-helm
       kcl
+      crossplane-cli
       docker-credential-helpers # needed for kcl packages
       k9s
       kcl-language-server

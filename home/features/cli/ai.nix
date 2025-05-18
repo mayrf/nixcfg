@@ -12,6 +12,7 @@ in {
       oterm
       fabric-ai
       # stable.aider-chat
+      aider-chat
     ];
   };
 }

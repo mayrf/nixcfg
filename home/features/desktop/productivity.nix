@@ -33,6 +33,7 @@ in {
       libreoffice-qt6-fresh
       keepassxc
       # pkgs-stable.calibre
+      gramps
       legcord
       ipscan
       dbgate

@@ -28,10 +28,8 @@
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
-
   # optional
   # services.udev.packages = [ pkgs.yubikey-personalization ];
-
 
   #gnome stuff
   programs.dconf.enable = true;
@@ -63,7 +61,6 @@
   # boot.kernelPackages = pkgs.linuxKernel.kernels.linux_6_14;
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
-
   security.sudo.wheelNeedsPassword = false;
   time.timeZone = "Europe/Berlin";
   # Select internationalisation properties.
@@ -73,6 +70,8 @@
     # Gnome Keyring, store keys for apps like nextcloud client
     gnome.gnome-keyring.enable = true;
   };
+  services.gvfs.enable =
+    true; # Belongs to gnome and nautilus, maybe try to turn off
 
   environment.systemPackages = with pkgs; [
 
