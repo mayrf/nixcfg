@@ -36,11 +36,11 @@ in {
       #podman-compose # start group of containers for dev
     ];
 
-    # environment.extraInit = ''
-    #   if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-    #     export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-    #   fi
-    # '';
+    environment.extraInit = ''
+      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+      fi
+    '';
 
       # virtualisation.containers.storage.settings.storage.driver = "btrfs";
     # virtualisation.docker.storageDriver = lib.optionals (config.features.impermanence.enable == true) "btrfs";
