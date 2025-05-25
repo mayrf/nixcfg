@@ -23,6 +23,7 @@
       zsh.enable = true;
       fzf.enable = true;
       ai.enable = true;
+      media.enable = true;
       development.enable = true;
       k8s.enable = true;
       yazi.enable = true;

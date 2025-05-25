@@ -1503,7 +1503,10 @@ This goal of this section is to make emacs behave inside src blocks like in the 
 (use-package olivetti)
   
 #+end_src
-
+* Email
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package notmuch)
+#+end_src
 * Denote
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package denote

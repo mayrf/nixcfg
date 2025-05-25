@@ -153,6 +153,7 @@ in {
       imagemagick # for image-dired    sqlite
       gcc
       zstd # for undo-fu-session/undo-tree compression
+      notmuch
 
       # shell mode
       shfmt

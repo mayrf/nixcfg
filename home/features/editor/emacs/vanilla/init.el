@@ -1280,6 +1280,8 @@ re-align the table if necessary. (Necessary because org-mode has a
 
 (use-package olivetti)
 
+(use-package notmuch)
+
 (use-package denote
   :after org
   :config

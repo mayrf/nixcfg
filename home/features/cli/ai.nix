@@ -7,7 +7,7 @@ in {
   config = mkIf cfg.enable {
 
     features.impermanence.directories =
-      [ ".config/fabric" ".local/share/oterm" ];
+      [ ".config/fabric" ".local/share/oterm" ".cache/huggingface" ];
     home.packages = with pkgs; [
       oterm
       fabric-ai
