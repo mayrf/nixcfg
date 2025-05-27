@@ -1680,7 +1680,10 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
          ((agenda "" ((org-agenda-span 'day)
                       (org-deadline-warning-days 7)))
           (tags-todo "+PRIORITY=\"A\""
-                     ((org-agenda-overriding-header "High Priority Tasks")))))
+                     ((org-agenda-overriding-header "High Priority Tasks")))
+          (todo "NEXT"
+                     ((org-agenda-overriding-header "Next Tasks")))
+	  ))
 	("w" "Weekly Review"
          ((agenda ""
                   ((org-agenda-overriding-header "Completed Tasks")

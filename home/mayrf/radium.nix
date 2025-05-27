@@ -33,6 +33,7 @@
   home.packages = with pkgs; [
       mariadb
       mysql-shell
+      grafana-alloy
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

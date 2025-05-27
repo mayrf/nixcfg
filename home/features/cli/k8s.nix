@@ -11,6 +11,7 @@ in {
       fluxcd
       kubectl
       kubectl-cnpg
+      kubectl-tree 
       argocd
       kubernetes-helm
       kcl
