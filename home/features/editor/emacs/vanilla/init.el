@@ -1952,3 +1952,11 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   :mode ("\\.yml\\'" . yaml-ts-mode)
   :hook ((yaml-ts-mode . yaml-pro-ts-mode))
   )
+
+(use-package aider
+  :config
+  (setq aider-args '("--model" "ollama_chat/qwen3:1.7b" ))
+  ;; (setq aider-args '("--model" "ollama_chat/qwen3:4b" ))
+  ;; (setq aider-args '("--model" "ollama_chat/qwen3:8b" ))
+  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
+  (global-set-key (kbd "C-c a") 'aider-transient-menu)) ;; for wider screen
