@@ -8,17 +8,18 @@ in {
 
     features.impermanence.directories = [ ".kube" ];
     home.packages = with pkgs; [
+      auger
       fluxcd
       kubectl
       kubectl-cnpg
       kubectl-tree 
       argocd
       kubernetes-helm
-      kcl
+      unstable.kcl
       crossplane-cli
       docker-credential-helpers # needed for kcl packages
       k9s
-      kcl-language-server
+      unstable.kcl-language-server
       kubernetes-helm
       argocd
       kargo
