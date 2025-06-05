@@ -30,8 +30,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:danth/stylix";
-    stylix.inputs.nixpkgs.follows = "nixpkgs";
+    # stylix.url = "github:danth/stylix";
+    # stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.url = "github:nix-community/stylix/release-25.05";
 
     nix-secrets = {
       url = "git+ssh://git@codeberg.org/mayrf/nix-secrets.git";
