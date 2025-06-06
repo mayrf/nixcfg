@@ -741,6 +741,31 @@
 ;; (add-to-list 'org-structure-template-alist
 ;; 	     '("i" . "emacs-lisp :tangle init.el"))
 
+(with-eval-after-load 'org
+  ;; Teach org-mode about tree-sitter modes without changing how you write src blocks
+  (defun my/org-src-lang-modes-init ()
+    "Set up mappings between language names and tree-sitter modes."
+    (let ((ts-modes '("yaml" "python" "json" "js" "css" "c" "c++" "rust" "typescript" "html")))
+      (dolist (lang ts-modes)
+        (let ((ts-mode-sym (intern (format "%s-ts-mode" lang))))
+          (when (fboundp ts-mode-sym)
+            ;; Make "#+begin_src lang" use lang-ts-mode if it's available
+            (add-to-list 'org-src-lang-modes `(,lang . ,(intern lang)))))))
+  
+  ;; Override org-src-get-lang-mode to try tree-sitter mode first
+  (defun my/org-src-get-lang-mode (lang)
+    "Return mode that should be used for LANG. Try tree-sitter mode first."
+    (let* ((lang-mode (cdr (assoc lang org-src-lang-modes)))
+           (ts-mode-name (format "%s-ts-mode" (symbol-name (or lang-mode lang))))
+           (ts-mode-sym (intern ts-mode-name)))
+      (if (fboundp ts-mode-sym)
+          ts-mode-sym
+        (org-src--get-lang-mode lang))))
+  
+  ;; Apply our overrides
+  (advice-add 'org-src-get-lang-mode :override #'my/org-src-get-lang-mode)
+  (my/org-src-lang-modes-init)))
+
 (use-package org-download
   :custom
   (org-download-image-dir (file-name-concat org-directory "blobs/org-download"))
@@ -1960,3 +1985,8 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   ;; (setq aider-args '("--model" "ollama_chat/qwen3:8b" ))
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (global-set-key (kbd "C-c a") 'aider-transient-menu)) ;; for wider screen
+
+(use-package copilot
+  :vc (:url "https://github.com/copilot-emacs/copilot.el"
+            :rev :newest
+            :branch "main"))

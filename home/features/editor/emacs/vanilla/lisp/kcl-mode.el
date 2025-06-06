@@ -28,6 +28,18 @@
         function:
          (identifier) @font-lock-function-call-face))
 
+     :language kcl 
+     :feature function
+     ((call_expr
+        function:
+	(selector_expr
+	 (identifier) @font-lock-variable-use-face
+	 (select_suffix) @font-lock-function-call-face)))
+        ;; (identifier) @font-lock-string-face))
+;; @font-lock-string-face
+         ;; (member_expression
+         ;;  property: (property_identifier) @font-lock-function-call-face)]))
+
      :language kcl
      :feature string
      ((string) @font-lock-string-face)
@@ -67,6 +79,9 @@
          ((node-is "}") parent-bol 0)
          ((node-is "]") parent-bol 0)
          ((node-is ")") parent-bol 0)
+         ;; ((and (no-node) (parent-is ")") parent-bol 0)
+         ;; ((and (no-node) (parent-is "}") parent-bol 0)
+         ;; ((and (no-node) (parent-is "]") parent-bol 0)
          ((parent-is "assign_stmt") parent-bol kcl-ts-mode-indent-offset)
          ((parent-is "{") parent-bol kcl-ts-mode-indent-offset)
          ((parent-is "config_expr") parent-bol kcl-ts-mode-indent-offset)

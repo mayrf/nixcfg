@@ -14,6 +14,7 @@
     docker.enable = true;
     private = {
       workProxies.enable = true;
+      work.enable = true;
     };
   };
 
