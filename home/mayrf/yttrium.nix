@@ -69,7 +69,8 @@
     settings = {
       monitor = [
         "HDMI-A-1,2560x1440@60,0x0,1"
-        "DP-2,2560x1440@60,2560x-560,1,transform,3"
+        "DP-2,2560x1440@60,2560x0,1"
+        # "DP-2,2560x1440@60,2560x-560,1,transform,3"
       ];
       workspace = [
         "1, monitor:HDMI-A-1, default:true"

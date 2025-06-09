@@ -13,13 +13,17 @@ in {
 
   config = mkIf cfg.enable {
 
-    features.impermanence.directories = [ ".zen" ];
+    features.impermanence.directories = [
+      ".zen"
+      # ".config/zen"
+    ];
 
     stylix.targets.firefox.enable = false;
     programs.zen-browser = {
       enable = true;
       languagePacks = [ "en-GB" "de" ];
-      configPath = ".config/zen";
+      # configPath = ".config/zen";
+      configPath = ".zen";
       policies = {
         DisableAppUpdate = true;
         DisableTelemetry = true;
@@ -28,6 +32,10 @@ in {
       profiles."mayrf" = {
         isDefault = true;
         search.default = "Brave Search";
+        extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
+          privacy-badger
+          ublock-origin
+        ];
         search.engines = {
           nix-packages = {
             name = "Nix Packages";

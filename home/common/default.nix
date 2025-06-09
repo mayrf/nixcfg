@@ -51,6 +51,7 @@ in {
       outputs.overlays.additions
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages
+      inputs.nur.overlays.default
     ];
     config = {
       allowUnfree = true;

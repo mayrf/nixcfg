@@ -111,7 +111,7 @@ in {
       '';
     };
     files = mkOption {
-      type = listOf (coercedTo str (f: { file = f; }) rootFile);
+    #   type = listOf (coercedTo str (f: { file = f; }) rootFile);
       default = [ ];
       example = [ "/etc/machine-id" "/etc/nix/id_rsa" ];
       description = ''

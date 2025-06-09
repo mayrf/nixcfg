@@ -9,6 +9,7 @@ let
     inputs.stylix.nixosModules.stylix
     inputs.disko.nixosModules.default
     inputs.impermanence.nixosModules.impermanence
+    inputs.nixos-cli.nixosModules.nixos-cli
   ];
 
 

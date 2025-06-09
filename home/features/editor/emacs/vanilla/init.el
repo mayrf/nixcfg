@@ -726,6 +726,19 @@
 ;; )
 
 (use-package org
+  ;; Org Export Settings
+  :custom
+
+  (org-directory "~/Documents/org/")
+  (org-export-with-drawers nil)
+  (org-export-with-todo-keywords nil)
+  (org-export-with-broken-links t)
+  (org-export-with-toc nil)
+  (org-export-with-num nil)
+  (org-export-with-smart-quotes t)
+  (org-export-date-timestamp-format "%d %B %Y")
+
+
   :ensure nil
   :init
   (add-hook 'org-mode-hook (lambda ()
@@ -737,6 +750,31 @@
   :config
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
   (setq org-src-fontify-natively t))
+
+(with-eval-after-load 'org
+  (add-to-list 'org-file-apps '("\\.odt\\'" . "libreoffice %s")))
+
+(defun my/run-shell-command-in-dir (directory command)
+  "Run a shell COMMAND in the specified DIRECTORY and display output in a popup buffer."
+  (interactive
+   (list
+    (read-directory-name "Directory: ")
+    (read-shell-command "Shell command: ")))
+  (let ((default-directory (file-name-as-directory (expand-file-name directory)))
+        (buffer-name "*Shell Command Output*"))
+    (with-output-to-temp-buffer buffer-name
+      (with-current-buffer buffer-name
+        (let ((exit-code (call-process-shell-command command nil t t)))
+          (insert (format "\n\n[Process exited with code %d]" exit-code)))))))
+
+(defun my/run-git-sync ()
+  "Run a shell COMMAND in the specified DIRECTORY and display output in a popup buffer."
+  (interactive)
+  (my/run-shell-command-in-dir org-directory "git-sync -n"))
+
+  (my/leader
+    "m s g" '(my/run-git-sync :wk "Sync org files")
+    )
 
 ;; (add-to-list 'org-structure-template-alist
 ;; 	     '("i" . "emacs-lisp :tangle init.el"))
@@ -801,7 +839,6 @@
 
 (setq org-reverse-note-order t)
 (setq org-src-preserve-indentation t)
-(setq org-directory "~/Documents/org/")
 
 (setq my-gtd-files (mapcar
 		    #'my/gtd-file
@@ -854,9 +891,18 @@
 	;;  :immediate-finish nil
 	;;  :kill-buffer t
 	;;  :jump-to-captured t)
-	("t" "New task" entry
-	 (file+headline org-default-notes-file "Tasks")
-	 "* TODO %i%?")
+	;; ("t" "New task" entry
+	;;  (file+headline org-default-notes-file "Tasks")
+	;;  "* TODO %i%?")
+        ("t" "todo" entry 
+         (file+headline org-next-file "SIMPLE TASKS")
+         "* TODO %?")
+        ("T" "todo today" entry 
+         (file+headline org-next-file "SIMPLE TASKS")
+         "* TODO %?\nDEADLINE: %t")
+        ("i" "inbox" entry 
+         (file "~/inbox.org")
+         "* %?")
 	("K" "Cliplink capture task" entry
 	 (file+headline org-default-notes-file "Links")
 	 ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
@@ -1316,23 +1362,23 @@ re-align the table if necessary. (Necessary because org-mode has a
     "n r R" '(denote-rename-file-using-front-matter :wk "Rename note using front matter"))
   (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/"))))
 ;; (with-eval-after-load 'org-capture
-(add-to-list 'org-capture-templates
-             '("N" "New note with no prompts (with denote.el)" plain
-	       (file denote-last-path)
-	       (function
-                (lambda ()
-                  (denote-org-capture-with-prompts nil nil nil)))
-	       :no-save t
-	       :immediate-finish nil
-	       :kill-buffer t
-	       :jump-to-captured t))
-(add-to-list 'org-capture-templates
-             '("j" "Journal" entry
-               (file denote-journal-extras-path-to-new-or-existing-entry)
-               "* %U %?\n%i\n%a"
-               :kill-buffer t
-               :empty-lines 1))
-;; TODO Add hook to automatically add the new file to agenda, until then, just reload config
+;; (add-to-list 'org-capture-templates
+;;              '("N" "New note with no prompts (with denote.el)" plain
+;; 	       (file denote-last-path)
+;; 	       (function
+;;                 (lambda ()
+;;                   (denote-org-capture-with-prompts nil nil nil)))
+;; 	       :no-save t
+;; 	       :immediate-finish nil
+;; 	       :kill-buffer t
+;; 	       :jump-to-captured t))
+;; (add-to-list 'org-capture-templates
+;;              '("j" "Journal" entry
+;;                (file denote-journal-extras-path-to-new-or-existing-entry)
+;;                "* %U %?\n%i\n%a"
+;;                :kill-buffer t
+;;                :empty-lines 1))
+;; ;; TODO Add hook to automatically add the new file to agenda, until then, just reload config
 (add-to-list 'org-capture-templates
 	     '("P" "New project (with Denote)" plain
 	       (file denote-last-path)
@@ -1482,19 +1528,20 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
     ( “ply” . "Planning yearly" )
     ( “plm” . "Planning monthly" )
     ( “plw” . "Planning weekly" )
-    ( “kh” . "kind ..." )
+    ;; ( “kh” . "kind ..." )
+    ( “kn” . "kind Note" )
     ( “kt” . "kind Topic" )
-    ( “kp” . "kind ..." )
-    ( “kl” . "kind ..." )
-    ( “ka” . "kind ..." )
-    ( “kap” . "" )
-    ( “kcp” . "" )
-    ( “kca” . "" )
-    ( “kcc” . "" )
+    ( “kp” . "kind Person" )
+    ;; ( “kl” . "kind ..." )
+    ;; ( “ka” . "kind ..." )
+    ;; ( “kap” . "" )
+    ;; ( “kcp” . "" )
+    ;; ( “kca” . "" )
+    ;; ( “kcc” . "" )
     ( “kra” . "Kind reference Article" )
     ( “krb” . "Kind reference Book" )
     ( “krv” . "Kind reference Video" )
-    ( “rn” . "" )
+    ;; ( “rn” . "" )
     ))
 
 (setq denote-infer-keywords
@@ -1519,105 +1566,116 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (setq org-src-preserve-indentation t)
 (setq org-directory "~/Documents/org/")
 
-(setq my/base-agenda-files (mapcar
-		    #'my/gtd-file
-		    '(
-		      "next.org"
-		      "agenda.org"
-		      ;; "read_review.org"
-		      ;; "projects.org"
-		      )))
+(setq org-agenda-files
+      ;; (append (denote-directory-files "search term")
+	      (mapcar
+	       #'my/gtd-file
+	       '(
+		 "next.org"
+		 "agenda.org"
+		 ;; "read_review.org"
+		 ;; "projects.org"
+		 ))
+	      ;; )
+      )
 
-;; (defvar my/base-agenda-files '("Inbox.org" "Schedule.org")
-  ;; "The base agenda files that will always be included.")
 
-(setq org-agenda-span 'day
-      org-agenda-start-with-log-mode t
-      org-agenda-files my/base-agenda-files
-      org-agenda-window-setup 'current-window)
+      (setq org-agenda-span 'day
+	    org-agenda-start-with-log-mode t
+	    org-agenda-window-setup 'current-window)
 
-;; Make done tasks show up in the agenda log
-(setq org-log-done 'time
-      org-log-into-drawer t)
+      ;; Make done tasks show up in the agenda log
+      (setq org-log-done 'time
+	    org-log-into-drawer t)
 
 ;;; ----- Denote Integration -----
 
-(defun my/refresh-agenda-files ()
-  (interactive)
-  (setq org-agenda-files
-        (append (denote-directory-files "_pra")
-                my/base-agenda-files)))
+      (defun my/refresh-agenda-files ()
+	(interactive)
+	(setq org-agenda-files
+              (append (denote-directory-files "_pra")
+                      org-agenda-files)))
 
-(defun my/goto-weekly-note ()
-  (interactive)
-  (let* ((note-title (format-time-string "%Y-W%V"))
-         (existing-notes
-          (denote-directory-files (format "-%s" note-title) nil t)))
-    (if existing-notes
-        (find-file (car existing-notes))
-      (denote note-title '("plw")))))
+      (defun my/goto-weekly-note ()
+	(interactive)
+	(let* ((note-title (format-time-string "%Y-W%V"))
+               (existing-notes
+		(denote-directory-files (format "-%s" note-title) nil t)))
+	  (if existing-notes
+              (find-file (car existing-notes))
+	    (denote note-title '("plw")))))
 
-(with-eval-after-load 'denote
-  ;; Quick access commands
-  (keymap-set global-map "C-c n w" #'my/goto-weekly-note)
-  (my/leader
-    ;; "SPC" '(counsel-M-x :wk "Counsel M-x")
-    "n r w" '(my/goto-weekly-note :wk "Go to weekly note"))
+      ;; TODO Automatically use weekly review template
+      (defun my/goto-weekly-review ()
+	(interactive)
+	(let* (
+	       (note-title (concat (format-time-string "%Y-W%V") "-weekly-review"))
+               ;; (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+               (existing-notes
+		(denote-directory-files (format "-%s" note-title) nil t)))
+	  (if existing-notes
+              (find-file (car existing-notes))
+	    (denote note-title '("plw") 'org my-weekly-review-template))))
 
-  ;; Refresh agenda files the first time
-  (my/refresh-agenda-files)
+      (with-eval-after-load 'denote
+	;; Quick access commands
+	(keymap-set global-map "C-c n w" #'my/goto-weekly-note)
+	(my/leader
+	  ;; "SPC" '(counsel-M-x :wk "Counsel M-x")
+	  "n w r" '(my/goto-weekly-review :wk "Go to weekly review note")
+	  "n w w" '(my/goto-weekly-note :wk "Go to weekly note"))
 
-  ;; Update agenda files after notes are created or renamed
-  (add-hook 'denote-after-rename-file-hook #'my/refresh-agenda-files)
-  (add-hook 'denote-after-new-note-hook #'my/refresh-agenda-files))
+	;; Refresh agenda files the first time
+	(my/refresh-agenda-files)
+
+	;; Update agenda files after notes are created or renamed
+	(add-hook 'denote-after-rename-file-hook #'my/refresh-agenda-files)
+	(add-hook 'denote-after-new-note-hook #'my/refresh-agenda-files))
 
 (setq-default org-tag-alist
-              '(("@home" . ?H)
-                ("@work" . ?W)
-                ("@event" . ?E)
+              '(
 
+                (:startgrouptag . nil)
+                ("Contexts")
+                (:grouptags)
                 ("@computer" . ?C)
                 ("@phone" . ?M)
-                ("@digital" . ?d)
-                ("@calls" . ?c)
-                ("@errands" . ?e)
+                ("@digital" . ?A)
+                ("@errands" . ?E)
+                ("@event" . ?E)
+                (:endgrouptag)
+
+		
+                (:startgroup)
+                ("Areas")
+                (:grouptags)
+                ("@home" . ?H)
+                ("@work" . ?W)
+                (:endgroup)
+
+
+                ;; Task Types
+                (:startgrouptag . nil)
+                ("Types")
+                (:grouptags)
+                ("@planning" . ?n)
+                ("@programming" . ?p)
+                ("@easy" . ?e)
                 ("@hacking" . ?h)
-                ("@email" . ?b)
-
-		("@reading" .?b)
-                ("@planning" . ?p)
+                ("@writing" . ?w)
+                ("@creative" . ?v)
+                ("@reading" .?b)
                 ("@media" .?m)
+                ("@listening" .?l)
+                ("@accounting" . ?a)
+                ("@try" .?t)
+                ("@email" . ?m)
                 ("@system" . ?s)
-		))
-;; (:startgrouptag . nil)
-;; ("Contexts")
-;; (:grouptags)
-;; ("@computer" . ?C)
-;; ("@mobile" . ?M)
-;; ("@calls" . ?A)
-;; ("@errands" . ?E)
-;; (:endgrouptag)
+                ("@calls" . ?a)
+                ("@order" . ?o)
+                (:endgrouptag)
 
-;; ;; Task Types
-;; (:startgrouptag . nil)
-;; ("Types")
-;; (:grouptags)
-;; ("@planning" . ?n)
-;; ("@programming" . ?p)
-;; ("@easy" . ?e)
-;; ("@hacking" . ?h)
-;; ("@writing" . ?w)
-;; ("@creative" . ?v)
-;; ("@reading" .?b)
-;; ("@media" .?m)
-;; ("@listening" .?l)
-;; ("@accounting" . ?a)
-;; ("@try" .?t)
-;; ("@email" . ?m)
-;; ("@system" . ?s)
-;; ("@calls" . ?a)
-;; ("@order" . ?o)
-;; (:endgrouptag)
+		))
 
 ;; ;; Workflow states
 ;; (:startgroup . nil)
@@ -1625,54 +1683,6 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;; ("@plan" . ?p)
 ;; ("@review" . ?r)
 ;; ("@followup" . ?f)
-
-
-
-;; '((:startgroup)
-;;   ("Areas")
-;;   (:grouptags)
-;;   ("@home" . ?H)
-;;   ("@work" . ?W)
-;;   (:endgroup)
-
-;;   (:startgrouptag . nil)
-;;   ("Contexts")
-;;   (:grouptags)
-;;   ("@computer" . ?C)
-;;   ("@mobile" . ?M)
-;;   ("@calls" . ?A)
-;;   ("@errands" . ?E)
-;;   (:endgrouptag)
-
-;;   ;; Task Types
-;;   (:startgrouptag . nil)
-;;   ("Types")
-;;   (:grouptags)
-;;   ("@planning" . ?n)
-;;   ("@programming" . ?p)
-;;   ("@easy" . ?e)
-;;   ("@hacking" . ?h)
-;;   ("@writing" . ?w)
-;;   ("@creative" . ?v)
-;; 	("@reading" .?b)
-;;   ("@media" .?m)
-;;   ("@listening" .?l)
-;;   ("@accounting" . ?a)
-;; 	("@try" .?t)
-;;   ("@email" . ?m)
-;;   ("@system" . ?s)
-;;   ("@calls" . ?a)
-;;   ("@order" . ?o)
-;;   (:endgrouptag)
-
-;;   ;; Workflow states
-;;   (:startgroup . nil)
-;;   ("States")
-;;   (:grouptags)
-;;   ("@plan" . ?p)
-;;   ("@review" . ?r)
-;;   ("@followup" . ?f)
-;;   (:endgroup)))
 
 ;; Only make context tags inheritable (what about noexport?)
 (setq org-use-tag-inheritance "^@")

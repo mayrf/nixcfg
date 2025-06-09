@@ -3,6 +3,7 @@
   imports = [
     ../../modules/common/host-spec.nix
     ../features
+    ./nixos-cli.nix
     inputs.home-manager.nixosModules.home-manager
   ];
 
