@@ -738,6 +738,50 @@
   (org-export-with-smart-quotes t)
   (org-export-date-timestamp-format "%d %B %Y")
 
+  (org-tag-alist
+   '(
+     (:startgrouptag . nil)
+     ("Contexts")
+     (:grouptags)
+     ("@computer" . ?C)
+     ("@phone" . ?M)
+     ("@digital" . ?A)
+     ("@errands" . ?E)
+     ("@event" . ?E)
+     (:endgrouptag)
+
+     
+     (:startgroup)
+     ("Areas")
+     (:grouptags)
+     ("@home" . ?H)
+     ("@work" . ?W)
+     (:endgroup)
+
+
+     ;; Task Types
+     (:startgrouptag . nil)
+     ("Types")
+     (:grouptags)
+     ("@planning" . ?n)
+     ("@programming" . ?p)
+     ("@easy" . ?e)
+     ("@hacking" . ?h)
+     ("@writing" . ?w)
+     ("@creative" . ?v)
+     ("@reading" .?b)
+     ("@media" .?m)
+     ("@listening" .?l)
+     ("@accounting" . ?a)
+     ("@try" .?t)
+     ("@email" . ?m)
+     ("@system" . ?s)
+     ("@calls" . ?a)
+     ("@order" . ?o)
+     (:endgrouptag)
+
+     ))
+
 
   :ensure nil
   :init
@@ -1631,51 +1675,6 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 	;; Update agenda files after notes are created or renamed
 	(add-hook 'denote-after-rename-file-hook #'my/refresh-agenda-files)
 	(add-hook 'denote-after-new-note-hook #'my/refresh-agenda-files))
-
-(setq-default org-tag-alist
-              '(
-
-                (:startgrouptag . nil)
-                ("Contexts")
-                (:grouptags)
-                ("@computer" . ?C)
-                ("@phone" . ?M)
-                ("@digital" . ?A)
-                ("@errands" . ?E)
-                ("@event" . ?E)
-                (:endgrouptag)
-
-		
-                (:startgroup)
-                ("Areas")
-                (:grouptags)
-                ("@home" . ?H)
-                ("@work" . ?W)
-                (:endgroup)
-
-
-                ;; Task Types
-                (:startgrouptag . nil)
-                ("Types")
-                (:grouptags)
-                ("@planning" . ?n)
-                ("@programming" . ?p)
-                ("@easy" . ?e)
-                ("@hacking" . ?h)
-                ("@writing" . ?w)
-                ("@creative" . ?v)
-                ("@reading" .?b)
-                ("@media" .?m)
-                ("@listening" .?l)
-                ("@accounting" . ?a)
-                ("@try" .?t)
-                ("@email" . ?m)
-                ("@system" . ?s)
-                ("@calls" . ?a)
-                ("@order" . ?o)
-                (:endgrouptag)
-
-		))
 
 ;; ;; Workflow states
 ;; (:startgroup . nil)

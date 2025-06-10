@@ -893,6 +893,50 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   (org-export-with-smart-quotes t)
   (org-export-date-timestamp-format "%d %B %Y")
 
+  (org-tag-alist
+   '(
+     (:startgrouptag . nil)
+     ("Contexts")
+     (:grouptags)
+     ("@computer" . ?C)
+     ("@phone" . ?M)
+     ("@digital" . ?A)
+     ("@errands" . ?E)
+     ("@event" . ?E)
+     (:endgrouptag)
+
+     
+     (:startgroup)
+     ("Areas")
+     (:grouptags)
+     ("@home" . ?H)
+     ("@work" . ?W)
+     (:endgroup)
+
+
+     ;; Task Types
+     (:startgrouptag . nil)
+     ("Types")
+     (:grouptags)
+     ("@planning" . ?n)
+     ("@programming" . ?p)
+     ("@easy" . ?e)
+     ("@hacking" . ?h)
+     ("@writing" . ?w)
+     ("@creative" . ?v)
+     ("@reading" .?b)
+     ("@media" .?m)
+     ("@listening" .?l)
+     ("@accounting" . ?a)
+     ("@try" .?t)
+     ("@email" . ?m)
+     ("@system" . ?s)
+     ("@calls" . ?a)
+     ("@order" . ?o)
+     (:endgrouptag)
+
+     ))
+
 
   :ensure nil
   :init
@@ -1886,50 +1930,6 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 #+end_src
 
 #+begin_src emacs-lisp :tangle "init.el"
-(setq-default org-tag-alist
-              '(
-
-                (:startgrouptag . nil)
-                ("Contexts")
-                (:grouptags)
-                ("@computer" . ?C)
-                ("@phone" . ?M)
-                ("@digital" . ?A)
-                ("@errands" . ?E)
-                ("@event" . ?E)
-                (:endgrouptag)
-
-		
-                (:startgroup)
-                ("Areas")
-                (:grouptags)
-                ("@home" . ?H)
-                ("@work" . ?W)
-                (:endgroup)
-
-
-                ;; Task Types
-                (:startgrouptag . nil)
-                ("Types")
-                (:grouptags)
-                ("@planning" . ?n)
-                ("@programming" . ?p)
-                ("@easy" . ?e)
-                ("@hacking" . ?h)
-                ("@writing" . ?w)
-                ("@creative" . ?v)
-                ("@reading" .?b)
-                ("@media" .?m)
-                ("@listening" .?l)
-                ("@accounting" . ?a)
-                ("@try" .?t)
-                ("@email" . ?m)
-                ("@system" . ?s)
-                ("@calls" . ?a)
-                ("@order" . ?o)
-                (:endgrouptag)
-
-		))
 
 ;; ;; Workflow states
 ;; (:startgroup . nil)

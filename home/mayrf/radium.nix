@@ -34,6 +34,7 @@
       mariadb
       mysql-shell
       grafana-alloy
+      firefox
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
