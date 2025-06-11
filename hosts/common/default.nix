@@ -53,6 +53,8 @@
 
   security.polkit.enable = true;
 
+  security.pam.services.hyprlock = {}; # new line
+
   security.rtkit.enable = true;
 
   networking = {

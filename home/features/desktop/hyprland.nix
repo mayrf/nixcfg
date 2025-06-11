@@ -69,6 +69,44 @@ in {
           include "level3(ralt_switch)"
       };  '';
     home.packages = with pkgs; [ cliphist hyprpicker brightnessctl xorg.xhost ];
+    programs.hyprlock.enable = true; # new line
+    services.hypridle.enable = true;
+    services.hypridle.settings = {
+      general = {
+        lock_cmd =
+          "pidof hyprlock || hyprlock"; # avoid starting multiple hyprlock instances.
+        before_sleep_cmd = "loginctl lock-session"; # lock before suspend.
+        after_sleep_cmd =
+          "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+      };
+      listener = [
+        {
+          timeout = 150; # 2.5min.
+          on-timeout =
+            "brightnessctl -s set 10"; # set monitor backlight to minimum, avoid 0 on OLED monitor.
+          on-resume = "brightnessctl -r"; # monitor backlight restore.
+        }
+        {
+          # timeout = 900;
+          # timeout = 90;
+          # on-timeout = "hyprlock";
+          timeout = 300; # 5min
+          on-timeout =
+            "loginctl lock-session"; # lock screen when timeout has passed
+        }
+        {
+          timeout = 330; # 5.5min
+          on-timeout =
+            "hyprctl dispatch dpms off"; # screen off when timeout has passed
+          on-resume =
+            "hyprctl dispatch dpms on && brightnessctl -r"; # screen on when activity is detected after timeout has fired.
+        }
+        {
+          timeout = 1800; # 30min
+          on-timeout = "systemctl suspend"; # suspend pc
+        }
+      ];
+    };
 
     wayland.windowManager.hyprland = let
       workspaces = (map toString (lib.range 0 9))
@@ -190,6 +228,7 @@ in {
         exec-once=wl-paste --type text --watch cliphist store # Stores only text data
         exec-once=wl-paste --type image --watch cliphist store # Stores only image data
         exec-once=${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
+        exec-once = hypridle
       '' + ''
         animations {
           enabled=false
@@ -261,6 +300,7 @@ in {
         bind=SUPER,e,exec,${editor}
         bind=SUPERSHIFT,e,exec,${vanilla_emacs}
         bind=SUPER,w,exec,${browser}
+        # bind=SUPER,l,exec,hyprlock
         bind=SUPERSHIFT,w,exec,${brave}
         # bind=SUPER,r,exec,${terminal-exec} "zsh -c -i 'y'"
         bind=SUPER,r,exec,${terminal-exec} yazi

@@ -982,6 +982,93 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
     )
 
 #+end_src
+** Agenda view by tags
+#+begin_src emacs-lisp :tangle "init.el"
+(defun my/collect-org-tag-combinations (files)
+  "Collect all unique tag combinations from org FILES."
+  (let ((tag-combinations '())
+        (file-count 0)
+        (total-files (length files)))
+    (dolist (file files)
+      (setq file-count (1+ file-count))
+      (message "Processing file %d/%d: %s" file-count total-files (file-name-nondirectory file))
+      
+      (when (file-readable-p file)
+        (let ((buffer-was-open (get-file-buffer file))
+              (buffer nil))
+          (condition-case err
+              (progn
+                (setq buffer (find-file-noselect file))
+                (with-current-buffer buffer
+                  (when (derived-mode-p 'org-mode)
+                    (org-map-entries
+                     (lambda ()
+                       (let ((tags (org-get-tags)))
+                         (when tags
+                           (setq tags (sort (copy-sequence tags) 'string<))
+                           (unless (member tags tag-combinations)
+                             (push tags tag-combinations))))))))
+                
+                ;; Clean up: kill buffer only if we opened it
+                (when (and buffer (not buffer-was-open))
+                  (kill-buffer buffer)))
+            
+            (error
+             (message "Error processing file %s: %s" file (error-message-string err))
+             (when (and buffer (not buffer-was-open))
+               (ignore-errors (kill-buffer buffer))))))))
+    
+    (message "Found %d unique tag combinations" (length tag-combinations))
+    tag-combinations))
+
+(defun my/sort-tag-combinations (tag-combinations)
+  "Sort tag combinations by number of tags, then alphabetically."
+  (sort tag-combinations
+        (lambda (a b)
+          (if (= (length a) (length b))
+              (string< (string-join a "+") (string-join b "+"))
+            (< (length a) (length b))))))
+
+(defun my/create-agenda-commands (tag-combinations files)
+  "Create agenda command list for tag combinations."
+  (let ((commands '()))
+    ;; Add commands for each tag combination
+    (dolist (tags tag-combinations)
+      (let ((tag-string (string-join tags "+"))
+            (header (format "🏷️ %s" (string-join tags " + "))))
+        (push `(tags-todo ,tag-string
+                         ((org-agenda-overriding-header ,header)
+                          (org-agenda-files ',files)))
+              commands)))
+    
+    ;; Add section for items with no tags
+    (push `(tags-todo "-{.*}"
+                     ((org-agenda-overriding-header "📝 No Tags")
+                      (org-agenda-files ',files)))
+          commands)
+    
+    (reverse commands)))
+
+(defun my/org-agenda-by-tag-composition ()
+  "Create agenda view grouped by exact tag combinations."
+  (interactive)
+  (let* ((files (directory-files-recursively "~/Documents/org/gtd" "\\.org$"))
+         (tag-combinations (my/collect-org-tag-combinations files))
+         (sorted-combinations (my/sort-tag-combinations tag-combinations))
+         (commands (my/create-agenda-commands sorted-combinations files))
+         (org-agenda-custom-commands
+          `(("x" "Dynamic Tag Composition View"
+             ,commands
+             ((org-agenda-sorting-strategy '(priority-down))
+              (org-agenda-prefix-format "  %-12:c %?-12t% s"))))))
+    (org-agenda nil "x")))
+
+;; Bind to a key for easy access
+;; (global-set-key (kbd "C-c a t") 'my/org-agenda-by-tag-composition)
+
+;; Optional: Set up org-agenda-files to include all org files in ~/org
+;; (setq org-agenda-files (directory-files-recursively "~/org" "\\.org$"))
+#+end_src
 ** Structure templates
 #+begin_src emacs-lisp :tangle "init.el"
 ;; (add-to-list 'org-structure-template-alist
