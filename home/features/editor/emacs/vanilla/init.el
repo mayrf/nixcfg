@@ -1769,7 +1769,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;; ("@followup" . ?f)
 
 ;; Only make context tags inheritable (what about noexport?)
-(setq org-use-tag-inheritance "^@")
+;; (setq org-use-tag-inheritance "^@")
 
 (setq org-agenda-custom-commands
       '(
