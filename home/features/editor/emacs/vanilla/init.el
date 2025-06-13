@@ -726,9 +726,9 @@
 ;; )
 
 (use-package org
-  ;; Org Export Settings
   :custom
 
+  ;; Org Export Settings
   (org-directory "~/Documents/org/")
   (org-export-with-drawers nil)
   (org-export-with-todo-keywords nil)
@@ -737,6 +737,9 @@
   (org-export-with-num nil)
   (org-export-with-smart-quotes t)
   (org-export-date-timestamp-format "%d %B %Y")
+
+  (org-reverse-note-order t)
+  (org-src-preserve-indentation t)
 
   (org-tag-alist
    '(
@@ -791,9 +794,124 @@
                               'org-babel-load-languages
                               '((python . t)
                                 (shell . t)))))
+
   :config
+
+
+  (defun my/gtd-file (filename)
+    (file-name-concat org-directory "gtd" filename))
+
+
+  (setq my-gtd-files (mapcar
+                      #'my/gtd-file
+                      '("next.org"
+                        "read_review.org"
+                        )))
+
+  (setq org-agenda-files
+	(mapcar
+	 #'my/gtd-file
+	 '(
+	   "next.org"
+	   "agenda.org"
+	   )
+	 )
+	)
+
+  (setq my-refile-files (append
+                         org-agenda-files
+                         (mapcar
+                          #'my/gtd-file
+                          '("someday.org"
+                            "inbox_phone.org"
+                            "read_review.org"
+                            "Inbox.org"
+                            ))))
+
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+  (setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
+  (setq org-next-file (file-truename (file-name-concat org-directory "gtd/next.org")))
+  (setq org-refile-targets `(
+                             (,my-refile-files :maxlevel . 1)))
+
+  (setq org-default-notes-file org-inbox-file)
+  (setq org-capture-templates
+        '(("f" "Fleeting note" item
+           (file+headline org-default-notes-file "Notes")
+           "- %?")
+          ;; ("p" "Permanent note" plain
+          ;;  (file denote-last-path)
+          ;;  #'denote-org-capture
+          ;;  :no-save t
+          ;;  :immediate-finish nil
+          ;;  :kill-buffer t
+          ;;  :jump-to-captured t)
+          ;; ("t" "New task" entry
+          ;;  (file+headline org-default-notes-file "Tasks")
+          ;;  "* TODO %i%?")
+          ("t" "todo" entry 
+           (file+headline org-next-file "SIMPLE TASKS")
+           "* TODO %?")
+          ("T" "todo today" entry 
+           (file+headline org-next-file "SIMPLE TASKS")
+           "* TODO %?\nDEADLINE: %t")
+          ("i" "inbox" entry 
+           (file "~/inbox.org")
+           "* %?")
+          ("K" "Cliplink capture task" entry
+           (file+headline org-default-notes-file "Links")
+           ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
+           "* TODO %(org-cliplink-capture)" :empty-lines 1)
+          ("N" "New note with no prompts (with denote.el)" plain
+           (file denote-last-path)
+           (function
+            (lambda ()
+              (denote-org-capture-with-prompts nil nil nil)))
+           :no-save t
+           :immediate-finish nil
+           :kill-buffer t
+           :jump-to-captured t)
+          ("j" "Journal" entry
+           (file denote-journal-extras-path-to-new-or-existing-entry)
+           "* %U %?\n%i\n%a"
+           :kill-buffer t
+           :empty-lines 1)
+          ("P" "New project (with Denote)" plain
+           (file denote-last-path)
+           (function
+            (lambda ()
+              (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
+                    ;; TODO Enable adding of additional keywords
+                    (denote-use-keywords '("project"))
+                    (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
+                    (denote-prompts (denote-add-prompts '(keywords)))
+
+                    (denote-org-front-matter
+                     (concat "#+title:      %s\n"
+                             "#+date:       %s\n"
+                             "#+filetags:   %s\n"
+                             "#+identifier: %s\n"
+                             "#+category: %1$s\n"
+                             "\n")
+                     ))
+                (denote-org-capture))))
+           :no-save t
+           :immediate-finish nil
+           :kill-buffer t
+           :jump-to-captured t)
+          ))
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
   (setq org-src-fontify-natively t))
+
+(general-define-key
+ :keymaps 'org-mode-map
+ :states '(normal visual insert)
+ "M-h" #'org-metaleft
+ "M-l" #'org-metaright
+ "M-j" #'org-metadown
+ "M-k" #'org-metaup
+ )
 
 (with-eval-after-load 'org
   (add-to-list 'org-file-apps '("\\.odt\\'" . "libreoffice %s")))
@@ -819,6 +937,101 @@
   (my/leader
     "m s g" '(my/run-git-sync :wk "Sync org files")
     )
+
+(use-package olivetti)
+
+(use-package org-download
+  :after org
+  :custom
+  (org-download-image-dir (file-name-concat org-directory "blobs/org-download"))
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable))
+
+;; Drag-and-drop to `dired`
+
+(use-package org-bullets
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  )
+
+(use-package org-sticky-header
+  :after org
+  :custom
+  (org-sticky-header-full-path 'full)
+  :config
+  (add-hook 'org-mode-hook 'org-sticky-header-mode)
+  )
+
+;; Drag-and-drop to `dired`
+
+(use-package org-cliplink
+  :config
+  (my/leader "mlc" 'org-cliplink))
+
+(use-package org
+  :ensure nil
+  :config
+  (defun my/vterm-execute-current-line ()
+    "Insert text in vterm and execute.
+   If region is active, execute the selected text.
+   Otherwise, execute current line and any continuation lines marked with backslash."
+    (interactive)
+    (require 'vterm)
+    (eval-when-compile (require 'subr-x))
+    (let ((command
+           (if (use-region-p)
+               ;; Use the selected region
+               (string-trim (buffer-substring (region-beginning) (region-end)))
+             ;; No region, so get current line and any continuation lines
+             (let ((start-point (save-excursion
+                                  (beginning-of-line)
+                                  (point)))
+                   (end-point nil))
+               (save-excursion
+		 (beginning-of-line)
+		 (while (and (not (eobp))
+                             (or (not end-point)
+				 (and (> (point) start-point)
+                                      (save-excursion
+					(end-of-line 0)  ; Move to end of previous line
+					(looking-back "\\\\" (- (point) 1))))))
+                   (end-of-line)
+                   (setq end-point (point))
+                   (unless (eobp) (forward-line 1)))
+		 (string-trim (buffer-substring start-point end-point)))))))
+      (let ((buf (current-buffer)))
+	(unless (get-buffer vterm-buffer-name)
+          (vterm))
+	(display-buffer vterm-buffer-name t)
+	(switch-to-buffer-other-window vterm-buffer-name)
+	(vterm--goto-line -1)
+	(message command)
+	(vterm-send-string command)
+	(vterm-send-return)
+	(switch-to-buffer-other-window buf))))
+
+  (my/leader
+    "m b t" '(my/vterm-execute-current-line :wk "Send and execute region/line to vterm")
+    ))
+
+(setq org-src-preserve-indentation t)
+
+(setq org-src-tab-acts-natively t)
+
+;; (use-package org-caldav
+;;   :config
+;;   (setq org-caldav-url "https://<nextcloudURL>/remote.php/dav/calendars/<CalenderName>")
+;;   ;; calendar ID on server
+;;   (setq org-caldav-calendar-id "personal")
+;;   ;; Org filename wherech new entries from calendar stored
+;;   (setq org-caldav-inbox "~/Documents/org/nextcloud-inbox.org")
+;;   ;; Additional Org files to check for calendar events
+;;   (setq org-caldav-files nil)
+;;   ;; Usually a good idea to set the timezone manually
+;;   (setq org-icalendar-timezone "Europe/Berlin")
+;;   :commands (org-caldav-sync))
 
 (defun my/collect-org-tag-combinations (files)
   "Collect all unique tag combinations from org FILES."
@@ -885,10 +1098,23 @@
     
     (reverse commands)))
 
-(defun my/org-agenda-by-tag-composition ()
+(defun my/org-gtd-agenda-by-tag-composition ()
   "Create agenda view grouped by exact tag combinations."
   (interactive)
   (let* ((files (directory-files-recursively "~/Documents/org/gtd" "\\.org$"))
+         (tag-combinations (my/collect-org-tag-combinations files))
+         (sorted-combinations (my/sort-tag-combinations tag-combinations))
+         (commands (my/create-agenda-commands sorted-combinations files))
+         (org-agenda-custom-commands
+          `(("x" "Dynamic Tag Composition View"
+             ,commands
+             ((org-agenda-sorting-strategy '(priority-down))
+              (org-agenda-prefix-format "  %-12:c %?-12t% s"))))))
+    (org-agenda nil "x")))
+(defun my/org-agenda-by-tag-composition ()
+  "Create agenda view grouped by exact tag combinations."
+  (interactive)
+  (let* ((files org-agenda-files)
          (tag-combinations (my/collect-org-tag-combinations files))
          (sorted-combinations (my/sort-tag-combinations tag-combinations))
          (commands (my/create-agenda-commands sorted-combinations files))
@@ -904,176 +1130,6 @@
 
 ;; Optional: Set up org-agenda-files to include all org files in ~/org
 ;; (setq org-agenda-files (directory-files-recursively "~/org" "\\.org$"))
-
-;; (add-to-list 'org-structure-template-alist
-;; 	     '("i" . "emacs-lisp :tangle init.el"))
-
-(with-eval-after-load 'org
-  ;; Teach org-mode about tree-sitter modes without changing how you write src blocks
-  (defun my/org-src-lang-modes-init ()
-    "Set up mappings between language names and tree-sitter modes."
-    (let ((ts-modes '("yaml" "python" "json" "js" "css" "c" "c++" "rust" "typescript" "html")))
-      (dolist (lang ts-modes)
-        (let ((ts-mode-sym (intern (format "%s-ts-mode" lang))))
-          (when (fboundp ts-mode-sym)
-            ;; Make "#+begin_src lang" use lang-ts-mode if it's available
-            (add-to-list 'org-src-lang-modes `(,lang . ,(intern lang)))))))
-  
-  ;; Override org-src-get-lang-mode to try tree-sitter mode first
-  (defun my/org-src-get-lang-mode (lang)
-    "Return mode that should be used for LANG. Try tree-sitter mode first."
-    (let* ((lang-mode (cdr (assoc lang org-src-lang-modes)))
-           (ts-mode-name (format "%s-ts-mode" (symbol-name (or lang-mode lang))))
-           (ts-mode-sym (intern ts-mode-name)))
-      (if (fboundp ts-mode-sym)
-          ts-mode-sym
-        (org-src--get-lang-mode lang))))
-  
-  ;; Apply our overrides
-  (advice-add 'org-src-get-lang-mode :override #'my/org-src-get-lang-mode)
-  (my/org-src-lang-modes-init)))
-
-(use-package org-download
-  :custom
-  (org-download-image-dir (file-name-concat org-directory "blobs/org-download"))
-  :config
-  (add-hook 'dired-mode-hook 'org-download-enable))
-
-;; Drag-and-drop to `dired`
-
-(add-hook 'org-mode-hook 'org-indent-mode)
-(use-package org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
-(use-package org-sticky-header
-  :custom
-  (org-sticky-header-full-path 'full)
-  :config
-
-  (add-hook 'org-mode-hook 'org-sticky-header-mode))
-
-;; Drag-and-drop to `dired`
-
-  (general-define-key
-   :keymaps 'org-mode-map
-   :states '(normal visual insert)
-   "M-h" #'org-metaleft
-   "M-l" #'org-metaright
-   "M-j" #'org-metadown
-   "M-k" #'org-metaup
-   )
-
-(defun my/gtd-file (filename)
-  (file-name-concat org-directory "gtd" filename))
-
-(setq org-reverse-note-order t)
-(setq org-src-preserve-indentation t)
-
-(setq my-gtd-files (mapcar
-		    #'my/gtd-file
-		    '("next.org"
-		      "read_review.org"
-		      )))
-
-;; (setq org-agenda-files (append
-;; 			(directory-files-recursively
-;; 			 (file-name-concat org-directory "Denotes/projects") "\\.org$")
-;; 			my-gtd-files
-;; 			))
-
-(setq my-refile-files (append
-		       org-agenda-files
-		       (mapcar
-			#'my/gtd-file
-			'("someday.org"
-			  "inbox_phone.org"
-			  "read_review.org"
-			  "Inbox.org"
-			  ))))
-
-(advice-add 'org-refile :after 'org-save-all-org-buffers)
-
-;; (setq org-agenda-files (directory-files-recursively org-directory "\\.org$"))
-(setq org-inbox-file (file-truename (file-name-concat org-directory "gtd/Inbox.org")))
-(setq org-next-file (file-truename (file-name-concat org-directory "gtd/next.org")))
-(setq org-refile-targets `(
-			   ;; (nil :maxlevel . 9)
-			   (,my-refile-files :maxlevel . 1)))
-;; (directory-files-recursively org-directory "\\.org$" :maxlevel . 1)))
-
-;; (("next.org"
-;;  "read_review.org"
-;;  "someday.org"
-;;  ;; (org-refile-project-files :maxlevel . 1)
-;;  "tickler.org"))))
-;; (directory-files-recursively org-directory "Denotes\\.org$")
-
-(setq org-default-notes-file org-inbox-file)
-(setq org-capture-templates
-      '(("f" "Fleeting note" item
-	 (file+headline org-default-notes-file "Notes")
-	 "- %?")
-	;; ("p" "Permanent note" plain
-	;;  (file denote-last-path)
-	;;  #'denote-org-capture
-	;;  :no-save t
-	;;  :immediate-finish nil
-	;;  :kill-buffer t
-	;;  :jump-to-captured t)
-	;; ("t" "New task" entry
-	;;  (file+headline org-default-notes-file "Tasks")
-	;;  "* TODO %i%?")
-        ("t" "todo" entry 
-         (file+headline org-next-file "SIMPLE TASKS")
-         "* TODO %?")
-        ("T" "todo today" entry 
-         (file+headline org-next-file "SIMPLE TASKS")
-         "* TODO %?\nDEADLINE: %t")
-        ("i" "inbox" entry 
-         (file "~/inbox.org")
-         "* %?")
-	("K" "Cliplink capture task" entry
-	 (file+headline org-default-notes-file "Links")
-	 ;; "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
-	 "* TODO %(org-cliplink-capture)" :empty-lines 1)
-        ("N" "New note with no prompts (with denote.el)" plain
-	 (file denote-last-path)
-	 (function
-          (lambda ()
-            (denote-org-capture-with-prompts nil nil nil)))
-	 :no-save t
-	 :immediate-finish nil
-	 :kill-buffer t
-	 :jump-to-captured t)
-	("j" "Journal" entry
-	 (file denote-journal-extras-path-to-new-or-existing-entry)
-	 "* %U %?\n%i\n%a"
-	 :kill-buffer t
-	 :empty-lines 1)
-	("P" "New project (with Denote)" plain
-	 (file denote-last-path)
-	 (function
-	  (lambda ()
-	    (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
-		  ;; TODO Enable adding of additional keywords
-		  (denote-use-keywords '("project"))
-		  (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
-		  (denote-prompts (denote-add-prompts '(keywords)))
-
-		  (denote-org-front-matter
-		   (concat "#+title:      %s\n"
-			   "#+date:       %s\n"
-			   "#+filetags:   %s\n"
-			   "#+identifier: %s\n"
-			   "#+category: %1$s\n"
-			   "\n")
-		   ))
-	      (denote-org-capture))))
-	 :no-save t
-	 :immediate-finish nil
-	 :kill-buffer t
-	 :jump-to-captured t)
-	))
 
 (defun +org/dwim-at-point (&optional arg)
   "Do-what-I-mean at point.
@@ -1410,75 +1466,6 @@ re-align the table if necessary. (Necessary because org-mode has a
  "C-S-<return>" #'+org/insert-item-above
  "C-M-<return>" #'org-insert-subheading
  )
-
-(use-package org-cliplink
-  :config
-  (my/leader "mlc" 'org-cliplink))
-
-(use-package org
-  :ensure nil
-  :config
-  (defun my/vterm-execute-current-line ()
-    "Insert text in vterm and execute.
-   If region is active, execute the selected text.
-   Otherwise, execute current line and any continuation lines marked with backslash."
-    (interactive)
-    (require 'vterm)
-    (eval-when-compile (require 'subr-x))
-    (let ((command
-           (if (use-region-p)
-               ;; Use the selected region
-               (string-trim (buffer-substring (region-beginning) (region-end)))
-             ;; No region, so get current line and any continuation lines
-             (let ((start-point (save-excursion
-                                  (beginning-of-line)
-                                  (point)))
-                   (end-point nil))
-               (save-excursion
-		 (beginning-of-line)
-		 (while (and (not (eobp))
-                             (or (not end-point)
-				 (and (> (point) start-point)
-                                      (save-excursion
-					(end-of-line 0)  ; Move to end of previous line
-					(looking-back "\\\\" (- (point) 1))))))
-                   (end-of-line)
-                   (setq end-point (point))
-                   (unless (eobp) (forward-line 1)))
-		 (string-trim (buffer-substring start-point end-point)))))))
-      (let ((buf (current-buffer)))
-	(unless (get-buffer vterm-buffer-name)
-          (vterm))
-	(display-buffer vterm-buffer-name t)
-	(switch-to-buffer-other-window vterm-buffer-name)
-	(vterm--goto-line -1)
-	(message command)
-	(vterm-send-string command)
-	(vterm-send-return)
-	(switch-to-buffer-other-window buf))))
-
-  (my/leader
-    "m b t" '(my/vterm-execute-current-line :wk "Send and execute region/line to vterm")
-    ))
-
-(setq org-src-preserve-indentation t)
-
-(setq org-src-tab-acts-natively t)
-
-;; (use-package org-caldav
-;;   :config
-;;   (setq org-caldav-url "https://<nextcloudURL>/remote.php/dav/calendars/<CalenderName>")
-;;   ;; calendar ID on server
-;;   (setq org-caldav-calendar-id "personal")
-;;   ;; Org filename wherech new entries from calendar stored
-;;   (setq org-caldav-inbox "~/Documents/org/nextcloud-inbox.org")
-;;   ;; Additional Org files to check for calendar events
-;;   (setq org-caldav-files nil)
-;;   ;; Usually a good idea to set the timezone manually
-;;   (setq org-icalendar-timezone "Europe/Berlin")
-;;   :commands (org-caldav-sync))
-
-(use-package olivetti)
 
 (use-package notmuch)
 

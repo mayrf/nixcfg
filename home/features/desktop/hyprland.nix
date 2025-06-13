@@ -304,7 +304,7 @@ in {
         bind=SUPERSHIFT,w,exec,${brave}
         # bind=SUPER,r,exec,${terminal-exec} "zsh -c -i 'y'"
         bind=SUPER,r,exec,${terminal-exec} yazi
-        bind=SUPERSHIFT,C,exec,${terminal} sudo nmtui
+        bind=SUPERSHIFT,C,exec,${terminal-exec} sudo nmtui
         bind=SUPERSHIFT, R, exec,${hyprctl} reload
         # Brightness control (only works if the system has lightd)
         bind=,XF86MonBrightnessUp,exec,brightnessctl set 5%+
