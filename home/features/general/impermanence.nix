@@ -115,16 +115,18 @@ in {
       "d  /persist/no_bak/home/${hostSpec.username} 0755 ${hostSpec.username} users -"
     ];
 
-    home.persistence."${hostSpec.persistDir}/no_bak/home/${hostSpec.username}" =
+    # home.persistence."${hostSpec.persistDir}/no_bak/home/${hostSpec.username}" =
+    home.persistence."${hostSpec.persistDir}/no_bak" = 
       {
         # hideMounts = true;
-        allowOther = true;
+        # allowOther = true;
         directories = [ ] ++ cfg.directories_no_bak;
       };
 
-    home.persistence."${hostSpec.persistDir}/system/home/${hostSpec.username}" =
+    # home.persistence."${hostSpec.persistDir}/system/home/${hostSpec.username}" =
+    home.persistence."${hostSpec.persistDir}/system" =
       {
-        allowOther = true;
+        # allowOther = true;
         directories = [ ] ++ cfg.directories;
         files = [ ".screenrc" ] ++ cfg.files;
       };
