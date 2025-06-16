@@ -5,7 +5,7 @@
 
   nix.buildMachines = [
     {
-      hostName = "yttirum";
+      hostName = "yttrium";
       sshUser = "mayrf";
       sshKey = "/home/mayrf/.ssh/id_ed25519";
       system = pkgs.stdenv.hostPlatform.system;

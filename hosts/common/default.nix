@@ -40,6 +40,7 @@
     enableSSHSupport = true;
   };
   services.openssh.enable = true;
+  services.openssh.settings.PasswordAuthentication = false;
 
   # Extra file
   environment = {
@@ -53,7 +54,7 @@
 
   security.polkit.enable = true;
 
-  security.pam.services.hyprlock = {}; # new line
+  security.pam.services.hyprlock = { }; # new line
 
   security.rtkit.enable = true;
 
