@@ -27,7 +27,6 @@
     private = {
       common.enable = true;
       vpn.enable = true;
-      ssh.enable = true;
     };
   };
 

@@ -56,6 +56,9 @@
       emacs.enable = true;
       # vscode.enable = true;
     };
+    private = {
+      ssh.enable = true;
+    };
   };
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

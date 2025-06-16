@@ -8,6 +8,7 @@
     ../features/desktop
     ../features/terminal
     ../features/editor
+    inputs.dotfiles-private.outputs.homeManagerModules
     "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
 
@@ -62,6 +63,9 @@
       alacritty.enable = true;
       foot.enable = true;
       ghostty.enable = true;
+    };
+    private = {
+      ssh.enable = true;
     };
   };
 
