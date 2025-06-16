@@ -5,6 +5,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./distributed-builds.nix
     ../common
     ../common/users
     inputs.dotfiles-private.outputs.nixosModules
