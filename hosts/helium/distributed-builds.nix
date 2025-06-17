@@ -10,6 +10,7 @@
       sshKey = "/home/mayrf/.ssh/id_ed25519";
       system = pkgs.stdenv.hostPlatform.system;
       supportedFeatures = [ "nixos-test" "big-parallel" "kvm" ];
+      maxJobs = 16;
     }
   ];
 }
