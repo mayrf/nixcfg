@@ -2040,6 +2040,21 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (dolist (mode '((nix-mode . ("nixd"))))
   (add-to-list 'eglot-server-programs mode))
 
+(use-package python-ts-mode
+  :ensure nil
+  :mode ("\\.py\\'" . python-ts-mode)
+  :hook ((python-ts-mode . eglot-ensure))
+  ;; :config
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+
+(use-package rustic
+  :ensure t
+  :config
+  (setq rustic-format-on-save nil)
+  :custom
+  (rustic-cargo-use-last-stored-arguments t))
+
 (load (locate-user-emacs-file "lisp/kcl-mode.el"))
 (use-package kcl-ts-mode
   :ensure nil

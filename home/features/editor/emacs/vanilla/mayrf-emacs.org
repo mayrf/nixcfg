@@ -2350,7 +2350,25 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   (add-to-list 'eglot-server-programs mode))
 
   #+end_src
-
+** Pyhton
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package python-ts-mode
+  :ensure nil
+  :mode ("\\.py\\'" . python-ts-mode)
+  :hook ((python-ts-mode . eglot-ensure))
+  ;; :config
+  ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
+  )
+#+end_src
+** Rust
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package rustic
+  :ensure t
+  :config
+  (setq rustic-format-on-save nil)
+  :custom
+  (rustic-cargo-use-last-stored-arguments t))
+#+end_src
 
 
 ** kcl-lang
