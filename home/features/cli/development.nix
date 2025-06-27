@@ -16,6 +16,7 @@ in {
       git-crypt
       just
       python3
+      python313Packages.debugpy
       compose2nix
       postgresql
       nerdctl

@@ -2187,17 +2187,17 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
     "l a" '(eglot-code-actions :wk "lsp code actions")
     ))
 #+end_src
-** dap-mode
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package dap-mode
-  :config
-  (dap-auto-configure-mode)
+# ** dap-mode
+# #+begin_src emacs-lisp :tangle "init.el"
+# (use-package dap-mode
+#   :config
+#   (dap-auto-configure-mode)
 
-  :bind
-  (("<f7>" . dap-step-in)
-   ("<f8>" . dap-next)
-   ("<f9>" . dap-continue)))
-#+end_src
+#   :bind
+#   (("<f7>" . dap-step-in)
+#    ("<f8>" . dap-next)
+#    ("<f9>" . dap-continue)))
+# #+end_src
 ** git blame
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package blamer
@@ -2338,6 +2338,53 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   :custom (flycheck-display-errors-delay .3))
 #+end_src
 
+** dape
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package dape
+  :preface
+  ;; By default dape shares the same keybinding prefix as `gud'
+  ;; If you do not want to use any prefix, set it to nil.
+  ;; (setq dape-key-prefix "\C-x\C-a")
+
+  :hook
+  ;; Save breakpoints on quit
+  ;; (kill-emacs . dape-breakpoint-save)
+  ;; Load breakpoints on startup
+  ;; (after-init . dape-breakpoint-load)
+
+  :config
+  ;; Turn on global bindings for setting breakpoints with mouse
+  ;; (dape-breakpoint-global-mode)
+
+  ;; Info buffers to the right
+  ;; (setq dape-buffer-window-arrangement 'right)
+
+  ;; Info buffers like gud (gdb-mi)
+  ;; (setq dape-buffer-window-arrangement 'gud)
+  ;; (setq dape-info-hide-mode-line nil)
+
+  ;; Pulse source line (performance hit)
+  ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
+
+  ;; Showing inlay hints
+  ;; (setq dape-inlay-hints t)
+
+  ;; Save buffers on startup, useful for interpreted languages
+  ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
+
+  ;; Kill compile buffer on build success
+  ;; (add-hook 'dape-compile-hook 'kill-buffer)
+
+  ;; Projectile users
+  ;; (setq dape-cwd-function 'projectile-project-root)
+  )
+
+;; Enable repeat mode for more ergonomic `dape' use
+(use-package repeat
+  :ensure nil
+  :config
+  (repeat-mode))
+#+end_src
 
 ** Nix
 #+begin_src emacs-lisp :tangle "init.el"

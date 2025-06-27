@@ -36,60 +36,6 @@ in {
       package = emacs;
     };
 
-    # systemd.user.services.vanillaemacs = {
-    #   Unit = {
-    #     Description = "Emacs text editor with vanilla config";
-    #     Documentation =
-    #       "info:emacs man:emacs(1) https://gnu.org/software/emacs/";
-
-    #     # After = optional (cfg.startWithUserSession == "graphical")
-    #     #   "graphical-session.target";
-    #     # PartOf = optional (cfg.startWithUserSession == "graphical")
-    #     #   "graphical-session.target";
-
-    #     # Avoid killing the Emacs session, which may be full of
-    #     # unsaved buffers.
-    #     X-RestartIfChanged = false;
-    #     # } // optionalAttrs needsSocketWorkaround {
-    #     # Emacs deletes its socket when shutting down, which systemd doesn't
-    #     # handle, resulting in a server without a socket.
-    #     # See https://github.com/nix-community/home-manager/issues/2018
-    #     # RefuseManualStart = true;
-    #   };
-
-    #   Service = {
-    #     Type = "notify";
-
-    #     # We wrap ExecStart in a login shell so Emacs starts with the user's
-    #     # environment, most importantly $PATH and $NIX_PROFILES. It may be
-    #     # worth investigating a more targeted approach for user services to
-    #     # import the user environment.
-    #     ExecStart = ''
-    #       ${pkgs.runtimeShell} -l -c "${emacsBinPath}/emacs --init-directory ${config.xdg.configHome}/emacs-vanilla --fg-daemon=vanilla"
-    #     '';
-
-    #     # Emacs will exit with status 15 after having received SIGTERM, which
-    #     # is the default "KillSignal" value systemd uses to stop services.
-    #     SuccessExitStatus = 15;
-
-    #     Restart = "on-failure";
-    #     # } // optionalAttrs needsSocketWorkaround {
-    #     # Use read-only directory permissions to prevent emacs from
-    #     # deleting systemd's socket file before exiting.
-    #     # ExecStartPost = "${pkgs.coreutils}/bin/chmod --changes -w ${socketDir}";
-    #     # ExecStopPost = "${pkgs.coreutils}/bin/chmod --changes +w ${socketDir}";
-    #   };
-    #   # } // optionalAttrs (cfg.startWithUserSession != false) {
-    #   Install = {
-    #     WantedBy = [
-    #       # (if cfg.startWithUserSession == true then
-    #       "default.target"
-    #       # else
-    #       # "graphical-session.target")
-    #     ];
-    #   };
-    # };
-
     home.activation = let
       source = "${hostSpec.flakeDir}/home/features/editor/emacs/vanilla";
       target = "${config.xdg.configHome}/emacs";
@@ -206,12 +152,14 @@ in {
       hunspellDicts.en_GB-ize
 
       # python
-      stable.poetry
+      poetry
+      pyright
       ruff
-      python311Packages.isort
-      python311Packages.pylint
-      python311Packages.yapf
-      python311Packages.pylama
+      python313Packages.debugpy
+      python313Packages.isort
+      python313Packages.pylint
+      python313Packages.yapf
+      python313Packages.pylama
       vscode-langservers-extracted
 
       xclip
