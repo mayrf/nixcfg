@@ -50,87 +50,87 @@ in {
         splitright = true;
         splitbelow = true;
       };
-      keymaps = [
-        # Neo-tree bindings
-        {
-          action = "<cmd>Neotree toggle<CR>";
-          key = "<leader>e";
-        }
-        # Lazygit
-        {
-          mode = "n";
-          key = "<leader>gg";
-          action = "<cmd>LazyGit<CR>";
-          options = { desc = "LazyGit (root dir)"; };
-        }
+      # keymaps = [
+      #   # Neo-tree bindings
+      #   {
+      #     action = "<cmd>Neotree toggle<CR>";
+      #     key = "<leader>e";
+      #   }
+      #   # Lazygit
+      #   {
+      #     mode = "n";
+      #     key = "<leader>gg";
+      #     action = "<cmd>LazyGit<CR>";
+      #     options = { desc = "LazyGit (root dir)"; };
+      #   }
 
-        # Telescope bindings
+      #   # Telescope bindings
 
-        {
-          action = "<cmd>Telescope live_grep<CR>";
-          key = "<leader>fw";
-        }
-        {
-          action = "<cmd>Telescope find_files<CR>";
-          key = "<leader>ff";
-        }
-        {
-          action = "<cmd>Telescope git_commits<CR>";
-          key = "<leader>fg";
-        }
-        {
-          action = "<cmd>Telescope oldfiles<CR>";
-          key = "<leader>fh";
-        }
-        {
-          action = "<cmd>Telescope colorscheme<CR>";
-          key = "<leader>ch";
-        }
-        {
-          action = "<cmd>Telescope man_pages<CR>";
-          key = "<leader>fm";
-        }
-      ];
-      opts = {
-        # Show line numbers
-        number = true;
-        relativenumber = true; # Show relative line numbers
-        # You can also add relative line numbers, to help with jumping.
-        #  Experiment for yourself to see if you like it!
-        #relativenumber = true
+      #   {
+      #     action = "<cmd>Telescope live_grep<CR>";
+      #     key = "<leader>fw";
+      #   }
+      #   {
+      #     action = "<cmd>Telescope find_files<CR>";
+      #     key = "<leader>ff";
+      #   }
+      #   {
+      #     action = "<cmd>Telescope git_commits<CR>";
+      #     key = "<leader>fg";
+      #   }
+      #   {
+      #     action = "<cmd>Telescope oldfiles<CR>";
+      #     key = "<leader>fh";
+      #   }
+      #   {
+      #     action = "<cmd>Telescope colorscheme<CR>";
+      #     key = "<leader>ch";
+      #   }
+      #   {
+      #     action = "<cmd>Telescope man_pages<CR>";
+      #     key = "<leader>fm";
+      #   }
+      # ];
+      # opts = {
+      #   # Show line numbers
+      #   number = true;
+      #   relativenumber = true; # Show relative line numbers
+      #   # You can also add relative line numbers, to help with jumping.
+      #   #  Experiment for yourself to see if you like it!
+      #   #relativenumber = true
 
-        # Enable mouse mode, can be useful for resizing splits for example!
-        mouse = "a";
+      #   # Enable mouse mode, can be useful for resizing splits for example!
+      #   mouse = "a";
 
-        # Don't show the mode, since it's already in the statusline
-        showmode = false;
-      };
-      defaultEditor = true;
-      globals = {
-        # Set <space> as the leader key
-        # See `:help mapleader`
-        mapleader = " ";
-        maplocalleader = " ";
+      #   # Don't show the mode, since it's already in the statusline
+      #   showmode = false;
+      # };
+      # defaultEditor = true;
+      # globals = {
+      #   # Set <space> as the leader key
+      #   # See `:help mapleader`
+      #   mapleader = " ";
+      #   maplocalleader = " ";
 
-        # Set to true if you have a Nerd Font installed and selected in the terminal
-        # have_nerd_font = false;
-      };
-      # colorschemes.catppuccin.enable = true;
-      plugins.lualine.enable = true;
-      plugins = {
-        oil = { enable = true; };
-        treesitter = { enable = true; };
-        telescope = {
-          enable = true;
-          extensions = { fzf-native = { enable = true; }; };
-        };
-        lsp.servers.nil_ls.enable = true;
-        lsp.enable = true;
-        lsp.servers.nixd.enable = true;
-        lsp.servers.nixd.settings.formatting.command = [ "alejandra" ];
-        lsp.servers.nixd.settings.nixpkgs = { expr = "import <nixpkgs> { }"; };
-        web-devicons.enable = true;
-      };
+      #   # Set to true if you have a Nerd Font installed and selected in the terminal
+      #   # have_nerd_font = false;
+      # };
+      # # colorschemes.catppuccin.enable = true;
+      #   # web-devicons.enable = true;
+      # plugins.lualine.enable = true;
+      # plugins = {
+      #   oil = { enable = true; };
+      #   treesitter = { enable = true; };
+      #   telescope = {
+      #     enable = true;
+      #     extensions = { fzf-native = { enable = true; }; };
+      #   };
+      #   lsp.servers.nil_ls.enable = true;
+      #   lsp.enable = true;
+      #   lsp.servers.nixd.enable = true;
+      #   lsp.servers.nixd.settings.formatting.command = [ "alejandra" ];
+      #   lsp.servers.nixd.settings.nixpkgs = { expr = "import <nixpkgs> { }"; };
+      # };
     };
   };
 }
