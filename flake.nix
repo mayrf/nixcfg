@@ -47,7 +47,7 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     nixvim = {
-      url = "github:nix-community/nixvim";
+      url = "github:nix-community/nixvim/nixos-25.05";
       # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
       inputs.nixpkgs.follows = "nixpkgs";
     };

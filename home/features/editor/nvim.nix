@@ -115,7 +115,7 @@ in {
         # Set to true if you have a Nerd Font installed and selected in the terminal
         # have_nerd_font = false;
       };
-      colorschemes.catppuccin.enable = true;
+      # colorschemes.catppuccin.enable = true;
       plugins.lualine.enable = true;
       plugins = {
         oil = { enable = true; };

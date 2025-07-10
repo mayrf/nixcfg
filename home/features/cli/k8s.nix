@@ -19,6 +19,7 @@ in {
       crossplane-cli
       docker-credential-helpers # needed for kcl packages
       k9s
+      argocd-lovely-plugin
       unstable.kcl-language-server
       kubernetes-helm
       argocd
@@ -26,6 +27,7 @@ in {
       stable.argocd-autopilot
       minikube
       kind
+      kustomize
     ];
     home.sessionVariables = { KIND_EXPERIMENTAL_PROVIDER = "podman"; };
   };

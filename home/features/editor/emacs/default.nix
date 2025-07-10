@@ -167,6 +167,7 @@ in {
 
       # go
       gopls
+      go
 
       # just
       just

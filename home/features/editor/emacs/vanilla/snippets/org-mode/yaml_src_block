@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: yaml src block
+# key: yaml
+# --
+
+#+begin_src yaml-ts
+$0
+#+end_src
