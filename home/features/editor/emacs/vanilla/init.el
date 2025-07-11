@@ -2107,10 +2107,33 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (use-package yaml-pro
   ;; :hook
   ;; (yaml-ts-mode . #'yaml-pro mode 100)
-  :mode ("\\.yaml\\'" . yaml-ts-mode)
-  :mode ("\\.yml\\'" . yaml-ts-mode)
-  :hook ((yaml-ts-mode . yaml-pro-ts-mode))
+  ;; :mode ("\\.yaml\\'" . yaml-ts-mode)
+  ;; :mode ("\\.yml\\'" . yaml-ts-mode)
+  :mode ("\\.ya?ml\\'" . yaml-ts-mode)
+  :hook (
+	 (yaml-ts-mode . yaml-pro-ts-mode)
+	 (yaml-ts-mode . eglot-ensure)
+	 )
   )
+;; (use-package yaml-mode
+;;   :ensure t
+;;   :mode ("\\.ya?ml\\'" . yaml-mode)
+;;   :hook (yaml-mode . eglot-ensure))
+
+(use-package eglot
+  :ensure nil  ; Built-in to Emacs 29+
+  :config
+  (add-to-list 'eglot-server-programs
+               '(yaml-mode . ("yaml-language-server" "--stdio")))
+  
+  ;; Configure YAML language server settings
+  (setq-default eglot-workspace-configuration
+                '((:yaml . ((:kubernetes . "*.yaml")
+                           (:schemas . ((:kubernetes . "*.yaml")
+                                      ("https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.28.0/all.json" . "*.k8s.yaml")))
+                           (:completion . t)
+                           (:hover . t)
+                           (:validate . t))))))
 
 (use-package aider
   :config

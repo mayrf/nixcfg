@@ -1,6 +1,25 @@
 { config, lib, pkgs, ... }:
 with lib;
-let cfg = config.features.cli.development;
+let
+  cfg = config.features.cli.development;
+
+  yamlLsConfig = pkgs.writeText "yaml-ls-config.json" ''
+    {
+      "yaml": {
+        "kubernetes": "*.yaml",
+        "schemas": {
+          "kubernetes": "*.yaml",
+          "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.28.0/all.json": "*.k8s.yaml"
+        },
+        "completion": true,
+        "hover": true,
+        "validate": true,
+        "format": {
+          "enable": true
+        }
+      }
+    }
+  '';
 in {
   options.features.cli.development.enable =
     mkEnableOption "enable development cli programs";
@@ -11,7 +30,7 @@ in {
       nodejs
       yarn
       devbox
-      devenv
+      # devenv
       git
       git-crypt
       just
@@ -36,6 +55,16 @@ in {
       texlive.combined.scheme-full
       zola
       hugo
+      yaml-language-server
     ];
+
+    # User-specific config
+    # home.file.".config/yaml-language-server/config.json".source = yamlLsConfig;
+
+    # # Set environment variable
+    # home.sessionVariables = {
+    #   YAML_LANGUAGE_SERVER_CONFIG =
+    #     "${config.home.homeDirectory}/.config/yaml-language-server/config.json";
+    # };
   };
 }

@@ -64,9 +64,7 @@
       foot.enable = true;
       ghostty.enable = true;
     };
-    private = {
-      ssh.enable = true;
-    };
+    private = { ssh.enable = true; };
   };
 
   wayland.windowManager.hyprland = {
@@ -97,5 +95,12 @@
     vimgolf
     img2pdf
     gparted
+    code-cursor
+  ];
+
+  features.impermanence.directories = [
+
+    ".cursor"
+    ".config/Cursor"
   ];
 }

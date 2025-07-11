@@ -5,7 +5,8 @@ in {
   options.features.desktop.librewolf.enable = mkEnableOption "librewolf config";
 
   config = mkIf cfg.enable {
-    features.impermanence.directories = [ ".librewolf" ".mozilla" ];
+    features.impermanence.directories =
+      [ ".librewolf" ".mozilla" ".cache/librewolf" ];
     programs.librewolf.enable = true;
   };
 }

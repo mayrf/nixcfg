@@ -14,18 +14,19 @@ in {
       };
     };
     virtualisation = {
+      docker.enable = false; # Disable Docker
       podman = {
         enable = true;
-        dockerSocket.enable = true;
-
-        # Create a `docker` alias for podman, to use it as a drop-in replacement
-        dockerCompat = true;
-
-        # Required for containers under podman-compose to be able to talk to each other.
-        defaultNetwork.settings.dns_enabled = true;
+        dockerCompat = true; # Creates 'docker' command alias
+        defaultNetwork.settings.dns_enabled = true; # Fixes DNS
       };
     };
-
+    security.pki.certificates = [ ];
+    environment.extraInit = ''
+      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+      fi
+    '';
     # Useful other development tools
     environment.systemPackages = with pkgs; [
       dive # look into docker image layers
@@ -33,16 +34,19 @@ in {
       docker-compose # start group of containers for dev
       docker-credential-helpers
       #distrobox
-      #podman-compose # start group of containers for dev
     ];
 
-    environment.extraInit = ''
-      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-      fi
-    '';
+    # virtualisation.docker = {
+    #   enable = true;
+    #   rootless = {
+    #     enable = true;
+    #     setSocketVariable = true;
+    #     daemon.settings = { dns = [ "8.8.8.8" "1.1.1.1" ]; };
+    #   };
+    # };
 
-      # virtualisation.containers.storage.settings.storage.driver = "btrfs";
+    # virtualisation.containers.storage.settings.storage.driver = "btrfs";
     # virtualisation.docker.storageDriver = lib.optionals (config.features.impermanence.enable == true) "btrfs";
+
   };
 }
