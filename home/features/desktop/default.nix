@@ -23,6 +23,7 @@
     ./zen-browser.nix
   ];
 
+  stylix.targets.emacs.enable = false;
   home.packages = with pkgs; [
     pinentry-qt # GnuPG s interface to passphrase input
   ];

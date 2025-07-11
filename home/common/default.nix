@@ -13,7 +13,6 @@ in {
       pinentry.package = pkgs.pinentry-qt;
     };
   };
-  stylix.targets.emacs.enable = false;
 
   home = {
     username = hostSpec.username;
