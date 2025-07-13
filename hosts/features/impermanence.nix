@@ -166,6 +166,7 @@ in {
         "/var/lib/systemd/coredump"
         "/etc/NetworkManager/system-connections"
         "/etc/ssh"
+        "/root/.ssh"
 
         # Cups
         {
