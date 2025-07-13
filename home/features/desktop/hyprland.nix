@@ -95,7 +95,8 @@ in {
             "loginctl lock-session"; # lock screen when timeout has passed
         }
         {
-          timeout = 900; # 15min
+          # timeout = 900; # 15min
+          timeout = 180; # 3min
           on-timeout =
             "hyprctl dispatch dpms off"; # screen off when timeout has passed
           on-resume =
@@ -213,8 +214,8 @@ in {
         # browser = defaultApp "x-scheme-handler/https";
         # editor = defaultApp "text/plain";
         # terminal = "${pkgs.kitty}/bin/kitty";
-        terminal = "${pkgs.ghostty}/bin/ghostty";
-        terminal-exec = "${pkgs.ghostty}/bin/ghostty -e";
+        terminal = "${pkgs.unstable.ghostty}/bin/ghostty";
+        terminal-exec = "${pkgs.unstable.ghostty}/bin/ghostty -e";
         browser = "${pkgs.librewolf}/bin/librewolf";
         filemanager = "${pkgs.yazi}/bin/yazi";
 
