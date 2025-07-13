@@ -1,4 +1,5 @@
-{ lib, pkgs, myLib, device, ... }: { 
+{ lib, pkgs, myLib, device, ... }:
+{
   imports = lib.flatten [
     (map myLib.relativeToRoot [
       "modules/common/host-spec.nix"
@@ -37,8 +38,10 @@
     };
   };
 
-  environment.systemPackages =
-    builtins.attrValues { inherit (pkgs) wget curl rsync vim; };
+  environment.systemPackages = builtins.attrValues {
+    inherit (pkgs) wget curl rsync;
+    # vim;
+  };
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
@@ -46,7 +49,8 @@
   };
   system.stateVersion = "25.05";
 } // (if device != null then {
-  fileSystems."/boot".options = [ "umask=0077" ]; # Removes permissions and security warnings.
+  fileSystems."/boot".options =
+    [ "umask=0077" ]; # Removes permissions and security warnings.
   # boot.loader.efi.canTouchEfiVariables = true;
   # boot.loader.systemd-boot = {
   #   enable = true;
@@ -55,5 +59,5 @@
   #   # pick the highest resolution for systemd-boot's console.
   #   consoleMode = lib.mkDefault "max";
   # };
-    }
-      else {})
+} else
+  { })

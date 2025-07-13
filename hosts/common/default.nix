@@ -47,7 +47,7 @@
     variables = {
       TERMINAL = "ghostty";
       BROWSER = "librewolf";
-      EDITOR = "vim";
+      EDITOR = "nvim";
       VISUAL = "nvim";
     };
   };

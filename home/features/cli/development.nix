@@ -30,7 +30,7 @@ in {
       nodejs
       yarn
       devbox
-      # devenv
+      devenv
       git
       git-crypt
       just

@@ -43,7 +43,9 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence = { url = "github:nix-community/impermanence/home-manager-v2"; };
+    impermanence = {
+      url = "github:nix-community/impermanence/home-manager-v2";
+    };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     nixvim = {
@@ -65,6 +67,7 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nvf.url = "github:notashelf/nvf";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
@@ -80,7 +83,16 @@
       };
     in {
       packages =
-        forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+        forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system})
+        // {
+          x86_64-linux.my-neovim = (inputs.nvf.lib.neovimConfiguration {
+            pkgs = nixpkgs.legacyPackages.x86_64-linux;
+            modules = [
+              ./pkgs/nvf_module
+            ];
+          }).neovim;
+        };
+
 
       overlays = import ./overlays { inherit inputs; };
       nixosConfigurations = {
