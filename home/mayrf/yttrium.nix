@@ -96,6 +96,7 @@
     img2pdf
     gparted
     code-cursor
+    rustdesk-flutter
   ];
 
   features.impermanence.directories = [

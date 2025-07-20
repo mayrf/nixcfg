@@ -25,9 +25,9 @@
       registers = "unnamedplus";
     };
 
+    lsp.enable = true;
     languages = {
       enableTreesitter = true;
-      enableLSP = true;
       nix = {
         extraDiagnostics.enable = true;
         lsp.enable = true;
