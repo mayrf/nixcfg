@@ -7,6 +7,7 @@
       # style = "dark";
       style = "moon";
     };
+
     statusline.lualine.enable = true;
     telescope.enable = true;
     terminal.toggleterm.enable = true;
@@ -18,6 +19,8 @@
       }
     ];
     autocomplete.nvim-cmp.enable = true;
+    projects.project-nvim.enable = true;
+    projects.project-nvim.setupOpts.manual_mode = false;
 
     formatter.conform-nvim.enable = true;
     clipboard = {
@@ -28,9 +31,13 @@
     lsp.enable = true;
     languages = {
       enableTreesitter = true;
+      yaml = {
+        enable = true;
+        lsp.enable = true;
+      };
       nix = {
         extraDiagnostics.enable = true;
-        lsp.enable = true;
+        # lsp.enable = true;
         enable = true;
         treesitter.enable = true;
         format.enable = true;
