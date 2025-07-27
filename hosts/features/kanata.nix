@@ -22,36 +22,52 @@ in {
     systemd.services.kanata-internalKeyboard.serviceConfig = {
       SupplementaryGroups = [ "input" "uinput" ];
     };
-
     services.kanata = {
       enable = true;
+      package = pkgs.unstable.kanata;
       keyboards = {
         internalKeyboard = {
           devices = [
             # Replace the paths below with the appropriate device paths for your setup.
             # Use `ls /dev/input/by-path/` to find your keyboard devices.
-            "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
-            "/dev/input/by-path/pci-0000:00:14.0-usb-0:3:1.0-event-kbd"
+            # "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+            # "/dev/input/by-path/pci-0000:00:14.0-usb-0:3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.3:1.0-event-kbd"
           ];
           extraDefCfg = "process-unmapped-keys yes";
           config = ''
             (defsrc
-             caps tab d h j k l
+              a s d f
+              j k l ;
+              caps
             )
             (defvar
-             tap-time 200
-             hold-time 200
+              tap-time 200
+              hold-time 200
             )
+
             (defalias
-             caps (tap-hold 200 200 esc lctl)
-             tab (tap-hold $tap-time $hold-time tab (layer-toggle arrow))
-             del del  ;; Alias for the true delete key action
+              a-mod (tap-hold $tap-time $hold-time a lmet)
+              s-mod (tap-hold $tap-time $hold-time s lalt)
+              d-mod (tap-hold $tap-time $hold-time d lsft)
+              f-mod (tap-hold $tap-time $hold-time f lctl)
+              j-mod (tap-hold $tap-time $hold-time j rctl)
+              k-mod (tap-hold $tap-time $hold-time k rsft)
+              l-mod (tap-hold $tap-time $hold-time l ralt)
+              ;-mod (tap-hold $tap-time $hold-time ; rmet)
+              escarrow (tap-hold 200 200 esc (layer-while-held nav))
             )
+
             (deflayer base
-             @caps @tab d h j k l
+              @a-mod @s-mod @d-mod @f-mod
+              @j-mod @k-mod @l-mod @;-mod
+              @escarrow
             )
-            (deflayer arrow
-             _ _ @del left down up right
+            (deflayermap (nav)
+              k up
+              h left
+              j down
+              l right
             )
           '';
         };

@@ -19,7 +19,7 @@
 
   features = {
     flatpak.enable = true;
-    keyd.enable = true;
+    kanata.enable = true;
     pipewire.enable = true;
     sops.enable = true;
     theming.enable = true;

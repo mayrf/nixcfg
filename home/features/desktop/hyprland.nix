@@ -337,29 +337,30 @@ in {
         bind=SUPER,P,submap,reset
         submap=reset
 
-        $scratchpadsize = size 80% 85%
+        # Terminal popup with ghostty
 
-        # bind=SUPER,Z,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term respawn not needed"; else alacritty --class scratch_term; fi
-        bind=SUPER,Z,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term respawn not needed"; else ghostty --class scratch_term; fi
-        bind=SUPER,Z,togglespecialworkspace,scratch_term
+        # Special workspace with custom gaps
+        workspace = special:scratch_term, gapsout:50
 
-        $scratch_term = class:^(scratch_term)$
-        windowrulev2 = float,$scratch_term
-        windowrulev2 = $scratchpadsize,$scratch_term
-        windowrulev2 = workspace special:scratch_term ,$scratch_term
-        windowrulev2 = center,$scratch_term
+        # Window rules for sizing and positioning
+        windowrulev2 = workspace special:scratch_term,title:^(scratch_term)$
+        windowrulev2 = float,title:^(scratch_term)$
+        windowrulev2 = size 80% 80%,title:^(scratch_term)$
+        windowrulev2 = center,title:^(scratch_term)$
 
-        bind=SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacsclient -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
+        # Keybinds
+        bind = SUPER,T,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term exists"; else ghostty --title=scratch_term; fi
+        bind = SUPER,T,togglespecialworkspace,scratch_term
 
-        bind=SUPER,B,togglespecialworkspace,scratch_emacs
+        # Emacs popup
 
-        # $scratch_emacs = class:^(scratch_emacs)$
-        $scratch_emacs = workspace:special:scratch_emacs
-        windowrulev2 = float,$scratch_emacs
-        windowrulev2 = $scratchpadsize,$scratch_emacs
-        windowrulev2 = workspace special:scratch_emacs ,$scratch_emacs
-        windowrulev2 = center,$scratch_emacs
-
+        # workspace = special:scratch_emacs, gapsout:50
+        windowrulev2 = workspace special:scratch_emacs,title:^(scratch_emacs)$
+        windowrulev2 = float,title:^(scratch_emacs)$
+        windowrulev2 = size 80% 80%,title:^(scratch_emacs)$
+        windowrulev2 = center,title:^(scratch_emacs)$
+        bind = SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacsclient -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
+        bind = SUPER,B,togglespecialworkspace,scratch_emacs
       '';
     };
 
