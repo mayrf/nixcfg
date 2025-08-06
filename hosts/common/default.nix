@@ -103,6 +103,7 @@
     pass
     gnupg
     #Utils
+    stable.nushell
 
     borgbackup
     borgmatic

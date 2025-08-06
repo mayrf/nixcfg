@@ -117,7 +117,7 @@ in {
 
       #misc/unknown
       stylelint
-      vimPlugins.copilot-vim
+      # vimPlugins.copilot-vim
 
       unstable.nerd-fonts.im-writing
       unstable.nerd-fonts.jetbrains-mono
@@ -136,7 +136,7 @@ in {
       # typescript
       nodePackages_latest.eslint
       nodePackages_latest.prettier
-      prettier-plugin-go-template
+      # prettier-plugin-go-template
       nodePackages_latest.typescript-language-server
 
       # language tools

@@ -7,14 +7,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
-      # url = "github:nix-community/home-manager";
+      # url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -31,9 +33,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # stylix.url = "github:danth/stylix";
-    # stylix.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.url = "github:nix-community/stylix/release-25.05";
+    stylix.url = "github:danth/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+    # stylix.url = "github:nix-community/stylix/release-25.05";
 
     nix-secrets = {
       url = "git+ssh://git@codeberg.org/mayrf/nix-secrets.git";
@@ -49,7 +51,8 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-25.05";
+      url = "github:nix-community/nixvim";
+      # url = "github:nix-community/nixvim/nixos-25.05";
       # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -93,7 +96,7 @@
           }).neovim;
         };
 
-
+      templates = import ./templates;
       overlays = import ./overlays { inherit inputs; };
       nixosConfigurations = {
         radium = myLib.mkSystem "radium" { nixosPath = ./hosts/radium; };

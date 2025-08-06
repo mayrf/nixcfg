@@ -58,7 +58,7 @@
       # vscode.enable = true;
     };
     private = {
-      ssh.enable = true;
+      work.enable = true;
     };
   };
 

@@ -3,22 +3,27 @@ with lib;
 let
   cfg = config.features.cli.ai;
   opencode-latest = pkgs.unstable.opencode.overrideAttrs (oldAttrs: rec {
-    version = "0.2.33";
+    version = "0.3.130";
     src = pkgs.fetchFromGitHub {
       owner = "sst";
       repo = "opencode";
-      tag = "v0.2.33";
-      hash =
-        "sha256-l/V9YHwuIPN73ieMT++enL1O5vecA9L0qBDGr8eRVxY="; # You'll need to update this hash
+      tag = "v${version}";
+      hash = "sha256-/FWvHekyAM9U5WLptAr2YbcMOZa/twjucSUnlqfu1Y4="; # You'll need to update this hash
+      # hash = "";
     };
     tui = oldAttrs.tui.overrideAttrs (tuiOldAttrs: {
       vendorHash =
-        "sha256-0vf4fOk32BLF9/904W8g+5m0vpe6i6tUFRXqDHVcMIQ"; # or vendorHash = "";
+        "sha256-qsOL6gsZwEm7YcYO/zoyJAnVmciCjPYqPavV77psybU="; # or vendorHash = "";
+
+      # vendorHash = "";
     });
 
     node_modules = oldAttrs.node_modules.overrideAttrs (node_modulesOldAttrs: {
+
+      # outputHash =
+      #   ""; # or vendorHash = "";
       outputHash =
-        "sha256-1ZxetDrrRdNNOfDOW2uMwMwpEs5S3BLF+SejWcRdtik="; # or vendorHash = "";
+        "sha256-oZa8O0iK5uSJjl6fOdnjqjIuG//ihrj4six3FUdfob8="; # or vendorHash = "";
     });
   });
 in {
@@ -42,6 +47,7 @@ in {
       fabric-ai
       # stable.aider-chat
       aider-chat
+      unstable.codex
     ];
   };
 }

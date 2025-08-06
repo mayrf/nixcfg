@@ -7,6 +7,7 @@
     ../features/terminal
     ../features/cli
     ../features/editor
+    inputs.dotfiles-private.outputs.homeManagerModules
   ];
 
   features = {
@@ -28,11 +29,15 @@
       emacs.enable = true;
       nvim.enable = true;
     };
+
+    private = {
+      work.enable = true;
+    };
   };
 
   home.packages = with pkgs; [
       mariadb
-      mysql-shell
+      # mysql-shell
       grafana-alloy
       firefox
   ];

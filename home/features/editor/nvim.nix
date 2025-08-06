@@ -2,7 +2,7 @@
 with lib;
 let cfg = config.features.editor.nvim;
 in {
-  imports = [ inputs.nixvim.homeManagerModules.nixvim ];
+  imports = [ inputs.nixvim.homeModules.nixvim ];
   options.features.editor.nvim = {
     enable = mkEnableOption "my myvim user config";
   };

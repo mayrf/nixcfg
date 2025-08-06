@@ -27,8 +27,8 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       tmux
-      nodejs
-      yarn
+      # nodejs
+      # yarn
       devbox
       devenv
       git

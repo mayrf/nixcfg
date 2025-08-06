@@ -31,18 +31,18 @@
     lsp.enable = true;
     languages = {
       enableTreesitter = true;
+      enableFormat = true;
+      enableExtraDiagnostics = true;
+      enableDAP = true;
       yaml = {
         enable = true;
-        lsp.enable = true;
       };
       nix = {
-        extraDiagnostics.enable = true;
-        # lsp.enable = true;
         enable = true;
-        treesitter.enable = true;
-        format.enable = true;
       };
-      ts.enable = true;
+      ts = {
+        enable = true;
+      };
       ruby.enable = true;
     };
     utility.direnv.enable = true;
