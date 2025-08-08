@@ -27,13 +27,14 @@ in {
       scribus
       gimp
       stable.gnucash
+      mmex
       stable.ardour
       onlyoffice-bin
       temurin-jre-bin-21
       libreoffice-qt6-fresh
       keepassxc
       # pkgs-stable.calibre
-      gramps
+      # gramps
       legcord
       ipscan
       dbgate

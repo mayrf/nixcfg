@@ -28,14 +28,14 @@ in {
       # bottles
     ];
 
-    systemd.extraConfig = ''
-      DefaultLimitNOFILE=1048576
-    '';
+    systemd.settings.Manager = {
+      DefaultLimitNOFILE= "1048576";
+    };
 
     systemd.user.extraConfig = ''
       DefaultLimitNOFILE=1048576
     '';
-
+ 
     programs.gamemode.enable = true;
 
     environment.sessionVariables = {
