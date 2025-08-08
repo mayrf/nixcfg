@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   config.vim = {
     theme = {
       enable = true;
@@ -11,13 +11,11 @@
     statusline.lualine.enable = true;
     telescope.enable = true;
     terminal.toggleterm.enable = true;
-    telescope.extensions = [
-      {
-        name = "fzf";
-        packages = [pkgs.vimPlugins.telescope-fzf-native-nvim];
-        setup = {fzf = {fuzzy = true;};};
-      }
-    ];
+    telescope.extensions = [{
+      name = "fzf";
+      packages = [ pkgs.vimPlugins.telescope-fzf-native-nvim ];
+      setup = { fzf = { fuzzy = true; }; };
+    }];
     autocomplete.nvim-cmp.enable = true;
     projects.project-nvim.enable = true;
     projects.project-nvim.setupOpts.manual_mode = false;
@@ -28,20 +26,22 @@
       registers = "unnamedplus";
     };
 
+    lsp.formatOnSave = true;
     lsp.enable = true;
     languages = {
       enableTreesitter = true;
       enableFormat = true;
       enableExtraDiagnostics = true;
       enableDAP = true;
-      yaml = {
-        enable = true;
-      };
-      nix = {
-        enable = true;
-      };
+      yaml = { enable = true; };
+      nix = { enable = true; };
+      python.enable = true;
       ts = {
         enable = true;
+        format = {
+          enable = true;
+          type = "prettier";
+        };
       };
       ruby.enable = true;
     };

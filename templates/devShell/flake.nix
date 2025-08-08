@@ -1,6 +1,10 @@
 {
   description = "A very basic flake";
   inputs.utils.url = "github:numtide/flake-utils";
+
+  # inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
   outputs = { self, nixpkgs, utils, }:
     utils.lib.eachDefaultSystem (system:
       let
