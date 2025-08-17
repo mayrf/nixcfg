@@ -40,6 +40,7 @@ in {
             (defsrc
               a s d f
               j k l ;
+              w o
               caps
             )
             (defvar
@@ -50,11 +51,13 @@ in {
             (defalias
               a-mod (tap-hold $tap-time $hold-time a lmet)
               s-mod (tap-hold $tap-time $hold-time s lalt)
+              w-mod (tap-hold $tap-time $hold-time w ralt)
               d-mod (tap-hold $tap-time $hold-time d lsft)
               f-mod (tap-hold $tap-time $hold-time f lctl)
               j-mod (tap-hold $tap-time $hold-time j rctl)
               k-mod (tap-hold $tap-time $hold-time k rsft)
               l-mod (tap-hold $tap-time $hold-time l ralt)
+              o-mod (tap-hold $tap-time $hold-time o lalt)
               ;-mod (tap-hold $tap-time $hold-time ; rmet)
               escarrow (tap-hold 200 200 esc (layer-while-held nav))
             )
@@ -62,6 +65,7 @@ in {
             (deflayer base
               @a-mod @s-mod @d-mod @f-mod
               @j-mod @k-mod @l-mod @;-mod
+              @w-mod @o-mod
               @escarrow
             )
             (deflayermap (nav)
