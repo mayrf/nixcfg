@@ -997,16 +997,6 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
         '(("f" "Fleeting note" item
            (file+headline org-default-notes-file "Notes")
            "- %?")
-          ;; ("p" "Permanent note" plain
-          ;;  (file denote-last-path)
-          ;;  #'denote-org-capture
-          ;;  :no-save t
-          ;;  :immediate-finish nil
-          ;;  :kill-buffer t
-          ;;  :jump-to-captured t)
-          ;; ("t" "New task" entry
-          ;;  (file+headline org-default-notes-file "Tasks")
-          ;;  "* TODO %i%?")
           ("t" "todo" entry 
            (file+headline org-next-file "SIMPLE TASKS")
            "* TODO %?")
@@ -1061,6 +1051,88 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
   (setq org-src-fontify-natively t))
 
+#+end_src
+** Cheat capture
+#+begin_src emacs-lisp :tangle "init.el"
+;; Org-capture template for programming cheatsheets
+;; Add this to your Emacs configuration
+
+(with-eval-after-load 'org
+
+  ;; Org-capture template for programming cheatsheets
+  ;; Add this to your Emacs configuration
+
+  ;; Org-capture template for programming cheatsheets
+  ;; Add this to your Emacs configuration
+
+  (defvar my/org-cheat-directory "~/org/resources/cheats/"
+    "Directory where programming cheat sheets are stored.")
+
+  (defun my/org-cheat-get-language ()
+    "Get programming language/program name with completion from existing files."
+    (let* ((cheat-dir my/org-cheat-directory)
+           (existing-files (when (file-directory-p cheat-dir)
+                             (directory-files cheat-dir nil "\\.org$")))
+           (existing-langs (mapcar (lambda (f) (file-name-sans-extension f)) existing-files))
+           (all-options (append existing-langs
+				'("python" "bash" "emacs" "git" "docker" 
+				  "sql" "regex" "css" "html" "rust" "go" )))
+           (unique-options (delete-dups all-options))
+           (language (completing-read "Language/Program: " unique-options nil nil)))
+      language))
+
+  (defun my/org-cheat-file-path ()
+    "Return the file path for the cheat sheet based on selected language."
+    (let ((language (my/org-cheat-get-language)))
+      (setq my/current-cheat-language language)
+      (my/org-cheat-ensure-file-setup language)))
+
+  (defun my/org-cheat-ensure-file-setup (language)
+    "Ensure the cheat file exists and has proper structure."
+    (let ((file-path (expand-file-name (concat language ".org") 
+                                       my/org-cheat-directory)))
+      (unless (file-exists-p file-path)
+	(with-temp-file file-path
+          (insert (format "#+TITLE: %s Cheat Sheet\n" (capitalize language))
+                  ;; "#+AUTHOR: Your Name\n"
+                  "#+DATE: " (format-time-string "%Y-%m-%d") "\n\n"
+                  ;; (format "* %s Quick Reference\n\n" (capitalize language))
+		  )))
+      file-path))
+
+  ;; Add this to your org-capture-templates
+  (setq org-capture-templates
+	(append org-capture-templates
+		'(("c" "Cheat Sheet Item" entry
+                   (file+headline my/org-cheat-file-path "Quick Reference")
+                   ;; "** %^{Title}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%^{Description}\n\n#+BEGIN_SRC %^{Code Block Language|text}\n%^{Code/Example}\n#+END_SRC\n\n%?"
+
+                   "** %^{Title}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n#+begin_src %^{Code Block Language|text}\n%^{Code/Example}\n#+end_src\n\n%?"
+                   :empty-lines 1
+                   :created t))))
+
+  ;; Alternative simpler version without code blocks
+  ;; Uncomment this and comment the above if you prefer a simpler format
+  ;; (setq org-capture-templates
+  ;;       (append org-capture-templates
+  ;;               '(("c" "Cheat Sheet Item" entry
+  ;;                  (file+headline my/org-cheat-ensure-file-setup "Quick Reference")
+  ;;                  "** %^{Title}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%^{Description}\n\n%?"
+  ;;                  :empty-lines 1
+  ;;                  :created t))))
+
+  ;; Ensure the cheats directory exists
+  (unless (file-directory-p my/org-cheat-directory)
+    (make-directory my/org-cheat-directory t))
+  )
+#+end_src
+** org-excalidraw
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package org-excalidraw
+  :elpaca (:host github :repo "wdavew/org-excalidraw")
+  :config
+  (org-excalidraw-directory (expand-file-name "resources/excalidraw" org-directory))
+  )
 #+end_src
 ** Keybindings
 
@@ -1705,7 +1777,14 @@ re-align the table if necessary. (Necessary because org-mode has a
     "n r f" '(denote-open-or-create :wk "Open or create note")
     "n r i" '(denote-link-or-create :wk "Link or create to note")
     "n r R" '(denote-rename-file-using-front-matter :wk "Rename note using front matter"))
-  (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/"))))
+  (setq denote-directory (file-truename (file-name-concat org-directory "Denotes/")))
+  (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
+  )
+(use-package denote-sequence
+  :after (denote)
+  :init
+  (autoload 'denote-sort-dired--prepare-buffer "denote")
+  )
 ;; (with-eval-after-load 'org-capture
 ;; (add-to-list 'org-capture-templates
 ;;              '("N" "New note with no prompts (with denote.el)" plain
