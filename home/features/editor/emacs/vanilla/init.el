@@ -2,7 +2,9 @@
 
 (defun my/nixos-p ()
   "Return t if operating system is NixOS, nil otherwise."
-  (string-match-p "NixOS" (shell-command-to-string "uname -v")))
+  ;; (string-match-p "NixOS" (shell-command-to-string "uname -v"))
+  (string-match-p "nixos" (shell-command-to-string "grep '^ID=' /etc/os-release | cut -d'=' -f2 | tr -d '\"' | tr 'A-Z' 'a-z'" ))
+  )
 
 (defun my/nixos/get-emacs-build-date ()
   "Return NixOS Emacs build date."
@@ -13,7 +15,7 @@
 (when (my/nixos-p) (setq elpaca-core-date (list (my/nixos/get-emacs-build-date))))
 ;;(setq elpaca-core-date (list (my/nixos/get-emacs-build-date)))
 
-(defvar elpaca-installer-version 0.8)
+(defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -158,6 +160,14 @@
 (setq visible-bell t)
 
 (define-key minibuffer-local-map (kbd "C-v") 'yank)
+
+;; ;; This determines the style of line numbers in effect. If set to `nil', line
+;; ;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type 'relative)
+(column-number-mode)
+
+;; Only enable line numbers for programming modes
+(add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
 ;; (set-frame-font "iMWritingMono Nerd Font" nil t)
 ;; (set-frame-font "JetBrainsMono Nerd Font,JetBrainsMono NF" nil t)
@@ -726,10 +736,13 @@
 ;; )
 
 (use-package org
+  :init
+  (setq org-directory "~/Documents/org/")
+  (defvar para-directory (expand-file-name "shared/para" org-directory) "Directory for my para system files")
+  (defvar zettelkaster-directory (expand-file-name "shared/zettelkasten" org-directory) "Directory for my zettelkasten file")
   :custom
 
   ;; Org Export Settings
-  (org-directory "~/Documents/org/")
   (org-export-with-drawers nil)
   (org-export-with-todo-keywords nil)
   (org-export-with-broken-links t)
@@ -793,8 +806,8 @@
   (add-hook 'org-mode-hook (lambda ()
                              ;; (fset 'tex-font-lock-suscript 'ignore)
                              (org-babel-do-load-languages
-                              'org-babel-load-languages
-                              '((python . t)
+			      'org-babel-load-languages
+			      '((python . t)
                                 (shell . t)))))
 
   :config
@@ -805,8 +818,8 @@
 
 
   (setq my-gtd-files (mapcar
-                      #'my/gtd-file
-                      '("next.org"
+		      #'my/gtd-file
+		      '("next.org"
                         "read_review.org"
                         )))
 
@@ -859,7 +872,7 @@
            (file denote-last-path)
            (function
             (lambda ()
-              (denote-org-capture-with-prompts nil nil nil)))
+	      (denote-org-capture-with-prompts nil nil nil)))
            :no-save t
            :immediate-finish nil
            :kill-buffer t
@@ -873,7 +886,7 @@
            (file denote-last-path)
            (function
             (lambda ()
-              (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
+	      (let ((denote-use-directory (expand-file-name "projects" (denote-directory)))
                     ;; TODO Enable adding of additional keywords
                     (denote-use-keywords '("project"))
                     (denote-org-capture-specifiers (file-to-string (file-name-concat user-emacs-directory "templates/project.org")))
@@ -907,7 +920,7 @@
   ;; Org-capture template for programming cheatsheets
   ;; Add this to your Emacs configuration
 
-  (defvar my/org-cheat-directory "~/org/resources/cheats/"
+  (defvar my/org-cheat-directory (expand-file-name "resources/cheats/" para-directory)
     "Directory where programming cheat sheets are stored.")
 
   (defun my/org-cheat-get-language ()
@@ -969,7 +982,7 @@
   )
 
 (use-package org-excalidraw
-  :elpaca (:host github :repo "wdavew/org-excalidraw")
+  :ensure (:host github :repo "wdavew/org-excalidraw")
   :config
   (org-excalidraw-directory (expand-file-name "resources/excalidraw" org-directory))
   )
@@ -1089,6 +1102,12 @@
 (setq org-src-preserve-indentation t)
 
 (setq org-src-tab-acts-natively t)
+
+;; Using elpaca:
+(use-package corg
+  :ensure (:host github :repo "isamert/corg.el")
+  :config (add-hook 'org-mode-hook #'corg-setup)
+  )
 
 ;; (use-package org-caldav
 ;;   :config
