@@ -100,7 +100,6 @@
   ];
 
   features.impermanence.directories = [
-
     ".cursor"
     ".config/Cursor"
   ];

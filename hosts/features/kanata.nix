@@ -32,8 +32,14 @@ in {
             # Use `ls /dev/input/by-path/` to find your keyboard devices.
             # "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
             # "/dev/input/by-path/pci-0000:00:14.0-usb-0:3:1.0-event-kbd"
-            "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.3:1.0-event-kbd"
             "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+
+            "/dev/input/by-path/pci-0000:0f:00.3-usb-0:1.3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.0-usb-0:2.3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:0f:00.3-usb-0:3.3:1.0-event-kbd" 
+            "/dev/input/by-path/pci-0000:0f:00.3-usb-0:4.3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.0-usb-0:5.3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.3:1.0-event-kbd"
           ];
           extraDefCfg = "process-unmapped-keys yes";
           config = ''

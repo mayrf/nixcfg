@@ -2264,6 +2264,12 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
 ;;   )
 #+end_src
 
+** Magit TODO
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
+#+end_src
 * GPTel
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package gptel
@@ -2555,6 +2561,19 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
 	 (yaml-ts-mode . yaml-pro-ts-mode)
 	 (yaml-ts-mode . eglot-ensure)
 	 )
+;;   :config
+;; (defun my/yaml-shift-right ()
+;;   (interactive)
+;;   (indent-rigidly (region-beginning) (region-end) (or evil-shift-width 2)))
+
+;; (defun my/yaml-shift-left ()
+;;   (interactive)  
+;;   (indent-rigidly (region-beginning) (region-end) (- (or evil-shift-width 2))))
+
+;; (add-hook 'yaml-ts-mode-hook
+;;   (lambda ()
+;;     (evil-define-key 'visual yaml-ts-mode-map ">" 'my/yaml-shift-right)
+;;     (evil-define-key 'visual yaml-ts-mode-map "<" 'my/yaml-shift-left)))
   )
 ;; (use-package yaml-mode
 ;;   :ensure t

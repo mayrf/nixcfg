@@ -1981,6 +1981,10 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 ;; 	       )
 ;;   )
 
+(use-package magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
+
 (use-package gptel
   :config
   (setq gptel-model 'llama3.1:latest
@@ -2208,6 +2212,19 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 	 (yaml-ts-mode . yaml-pro-ts-mode)
 	 (yaml-ts-mode . eglot-ensure)
 	 )
+;;   :config
+;; (defun my/yaml-shift-right ()
+;;   (interactive)
+;;   (indent-rigidly (region-beginning) (region-end) (or evil-shift-width 2)))
+
+;; (defun my/yaml-shift-left ()
+;;   (interactive)  
+;;   (indent-rigidly (region-beginning) (region-end) (- (or evil-shift-width 2))))
+
+;; (add-hook 'yaml-ts-mode-hook
+;;   (lambda ()
+;;     (evil-define-key 'visual yaml-ts-mode-map ">" 'my/yaml-shift-right)
+;;     (evil-define-key 'visual yaml-ts-mode-map "<" 'my/yaml-shift-left)))
   )
 ;; (use-package yaml-mode
 ;;   :ensure t
