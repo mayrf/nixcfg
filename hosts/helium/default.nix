@@ -8,6 +8,8 @@
     ./distributed-builds.nix
     ../common
     ../common/users
+    ../features
+    ../features/desktop
     inputs.dotfiles-private.outputs.nixosModules
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x220
     (import ./disko.nix { device = "/dev/sda"; })
@@ -37,7 +39,6 @@
     hostName = "helium";
     persistDir = "/persist";
     isImpermanent = true;
-    sysStateVersion = "25.05";
   };
 
   sops.secrets."wireguard/x220_conf" = { };

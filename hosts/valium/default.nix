@@ -7,6 +7,8 @@
     ./hardware-configuration.nix
     ../common
     ../common/users
+    ../features
+    ../features/desktop
     # (import ./disko.nix { device = "/dev/sda"; })
   ];
 

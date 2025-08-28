@@ -17,7 +17,7 @@ in {
   home = {
     username = hostSpec.username;
     homeDirectory = lib.mkDefault "/home/${hostSpec.username}";
-    stateVersion = lib.mkDefault "25.05";
+    stateVersion = hostSpec.sysStateVersion; # Did you read the comment?
     sessionPath = [ "$HOME/.local/bin" ];
   };
 

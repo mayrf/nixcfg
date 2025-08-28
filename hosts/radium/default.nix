@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     ../common
     ../common/users
+    ../features
     ./vpn-kit.nix
     inputs.dotfiles-private.outputs.nixosModules
   ];

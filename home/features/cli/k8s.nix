@@ -15,12 +15,14 @@ in {
       kubectl-tree 
       argocd
       kubernetes-helm
-      unstable.kcl
       crossplane-cli
       docker-credential-helpers # needed for kcl packages
       k9s
       argocd-lovely-plugin
-      unstable.kcl-language-server
+      # unstable.kcl-language-server
+      # unstable.kcl
+      stable.kcl-language-server
+      stable.kcl
       kubernetes-helm
       argocd
       kargo

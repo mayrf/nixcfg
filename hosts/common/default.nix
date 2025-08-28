@@ -2,7 +2,6 @@
 
   imports = [
     ../../modules/common/host-spec.nix
-    ../features
     ./nixos-cli.nix
     inputs.home-manager.nixosModules.home-manager
   ];
@@ -95,11 +94,8 @@
     rsync # Syncer - $ rsync -r dir1/ dir2/
     fd
     busybox
-    bluetuith
     vim
     wget
-    libsForQt5.qt5.qtwayland
-    libsForQt5.polkit-kde-agent
     pass
     gnupg
     #Utils

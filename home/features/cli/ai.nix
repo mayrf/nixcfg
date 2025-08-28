@@ -43,7 +43,7 @@ in {
     home.packages = with pkgs; [
       # unstable.opencode
       opencode-latest
-      oterm
+      # stable.oterm
       fabric-ai
       # stable.aider-chat
       aider-chat

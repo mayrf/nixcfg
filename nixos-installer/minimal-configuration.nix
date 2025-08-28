@@ -47,7 +47,7 @@
     experimental-features = [ "nix-command" "flakes" ];
     warn-dirty = false;
   };
-  system.stateVersion = "25.05";
+  system.stateVersion = config.hostSpec.sysStateVersion;
 } // (if device != null then {
   fileSystems."/boot".options =
     [ "umask=0077" ]; # Removes permissions and security warnings.

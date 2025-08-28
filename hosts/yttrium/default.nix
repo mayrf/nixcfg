@@ -4,6 +4,8 @@
     ./hardware-configuration.nix
     ../common
     ../common/users
+    ../features
+    ../features/desktop
     inputs.dotfiles-private.outputs.nixosModules
     (import ./disko.nix { device = "/dev/nvme0n1"; })
   ];
@@ -14,7 +16,6 @@
     hostName = "yttrium";
     persistDir = "/persist";
     isImpermanent = true;
-    sysStateVersion = "25.05";
   };
 
   features = {
