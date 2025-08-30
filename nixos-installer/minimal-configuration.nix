@@ -1,17 +1,19 @@
-{ lib, pkgs, myLib, device, ... }:
+{ lib, pkgs, myLib, device, config, ... }:
 {
   imports = lib.flatten [
     (map myLib.relativeToRoot [
       "modules/common/host-spec.nix"
-      "hosts/common/users/primary"
-      "hosts/common/users/primary/nixos.nix"
-      "hosts/common/global/ensure-config-repo.nix"
+      "hosts/common/users/"
+      # "hosts/features/"
+      # "hosts/common/global/ensure-config-repo.nix"
     ])
   ];
 
   hostSpec = {
     isMinimal = lib.mkForce true;
     username = "mayrf";
+    persistDir = "/persist";
+    isImpermanent = true;
   };
   boot.initrd.systemd.enable = true;
 

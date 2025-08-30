@@ -18,6 +18,7 @@
       inherit (self) outputs;
 
       configVars = import ./vars { inherit inputs; };
+
       minimalSpecialArgs = {
         inherit inputs outputs configVars;
         lib = nixpkgs.lib;
@@ -45,15 +46,9 @@
         });
     in {
       nixosConfigurations = {
-        # host = newConfig "name" disk" "withSwap" "swapSize"
-        # Swap size is in GiB
         helium = newConfig "helium" "/dev/sda";
+        yttrium = newConfig "yttrium" "/dev/nvme0n1";
         radium = newConfig "radium" null;
-        # guppy = newConfig "guppy" "/dev/vda" false "0";
-
-        #TODO:(gusto) uncomment when gusto gets moved to disko, until then flake check errors on this because gustos current hw config doesn't match the disko spec that installer uses
-        #gusto = newConfig "gusto" "/dev/sda" true "8";
-
       };
     };
 }

@@ -1,25 +1,29 @@
 { config, pkgs, inputs, outputs, lib, ... }:
 let
-  sopsHashedPasswordFile = lib.optionalString
-    (!config.hostSpec.isMinimal && config.hostSpec.hostName != "iso" && config.features.sops.enable == true)
+  sopsHashedPasswordFile = lib.optionalString (!config.hostSpec.isMinimal
+    && config.hostSpec.hostName != "iso" && config.features.sops.enable == true)
     config.sops.secrets."${config.hostSpec.username}/hashedPassword".path;
   username = config.hostSpec.username;
 
   ifTheyExist = groups:
     builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
   pubKeys = lib.filesystem.listFilesRecursive ./keys;
-  useSops = config.features.sops.enable;
+  # useSops =
+  #   inputs ? "home-manager" && config.features.sops.enable;
+  useSops =
+    config ? "features" && config.features.sops.enable;
+  # useSops = false;
 in {
 
-  users.mutableUsers = useSops != true; # if false; # Only allow declarative credentials; Required for password to be set via sops during system activation!
+  users.mutableUsers = useSops
+    != true; # if false; # Only allow declarative credentials; Required for password to be set via sops during system activation!
 
+  programs.zsh.enable = true;
   users.users.${username} = {
     home = "/home/${username}";
     isNormalUser = true;
     description = "${username}";
     shell = pkgs.zsh;
-
-
     packages = [ pkgs.home-manager ];
     # These get placed into /etc/ssh/authorized_keys.d/<name> on nixos
     openssh.authorizedKeys.keys =
@@ -48,7 +52,8 @@ in {
     (config.hostSpec.isMinimal || config.hostSpec.hostName == "iso") {
       password = "nixos";
     } // lib.optionalAttrs useSops {
-      hashedPasswordFile = config.sops.secrets."${config.hostSpec.username}/hashedPassword".path;
+      hashedPasswordFile =
+        config.sops.secrets."${config.hostSpec.username}/hashedPassword".path;
     } // lib.optionalAttrs (!config.hostSpec.isMinimal && !useSops) {
       initialPassword = "changeme";
     };
@@ -60,6 +65,13 @@ in {
     "d /home/${username}/.ssh/sockets 0750 ${user} ${group} -"
   ];
 
+  # programs.nix-ld.enable = true;
+  # programs.nix-ld.libraries = with pkgs;
+  #   [
+  #     # Add any missing dynamic libraries for unpackaged
+  #     # programs here, NOT in environment.systemPackages
+  #   ];
+} // lib.optionalAttrs (inputs ? "home-manager") {
   home-manager = {
     extraSpecialArgs = {
       inherit outputs inputs;
@@ -67,15 +79,7 @@ in {
       hostSpec = config.hostSpec;
     };
     users.${username}.imports = lib.flatten
-      (lib.optional (!config.hostSpec.isMinimal) [
-        ../../../home/${username}/${config.hostSpec.hostName}.nix
-      ]);
+      (lib.optional (!config.hostSpec.isMinimal)
+        [ ../../../home/${username}/${config.hostSpec.hostName}.nix ]);
   };
-
-  # programs.nix-ld.enable = true;
-  # programs.nix-ld.libraries = with pkgs;
-  #   [
-  #     # Add any missing dynamic libraries for unpackaged
-  #     # programs here, NOT in environment.systemPackages
-  #   ];
 }
