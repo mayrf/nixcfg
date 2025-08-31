@@ -8,10 +8,8 @@ let
   ifTheyExist = groups:
     builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
   pubKeys = lib.filesystem.listFilesRecursive ./keys;
-  # useSops =
-  #   inputs ? "home-manager" && config.features.sops.enable;
   useSops =
-    config ? "features" && config.features.sops.enable;
+    inputs ? "sops-nix" && config.features.sops.enable;
   # useSops = false;
 in {
 

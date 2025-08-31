@@ -228,7 +228,7 @@ in {
       in ''
         exec-once=wl-paste --type text --watch cliphist store # Stores only text data
         exec-once=wl-paste --type image --watch cliphist store # Stores only image data
-        exec-once=${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
+        exec-once=${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1
         exec-once = hypridle
       '' + ''
         animations {

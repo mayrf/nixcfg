@@ -4,8 +4,7 @@
     (map myLib.relativeToRoot [
       "modules/common/host-spec.nix"
       "hosts/common/users/"
-      # "hosts/features/"
-      # "hosts/common/global/ensure-config-repo.nix"
+      # "hosts/features/impermanence.nix"
     ])
   ];
 
@@ -13,16 +12,13 @@
     isMinimal = lib.mkForce true;
     username = "mayrf";
     # persistDir = "/persist";
-    isImpermanent = false;
     # isImpermanent = true;
+    isImpermanent = false;
   };
-  boot.initrd.systemd.enable = true;
+  # features.impermanence.enable = false;
 
-  networking = {
-    # configures the network interface(include wireless) via `nmcli` & `nmtui`
-    # networkmanager.enable = true;
-  };
-
+  boot.initrd.systemd.enable =
+    true; # this enabled systemd support in stage1 - required for the below setup
   services = {
     # qemuGuest.enable = true;
     openssh = {
@@ -41,15 +37,21 @@
     };
   };
 
-  environment.systemPackages = builtins.attrValues {
-    inherit (pkgs) wget curl rsync;
-    # vim;
-  };
+  environment.systemPackages = with pkgs; [ wget curl rsync vim git ];
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     warn-dirty = false;
   };
+
+  programs.ssh = {
+    extraConfig = ''
+      Host *
+        IdentityFile /persist/system/home/${config.hostSpec.username}/.ssh/id_ed25519
+        IdentitiesOnly yes
+    '';
+  };
+
   system.stateVersion = config.hostSpec.sysStateVersion;
 } // (if device != null then {
   fileSystems."/boot".options =

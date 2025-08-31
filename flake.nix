@@ -45,9 +45,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence = {
-      url = "github:nix-community/impermanence/home-manager-v2";
-    };
+    impermanence.url = "github:nix-community/impermanence/home-manager-v2";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     nixvim = {

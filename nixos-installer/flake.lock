@@ -34,6 +34,47 @@
         "type": "github"
       }
     },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "impermanence",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1756579987,
+        "narHash": "sha256-duCce8zGsaMsrqqOmLOsuaV1PVIw/vXWnKuLKZClsGg=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "99a69bdf8a3c6bf038c4121e9c4b6e99706a187a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "impermanence": {
+      "inputs": {
+        "home-manager": "home-manager",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1748267734,
+        "narHash": "sha256-il5MTwCdW1H8TUxKhNsVqUW+4oh9NapIVzGSIycXOp8=",
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "rev": "a2f08d24271da9c2b676887ac094f15b0565b193",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "home-manager-v2",
+        "repo": "impermanence",
+        "type": "github"
+      }
+    },
     "nixos-wsl": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -73,6 +114,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1756542300,
+        "narHash": "sha256-tlOn88coG5fzdyqz6R93SQL5Gpq+m/DsWpekNFhqPQk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "d7600c775f877cd87b4f5a831c28aa94137377aa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1756386758,
         "narHash": "sha256-1wxxznpW2CKvI9VdniaUnTT2Os6rdRJcRUf65ZK9OtE=",
         "owner": "nixos",
@@ -90,8 +147,9 @@
     "root": {
       "inputs": {
         "disko": "disko",
+        "impermanence": "impermanence",
         "nixos-wsl": "nixos-wsl",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       }
     }
   },
