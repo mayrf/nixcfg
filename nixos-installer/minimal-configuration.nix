@@ -12,8 +12,9 @@
   hostSpec = {
     isMinimal = lib.mkForce true;
     username = "mayrf";
-    persistDir = "/persist";
-    isImpermanent = true;
+    # persistDir = "/persist";
+    isImpermanent = false;
+    # isImpermanent = true;
   };
   boot.initrd.systemd.enable = true;
 
