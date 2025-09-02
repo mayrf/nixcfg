@@ -4,21 +4,22 @@
     (map myLib.relativeToRoot [
       "modules/common/host-spec.nix"
       "hosts/common/users/"
-      # "hosts/features/impermanence.nix"
+      "hosts/features/impermanence.nix"
     ])
   ];
 
   hostSpec = {
     isMinimal = lib.mkForce true;
     username = "mayrf";
-    # persistDir = "/persist";
-    # isImpermanent = true;
-    isImpermanent = false;
+    persistDir = "/persist";
+    isImpermanent = true;
+    # isImpermanent = false;
   };
-  # features.impermanence.enable = false;
+
+  features.impermanence.enable = true;
 
   boot.initrd.systemd.enable =
-    true; # this enabled systemd support in stage1 - required for the below setup
+    false; # this enabled systemd support in stage1 - required for the below setup
   services = {
     # qemuGuest.enable = true;
     openssh = {

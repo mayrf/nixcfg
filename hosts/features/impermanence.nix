@@ -121,9 +121,9 @@ in {
   };
   config = mkIf cfg.enable {
 
-    boot.initrd.systemd = {
-      enable =
-        true; # this enabled systemd support in stage1 - required for the below setup
+    # boot.initrd.systemd = {
+    #   enable =
+    #     true; # this enabled systemd support in stage1 - required for the below setup
     #   # services.rollback = {
     #   #   description = "Rollback BTRFS root subvolume to a pristine state";
     #   #   wantedBy = [ "initrd.target" ];
@@ -172,37 +172,37 @@ in {
     #   # };
     # };
 
-    # boot.initrd.systemd.enable =
-    #   false; # this disables systemd support in stage1 - required for the below setup
-    # boot.initrd.postResumeCommands = lib.mkAfter ''
-    #   mkdir /btrfs_tmp
-    #   mount /dev/root_vg/root /btrfs_tmp
-    #   if [[ -e /btrfs_tmp/root ]]; then
-    #       mkdir -p /btrfs_tmp/old_roots
-    #       timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
-    #       if [[ ! -e /btrfs_tmp/old_roots/$timestamp ]]; then
-    #         mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
-    #       else
-    #         btrfs subvolume delete /btrfs_tmp/root
-    #       fi
-    #   fi
+    # this disables systemd support in stage1 - required for the below setup
+    boot.initrd.systemd.enable = false;
+    boot.initrd.postResumeCommands = lib.mkAfter ''
+      mkdir /btrfs_tmp
+      mount /dev/root_vg/root /btrfs_tmp
+      if [[ -e /btrfs_tmp/root ]]; then
+          mkdir -p /btrfs_tmp/old_roots
+          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+          if [[ ! -e /btrfs_tmp/old_roots/$timestamp ]]; then
+            mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+          else
+            btrfs subvolume delete /btrfs_tmp/root
+          fi
+      fi
 
-    #   delete_subvolume_recursively() {
-    #       btrfs subvolume delete -R "$1"
-    #       # IFS=$'\n'
-    #       # for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-    #       #     delete_subvolume_recursively "/btrfs_tmp/$i"
-    #       # done
-    #       # btrfs subvolume delete "$1"
-    #   }
+      delete_subvolume_recursively() {
+          btrfs subvolume delete -R "$1"
+          # IFS=$'\n'
+          # for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+          #     delete_subvolume_recursively "/btrfs_tmp/$i"
+          # done
+          # btrfs subvolume delete "$1"
+      }
 
-    #   for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-    #       delete_subvolume_recursively "$i"
-    #   done
+      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+          delete_subvolume_recursively "$i"
+      done
 
-    #   btrfs subvolume create /btrfs_tmp/root
-    #   umount /btrfs_tmp
-    # '';
+      btrfs subvolume create /btrfs_tmp/root
+      umount /btrfs_tmp
+    '';
 
     fileSystems.${config.hostSpec.persistDir}.neededForBoot = true;
 

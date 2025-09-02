@@ -36,7 +36,7 @@
           modules = [
             inputs.disko.nixosModules.disko
             inputs.nixos-wsl.nixosModules.wsl
-            # inputs.impermanence.nixosModules.impermanence
+            inputs.impermanence.nixosModules.impermanence
             ./minimal-configuration.nix
             ../hosts/${name}/hardware-configuration.nix
             (if device != null then
