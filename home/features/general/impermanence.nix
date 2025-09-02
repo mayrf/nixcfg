@@ -50,7 +50,7 @@ in {
       '';
     };
 
-    directories_no_bak = mkOption {
+    directories_cache = mkOption {
       # type = types.listOf
       #   (types.coercedTo types.str (directory: { inherit directory; })
       #     (submodule {
@@ -110,17 +110,17 @@ in {
   config = mkIf cfg.enable {
 
     systemd.user.tmpfiles.rules = [
-      "d  /persist/no_bak 0755 root root -"
-      "d  /persist/no_bak/home 0755 ${hostSpec.username} users -"
-      "d  /persist/no_bak/home/${hostSpec.username} 0755 ${hostSpec.username} users -"
+      "d  /persist/cache 0755 root root -"
+      "d  /persist/cache/home 0755 ${hostSpec.username} users -"
+      "d  /persist/cache/home/${hostSpec.username} 0755 ${hostSpec.username} users -"
     ];
 
-    # home.persistence."${hostSpec.persistDir}/no_bak/home/${hostSpec.username}" =
-    home.persistence."${hostSpec.persistDir}/no_bak" = 
+    # home.persistence."${hostSpec.persistDir}/cache/home/${hostSpec.username}" =
+    home.persistence."${hostSpec.persistDir}/cache" = 
       {
         # hideMounts = true;
         # allowOther = true;
-        directories = [ ] ++ cfg.directories_no_bak;
+        directories = [ ] ++ cfg.directories_cache;
       };
 
     # home.persistence."${hostSpec.persistDir}/system/home/${hostSpec.username}" =

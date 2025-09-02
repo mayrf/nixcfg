@@ -18,7 +18,7 @@ let
 in {
   options.features.impermanence = {
     enable = mkEnableOption "my impermanence config";
-    directories_no_bak = mkOption {
+    directories_cache = mkOption {
       # type = types.listOf
       #   (types.coercedTo types.str (directory: { inherit directory; })
       #     (submodule {
@@ -207,14 +207,14 @@ in {
     fileSystems.${config.hostSpec.persistDir}.neededForBoot = true;
 
     systemd.tmpfiles.rules = [
-      "d  /persist/no_bak 0755 root root -"
-      "d  /persist/no_bak/home 0755 ${config.hostSpec.username} users -"
-      "d  /persist/no_bak/home/${config.hostSpec.username} 0755 ${config.hostSpec.username} users -"
+      "d  /persist/cache 0755 root root -"
+      "d  /persist/cache/home 0755 ${config.hostSpec.username} users -"
+      "d  /persist/cache/home/${config.hostSpec.username} 0755 ${config.hostSpec.username} users -"
     ];
 
-    environment.persistence."${config.hostSpec.persistDir}/no_bak" = {
+    environment.persistence."${config.hostSpec.persistDir}/cache" = {
       hideMounts = true;
-      directories = [ "/var/lib/flatpak" ] ++ cfg.directories_no_bak;
+      directories = [ "/var/lib/flatpak" ] ++ cfg.directories_cache;
     };
 
     environment.persistence."${config.hostSpec.persistDir}/system" = {
