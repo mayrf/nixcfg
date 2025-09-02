@@ -48,15 +48,15 @@
     };
   };
   features.impermanence.directories = [
-    "/var/lib/private/open-webui"
-    {
-      directory = "/var/lib/private";
-      mode = "u=rwx,g=,o=";
-    }
-    {
-      directory = "/var/lib/private/ollama";
-      mode = "0700";
-    }
+    # "/var/lib/private/open-webui"
+    # {
+    #   directory = "/var/lib/private";
+    #   mode = "u=rwx,g=,o=";
+    # }
+    # {
+    #   directory = "/var/lib/private/ollama";
+    #   mode = "0700";
+    # }
   ];
 
   environment.systemPackages = [
