@@ -70,11 +70,14 @@ in {
             ec_vanilla_func() {
                 nohup emacsclient -s vanilla -c "$1" >/dev/null 2>&1 &
             }
+
+            jwt-decode_func() {
+                jq -R 'split(".") |.[0:2] | map(gsub("-"; "+") | gsub("_"; "/") | gsub("%3D"; "=") | @base64d) | map(fromjson)' <<< $1
+            }
       '';
     };
     home.shellAliases = {
       "rbs" = "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName}";
-
       ls = "eza";
       grep = "rg";
       ps = "procs";
@@ -90,6 +93,8 @@ in {
         nix-collect-garbage -d
         sudo nix-store --optimise
       '';
+
+      jwt-decode = "jwt_decode_func";
       "fix-nixstore" = ''
         sudo nix-store --gc
         nix-store --gc

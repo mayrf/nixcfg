@@ -8,12 +8,13 @@ in {
   config = mkIf cfg.enable {
 
     features.impermanence.directories = [
-          ".config/calibre"
-          ".thunderbird"
-          ".local/share/gnucash"
-          ".config/keepassxc"
-          ".cache/keepassxc"
-          ".config/libreoffice"
+      ".config/calibre"
+      ".thunderbird"
+      ".local/share/gnucash"
+      ".config/keepassxc"
+      ".cache/keepassxc"
+      ".config/libreoffice"
+      ".wine"
     ];
 
     home.packages = with pkgs; [
@@ -38,6 +39,8 @@ in {
       legcord
       ipscan
       dbgate
+      opencloud-desktop
+      wine
     ];
   };
 }
