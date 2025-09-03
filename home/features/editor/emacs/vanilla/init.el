@@ -749,6 +749,7 @@
   (org-export-with-toc nil)
   (org-export-with-num nil)
   (org-export-with-smart-quotes t)
+  (org-startup-with-inline-images t)
   (org-export-date-timestamp-format "%d %B %Y")
 
   (org-reverse-note-order t)
@@ -809,9 +810,14 @@
 			      'org-babel-load-languages
 			      '((python . t)
                                 (shell . t)))))
-
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
   :config
+  ;; Define safe languages that don't need confirmation
+  (defun my-org-babel-safe-languages (lang body)
+    "Return nil (no confirmation) for safe languages, t otherwise."
+    (not (member lang '("emacs-lisp" "python" "R" "shell"))))
 
+  (setq org-confirm-babel-evaluate 'my-org-babel-safe-languages)
 
   (defun my/gtd-file (filename)
     (file-name-concat org-directory "gtd" filename))
@@ -1022,6 +1028,12 @@
     )
 
 (use-package olivetti)
+
+(use-package ob-mermaid
+  :custom (ob-mermaid-cli-path "mmdc")
+  :config
+  ((add-to-list 'org-babel-load-languages '(mermaid . t))
+   ))
 
 (use-package org-download
   :after org

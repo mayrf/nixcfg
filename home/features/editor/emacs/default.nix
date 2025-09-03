@@ -182,6 +182,9 @@ in {
 
       # ai 
       # aider-chat
+
+      #org mode
+      mermaid-cli
     ];
 
     sops.secrets."emacs/authinfo" = { };

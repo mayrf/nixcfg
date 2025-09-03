@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Source block
-# uuid:
-# key: <src
-# condition: t
-# --
-#+BEGIN_SRC ${1:Language}
-$0
-#+END_SRC
