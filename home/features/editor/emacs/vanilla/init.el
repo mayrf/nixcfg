@@ -1999,11 +1999,19 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 
 (use-package gptel
   :config
+  (defun my/strip-protocol (url)
+    "Remove protocol (http:// or https://) from URL if present."
+    (if url
+	(replace-regexp-in-string "^https?://" "" url)
+      nil))
   (setq gptel-model 'llama3.1:latest
 	gptel-backend (gptel-make-ollama "Ollama"
-			:host "localhost:11434"
+			;; :host "localhost:11434"
+                        :host (my/strip-protocol 
+                               (or (getenv "OLLAMA_API_BASE")
+                                   "localhost:11434"))
 			:stream t
-			:models '(llama3.1:latest)))
+			:models '(llama3.1:8b)))
   )
 ;; (gptel-make-ollama "Ollama"             ;Any name of your choosing
 ;;   :host "localhost:11434"               ;Where it's running
@@ -2263,7 +2271,6 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   (setq aider-args '("--model" "ollama_chat/qwen3:1.7b" ))
   ;; (setq aider-args '("--model" "ollama_chat/qwen3:4b" ))
   ;; (setq aider-args '("--model" "ollama_chat/qwen3:8b" ))
-  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (global-set-key (kbd "C-c a") 'aider-transient-menu)) ;; for wider screen
 
 (use-package copilot
