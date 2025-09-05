@@ -7,7 +7,6 @@
       # style = "dark";
       style = "moon";
     };
-    notes.obsidian.enable = true;
     notes.neorg.enable = true;
     filetree.neo-tree.enable = true;
 

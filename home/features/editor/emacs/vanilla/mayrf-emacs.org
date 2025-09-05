@@ -2542,6 +2542,14 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )
 #+end_src
+
+*** EIN
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package ein)
+;; (use-package ein-notebook)
+;; (use-package ein-subpackages)
+
+#+end_src
 ** Rust
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package rustic
@@ -2606,16 +2614,8 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
   :ensure nil  ; Built-in to Emacs 29+
   :config
   (add-to-list 'eglot-server-programs
-               '(yaml-mode . ("yaml-language-server" "--stdio")))
+               '(yaml-mode . ("yaml-language-server" "--stdio"))))
   
-  ;; Configure YAML language server settings
-  (setq-default eglot-workspace-configuration
-                '((:yaml . ((:kubernetes . "*.yaml")
-                           (:schemas . ((:kubernetes . "*.yaml")
-                                      ("https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.28.0/all.json" . "*.k8s.yaml")))
-                           (:completion . t)
-                           (:hover . t)
-                           (:validate . t))))))
   #+end_src
 ** Aider
 #+begin_src emacs-lisp :tangle "init.el"

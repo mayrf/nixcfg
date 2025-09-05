@@ -160,6 +160,7 @@ in {
       python313Packages.pylint
       python313Packages.yapf
       python313Packages.pylama
+      python313Packages.jupyter
       vscode-langservers-extracted
 
       xclip

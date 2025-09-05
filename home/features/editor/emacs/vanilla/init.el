@@ -2203,6 +2203,10 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   ;; (add-hook 'go-ts-mode-hook 'eglot-ensure)
   )
 
+(use-package ein)
+;; (use-package ein-notebook)
+;; (use-package ein-subpackages)
+
 (use-package rustic
   :ensure t
   :config
@@ -2255,16 +2259,7 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   :ensure nil  ; Built-in to Emacs 29+
   :config
   (add-to-list 'eglot-server-programs
-               '(yaml-mode . ("yaml-language-server" "--stdio")))
-  
-  ;; Configure YAML language server settings
-  (setq-default eglot-workspace-configuration
-                '((:yaml . ((:kubernetes . "*.yaml")
-                           (:schemas . ((:kubernetes . "*.yaml")
-                                      ("https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.28.0/all.json" . "*.k8s.yaml")))
-                           (:completion . t)
-                           (:hover . t)
-                           (:validate . t))))))
+               '(yaml-mode . ("yaml-language-server" "--stdio"))))
 
 (use-package aider
   :config

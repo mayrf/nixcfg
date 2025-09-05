@@ -19,8 +19,8 @@ in {
       docker-credential-helpers # needed for kcl packages
       k9s
       argocd-lovely-plugin
-      # unstable.kcl-language-server
-      # unstable.kcl
+      cue
+      timoni
       stable.kcl-language-server
       stable.kcl
       kubernetes-helm
