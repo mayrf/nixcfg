@@ -7,6 +7,7 @@
     ./wofi.nix
     ./waybar.nix
     ./nextcloud-client.nix
+    ./opencloud-client.nix
     ./virtualisation.nix
     ./email.nix
     ./postman.nix
@@ -24,6 +25,7 @@
   ];
 
   stylix.targets.emacs.enable = false;
+  stylix.targets.qt.enable = false;
   home.packages = with pkgs; [
     pinentry-qt # GnuPG s interface to passphrase input
   ];

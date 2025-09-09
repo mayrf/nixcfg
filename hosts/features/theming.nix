@@ -5,6 +5,7 @@ in {
   options.features.theming.enable = mkEnableOption "theming config";
   config = mkIf cfg.enable {
     stylix.enable = true;
+    stylix.targets.qt.enable = false;
     stylix.image = pkgs.fetchurl {
       url =
         "https://unsplash.com/photos/K2s_YE031CA/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzE5NDI1ODU3fA&force=true&w=2400";

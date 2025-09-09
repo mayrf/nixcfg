@@ -43,9 +43,7 @@
     package = pkgs.stable.ollama-rocm;
     enable = true;
     acceleration = "rocm";
-    environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "8192"; 
-    };
+    environmentVariables = { OLLAMA_CONTEXT_LENGTH = "8192"; };
   };
   features.impermanence.directories = [
     # "/var/lib/private/open-webui"

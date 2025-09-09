@@ -39,6 +39,7 @@
       mako.enable = true;
       wofi.enable = true;
       nextcloud-client.enable = true;
+      opencloud-client.enable = true;
       virtualisation.enable = true;
       postman.enable = true;
       librewolf.enable = true;

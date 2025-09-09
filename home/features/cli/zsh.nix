@@ -71,22 +71,27 @@ in {
                 nohup emacsclient -s vanilla -c "$1" >/dev/null 2>&1 &
             }
 
+            send_ghostty_terminfo() {
+                infocmp -x xterm-ghostty | ssh $1 -- tic -x -
+            }
+
+
             jwt-decode_func() {
                 jq -R 'split(".") |.[0:2] | map(gsub("-"; "+") | gsub("_"; "/") | gsub("%3D"; "=") | @base64d) | map(fromjson)' <<< $1
             }
       '';
     };
     home.shellAliases = {
-      "rbs" = "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName}";
+      rbs = "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName}";
       ls = "eza";
       grep = "rg";
       ps = "procs";
-      "rbs-no-c" =
+      rbs-no-c =
         "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName} --option build-use-substitutes false";
 
-      "nfu" = "nix flake update --flake $FLAKE --commit-lock-file";
+      nfu = "nix flake update --flake $FLAKE --commit-lock-file";
 
-      "optimize" = ''
+      optimize = ''
         nix-env --list-generations
         nix-env --delete-generations +1
         sudo nix-collect-garbage -d
@@ -95,21 +100,22 @@ in {
       '';
 
       jwt-decode = "jwt_decode_func";
-      "fix-nixstore" = ''
+      ghostty-terminfo = "send_ghostty_terminfo";
+      fix-nixstore = ''
         sudo nix-store --gc
         nix-store --gc
         sudo nix-store --verify --check-contents --repair
         nix-store --verify --check-contents --repair
       '';
       # "emacs" = "emacsclient -c";
-      "rlwb" = "pkill -USR2 waybar";
-      "fcd" = ''cd "$(find -type d | fzf)"'';
-      "open" = ''xdg-open "$(find -type f | fzf)"'';
-      "ec" = "ec_func";
-      "ec_term" = "ec_func_term";
-      "ec_van" = "ec_vanilla_func";
-      "k" = "kubectl";
-      "impermanence-check" = ''
+      rlwb = "pkill -USR2 waybar";
+      fcd = ''cd "$(find -type d | fzf)"'';
+      open = ''xdg-open "$(find -type f | fzf)"'';
+      ec = "ec_func";
+      ec_term = "ec_func_term";
+      ec_van = "ec_vanilla_func";
+      k = "kubectl";
+      impermanence-check = ''
         sudo fd --one-file-system --base-directory / --type f --hidden --exclude "{tmp,etc/passwd}"'';
     };
   };

@@ -68,7 +68,14 @@ in {
           // make right alt altGr
           include "level3(ralt_switch)"
       };  '';
-    home.packages = with pkgs; [ cliphist hyprpicker brightnessctl xorg.xhost ];
+    home.packages = with pkgs; [
+      hyprland-qt-support
+      hyprland-qtutils
+      cliphist
+      hyprpicker
+      brightnessctl
+      xorg.xhost
+    ];
     programs.hyprlock.enable = true; # new line
     services.hypridle.enable = true;
     services.hypridle.settings = {
@@ -103,7 +110,8 @@ in {
             "hyprctl dispatch dpms on && brightnessctl -r"; # screen on when activity is detected after timeout has fired.
         }
         {
-          timeout = 1800; # 30min
+        #  timeout = 1800; # 30min
+          timeout = 7200; # 120min
           on-timeout = "systemctl suspend"; # suspend pc
         }
       ];

@@ -39,7 +39,6 @@ in {
       legcord
       ipscan
       dbgate
-      opencloud-desktop
       wine
     ];
   };
