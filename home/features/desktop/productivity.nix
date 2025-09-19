@@ -15,6 +15,7 @@ in {
       ".cache/keepassxc"
       ".config/libreoffice"
       ".wine"
+      ".config/immich"
     ];
 
     home.packages = with pkgs; [
@@ -40,6 +41,7 @@ in {
       ipscan
       dbgate
       wine
+      immich-cli
     ];
   };
 }

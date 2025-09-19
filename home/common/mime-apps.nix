@@ -26,6 +26,34 @@
     "image/jpeg" = "sxiv.desktop";
     "image/png" = "sxiv.desktop";
     "image/gif" = "sxiv.desktop";
+
+    # Text files
+    "text/plain" = "emacsclient.desktop";
+    "text/markdown" = "emacsclient.desktop";
+    "text/x-markdown" = "emacsclient.desktop";
+
+    # YAML files
+    "text/yaml" = "emacsclient.desktop";
+    "text/x-yaml" = "emacsclient.desktop";
+    "application/x-yaml" = "emacsclient.desktop";
+
+    # Configuration files
+    "text/x-config" = "emacsclient.desktop";
+    "text/x-ini" = "emacsclient.desktop";
+
+    # Source code files (common ones)
+    "text/x-python" = "emacsclient.desktop";
+    "text/x-shellscript" = "emacsclient.desktop";
+    "text/x-script" = "emacsclient.desktop";
+    "application/x-shellscript" = "emacsclient.desktop";
+
+    # JSON
+    "application/json" = "emacsclient.desktop";
+    "text/json" = "emacsclient.desktop";
+
+    # XML
+    "text/xml" = "emacsclient.desktop";
+    "application/xml" = "emacsclient.desktop";
   };
 }
 # ls -l /run/current-system/sw/share/applications

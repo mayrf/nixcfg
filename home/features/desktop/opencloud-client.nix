@@ -24,6 +24,10 @@ in {
     features.impermanence.directories =
       [ ".config/OpenCloud" ];
 
+
+    features.impermanence.directories_cache =
+      [ ".cache/OpenCloud" ];
+
     systemd.user.services.opencloud-client = {
       Unit = {
         Description = "Opencloud Client";

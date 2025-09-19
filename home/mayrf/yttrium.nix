@@ -30,6 +30,7 @@
       yazi.enable = true;
       lf.enable = true;
       git.enable = true;
+      syncthing.enable = true;
       # If this is not activated, I get a weird error: This is probably because something tries to access sops while it is not configured. This error should be avoided.
       # Failed assertions:
       # - mayrf profile: No key source configured for sops. Either set services.openssh.enable or set sops.age.keyFile or sops.gnupg.home or sops.gnupg.qubes-split-gpg.enable
@@ -47,8 +48,8 @@
       gammastep.enable = true;
       mako.enable = true;
       wofi.enable = true;
-      # nextcloud-client.enable = true;
-      opencloud-client.enable = true;
+      nextcloud-client.enable = true;
+      # opencloud-client.enable = true;
       virtualisation.enable = true;
       postman.enable = true;
       librewolf.enable = true;
@@ -81,7 +82,7 @@
         "3, monitor:HDMI-A-1"
         "4, monitor:HDMI-A-1"
         "5, monitor:HDMI-A-1"
-        "6, monitor:HDMI-A-1"
+        "6, monitor:DP-2"
         "7, monitor:DP-2"
         "8, monitor:DP-2"
         "9, monitor:DP-2"

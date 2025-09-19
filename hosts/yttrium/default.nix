@@ -6,6 +6,7 @@
     ../common/users
     ../features
     ../features/desktop
+    ./immich-ml-server.nix
     inputs.dotfiles-private.outputs.nixosModules
     (import ./disko.nix { device = "/dev/nvme0n1"; })
   ];

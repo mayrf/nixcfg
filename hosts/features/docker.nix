@@ -13,6 +13,9 @@ in {
         engine.compose_warning_logs = false;
       };
     };
+
+    features.impermanence.directories =
+      [ "var/lib/containers/" ];
     virtualisation = {
       docker.enable = false; # Disable Docker
       podman = {

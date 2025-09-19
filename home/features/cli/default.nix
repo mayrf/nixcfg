@@ -10,6 +10,7 @@
     ./lf
     ./git
     ./sops.nix
+    ./syncthing.nix
   ];
   programs.zoxide = { enable = true; };
   programs.eza = {
