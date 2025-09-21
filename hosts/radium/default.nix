@@ -1,5 +1,4 @@
-{ pkgs, config, inputs, ... }:
-{
+{ pkgs, config, inputs, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -11,12 +10,13 @@
   ];
 
   features = {
-    sops.enable = true; 
+    sops.enable = true;
     docker.enable = true;
     private = {
       workProxies.enable = true;
       work.enable = true;
     };
+    devbox.enable = true;
   };
 
   hostSpec = {
@@ -25,5 +25,7 @@
     hostName = "radium";
   };
 
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [ chromium libglibutil ];
   environment.systemPackages = with pkgs; [ wsl-vpnkit ];
 }

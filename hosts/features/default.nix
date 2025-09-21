@@ -17,5 +17,6 @@
     ./flatpak.nix
     ./winapps.nix
     ./bluetooth.nix
+    ./devbox.nix
   ];
 }

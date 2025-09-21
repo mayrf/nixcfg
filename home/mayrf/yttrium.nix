@@ -100,9 +100,5 @@
     code-cursor
     rustdesk-flutter
   ];
-
-  features.impermanence.directories = [
-    ".cursor"
-    ".config/Cursor"
-  ];
+  features.impermanence.directories = [ ".cursor" ".config/Cursor" ];
 }

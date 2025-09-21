@@ -24,22 +24,22 @@
       git.enable = true;
       sops.enable = true;
       yazi.enable = true;
+      syncthing.enable = true;
     };
     editor = {
       emacs.enable = true;
       nvim.enable = true;
     };
 
-    private = {
-      work.enable = true;
-    };
+    private = { work.enable = true; };
   };
 
   home.packages = with pkgs; [
-      mariadb
-      # mysql-shell
-      grafana-alloy
-      firefox
+    mariadb
+    # mysql-shell
+    grafana-alloy
+    firefox
+    camunda-modeler
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

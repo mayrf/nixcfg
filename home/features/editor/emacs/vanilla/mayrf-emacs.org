@@ -898,8 +898,9 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
 (use-package org
   :init
   (setq org-directory "~/Documents/org/")
-  (defvar para-directory (expand-file-name "shared/para" org-directory) "Directory for my para system files")
-  (defvar zettelkaster-directory (expand-file-name "shared/zettelkasten" org-directory) "Directory for my zettelkasten file")
+  (setq org-directory "~/Documents/org/")
+  (defvar para-directory "~/Documents/para/" "Directory for my para system files")
+  (defvar zettelkaster-directory (expand-file-name "resource/zettelkasten" para-directory) "Directory for my zettelkasten file")
   :custom
 
   ;; Org Export Settings
@@ -1128,7 +1129,8 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   (setq org-capture-templates
 	(append org-capture-templates
 		'(("c" "Cheat Sheet Item" entry
-                   (file+headline my/org-cheat-file-path "Quick Reference")
+                   ;; (file+headline my/org-cheat-file-path "Quick Reference")
+                   (file my/org-cheat-file-path )
                    ;; "** %^{Title}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%^{Description}\n\n#+BEGIN_SRC %^{Code Block Language|text}\n%^{Code/Example}\n#+END_SRC\n\n%?"
 
                    "** %^{Title}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n#+begin_src %^{Code Block Language|text}\n%^{Code/Example}\n#+end_src\n\n%?"
@@ -1149,6 +1151,38 @@ You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTR
   (unless (file-directory-p my/org-cheat-directory)
     (make-directory my/org-cheat-directory t))
   )
+#+end_src
+** Cheat retrieval
+#+begin_src emacs-lisp :tangle "init.el"
+(defun my/consult-grep-in-folder (folder)
+  "Live grep in a specific FOLDER using consult."
+  (interactive "DGrep in folder: ")
+  (let ((default-directory folder))
+    (consult-ripgrep)))
+
+(defun my/grep-cheats ()
+  ;; "Live grep in a specific FOLDER using consult."
+  (interactive)
+  (my/consult-grep-in-folder my/org-cheat-directory))
+
+(defun my/consult-org-headings-in-folder (folder)
+  "Search for org headings in all .org files within FOLDER."
+  (interactive "DSearch org headings in folder: ")
+  (let ((org-files (directory-files-recursively folder "\\.org$")))
+    (if org-files
+        (consult-org-heading nil org-files)
+      (message "No .org files found in %s" folder))))
+
+(defun my/list-cheats ()
+  ;; "Live grep in a specific FOLDER using consult."
+  (interactive)
+  (my/consult-org-headings-in-folder my/org-cheat-directory))
+
+  (my/leader
+    "k" '(:ignore t :wk "Knowledge")
+    "k c" '(:ignore t  :wk "cheats")
+    "k c g" '(my/grep-cheats :wk "grep for cheats")
+    "k c s" '(my/list-cheats :wk "list all headings for all cheats"))
 #+end_src
 ** org-excalidraw
 #+begin_src emacs-lisp :tangle "init.el"
@@ -2569,13 +2603,13 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
 (use-package kcl-ts-mode
   :ensure nil
   :mode "\\.k\\'"
-  :hook ((kcl-ts-mode . eglot-ensure))
+  ;; :hook ((kcl-ts-mode . eglot-ensure))
   )
 
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-	       '(kcl-ts-mode . ("kcl-language-server")))
-  )
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;; 	       '(kcl-ts-mode . ("kcl-language-server")))
+;;   )
 
 
 #+end_src

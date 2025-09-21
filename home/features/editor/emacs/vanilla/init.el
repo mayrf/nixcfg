@@ -738,8 +738,9 @@
 (use-package org
   :init
   (setq org-directory "~/Documents/org/")
-  (defvar para-directory (expand-file-name "shared/para" org-directory) "Directory for my para system files")
-  (defvar zettelkaster-directory (expand-file-name "shared/zettelkasten" org-directory) "Directory for my zettelkasten file")
+  (setq org-directory "~/Documents/org/")
+  (defvar para-directory "~/Documents/para/" "Directory for my para system files")
+  (defvar zettelkaster-directory (expand-file-name "resource/zettelkasten" para-directory) "Directory for my zettelkasten file")
   :custom
 
   ;; Org Export Settings
@@ -965,7 +966,8 @@
   (setq org-capture-templates
 	(append org-capture-templates
 		'(("c" "Cheat Sheet Item" entry
-                   (file+headline my/org-cheat-file-path "Quick Reference")
+                   ;; (file+headline my/org-cheat-file-path "Quick Reference")
+                   (file my/org-cheat-file-path )
                    ;; "** %^{Title}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%^{Description}\n\n#+BEGIN_SRC %^{Code Block Language|text}\n%^{Code/Example}\n#+END_SRC\n\n%?"
 
                    "** %^{Title}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n#+begin_src %^{Code Block Language|text}\n%^{Code/Example}\n#+end_src\n\n%?"
@@ -986,6 +988,36 @@
   (unless (file-directory-p my/org-cheat-directory)
     (make-directory my/org-cheat-directory t))
   )
+
+(defun my/consult-grep-in-folder (folder)
+  "Live grep in a specific FOLDER using consult."
+  (interactive "DGrep in folder: ")
+  (let ((default-directory folder))
+    (consult-ripgrep)))
+
+(defun my/grep-cheats ()
+  ;; "Live grep in a specific FOLDER using consult."
+  (interactive)
+  (my/consult-grep-in-folder my/org-cheat-directory))
+
+(defun my/consult-org-headings-in-folder (folder)
+  "Search for org headings in all .org files within FOLDER."
+  (interactive "DSearch org headings in folder: ")
+  (let ((org-files (directory-files-recursively folder "\\.org$")))
+    (if org-files
+        (consult-org-heading nil org-files)
+      (message "No .org files found in %s" folder))))
+
+(defun my/list-cheats ()
+  ;; "Live grep in a specific FOLDER using consult."
+  (interactive)
+  (my/consult-org-headings-in-folder my/org-cheat-directory))
+
+  (my/leader
+    "k" '(:ignore t :wk "Knowledge")
+    "k c" '(:ignore t  :wk "cheats")
+    "k c g" '(my/grep-cheats :wk "grep for cheats")
+    "k c s" '(my/list-cheats :wk "list all headings for all cheats"))
 
 (use-package org-excalidraw
   :ensure (:host github :repo "wdavew/org-excalidraw")
@@ -2218,13 +2250,13 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (use-package kcl-ts-mode
   :ensure nil
   :mode "\\.k\\'"
-  :hook ((kcl-ts-mode . eglot-ensure))
+  ;; :hook ((kcl-ts-mode . eglot-ensure))
   )
 
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-	       '(kcl-ts-mode . ("kcl-language-server")))
-  )
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;; 	       '(kcl-ts-mode . ("kcl-language-server")))
+;;   )
 
 (use-package yaml-pro
   ;; :hook
