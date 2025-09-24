@@ -48,7 +48,6 @@ in {
         "Pictures"
         "Documents"
         "Videos"
-        "VirtualBox VMs"
         ".gnupg"
         ".ssh"
         ".local/share/keyrings"
@@ -94,7 +93,6 @@ in {
         "Pictures"
         "Documents"
         "Videos"
-        "VirtualBox VMs"
         ".gnupg"
         ".ssh"
         ".local/share/keyrings"
@@ -249,11 +247,11 @@ in {
 
       users.${config.hostSpec.username} = {
         directories = [
-          "VirtualBox VMs"
           ".local/share/Steam"
           ".steam"
           ".ollama"
           ".local/share/containers"
+          ".config/winapps"
         ];
       };
     };

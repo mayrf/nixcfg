@@ -5,7 +5,7 @@ let
 in {
   options.features.cli.syncthing.enable = mkEnableOption "syncthing config";
   config = mkIf cfg.enable {
-    features.impermanence.directories = [ ".sync" ];
+    features.impermanence.directories = [ ".local/state/syncthing/" ];
     services.syncthing = {
       enable = true;
       guiAddress = "127.0.0.1:8384";

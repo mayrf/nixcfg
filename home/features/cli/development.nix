@@ -41,7 +41,7 @@ in {
       nerdctl
       httpyac
       sops
-      copilot-language-server-fhs
+      copilot-language-server
       age
       statix # Lints and suggestions for the nix programming language TODO: Use
       nixfmt-classic
