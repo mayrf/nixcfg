@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Shell block
-# key: <shell
+# key: <sh
 # --
 
 #+begin_src sh :results output

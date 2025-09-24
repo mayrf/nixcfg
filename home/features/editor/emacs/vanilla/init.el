@@ -2076,18 +2076,26 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   :config
   (global-blamer-mode 0))
 
+(use-package yasnippet-snippets)
 (use-package yasnippet 
+  :after yasnippet-snippets
   :config
   (setq yas-snippet-dirs
 	'("~/.config/emacs/snippets"                 ;; personal snippets
-          ;; "/path/to/some/collection/"           ;; foo-mode and bar-mode snippet collection
-          ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+	  "~/.config/emacs/elpaca/repos/yasnippet-snippets/snippets" ;; Add collection https://github.com/AndreaCrotti/yasnippet-snippets
           ))
+  ;; Disable pairing for < in org-mode
 
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
   )
+
 ;; (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
 ;; (yas-global-mode 1))
+
+(add-hook 'org-mode-hook (lambda ()
+           (setq-local electric-pair-inhibit-predicate
+                   `(lambda (c)
+                  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
 ;; (add-hook 'prog-mode-hook
 ;;           (lambda ()
