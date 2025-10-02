@@ -122,7 +122,7 @@
 
   nixpkgs = {
     overlays = [
-      inputs.emacs-overlay.overlays.emacs
+      # inputs.emacs-overlay.overlays.emacs
       outputs.overlays.additions
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages

@@ -43,7 +43,7 @@ in {
 
   nixpkgs = {
     overlays = [
-      inputs.emacs-overlay.overlays.emacs
+      # inputs.emacs-overlay.overlays.emacs
       outputs.overlays.additions
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages
@@ -58,7 +58,7 @@ in {
   };
 
   nix = {
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    # nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
       warn-dirty = false;
       keep-outputs = true;

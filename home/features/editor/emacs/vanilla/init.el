@@ -12,7 +12,7 @@
   (string-to-number (match-string 1 system-configuration-options)))
 
 ;; Run this before the elpaca.el is loaded. Before the installer in your init.el is a good spot.
-(when (my/nixos-p) (setq elpaca-core-date (list (my/nixos/get-emacs-build-date))))
+;; (when (my/nixos-p) (setq elpaca-core-date (list (my/nixos/get-emacs-build-date))))
 ;;(setq elpaca-core-date (list (my/nixos/get-emacs-build-date)))
 
 (defvar elpaca-installer-version 0.11)
@@ -2312,3 +2312,15 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
   :vc (:url "https://github.com/copilot-emacs/copilot.el"
             :rev :newest
             :branch "main"))
+
+(use-package ruby-ts-mode 
+  :ensure nil
+  ;; :hook
+  ;; (yaml-ts-mode . #'yaml-pro mode 100)
+  ;; :mode ("\\.yaml\\'" . yaml-ts-mode)
+  ;; :mode ("\\.yml\\'" . yaml-ts-mode)
+  :mode "\\.rb\\'" 
+  :hook (ruby-ts-mode . eglot-ensure)
+  :config 
+  (add-to-list 'eglot-server-programs
+               '(ruby-ts-mode . ("ruby-lsp"))))

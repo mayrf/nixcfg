@@ -10,7 +10,10 @@ let
   # };
   # emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
   # emacs = ((pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
-  emacs = ((pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages
+  # emacs = ((pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages
+  #   (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools epkgs.org ]));
+
+  emacs = ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages
     (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools epkgs.org ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";
   emacsBinPath = "${emacs}/bin";
@@ -124,7 +127,7 @@ in {
       unstable.nerd-fonts.symbols-only
 
       # :markdown preview
-      python311Packages.grip
+      # python311Packages.grip
 
       # for markdown-preview-eww
       rubyPackages.redcarpet

@@ -82,6 +82,9 @@ in {
       '';
     };
     home.shellAliases = {
+
+      #  This is needed because nvf modifies the runtimepath
+      vimtutor = "nvim -u NORC -c 'Tutor'";
       rbs = "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName}";
       ls = "eza";
       grep = "rg";

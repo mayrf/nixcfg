@@ -16,7 +16,7 @@
       workProxies.enable = true;
       work.enable = true;
     };
-    devbox.enable = true;
+    # devbox.enable = true;
   };
 
   hostSpec = {

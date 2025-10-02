@@ -12,7 +12,7 @@ in {
       fluxcd
       kubectl
       kubectl-cnpg
-      kubectl-tree 
+      kubectl-tree
       argocd
       kubernetes-helm
       crossplane-cli
@@ -22,7 +22,7 @@ in {
       cue
       timoni
       stable.kcl-language-server
-      stable.kcl
+      kcl
       kubernetes-helm
       argocd
       kargo
@@ -30,6 +30,8 @@ in {
       minikube
       kind
       kustomize
+      stable.rubyPackages_3_4.rails
+      # rubyPackages_3_4.activesupport
     ];
     home.sessionVariables = { KIND_EXPERIMENTAL_PROVIDER = "podman"; };
   };
