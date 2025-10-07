@@ -8,8 +8,6 @@
 
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
-  hardware.graphics = {
-    enable = true;
     # extraPackages = with pkgs; [
     #   # Not sure if I need all these...
     #   intel-media-driver # LIBVA_DRIVER_NAME=iHD
@@ -17,7 +15,6 @@
     #   vaapiVdpau
     #   libvdpau-va-gl
     # ];
-  };
 
   # No matter what environment we are in we want these tools for root, and the user(s)
   programs.git.enable = true;
@@ -77,7 +74,6 @@
     true; # Belongs to gnome and nautilus, maybe try to turn off
 
   environment.systemPackages = with pkgs; [
-
     file
     urlencode
     nmap

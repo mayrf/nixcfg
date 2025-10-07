@@ -7,4 +7,8 @@
     # libsForQt5.polkit-kde-agent
     kdePackages.polkit-kde-agent-1
   ];
+
+  hardware.graphics = {
+    enable = true;
+  };
 }

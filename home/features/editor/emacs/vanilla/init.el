@@ -738,9 +738,8 @@
 (use-package org
   :init
   (setq org-directory "~/Documents/org/")
-  (setq org-directory "~/Documents/org/")
-  (defvar para-directory "~/Documents/para/" "Directory for my para system files")
-  (defvar zettelkaster-directory (expand-file-name "resource/zettelkasten" para-directory) "Directory for my zettelkasten file")
+  (defvar para-directory "~/Documents/org/para/" "Directory for my para system files")
+  (defvar zettelkaster-directory (expand-file-name "zettelkasten" org-directory) "Directory for my zettelkasten file")
   :custom
 
   ;; Org Export Settings
@@ -927,7 +926,7 @@
   ;; Org-capture template for programming cheatsheets
   ;; Add this to your Emacs configuration
 
-  (defvar my/org-cheat-directory (expand-file-name "resources/cheats/" para-directory)
+  (defvar my/org-cheat-directory (expand-file-name "3_resources/cheats/" para-directory)
     "Directory where programming cheat sheets are stored.")
 
   (defun my/org-cheat-get-language ()
@@ -2258,13 +2257,13 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (use-package kcl-ts-mode
   :ensure nil
   :mode "\\.k\\'"
-  ;; :hook ((kcl-ts-mode . eglot-ensure))
+  :hook ((kcl-ts-mode . eglot-ensure))
   )
 
-;; (with-eval-after-load 'eglot
-;;   (add-to-list 'eglot-server-programs
-;; 	       '(kcl-ts-mode . ("kcl-language-server")))
-;;   )
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+	       '(kcl-ts-mode . ("kcl-language-server")))
+  )
 
 (use-package yaml-pro
   ;; :hook
