@@ -22,6 +22,7 @@
       k8s.enable = true;
       lf.enable = true;
       git.enable = true;
+      scripts.enable = true;
       sops.enable = true;
       yazi.enable = true;
       syncthing.enable = true;

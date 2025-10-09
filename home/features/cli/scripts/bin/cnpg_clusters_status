@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+
+kubectl get clusters.postgresql.cnpg.io -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name --no-headers \
+| xargs -n2 -I{} sh -c 'set -- {}; echo "=== Status for $1/$2 ==="; kubectl cnpg status "$2" -n "$1"'
