@@ -19,7 +19,7 @@ in {
     ];
 
     home.packages = with pkgs; [
-      calibre
+      stable.calibre
       drawio
       thunderbird
       obsidian

@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  immichVersion = "v1.142.0";
+  immichVersion = "v2.0.1";
 
   immichRoot =
     "/var/lib/immich"; # TODO: Tweak these to your desired storage locations

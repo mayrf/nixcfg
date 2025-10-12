@@ -23,6 +23,7 @@
       # ai.enable = true;
       development.enable = true;
       k8s.enable = true;
+      scripts.enable = true;
       yazi.enable = true;
       lf.enable = true;
       git.enable = true;

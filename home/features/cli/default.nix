@@ -9,6 +9,7 @@
     ./yazi.nix
     ./lf
     ./git
+    ./scripts
     ./sops.nix
     ./syncthing.nix
   ];

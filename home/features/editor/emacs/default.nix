@@ -126,8 +126,6 @@ in {
       unstable.nerd-fonts.jetbrains-mono
       unstable.nerd-fonts.symbols-only
 
-      # :markdown preview
-      # python311Packages.grip
 
       # for markdown-preview-eww
       rubyPackages.redcarpet

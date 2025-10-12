@@ -16,6 +16,12 @@
     #   libvdpau-va-gl
     # ];
 
+  time.timeZone = "Europe/Berlin";
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  hardware.graphics = { enable = true; };
+
   # No matter what environment we are in we want these tools for root, and the user(s)
   programs.git.enable = true;
   programs.zsh.enable = true;
@@ -35,8 +41,12 @@
     enable = true;
     enableSSHSupport = true;
   };
+
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
+  security.polkit.enable = true;
+  security.pam.services.hyprlock = { }; # new line
+  security.sudo.wheelNeedsPassword = false;
 
   # Extra file
   environment = {
@@ -48,28 +58,16 @@
     };
   };
 
-  security.polkit.enable = true;
-
-  security.pam.services.hyprlock = { }; # new line
-
   security.rtkit.enable = true;
 
-  networking = {
-    hostName = config.hostSpec.hostName; # Define your hostname.
-  };
+  networking.hostName = config.hostSpec.hostName; # Define your hostname.
 
   # boot.kernelPackages = pkgs.linuxKernel.kernels.linux_6_14;
   # boot.kernelPackages = pkgs.unstable.linuxPackages_zen;
 
-  security.sudo.wheelNeedsPassword = false;
-  time.timeZone = "Europe/Berlin";
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  services = {
-    locate.enable = true;
-    # Gnome Keyring, store keys for apps like nextcloud client
-    gnome.gnome-keyring.enable = true;
-  };
+  services.locate.enable = true;
+  # Gnome Keyring, store keys for apps like nextcloud client
+  services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable =
     true; # Belongs to gnome and nautilus, maybe try to turn off
 
