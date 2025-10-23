@@ -36,6 +36,7 @@
     private = {
       common.enable = true;
       vpn.enable = true;
+      mount-data.enable = true;
     };
   };
 

@@ -19,6 +19,7 @@
   time.timeZone = "Europe/Berlin";
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocales = [ "de_DE.UTF-8/UTF-8" ];
 
   hardware.graphics = { enable = true; };
 

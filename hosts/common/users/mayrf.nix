@@ -31,6 +31,7 @@ in {
       "wheel"
       (ifTheyExist [
         "flatpak"
+        "docker"
         "input"
         "kvm"
         "qemu-libvirtd"

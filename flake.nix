@@ -21,14 +21,12 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-
     ########## unversioned inputs ##########
     dotfiles-private = {
       url = "git+ssh://git@codeberg.org/mayrf/dotfiles-private.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
 
     nixos-cli.url = "github:nix-community/nixos-cli";
     nix-colors.url = "github:misterio77/nix-colors";

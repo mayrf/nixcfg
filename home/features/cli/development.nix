@@ -56,6 +56,7 @@ in {
       zola
       hugo
       yaml-language-server
+      rails-new
     ];
 
     # User-specific config
