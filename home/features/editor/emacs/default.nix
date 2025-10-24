@@ -3,18 +3,8 @@ with lib;
 let
   cfg = config.features.editor.emacs;
 
-  # package = pkgs.emacs-unstable;
-  # emacs = pkgs.emacs-unstable.override {
-  # withXwidgets = true;
-  # withGTK3 = true;
-  # };
-  # emacs = ((pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
-  # emacs = ((pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
-  # emacs = ((pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages
-  #   (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools epkgs.org ]));
-
   emacs = ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages
-    (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools epkgs.org ]));
+    (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools epkgs.org epkgs.treesit-grammars.with-all-grammars ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";
   emacsBinPath = "${emacs}/bin";
   # Match the default socket path for the Emacs version so emacsclient continues
@@ -92,6 +82,10 @@ in {
     # fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
 
     home.packages = with pkgs; [
+      # vanilla fonts:
+      dejavu_fonts
+      liberation_ttf
+
       # Doom emacs dependencies
       lldb
       git
@@ -125,7 +119,6 @@ in {
       unstable.nerd-fonts.im-writing
       unstable.nerd-fonts.jetbrains-mono
       unstable.nerd-fonts.symbols-only
-
 
       # for markdown-preview-eww
       rubyPackages.redcarpet

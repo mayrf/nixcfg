@@ -1068,12 +1068,24 @@
 
 (use-package org-download
   :after org
+  :bind
+  (:map org-mode-map
+        (
+         ("C-M-S-Y" . org-download-screenshot)
+         )
+  )
   :custom
   (org-download-image-dir (file-name-concat org-directory "blobs/org-download"))
   :config
-  (add-hook 'dired-mode-hook 'org-download-enable))
+  (when (and (eq system-type 'gnu/linux)
+              (string-match-p "microsoft" (shell-command-to-string "uname -r")))
+     ;; WSL-specific configuration
+     (setq org-download-screenshot-method "powershell.exe -Command \"(Get-Clipboard -Format image).Save('$(wslpath -w %s)')\""))
+  )
 
-;; Drag-and-drop to `dired`
+;; Inline images
+(setq org-startup-with-inline-images t
+      org-image-actual-width 600)
 
 (use-package org-bullets
   :after org
@@ -1615,6 +1627,9 @@ re-align the table if necessary. (Necessary because org-mode has a
   :after (denote)
   :init
   (autoload 'denote-sort-dired--prepare-buffer "denote")
+  )
+(use-package denote-journal
+  :after (denote)
   )
 ;; (with-eval-after-load 'org-capture
 ;; (add-to-list 'org-capture-templates

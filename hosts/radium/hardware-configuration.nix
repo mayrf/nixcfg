@@ -12,7 +12,8 @@
   wsl.enable = true;
   wsl.defaultUser = "mayrf";
   # wsl.docker-desktop.enable = true;
-  wsl.interop.includePath = false;
+  # wsl.interop.includePath = false;
+  wsl.interop.includePath = true;
   # wsl.wslConf.network.generateHosts = false;
   wsl.wslConf.network.generateResolvConf = true;
   # wsl.wslConf.network.generateResolvConf = false;
