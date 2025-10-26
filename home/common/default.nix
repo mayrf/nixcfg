@@ -56,19 +56,12 @@ in {
 
     };
   };
-
   nix = {
     # nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
       warn-dirty = false;
       keep-outputs = true;
       experimental-features = [ "nix-command" "flakes" ];
-      substituters =
-        [ "https://hyprland.cachix.org" "https://nix-community.cachix.org/" ];
-      trusted-public-keys = [
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
     };
 
     registry = {
@@ -90,9 +83,7 @@ in {
   };
   systemd.user.startServices = "sd-switch";
 
-  programs = {
-    home-manager.enable = true;
-  };
+  programs = { home-manager.enable = true; };
 
   home.file.".colorscheme".text = config.colorscheme.slug;
 
