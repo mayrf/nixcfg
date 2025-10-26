@@ -16,6 +16,7 @@ in {
     features.impermanence.directories = [
       # ".config/emacs"
       ".config/emacs-doom"
+      ".config/dotemacs"
     ];
 
     # Emacs

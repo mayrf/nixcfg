@@ -2471,8 +2471,8 @@ if current item: ANY -> PROJ: add category with name of PROJ (+ reverse)
 ** Direnv mode
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package direnv
- :config
- (direnv-mode))
+  :config
+  (direnv-mode))
 #+end_src
 ** Editorconfig
 #+begin_src emacs-lisp :tangle "init.el"

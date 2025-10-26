@@ -2149,8 +2149,8 @@ For how the context is retrieved, see `my-denote-region-get-source-reference'."
 (electric-pair-mode)
 
 (use-package direnv
- :config
- (direnv-mode))
+  :config
+  (direnv-mode))
 
 (use-package editorconfig
   :config

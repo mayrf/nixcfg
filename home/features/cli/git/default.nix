@@ -15,17 +15,15 @@ in {
     programs = {
       git = {
         enable = true;
-        userName = "mayrf";
-        userEmail = "70516376+mayrf@users.noreply.github.com";
-        extraConfig = {
-          commit = {
-            template = "${config.xdg.configHome}/git/commitTemplate.txt";
+        settings = {
+          user = {
+            email = "70516376+mayrf@users.noreply.github.com";
+            name = "mayrf";
           };
-          credential = { helper = "store"; };
+          commit.template = "${config.xdg.configHome}/git/commitTemplate.txt";
+          credential.helper = "store"; 
         };
-
       };
     };
-
   };
 }

@@ -26,7 +26,7 @@ in {
       krita
       inkscape
       reaper
-      scribus
+      stable.scribus
       gimp
       stable.gnucash
       mmex
