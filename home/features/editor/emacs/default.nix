@@ -27,7 +27,7 @@ in {
 
     programs.emacs = {
       enable = true;
-      package = emacs;
+      # package = emacs;
     };
 
     home.activation = let

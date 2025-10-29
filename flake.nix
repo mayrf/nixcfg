@@ -69,6 +69,13 @@
     };
     nvf.url = "github:notashelf/nvf";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
+
+    # set path to your cloned posimacs repo, which is a nix flake
+    dotemacs = {
+      url = "path:/home/mayrf/.config/dotemacs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
