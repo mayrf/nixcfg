@@ -159,7 +159,8 @@ in {
       vscode-langservers-extracted
 
       xclip
-      poppler_utils
+      poppler-utils
+
 
       # go
       gopls

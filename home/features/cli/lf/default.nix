@@ -16,7 +16,7 @@ in {
       ueberzugpp
       ffmpeg_6-full
       jq
-      poppler_utils
+      poppler-utils
       bat
     ];
 

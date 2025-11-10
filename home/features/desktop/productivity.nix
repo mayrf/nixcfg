@@ -31,7 +31,7 @@ in {
       stable.gnucash
       mmex
       stable.ardour
-      onlyoffice-bin
+      onlyoffice-desktopeditors
       temurin-jre-bin-21
       libreoffice-qt6-fresh
       keepassxc

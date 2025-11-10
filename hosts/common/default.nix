@@ -8,13 +8,13 @@
 
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
-    # extraPackages = with pkgs; [
-    #   # Not sure if I need all these...
-    #   intel-media-driver # LIBVA_DRIVER_NAME=iHD
-    #   vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-    #   vaapiVdpau
-    #   libvdpau-va-gl
-    # ];
+  # extraPackages = with pkgs; [
+  #   # Not sure if I need all these...
+  #   intel-media-driver # LIBVA_DRIVER_NAME=iHD
+  #   vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+  #   vaapiVdpau
+  #   libvdpau-va-gl
+  # ];
 
   time.timeZone = "Europe/Berlin";
   # Select internationalisation properties.
@@ -102,10 +102,10 @@
   ];
 
   fonts.packages = with pkgs; [
-    vistafonts
+    vista-fonts
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     liberation_ttf
     fira-code
     fira-code-symbols

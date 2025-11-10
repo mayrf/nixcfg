@@ -25,6 +25,11 @@ in {
     mkEnableOption "enable development cli programs";
 
   config = mkIf cfg.enable {
+
+    features.impermanence.directories = [
+      ".local/share/gem" # Ruby gems
+      # ".cache/opencode"
+    ];
     home.packages = with pkgs; [
       tmux
       # nodejs
@@ -57,6 +62,8 @@ in {
       hugo
       yaml-language-server
       rails-new
+      rubyPackages_3_5.rails
+      claude-code
     ];
 
     # User-specific config

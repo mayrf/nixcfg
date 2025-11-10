@@ -21,7 +21,7 @@ in {
 
     environment.systemPackages = with pkgs; [
       mangohud
-      protonup
+      protonup-ng
       lutris
       stable.heroic
       wine
