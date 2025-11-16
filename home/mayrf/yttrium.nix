@@ -40,6 +40,7 @@
     editor = {
       nvim.enable = true;
       emacs.enable = true;
+      vscode.enable = true;
     };
     desktop = {
       wayland.enable = true;

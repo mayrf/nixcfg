@@ -80,25 +80,21 @@
 
   outputs = { self, nixpkgs, ... }@inputs:
     let
-      forAllSystems = inputs.nixpkgs.lib.genAttrs [
-        "x86_64-linux"
-        #"aarch64-darwin"
-      ];
-      # inherit (self) outputs;
+      forAllSystems = inputs.nixpkgs.lib.genAttrs [ "x86_64-linux" ];
       myLib = import ./myLib/default.nix {
         inherit inputs;
         lib = inputs.nixpkgs.lib;
       };
     in {
-      packages =
-        forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system})
-        // {
-          x86_64-linux.my-neovim = (inputs.nvf.lib.neovimConfiguration {
+      packages = forAllSystems (system:
+        (import ./pkgs nixpkgs.legacyPackages.${system})
+        // (if system == "x86_64-linux" then {
+          my-neovim = (inputs.nvf.lib.neovimConfiguration {
             pkgs = nixpkgs.legacyPackages.x86_64-linux;
             modules = [ ./pkgs/nvf_module ];
           }).neovim;
-        };
-
+        } else
+          { }));
       templates = import ./templates;
       overlays = import ./overlays { inherit inputs; };
       nixosConfigurations = {

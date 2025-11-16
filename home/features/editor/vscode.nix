@@ -4,6 +4,9 @@ let cfg = config.features.editor.vscode;
 in {
   options.features.editor.vscode.enable = mkEnableOption "my vscode user config";
   config = mkIf cfg.enable {
+    features.impermanence.directories = [
+      ".config/Code"
+    ];
     nixpkgs.config.allowUnfree = true;
     programs.vscode = {
       enable = true;
@@ -31,7 +34,8 @@ in {
         ];
         userSettings = {
           # lib.mkIf (config.networking.system == "aarch64-darwin")
-
+          "rubyLsp.customRubyCommand" = "bundle exec ruby-lsp";
+          "rubyLsp.rubyVersionManager"= "custom";
           "terminal.integrated.profiles.linux".zsh.path =
             "/run/current-system/sw/bin/zsh";
           "git.autofetch" = true;
