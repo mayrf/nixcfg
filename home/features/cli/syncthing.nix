@@ -1,7 +1,6 @@
-{ config,  lib,  ... }:
+{ config, lib, ... }:
 with lib;
-let
-  cfg = config.features.cli.syncthing;
+let cfg = config.features.cli.syncthing;
 in {
   options.features.cli.syncthing.enable = mkEnableOption "syncthing config";
   config = mkIf cfg.enable {
@@ -19,6 +18,14 @@ in {
         };
       };
     };
+    systemd.user.services.syncthing.Service.Environment = [
+      "HTTP_PROXY="
+      "HTTPS_PROXY="
+      "http_proxy="
+      "https_proxy="
+      "ALL_PROXY="
+      "all_proxy="
+    ];
   };
 
 }
