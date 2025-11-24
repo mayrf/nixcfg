@@ -30,6 +30,7 @@
     editor = {
       emacs.enable = true;
       nvim.enable = true;
+      zed.enable = true;
     };
 
     private = { work.enable = true; };
