@@ -12,7 +12,7 @@
     sysStateVersion = lib.mkOption {
       type = lib.types.str;
       description = "The system state version of the system";
-      default = "25.11";
+      default = "26.05";
     };
     email = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;

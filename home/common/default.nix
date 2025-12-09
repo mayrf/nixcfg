@@ -41,23 +41,7 @@ in {
     };
   };
 
-  nixpkgs = {
-    overlays = [
-      # inputs.emacs-overlay.overlays.emacs
-      outputs.overlays.additions
-      outputs.overlays.stable-packages
-      outputs.overlays.unstable-packages
-      inputs.nur.overlays.default
-    ];
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [ ];
-
-    };
-  };
   nix = {
-    # nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
       warn-dirty = false;
       keep-outputs = true;

@@ -63,7 +63,6 @@ in {
       yaml-language-server
       rails-new
       rubyPackages_3_5.rails
-      claude-code
     ];
 
     # User-specific config

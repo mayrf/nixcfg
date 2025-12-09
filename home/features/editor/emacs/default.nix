@@ -194,7 +194,7 @@ in {
       WORK_GITFORGE_HOST=${private.work.gitForgeHost}
       EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
     '';
-    programs.git.extraConfig = {
+    programs.git.settings = {
       gitlab.${private.work.gitForgeHost}.user = "${private.work.gitUser}";
     };
 

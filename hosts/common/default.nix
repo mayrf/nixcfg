@@ -64,7 +64,7 @@
   networking.hostName = config.hostSpec.hostName; # Define your hostname.
 
   # boot.kernelPackages = pkgs.linuxKernel.kernels.linux_6_14;
-  # boot.kernelPackages = pkgs.unstable.linuxPackages_zen;
+  boot.kernelPackages = pkgs.unstable.linuxPackages_zen;
 
   services.locate.enable = true;
   # Gnome Keyring, store keys for apps like nextcloud client

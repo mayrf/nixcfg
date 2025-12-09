@@ -34,8 +34,8 @@ in {
         ];
         userSettings = {
           # lib.mkIf (config.networking.system == "aarch64-darwin")
-          "rubyLsp.customRubyCommand" = "bundle exec ruby-lsp";
-          "rubyLsp.rubyVersionManager"= "custom";
+          # "rubyLsp.customRubyCommand" = "bundle exec ruby-lsp";
+          # "rubyLsp.rubyVersionManager"= "custom";
           "terminal.integrated.profiles.linux".zsh.path =
             "/run/current-system/sw/bin/zsh";
           "git.autofetch" = true;

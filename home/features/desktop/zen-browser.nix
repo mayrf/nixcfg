@@ -19,6 +19,8 @@ in {
     ];
 
     stylix.targets.firefox.enable = false;
+    stylix.targets.zen-browser.enable = false;
+
     programs.zen-browser = {
       enable = true;
       languagePacks = [ "en-GB" "de" ];

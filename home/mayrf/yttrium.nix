@@ -41,6 +41,7 @@
       nvim.enable = true;
       emacs.enable = true;
       vscode.enable = true;
+      zed.enable = true;
     };
     desktop = {
       wayland.enable = true;
@@ -74,16 +75,29 @@
   wayland.windowManager.hyprland = {
     settings = {
       monitor = [
-        "HDMI-A-1,2560x1440@60,0x0,1"
-        "DP-2,2560x1440@60,2560x0,1"
+        "HDMI-A-1,preferred,0x0,1"
+        "DP-2,2560x1440@60,auto-right,1"
+        ",preferred,auto-left,1"
+
+        # "HDMI-A-1,preferred,0x0,1"
+        # "DP-2,2560x1440@60,auto-right,1"
+        # ",preferred,auto,1" # Fallback for any other monitor
+
+        # "HDMI-A-1,2560x1440@60,0x0,1"
+        # "DP-2,2560x1440@60,2560x0,1"
         # "DP-2,2560x1440@60,2560x-560,1,transform,3"
       ];
       workspace = [
-        "1, monitor:HDMI-A-1, default:true"
-        "2, monitor:HDMI-A-1"
-        "3, monitor:HDMI-A-1"
-        "4, monitor:HDMI-A-1"
-        "5, monitor:HDMI-A-1"
+        "1, monitor:DP-4, default:true"
+        "2, monitor:DP-4"
+        "3, monitor:DP-4"
+        "4, monitor:DP-4"
+        "5, monitor:DP-4"
+        # "1, monitor:HDMI-A-1, default:true"
+        # "2, monitor:HDMI-A-1"
+        # "3, monitor:HDMI-A-1"
+        # "4, monitor:HDMI-A-1"
+        # "5, monitor:HDMI-A-1"
         "6, monitor:DP-2"
         "7, monitor:DP-2"
         "8, monitor:DP-2"

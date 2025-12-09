@@ -44,7 +44,6 @@
     rocmOverrideGfx = "10.3.0";
     package = pkgs.stable.ollama-rocm;
     enable = true;
-    acceleration = "rocm";
     environmentVariables = { OLLAMA_CONTEXT_LENGTH = "8192"; };
   };
   features.impermanence.directories = [
@@ -61,6 +60,7 @@
 
   environment.systemPackages = [
     pkgs.nfs-utils
+    pkgs.pavucontrol
     # pkgs.brscan4
     # pkgs.stable.brscan4
   ];

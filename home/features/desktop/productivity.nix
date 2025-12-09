@@ -38,7 +38,7 @@ in {
       # pkgs-stable.calibre
       # gramps
       legcord
-      ipscan
+      stable.ipscan
       dbgate
       wine
       immich-cli

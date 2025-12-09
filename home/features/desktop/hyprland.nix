@@ -229,7 +229,7 @@ in {
         filemanager = "${pkgs.yazi}/bin/yazi";
 
         brave = "${pkgs.brave}/bin/brave";
-        editor = "${pkgs.emacs}/bin/emacsclient -c";
+        editor = "dotemacs";
         vanilla_emacs = "${pkgs.emacs}/bin/emacsclient -s vanilla -c";
         hyprctl = "${pkgs.hyprland}/bin/hyprctl";
         #   exec=${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill
@@ -314,7 +314,7 @@ in {
         bind=SUPERSHIFT,w,exec,${brave}
         # bind=SUPER,r,exec,${terminal-exec} "zsh -c -i 'y'"
         bind=SUPER,r,exec,${terminal-exec} yazi
-        bind=SUPERSHIFT,C,exec,${terminal-exec} sudo nmtui
+        bind=SUPERSHIFT,N,exec,${terminal-exec} sudo nmtui
         bind=SUPERSHIFT, R, exec,${hyprctl} reload
         # Brightness control (only works if the system has lightd)
         bind=,XF86MonBrightnessUp,exec,brightnessctl set 5%+
@@ -335,7 +335,6 @@ in {
       '' + lib.strings.optionalString config.programs.wofi.enable ''
         bind=SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%
         bind=SUPER,d,exec,${wofi} -S drun
-        bind=SUPERSHIFT,N,exec, wofi-shutdown
         bind=SUPERSHIFT,v,exec, wofi-vpn
         bind=SUPERSHIFT,d,exec,${wofi} -S drun
         bind=SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy
@@ -368,8 +367,20 @@ in {
         windowrulev2 = float,title:^(scratch_emacs)$
         windowrulev2 = size 80% 80%,title:^(scratch_emacs)$
         windowrulev2 = center,title:^(scratch_emacs)$
-        bind = SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacsclient -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
+        # bind = SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacsclient -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
+        bind = SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else dotemacs -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
         bind = SUPER,B,togglespecialworkspace,scratch_emacs
+
+
+        # Keybinding (adjust to your preference, e.g., SUPER+SHIFT+C)
+        bind = SUPER_SHIFT, C, exec, dotemacs-org-capture
+
+        # Window rules for org-capture frame
+        windowrulev2 = float, title:^(org-capture)$
+        windowrulev2 = center, title:^(org-capture)$
+        windowrulev2 = size 800 600, title:^(org-capture)$
+        windowrulev2 = stayfocused, title:^(org-capture)$
+
       '';
     };
 

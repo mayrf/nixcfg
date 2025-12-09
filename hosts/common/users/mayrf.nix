@@ -72,6 +72,9 @@ in {
   #   ];
 } // lib.optionalAttrs (inputs ? "home-manager") {
   home-manager = {
+
+    useGlobalPkgs = true;
+    useUserPackages = true;
     extraSpecialArgs = {
       inherit outputs inputs;
       inherit (inputs.dotfiles-private) private;
