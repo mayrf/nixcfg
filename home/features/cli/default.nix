@@ -12,6 +12,7 @@
     ./scripts
     ./sops.nix
     ./syncthing.nix
+    ./leetcode.nix
   ];
   programs.zoxide = { enable = true; };
   programs.eza = {

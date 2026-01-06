@@ -6,6 +6,9 @@
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  # To make zsh completions work
+  environment.pathsToLink = [ "/share/zsh" ];
+
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
   # extraPackages = with pkgs; [
@@ -117,10 +120,40 @@
 
   nixpkgs = {
     overlays = [
+      inputs.nur.overlays.default
+      inputs.claude-code.overlays.default
       # inputs.emacs-overlay.overlays.emacs
       outputs.overlays.additions
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages
+
+      # (final: prev: {
+      #   kcl-language-server = prev.kcl-language-server.overrideAttrs
+      #     (oldAttrs: rec {
+      #       pname = "kcl-language-server";
+      #       version = "0.11.2";
+
+      #       src = prev.fetchFromGitHub {
+      #         owner = "kcl-lang";
+      #         repo = "kcl";
+      #         rev = "v${version}";
+      #         # Use an empty hash first, then Nix will tell you the correct one
+      #         hash = "";
+      #       };
+
+      #       # CRITICAL FIX: Updated sourceRoot to reflect new directory structure
+      #       # The code has moved from kclvm/ to crates/
+      #       # sourceRoot = "${src.name}/crates";
+
+      #       # Updated buildAndTestSubdir to match new location
+      #       buildAndTestSubdir = "tools/src/LSP";
+
+      #       # If the cargoHash also needs updating, use empty hash first
+      #       cargoHash = "";
+
+      #       # Rest of the attributes inherit from the original package
+      #     });
+      # })
     ];
     config = {
       allowUnfree = true;

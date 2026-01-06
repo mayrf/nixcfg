@@ -27,6 +27,7 @@
       media.enable = true;
       development.enable = true;
       k8s.enable = true;
+      leetcode.enable = true;
       yazi.enable = true;
       scripts.enable = true;
       lf.enable = true;
@@ -69,23 +70,16 @@
       foot.enable = true;
       ghostty.enable = true;
     };
-    private = { ssh.enable = true; };
+    private = { ssh.enable = true; personal.enable = true; };
   };
 
   wayland.windowManager.hyprland = {
     settings = {
       monitor = [
-        "HDMI-A-1,preferred,0x0,1"
-        "DP-2,2560x1440@60,auto-right,1"
-        ",preferred,auto-left,1"
-
-        # "HDMI-A-1,preferred,0x0,1"
-        # "DP-2,2560x1440@60,auto-right,1"
-        # ",preferred,auto,1" # Fallback for any other monitor
-
-        # "HDMI-A-1,2560x1440@60,0x0,1"
-        # "DP-2,2560x1440@60,2560x0,1"
-        # "DP-2,2560x1440@60,2560x-560,1,transform,3"
+        "DP-4,2560x1440@60,0x0,1"
+        "DP-2,2560x1440@60,2560x0,1"
+        "HDMI-A-1,1920x1080@120,auto-left,1"
+        ",preferred,auto-right,1"
       ];
       workspace = [
         "1, monitor:DP-4, default:true"
@@ -93,16 +87,14 @@
         "3, monitor:DP-4"
         "4, monitor:DP-4"
         "5, monitor:DP-4"
-        # "1, monitor:HDMI-A-1, default:true"
-        # "2, monitor:HDMI-A-1"
-        # "3, monitor:HDMI-A-1"
-        # "4, monitor:HDMI-A-1"
-        # "5, monitor:HDMI-A-1"
         "6, monitor:DP-2"
         "7, monitor:DP-2"
         "8, monitor:DP-2"
         "9, monitor:DP-2"
         "10, monitor:DP-2"
+        "F1, monitor:HDMI-A-1"
+        "F2, monitor:HDMI-A-1"
+        "F3, monitor:HDMI-A-1"
       ];
     };
   };

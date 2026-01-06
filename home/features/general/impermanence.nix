@@ -2,7 +2,9 @@
 with lib;
 let cfg = config.features.impermanence;
 in {
-  imports = [ inputs.impermanence.nixosModules.home-manager.impermanence ];
+  # Make sure both of these are imported
+  # inputs.impermanence.nixosModules.impermanence
+  # inputs.home-manager.nixosModules.home-manager
   options.features.impermanence = {
     enable = mkEnableOption "my impermanence config";
     directories = mkOption {
@@ -114,19 +116,17 @@ in {
     ];
 
     # home.persistence."${hostSpec.persistDir}/cache/home/${hostSpec.username}" =
-    home.persistence."${hostSpec.persistDir}/cache" = 
-      {
-        # hideMounts = true;
-        # allowOther = true;
-        directories = [ ] ++ cfg.directories_cache;
-      };
+    home.persistence."${hostSpec.persistDir}/cache" = {
+      # hideMounts = true;
+      # allowOther = true;
+      directories = [ ] ++ cfg.directories_cache;
+    };
 
     # home.persistence."${hostSpec.persistDir}/system/home/${hostSpec.username}" =
-    home.persistence."${hostSpec.persistDir}/system" =
-      {
-        # allowOther = true;
-        directories = [ ] ++ cfg.directories;
-        files = [ ".screenrc" ] ++ cfg.files;
-      };
+    home.persistence."${hostSpec.persistDir}/system" = {
+      # allowOther = true;
+      directories = [ ] ++ cfg.directories;
+      files = [ ".screenrc" ] ++ cfg.files;
+    };
   };
 }

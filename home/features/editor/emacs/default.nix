@@ -19,6 +19,9 @@ in {
       ".config/dotemacs"
     ];
 
+    # home.file."Documents/org/shared/.config/enchant".source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/enchant";
+    home.file."${config.xdg.configHome}/enchant".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Documents/org/shared/.config/enchant";
+
     # Emacs
     services.emacs = {
       enable = true;

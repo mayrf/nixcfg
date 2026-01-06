@@ -5,6 +5,7 @@ in {
   options.features.editor.vscode.enable = mkEnableOption "my vscode user config";
   config = mkIf cfg.enable {
     features.impermanence.directories = [
+      ".vscode"
       ".config/Code"
     ];
     nixpkgs.config.allowUnfree = true;

@@ -4,7 +4,7 @@
 
   # inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
   outputs = { self, nixpkgs, utils, }:
     utils.lib.eachDefaultSystem (system:
       let

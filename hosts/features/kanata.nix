@@ -35,11 +35,19 @@ in {
             "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
 
             "/dev/input/by-path/pci-0000:0f:00.3-usb-0:1.3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:0f:00.3-usb-0:1.2:1.0-event-kbd"
             "/dev/input/by-path/pci-0000:02:00.0-usb-0:2.3:1.0-event-kbd"
-            "/dev/input/by-path/pci-0000:0f:00.3-usb-0:3.3:1.0-event-kbd" 
+            "/dev/input/by-path/pci-0000:0f:00.3-usb-0:3.3:1.0-event-kbd"
             "/dev/input/by-path/pci-0000:0f:00.3-usb-0:4.3:1.0-event-kbd"
             "/dev/input/by-path/pci-0000:02:00.0-usb-0:5.3:1.0-event-kbd"
             "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:0f:00.3-usbv2-0:1.2:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:0f:00.3-usbv2-0:1.3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.3-usbv2-0:6.2:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.2:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.3:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.0-usbv2-0:6.2:1.0-event-kbd"
+            "/dev/input/by-path/pci-0000:02:00.0-usbv2-0:6.3:1.0-event-kbd"
           ];
           extraDefCfg = "process-unmapped-keys yes";
           config = ''
@@ -53,7 +61,6 @@ in {
               tap-time 200
               hold-time 200
             )
-
             (defalias
               a-mod (tap-hold $tap-time $hold-time a lmet)
               s-mod (tap-hold $tap-time $hold-time s lalt)

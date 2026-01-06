@@ -19,8 +19,7 @@ in {
         family = "Fira Sans";
         package = pkgs.fira;
       };
-    };
-    programs = {
+    }; programs = {
       fish.loginShellInit = ''
         if test (tty) = "/dev/tty1"
           exec Hyprland &> /dev/null
@@ -69,6 +68,10 @@ in {
           include "level3(ralt_switch)"
       };  '';
     home.packages = with pkgs; [
+      (pkgs.writeShellScriptBin "restart_hyprlock" ''
+        hyprctl --instance 0 'keyword misc:allow_session_lock_restore 1'
+        hyprctl --instance 0 'dispatch exec hyprlock'
+      '')
       hyprland-qt-support
       hyprland-qtutils
       cliphist
@@ -287,6 +290,9 @@ in {
         }
 
         misc {
+          enable_swallow=true
+          swallow_regex=^(com.mitchellh.ghostty)$
+
           background_color=rgb(231e18)
           focus_on_activate=true
         }
@@ -378,7 +384,7 @@ in {
         # Window rules for org-capture frame
         windowrulev2 = float, title:^(org-capture)$
         windowrulev2 = center, title:^(org-capture)$
-        windowrulev2 = size 800 600, title:^(org-capture)$
+        windowrulev2 = size 1600 1200, title:^(org-capture)$
         windowrulev2 = stayfocused, title:^(org-capture)$
 
       '';
