@@ -49,7 +49,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence.url = "github:nix-community/impermanence/home-manager-v2";
+    impermanence.url = "github:nix-community/impermanence";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 
@@ -60,7 +60,7 @@
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       # IMPORTANT: we're using "libgbm" and is only available in unstable so ensure
-      # to have it up-to-date or simply don't specify the nixpkgs input  
+      # to have it up-to-date or simply don't specify the nixpkgs input
       # inputs.nixpkgs.follows = "nixpkgs";
     };
     nur = {
@@ -75,34 +75,58 @@
       url = "path:/home/mayrf/.config/dotemacs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs =
+    inputs@{
+      flake-parts,
+      self,
+      nixpkgs,
+      ...
+    }:
     let
-      forAllSystems = inputs.nixpkgs.lib.genAttrs [ "x86_64-linux" ];
       myLib = import ./myLib/default.nix {
         inherit inputs;
         lib = inputs.nixpkgs.lib;
       };
-    in {
-      packages = forAllSystems (system:
-        (import ./pkgs nixpkgs.legacyPackages.${system})
-        // (if system == "x86_64-linux" then {
-          my-neovim = (inputs.nvf.lib.neovimConfiguration {
-            pkgs = nixpkgs.legacyPackages.x86_64-linux;
-            modules = [ ./pkgs/nvf_module ];
-          }).neovim;
-        } else
-          { }));
-      templates = import ./templates;
-      overlays = import ./overlays { inherit inputs; };
-      nixosConfigurations = {
-        radium = myLib.mkSystem "radium" { nixosPath = ./hosts/radium; };
-        yttrium = myLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };
-        helium = myLib.mkSystem "helium" { nixosPath = ./hosts/helium; };
-        kalium = myLib.mkSystem "kalium" { nixosPath = ./hosts/kalium; };
-        valium = myLib.mkSystem "valium" { nixosPath = ./hosts/valium; };
-      };
-    };
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      top@{
+        config,
+        withSystem,
+        moduleWithSystem,
+        ...
+      }:
+      {
+        imports = [
+          # Optional: use external flake logic, e.g.
+          # inputs.foo.flakeModules.default
+        ];
+        flake = {
+          templates = import ./templates;
+          overlays = import ./overlays { inherit inputs; };
+          nixosConfigurations = {
+            radium = myLib.mkSystem "radium" { nixosPath = ./hosts/radium; };
+            yttrium = myLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };
+            helium = myLib.mkSystem "helium" { nixosPath = ./hosts/helium; };
+            kalium = myLib.mkSystem "kalium" { nixosPath = ./hosts/kalium; };
+            valium = myLib.mkSystem "valium" { nixosPath = ./hosts/valium; };
+          };
+        };
+        systems = [
+          "x86_64-linux"
+        ];
+        perSystem =
+          { config, pkgs, ... }:
+          {
+           packages.my-neovim =
+              (inputs.nvf.lib.neovimConfiguration {
+                pkgs = nixpkgs.legacyPackages.x86_64-linux;
+                modules = [ ./pkgs/nvf_module ];
+              }).neovim;
+          };
+      }
+    );
 }

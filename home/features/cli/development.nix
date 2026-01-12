@@ -49,7 +49,7 @@ in {
       copilot-language-server
       age
       statix # Lints and suggestions for the nix programming language TODO: Use
-      nixfmt-classic
+      nixfmt
       # (python3.withPackages (ps: with ps; [ jupyter ]))
       minio-client
       # TODO add Scripts like:

@@ -12,6 +12,8 @@ in {
     # programs.nix-ld.enable = true;
     programs.zed-editor = {
       enable = true;
+      # package = pkgs.stable.zed-editor-fhs;
+      package = pkgs.stable.zed-editor-fhs;
       extensions = [ "nix" "toml" "rust" ];
       userSettings = {
         # theme = {

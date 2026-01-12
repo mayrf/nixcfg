@@ -121,8 +121,6 @@
   nixpkgs = {
     overlays = [
       inputs.nur.overlays.default
-      inputs.claude-code.overlays.default
-      # inputs.emacs-overlay.overlays.emacs
       outputs.overlays.additions
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages

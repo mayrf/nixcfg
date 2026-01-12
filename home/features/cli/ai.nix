@@ -39,7 +39,15 @@ in {
       ".local/share/opencode"
       ".local/state/opencode"
       # ".cache/opencode"
+      ".config/claude"
+      # ".claude"
     ];
+
+    home.file.".claude".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.xdg.dataHome}/claude/data";
+    home.file.".claude.json".source = config.lib.file.mkOutOfStoreSymlink
+      "${config.xdg.configHome}/claude/config.json";
+
     home.packages = with pkgs; [
       unstable.opencode
       # opencode-latest

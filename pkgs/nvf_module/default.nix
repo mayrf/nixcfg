@@ -43,7 +43,7 @@
         enable = true;
         format = {
           enable = true;
-          type = "prettier";
+          type = ["prettier"];
         };
       };
       ruby.enable = true;

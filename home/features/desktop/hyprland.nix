@@ -30,7 +30,7 @@ in {
           exec Hyprland &> /dev/null
         fi
       '';
-      zsh.profileExtra = ''
+     zsh.profileExtra = ''
         if [ "$(tty)" = "/dev/tty1" ]; then
           exec Hyprland &> /dev/null
         fi
@@ -81,6 +81,7 @@ in {
     ];
     programs.hyprlock.enable = true; # new line
     services.hypridle.enable = true;
+    services.hyprsunset.enable = true;
     services.hypridle.settings = {
       general = {
         lock_cmd =
