@@ -1,6 +1,7 @@
 {
   imports = [
     ./docker.nix
+    ./podman.nix
     ./gaming.nix
     ./impermanence.nix
     ./laptop.nix

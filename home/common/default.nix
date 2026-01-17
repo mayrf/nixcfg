@@ -14,6 +14,9 @@ in {
     };
   };
 
+
+  programs.ssh.includes = [ "~/.ssh/config.local" ];
+
   home = {
     username = hostSpec.username;
     homeDirectory = lib.mkDefault "/home/${hostSpec.username}";

@@ -12,9 +12,8 @@ let
     inputs.nixos-cli.nixosModules.nixos-cli
   ];
 
-
   specialArgs = {
-    inherit outputs inputs ;
+    inherit outputs inputs;
     inherit (inputs.dotfiles-private) private;
   };
 in rec {
@@ -23,8 +22,6 @@ in rec {
     { nixosPath }:
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = specialArgs;
-      modules = [
-        nixosPath
-      ] ++ commonNixosModules;
+      modules = [ nixosPath ] ++ commonNixosModules;
     };
 }
