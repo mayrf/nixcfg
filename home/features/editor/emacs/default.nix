@@ -150,7 +150,7 @@ in {
       hunspellDicts.en_GB-ize
 
       # python
-      poetry
+      stable.poetry
       pyright
       ruff
       python313Packages.debugpy

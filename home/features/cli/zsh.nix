@@ -9,7 +9,7 @@ in {
 
     features.impermanence.files = [ ".zsh_history" ];
 
-    features.impermanence.directories = [ ".local/share/direnv" ];
+    features.impermanence.directories = [ ".local/share/direnv" ".config/zsh" ];
 
     home.sessionVariables = {
       FONTS = "$HOME/.local/share/fonts";
@@ -86,8 +86,10 @@ in {
       #  This is needed because nvf modifies the runtimepath
       vimtutor = "nvim -u NORC -c 'Tutor'";
       rbs = "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName}";
-      generate-envrc-flake = ''if [ ! -f .envrc ]; then echo "use flake" > .envrc; fi'';
-      generate-python-flake = "nix flake init --template github:pyproject-nix/pyproject.nix#requirements-txt";
+      generate-envrc-flake =
+        ''if [ ! -f .envrc ]; then echo "use flake" > .envrc; fi'';
+      generate-python-flake =
+        "nix flake init --template github:pyproject-nix/pyproject.nix#requirements-txt";
       ls = "eza";
       grep = "rg";
       ps = "procs";
