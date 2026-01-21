@@ -31,6 +31,7 @@
       # Failed assertions:
       # - mayrf profile: No key source configured for sops. Either set services.openssh.enable or set sops.age.keyFile or sops.gnupg.home or sops.gnupg.qubes-split-gpg.enable
       sops.enable = true;
+      syncthing.enable = true;
     };
     desktop = {
       wayland.enable = true;
@@ -52,16 +53,15 @@
       productivity.enable = true;
     };
     terminal = {
+      alacritty.enable = true;
       ghostty.enable = true;
     };
     editor = {
       nvim.enable = true;
       emacs.enable = true;
-      # vscode.enable = true;
+      vscode.enable = true;
     };
-    private = {
-      work.enable = true;
-    };
+    private = { ssh.enable = true; };
   };
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;

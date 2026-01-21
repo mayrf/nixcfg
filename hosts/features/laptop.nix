@@ -12,7 +12,7 @@ in {
     #
     # 10.04.25: Breaks because of dependency devscripts_2.23.7.tar.xz being unavailable
     services.tlp = {
-      enable = lib.mkForce false;
+      enable = lib.mkForce true;
       # settings = {
       #   CPU_BOOST_ON_AC = 1;
       #   CPU_BOOST_ON_BAT = 0;
@@ -21,19 +21,19 @@ in {
       # };
     };
 
-  services.auto-cpufreq.enable = true;
-  services.auto-cpufreq.settings = {
-    battery = {
-      governor = "powersave";
-      turbo = "never";
-      energy_performance_preference = "power";
+    services.auto-cpufreq.enable = true;
+    services.auto-cpufreq.settings = {
+      battery = {
+        governor = "powersave";
+        turbo = "never";
+        energy_performance_preference = "power";
+      };
+      charger = {
+        governor = "powersave";
+        turbo = "never";
+        energy_performance_preference = "power";
+      };
     };
-    charger = {
-      governor = "powersave";
-      turbo = "never";
-      energy_performance_preference = "power";
-    };
-  };
 
     # Disable GNOMEs power management
     services.power-profiles-daemon.enable = false;
@@ -43,6 +43,8 @@ in {
 
     # Enable thermald (only necessary if on Intel CPUs)
     services.thermald.enable = true;
+
+    environment.systemPackages = [ pkgs.lm_sensors ];
 
   };
 }
