@@ -229,7 +229,7 @@ in {
         # terminal = "${pkgs.kitty}/bin/kitty";
         terminal = "${pkgs.unstable.ghostty}/bin/ghostty";
         terminal-exec = "${pkgs.unstable.ghostty}/bin/ghostty -e";
-        browser = "${pkgs.librewolf}/bin/librewolf";
+        browser = "${pkgs.stable.librewolf}/bin/librewolf";
         filemanager = "${pkgs.yazi}/bin/yazi";
 
         brave = "${pkgs.brave}/bin/brave";
