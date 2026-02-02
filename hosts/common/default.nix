@@ -124,6 +124,7 @@
       outputs.overlays.additions
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages
+      inputs.emacs-overlay.overlay
 
       # (final: prev: {
       #   kcl-language-server = prev.kcl-language-server.overrideAttrs

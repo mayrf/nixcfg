@@ -3,7 +3,7 @@ with lib;
 let
   cfg = config.features.editor.emacs;
 
-  emacs = ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages
+  emacs = ((pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages
     (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools epkgs.org epkgs.treesit-grammars.with-all-grammars ]));
   repoUrl = "https://github.com/doomemacs/doomemacs";
   emacsBinPath = "${emacs}/bin";
