@@ -12,13 +12,12 @@ in
   options.features.desktop.nextcloud-client.enable = mkEnableOption "nextcloud-client config";
 
   config = mkIf cfg.enable {
-
     features.impermanence.directories = [ ".config/Nextcloud" ];
-    home.packages = with pkgs; [ stable.nextcloud-client ];
+    home.packages = with pkgs; [ nextcloud-client ];
     services = {
       nextcloud-client = {
         enable = true;
-        package = pkgs.stable.nextcloud-client;
+        package = pkgs.nextcloud-client;
         startInBackground = true;
       };
     };
