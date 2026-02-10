@@ -91,7 +91,7 @@ in {
       generate-python-flake =
         "nix flake init --template github:pyproject-nix/pyproject.nix#requirements-txt";
       ls = "eza";
-      grep = "rg";
+      # grep = "rg";
       ps = "procs";
       rbs-no-c =
         "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName} --option build-use-substitutes false";
