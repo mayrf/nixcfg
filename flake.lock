@@ -146,8 +146,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1769756419,
-        "narHash": "sha256-L5ceJ+73uG81+F2GUJhnN3i3rOlXFSa962Z721ZMQVU=",
+        "lastModified": 1770030058,
+        "narHash": "sha256-MYxnQR26iQrPkGg0HHs8rSmZ6+EpaUzhHnG4UUthGMM=",
         "path": "/home/mayrf/.config/dotemacs",
         "type": "path"
       },

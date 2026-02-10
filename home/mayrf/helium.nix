@@ -51,6 +51,7 @@
       media.enable = true;
       social.enable = true;
       productivity.enable = true;
+      zen-browser.enable = true;
     };
     terminal = {
       alacritty.enable = true;
