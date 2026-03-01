@@ -1,8 +1,8 @@
 { inputs, ... }: {
 
-  services.nixos-cli = {
+  programs.nixos-cli = {
     enable = true;
-    config = {
+    settings = {
       # Whatever settings desired.
       option.min_score = 2;
     };

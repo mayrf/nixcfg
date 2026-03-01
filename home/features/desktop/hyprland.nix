@@ -87,7 +87,7 @@ in
       cliphist
       hyprpicker
       brightnessctl
-      xorg.xhost
+      xhost
     ];
     programs.hyprlock.enable = true; # new line
     services.hypridle.enable = true;
@@ -245,7 +245,7 @@ in
             terminal-exec = "${pkgs.unstable.ghostty}/bin/ghostty -e";
             # browser = "${pkgs.stable.librewolf}/bin/librewolf";
             # browser = "${inputs.zen-browser.homeModules.beta}/bin/zen";
-            browser = "zen";
+            browser = "zen-beta";
             filemanager = "${pkgs.yazi}/bin/yazi";
 
             brave = "${pkgs.brave}/bin/brave";

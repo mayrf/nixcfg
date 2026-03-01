@@ -23,7 +23,6 @@ in {
       drawio
       thunderbird
       obsidian
-      krita
       inkscape
       reaper
       stable.scribus
