@@ -6,6 +6,9 @@ in {
     mkEnableOption "virtualisation config";
 
   config = mkIf cfg.enable {
+    home.packages = [
+      pkgs.distrobox
+    ];
     # TODO Add qemu, etc.
     # For virtualisation
     dconf.settings = {
