@@ -197,8 +197,13 @@ in {
       WORK_GITFORGE_HOST=${private.work.gitForgeHost}
       EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
     '';
+    xdg.configFile."dotemacs/.env".text = ''
+      WORK_GITFORGE_HOST=${private.work.gitForgeHost}
+      EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
+    '';
     programs.git.settings = {
       gitlab.${private.work.gitForgeHost}.user = "${private.work.gitUser}";
+      gitlab."${private.work.gitForgeHost}/api/v4".user = "${private.work.gitUser}";
     };
 
     home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];

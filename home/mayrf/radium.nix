@@ -33,7 +33,9 @@
       zed.enable = true;
     };
 
-    private = { work.enable = true; };
+    private = {
+      work.enable = true;
+    };
   };
 
   home.packages = with pkgs; [
@@ -45,5 +47,4 @@
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
-
 }

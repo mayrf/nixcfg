@@ -1,11 +1,18 @@
-{ pkgs, config, inputs, ... }: {
+{
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../common
     ../common/users
     ../features
-    ./vpn-kit.nix
+    # ./vpn-kit.nix
     inputs.dotfiles-private.outputs.nixosModules
   ];
 

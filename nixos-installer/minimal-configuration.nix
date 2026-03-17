@@ -2,7 +2,7 @@
 {
   imports = lib.flatten [
     (map myLib.relativeToRoot [
-      "modules/common/host-spec.nix"
+      "modules/host-spec.nix"
       "hosts/common/users/"
       "hosts/features/impermanence.nix"
     ])

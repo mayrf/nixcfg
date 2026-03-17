@@ -24,8 +24,7 @@ in {
     shell = pkgs.zsh;
     packages = [ pkgs.home-manager ];
     # These get placed into /etc/ssh/authorized_keys.d/<name> on nixos
-    openssh.authorizedKeys.keys =
-      lib.lists.forEach pubKeys (key: builtins.readFile key);
+    openssh.authorizedKeys.keys = lib.lists.forEach pubKeys (key: builtins.readFile key);
 
     extraGroups = lib.flatten [
       "wheel"
@@ -47,22 +46,25 @@ in {
         "deluge"
       ])
     ];
-  } // lib.optionalAttrs
-    (config.hostSpec.isMinimal || config.hostSpec.hostName == "iso") {
-      password = "nixos";
-    } // lib.optionalAttrs useSops {
-      hashedPasswordFile =
-        config.sops.secrets."${config.hostSpec.username}/hashedPassword".path;
-    } // lib.optionalAttrs (!config.hostSpec.isMinimal && !useSops) {
-      initialPassword = "changeme";
-    };
-  systemd.tmpfiles.rules = let
-    user = config.users.users.${username}.name;
-    group = config.users.users.${username}.group;
-  in [
-    "d /home/${username}/.ssh 0750 ${user} ${group} -"
-    "d /home/${username}/.ssh/sockets 0750 ${user} ${group} -"
-  ];
+  }
+  // lib.optionalAttrs (config.hostSpec.isMinimal || config.hostSpec.hostName == "iso") {
+    password = "nixos";
+  }
+  // lib.optionalAttrs useSops {
+    hashedPasswordFile = config.sops.secrets."${config.hostSpec.username}/hashedPassword".path;
+  }
+  // lib.optionalAttrs (!config.hostSpec.isMinimal && !useSops) {
+    initialPassword = "changeme";
+  };
+  systemd.tmpfiles.rules =
+    let
+      user = config.users.users.${username}.name;
+      group = config.users.users.${username}.group;
+    in
+    [
+      "d /home/${username}/.ssh 0750 ${user} ${group} -"
+      "d /home/${username}/.ssh/sockets 0750 ${user} ${group} -"
+    ];
 
   # programs.nix-ld.enable = true;
   # programs.nix-ld.libraries = with pkgs;
@@ -70,7 +72,8 @@ in {
   #     # Add any missing dynamic libraries for unpackaged
   #     # programs here, NOT in environment.systemPackages
   #   ];
-} // lib.optionalAttrs (inputs ? "home-manager") {
+}
+// lib.optionalAttrs (inputs ? "home-manager") {
   home-manager = {
 
     useGlobalPkgs = true;
@@ -80,8 +83,10 @@ in {
       inherit (inputs.dotfiles-private) private;
       hostSpec = config.hostSpec;
     };
-    users.${username}.imports = lib.flatten
-      (lib.optional (!config.hostSpec.isMinimal)
-        [ ../../../home/${username}/${config.hostSpec.hostName}.nix ]);
+    users.${username}.imports = lib.flatten (
+      lib.optional (!config.hostSpec.isMinimal) [
+        ../../../home/${username}/${config.hostSpec.hostName}.nix
+      ]
+    );
   };
 }

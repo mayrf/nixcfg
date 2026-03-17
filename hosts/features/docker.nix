@@ -17,30 +17,20 @@ in {
     features.impermanence.directories =
       [ "var/lib/containers/" ];
     virtualisation = {
-      docker.enable = false; # Disable Docker
-      podman = {
-        enable = true;
-        dockerCompat = true; # Creates 'docker' command alias
-        defaultNetwork.settings.dns_enabled = true; # Fixes DNS
-      };
+      docker.enable = true;
     };
+
+
     security.pki.certificates = [ ];
-    environment.extraInit = ''
-      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-      fi
-    '';
     # Useful other development tools
     environment.systemPackages = with pkgs; [
       dive # look into docker image layers
-      podman-tui # status of containers in the terminal
       docker-compose # start group of containers for dev
       docker-credential-helpers
       #distrobox
     ];
 
     # virtualisation.docker = {
-    #   enable = true;
     #   rootless = {
     #     enable = true;
     #     setSocketVariable = true;

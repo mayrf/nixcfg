@@ -1,7 +1,7 @@
 { config, pkgs, inputs, outputs, ... }: {
 
   imports = [
-    ../../modules/common/host-spec.nix
+    ../../modules/host-spec.nix
     ./nixos-cli.nix
     inputs.home-manager.nixosModules.home-manager
   ];
@@ -9,8 +9,7 @@
   # To make zsh completions work
   environment.pathsToLink = [ "/share/zsh" ];
 
-  networking.networkmanager.enable =
-    true; # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   # extraPackages = with pkgs; [
   #   # Not sure if I need all these...
   #   intel-media-driver # LIBVA_DRIVER_NAME=iHD
@@ -24,7 +23,9 @@
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocales = [ "de_DE.UTF-8/UTF-8" ];
 
-  hardware.graphics = { enable = true; };
+  hardware.graphics = {
+    enable = true;
+  };
 
   # No matter what environment we are in we want these tools for root, and the user(s)
   programs.git.enable = true;
@@ -45,6 +46,7 @@
     enable = true;
     enableSSHSupport = true;
   };
+
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
@@ -72,8 +74,7 @@
   services.locate.enable = true;
   # Gnome Keyring, store keys for apps like nextcloud client
   services.gnome.gnome-keyring.enable = true;
-  services.gvfs.enable =
-    true; # Belongs to gnome and nautilus, maybe try to turn off
+  services.gvfs.enable = true; # Belongs to gnome and nautilus, maybe try to turn off
 
   environment.systemPackages = with pkgs; [
     file
@@ -163,10 +164,16 @@
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       keep-outputs = true;
       # allowed-users = [ "root" "${config.hostSpec.username}" ];
-      trusted-users = [ "root" "${config.hostSpec.username}" ];
+      trusted-users = [
+        "root"
+        "${config.hostSpec.username}"
+      ];
       substituters = [
         "https://hyprland.cachix.org"
         "https://nix-community.cachix.org/"

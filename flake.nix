@@ -3,9 +3,7 @@
 
   inputs = {
     ########## versioned inputs ##########
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     home-manager.url = "github:nix-community/home-manager";
     # home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -75,58 +73,10 @@
       url = "path:/home/mayrf/.config/dotemacs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    import-tree.url = "github:vic/import-tree";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
   };
 
-  outputs =
-    inputs@{
-      flake-parts,
-      self,
-      nixpkgs,
-      ...
-    }:
-    let
-      myLib = import ./myLib/default.nix {
-        inherit inputs;
-        lib = inputs.nixpkgs.lib;
-      };
-    in
-    flake-parts.lib.mkFlake { inherit inputs; } (
-      top@{
-        config,
-        withSystem,
-        moduleWithSystem,
-        ...
-      }:
-      {
-        imports = [
-          # Optional: use external flake logic, e.g.
-          # inputs.foo.flakeModules.default
-        ];
-        flake = {
-          templates = import ./templates;
-          overlays = import ./overlays { inherit inputs; };
-          nixosConfigurations = {
-            radium = myLib.mkSystem "radium" { nixosPath = ./hosts/radium; };
-            yttrium = myLib.mkSystem "yttrium" { nixosPath = ./hosts/yttrium; };
-            helium = myLib.mkSystem "helium" { nixosPath = ./hosts/helium; };
-            kalium = myLib.mkSystem "kalium" { nixosPath = ./hosts/kalium; };
-            valium = myLib.mkSystem "valium" { nixosPath = ./hosts/valium; };
-          };
-        };
-        systems = [
-          "x86_64-linux"
-        ];
-        perSystem =
-          { config, pkgs, ... }:
-          {
-           packages.my-neovim =
-              (inputs.nvf.lib.neovimConfiguration {
-                pkgs = nixpkgs.legacyPackages.x86_64-linux;
-                modules = [ ./pkgs/nvf_module ];
-              }).neovim;
-          };
-      }
-    );
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

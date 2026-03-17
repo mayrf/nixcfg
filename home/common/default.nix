@@ -3,7 +3,7 @@ let inherit (inputs.nix-colors) colorSchemes;
 in {
   imports = [
     inputs.nix-colors.homeManagerModule
-    ../../modules/common/host-spec.nix
+    ../../modules/host-spec.nix
     ./mime-apps.nix
   ];
 

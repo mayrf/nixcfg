@@ -19,12 +19,7 @@ in {
       };
     };
     systemd.user.services.syncthing.Service.Environment = [
-      "HTTP_PROXY="
-      "HTTPS_PROXY="
-      "http_proxy="
-      "https_proxy="
-      "ALL_PROXY="
-      "all_proxy="
+      "all_proxy=socks5://localhost:1080"
     ];
   };
 

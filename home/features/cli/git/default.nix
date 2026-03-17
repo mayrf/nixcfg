@@ -21,6 +21,7 @@ in {
             name = "mayrf";
           };
           commit.template = "${config.xdg.configHome}/git/commitTemplate.txt";
+          push.autoSetupRemote = true;
           credential.helper = "store"; 
         };
       };
