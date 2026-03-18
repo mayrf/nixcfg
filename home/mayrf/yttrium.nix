@@ -1,4 +1,11 @@
-{ config, lib, pkgs, inputs, outputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  outputs,
+  ...
+}:
 
 {
   imports = [
@@ -18,7 +25,9 @@
     ensure-private-config-repo.enable = true;
     ensure-config-repo.enable = true;
     impermanence.enable = true;
-    impermanence.directories_cache = [ ".local/share/docker" ];
+    impermanence.directories_cache = [
+      ".local/share/docker"
+    ];
     # podman.enable = true;
     cli = {
       zsh.enable = true;
@@ -70,7 +79,10 @@
       foot.enable = true;
       ghostty.enable = true;
     };
-    private = { ssh.enable = true; personal.enable = true; };
+    private = {
+      ssh.enable = true;
+      personal.enable = true;
+    };
   };
 
   wayland.windowManager.hyprland = {
@@ -107,6 +119,13 @@
     gparted
     code-cursor
     rustdesk-flutter
+    anydesk
+    stable.teams-for-linux
+
   ];
-  features.impermanence.directories = [ ".cursor" ".config/Cursor" ];
+
+  features.impermanence.directories = [
+    ".cursor"
+    ".config/Cursor"
+  ];
 }

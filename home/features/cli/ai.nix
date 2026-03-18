@@ -56,7 +56,7 @@ in {
       # stable.aider-chat
       aider-chat
       unstable.codex
-      claude-code
+      stable.claude-code
     ];
   };
 }
