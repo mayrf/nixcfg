@@ -14,7 +14,7 @@ in {
       };
     };
 
-    features.impermanence.directories =
+    persistence.directories =
       [ "var/lib/containers/" ];
     virtualisation = {
       docker.enable = false; # Disable Docker
@@ -49,7 +49,7 @@ in {
     # };
 
     # virtualisation.containers.storage.settings.storage.driver = "btrfs";
-    # virtualisation.docker.storageDriver = lib.optionals (config.features.impermanence.enable == true) "btrfs";
+    # virtualisation.docker.storageDriver = lib.optionals (config.persistence.enable == true) "btrfs";
 
   };
 }

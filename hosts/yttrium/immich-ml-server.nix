@@ -6,8 +6,7 @@ let
     "/var/lib/immich"; # TODO: Tweak these to your desired storage locations
   immichAppdataRoot = "${immichRoot}/appdata";
 in {
-  features.impermanence.directories_cache = [ "/var/lib/immich" ];
-
+  persistence.cache.directories = [ "/var/lib/immich" ];
   systemd.tmpfiles.rules = [
     "d /var/lib/immich 0755 root root -"
     "d /var/lib/immich/appdata 0755 root root -"

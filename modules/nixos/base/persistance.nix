@@ -1,12 +1,13 @@
 {
   flake.nixosModules.base = {lib, ...}: {
-    options.persistance = {
-      enable = lib.mkEnableOption "enable persistance";
+    # options.persistence = {
+    options.persistence = {
+      enable = lib.mkEnableOption "enable persistence";
 
       nukeRoot.enable = lib.mkEnableOption "Destroy /root on every boot";
 
       volumeGroup = lib.mkOption {
-        default = "btrfs_vg";
+        default = "root_vg";
         description = ''
           Btrfs volume group name
         '';

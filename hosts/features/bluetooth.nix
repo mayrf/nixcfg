@@ -24,7 +24,7 @@ in
       };
       Policy.AutoEnable = true;
     };
-    features.impermanence.directories = [
+    persistence.directories = [
       "/var/lib/bluetooth"
     ];
   };

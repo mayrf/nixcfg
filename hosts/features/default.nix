@@ -3,7 +3,6 @@
     ./docker.nix
     ./podman.nix
     ./gaming.nix
-    ./impermanence.nix
     ./laptop.nix
     ./vpn.nix
     ./virtualisation.nix

@@ -25,7 +25,7 @@
     };
   };
 
-  features.impermanence.directories = [
+  persistence.directories = [
     "/var/lib/swap"
   ];
 

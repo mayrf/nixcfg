@@ -31,7 +31,6 @@
     open-webui.enable = true;
     virtualisation.enable = true;
     gaming.enable = true;
-    impermanence.enable = true;
     winapps.enable = true;
     private = {
       common.enable = true;
@@ -46,7 +45,7 @@
     enable = true;
     environmentVariables = { OLLAMA_CONTEXT_LENGTH = "8192"; };
   };
-  features.impermanence.directories = [
+  persistence.directories = [
     "/var/lib/private/open-webui"
     {
       directory = "/var/lib/private";

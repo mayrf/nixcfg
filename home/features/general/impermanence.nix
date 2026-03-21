@@ -73,7 +73,8 @@ in {
       #       };
       # }));
 
-      # type = lib.types.listOf li
+      # type = lib.types.listOf;
+      type = with types; listOf str;
       default = [ ];
       example = [
         "Downloads"
