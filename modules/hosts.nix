@@ -2,15 +2,6 @@
 { inputs, self, ... }:
 let
   outputs = inputs.self.outputs;
-  commonNixosModules = [
-    inputs.sops-nix.nixosModules.sops
-    inputs.home-manager.nixosModules.home-manager
-    inputs.nixos-wsl.nixosModules.wsl
-    inputs.stylix.nixosModules.stylix
-    inputs.disko.nixosModules.default
-    inputs.impermanence.nixosModules.impermanence
-    inputs.nixos-cli.nixosModules.nixos-cli
-  ];
   specialArgs = {
     inherit outputs inputs;
     inherit (inputs.dotfiles-private) private;
@@ -24,6 +15,7 @@ in
       imports = [
         self.nixosModules.base
         self.nixosModules.extra_impermanence
+        self.modules.nixos.commonModules
         ../hosts/radium
       ];
     };
@@ -31,12 +23,10 @@ in
   flake.nixosConfigurations.radium = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = specialArgs;
-    modules =
-      # with inputs.self.modules.nixos;
-      [
-        self.nixosModules.radium
-      ]
-      ++ commonNixosModules;
+    modules = [
+      self.nixosModules.radium
+      self.modules.nixos.emacs
+    ];
   };
 
   flake.nixosModules.yttrium =
@@ -45,7 +35,9 @@ in
       imports = [
         self.nixosModules.base
         self.nixosModules.extra_impermanence
+        self.modules.nixos.commonModules
         ../hosts/yttrium
+        self.modules.nixos.emacs
       ];
       persistence.enable = true;
       persistence.user = config.preferences.user.name;
@@ -55,11 +47,9 @@ in
     system = "x86_64-linux";
     specialArgs = specialArgs;
     modules =
-      # with inputs.self.modules.nixos;
       [
         self.nixosModules.yttrium
-      ]
-      ++ commonNixosModules;
+      ];
   };
 
   flake.nixosModules.helium =
@@ -68,6 +58,7 @@ in
       imports = [
         self.nixosModules.base
         self.nixosModules.extra_impermanence
+        self.modules.nixos.commonModules
         ../hosts/helium
       ];
       persistence.enable = true;
@@ -78,10 +69,8 @@ in
     system = "x86_64-linux";
     specialArgs = specialArgs;
     modules =
-      # with inputs.self.modules.nixos;
       [
         self.nixosModules.helium
-      ]
-      ++ commonNixosModules;
+      ];
   };
 }

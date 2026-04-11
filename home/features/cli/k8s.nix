@@ -33,6 +33,6 @@ in {
       stable.rubyPackages_3_4.rails
       # rubyPackages_3_4.activesupport
     ];
-    home.sessionVariables = { KIND_EXPERIMENTAL_PROVIDER = "podman"; };
+    # home.sessionVariables = { KIND_EXPERIMENTAL_PROVIDER = "podman"; };
   };
 }
