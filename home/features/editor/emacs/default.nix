@@ -1,16 +1,31 @@
-{ config, pkgs, lib, private, hostSpec, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  private,
+  hostSpec,
+  ...
+}:
 with lib;
 let
   cfg = config.features.editor.emacs;
 
-  emacs = ((pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages
-    (epkgs: [ epkgs.vterm epkgs.emacsql epkgs.pdf-tools epkgs.org epkgs.treesit-grammars.with-all-grammars ]));
+  emacs = (
+    (pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages (epkgs: [
+      epkgs.vterm
+      epkgs.emacsql
+      epkgs.pdf-tools
+      epkgs.org
+      epkgs.treesit-grammars.with-all-grammars
+    ])
+  );
   repoUrl = "https://github.com/doomemacs/doomemacs";
   emacsBinPath = "${emacs}/bin";
   # Match the default socket path for the Emacs version so emacsclient continues
   # to work without wrapping it.
   socketDir = "%t/emacs";
-in {
+in
+{
   options.features.editor.emacs.enable = mkEnableOption "my emacs user config";
   config = mkIf cfg.enable {
     features.impermanence.directories = [
@@ -20,7 +35,8 @@ in {
     ];
 
     # home.file."Documents/org/shared/.config/enchant".source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/enchant";
-    home.file."${config.xdg.configHome}/enchant".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Documents/org/shared/.config/enchant";
+    home.file."${config.xdg.configHome}/enchant".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Documents/org/shared/.config/enchant";
 
     # Emacs
     services.emacs = {
@@ -33,51 +49,53 @@ in {
       # package = emacs;
     };
 
-    home.activation = let
-      source = "${hostSpec.flakeDir}/home/features/editor/emacs/vanilla";
-      target = "${config.xdg.configHome}/emacs";
-    in {
-      emacsActivationAction = ''
-                link_repo() {
-        	  rm -r ${target}
-                  ln -sf ${source} ${target}
-                }
-                if [ ! -d "${target}" ] || [ -z "$(ls "${target}")" ]; then 
-                    link_repo
-                elif [ ! -L "${target}" ]; then
-                    TEMP_DIR=$(mktemp -d)
-                    mv ${target}/{.,}* $TEMP_DIR
-                    link_repo
-                    mv $TEMP_DIR/{.,}* ${target}
-                    rm -r $TEMP_DIR
-                fi
-      '';
-      doomEmacsActivationAction = ''
-        check_dir() {
-            local dir="$1"
-            [ ! -d "$dir" ] || [ -z "$(ls "$dir")" ]
-        }
+    home.activation =
+      let
+        source = "${hostSpec.flakeDir}/home/features/editor/emacs/vanilla";
+        target = "${config.xdg.configHome}/emacs";
+      in
+      {
+        emacsActivationAction = ''
+                  link_repo() {
+          	  rm -r ${target}
+                    ln -sf ${source} ${target}
+                  }
+                  if [ ! -d "${target}" ] || [ -z "$(ls "${target}")" ]; then 
+                      link_repo
+                  elif [ ! -L "${target}" ]; then
+                      TEMP_DIR=$(mktemp -d)
+                      mv ${target}/{.,}* $TEMP_DIR
+                      link_repo
+                      mv $TEMP_DIR/{.,}* ${target}
+                      rm -r $TEMP_DIR
+                  fi
+        '';
+        doomEmacsActivationAction = ''
+          check_dir() {
+              local dir="$1"
+              [ ! -d "$dir" ] || [ -z "$(ls "$dir")" ]
+          }
 
-        # EMACS_DIR="${config.xdg.configHome}/emacs"
-        DOOM_EMACS_DIR="${config.xdg.configHome}/emacs-doom"
-        DOOM="${config.xdg.configHome}/doom"
+          # EMACS_DIR="${config.xdg.configHome}/emacs"
+          DOOM_EMACS_DIR="${config.xdg.configHome}/emacs-doom"
+          DOOM="${config.xdg.configHome}/doom"
 
-        if check_dir "$DOOM_EMACS_DIR"; then
-            rm -rf $DOOM_EMACS_DIR/*
-            ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $DOOM_EMACS_DIR
-        fi
+          if check_dir "$DOOM_EMACS_DIR"; then
+              rm -rf $DOOM_EMACS_DIR/*
+              ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $DOOM_EMACS_DIR
+          fi
 
 
-        # if check_dir "$EMACS_DIR"; then
-        #   ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/vanilla $EMACS_DIR
-        # fi
+          # if check_dir "$EMACS_DIR"; then
+          #   ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/vanilla $EMACS_DIR
+          # fi
 
-        if [ ! -e "$DOOM" ]; then
-          ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/doom $DOOM
-          # yes | $EMACS_DIR/bin/doom install
-        fi
-      '';
-    };
+          if [ ! -e "$DOOM" ]; then
+            ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/doom $DOOM
+            # yes | $EMACS_DIR/bin/doom install
+          fi
+        '';
+      };
     home.sessionVariables = {
       EMACS_DIR = "${config.xdg.configHome}/emacs";
       DOOM = "${config.xdg.configHome}/doom";
@@ -132,10 +150,10 @@ in {
       nixd
 
       # typescript
-      nodePackages_latest.eslint
-      nodePackages_latest.prettier
+      eslint
+      prettier
       # prettier-plugin-go-template
-      nodePackages_latest.typescript-language-server
+      typescript-language-server
 
       # language tools
       languagetool
@@ -164,7 +182,6 @@ in {
       xclip
       poppler-utils
 
-
       # go
       gopls
       go
@@ -180,7 +197,7 @@ in {
       unstable.nerd-fonts.caskaydia-cove
       unstable.nerd-fonts.geist-mono
 
-      # ai 
+      # ai
       # aider-chat
 
       #org mode
@@ -210,8 +227,7 @@ in {
 
     home.shellAliases = {
       "emacs" = "${emacs}/bin/emacs";
-      "doom-emacs" =
-        "${emacs}/bin/emacs --init-directory ${config.xdg.configHome}/emacs-doom &";
+      "doom-emacs" = "${emacs}/bin/emacs --init-directory ${config.xdg.configHome}/emacs-doom &";
     };
     # e()     { pgrep emacs && emacsclient -n "$@" || emacs -nw "$@" }
     # ediff() { emacs -nw --eval "(ediff-files \"$1\" \"$2\")"; }

@@ -38,6 +38,7 @@ in
         self.modules.nixos.commonModules
         ../hosts/yttrium
         self.modules.nixos.emacs
+        self.nixosModules.claude
       ];
       persistence.enable = true;
       persistence.user = config.preferences.user.name;
@@ -46,10 +47,9 @@ in
   flake.nixosConfigurations.yttrium = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = specialArgs;
-    modules =
-      [
-        self.nixosModules.yttrium
-      ];
+    modules = [
+      self.nixosModules.yttrium
+    ];
   };
 
   flake.nixosModules.helium =
@@ -68,9 +68,8 @@ in
   flake.nixosConfigurations.helium = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = specialArgs;
-    modules =
-      [
-        self.nixosModules.helium
-      ];
+    modules = [
+      self.nixosModules.helium
+    ];
   };
 }

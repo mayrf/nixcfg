@@ -1,4 +1,11 @@
-{ pkgs, config, inputs, stable, ... }: {
+{
+  pkgs,
+  config,
+  inputs,
+  stable,
+  ...
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -41,9 +48,11 @@
 
   services.ollama = {
     rocmOverrideGfx = "10.3.0";
-    package = pkgs.stable.ollama-rocm;
+    package = pkgs.ollama-rocm;
     enable = true;
-    environmentVariables = { OLLAMA_CONTEXT_LENGTH = "8192"; };
+    environmentVariables = {
+      OLLAMA_CONTEXT_LENGTH = "8192";
+    };
   };
   persistence.directories = [
     "/var/lib/private/open-webui"
@@ -80,7 +89,6 @@
   services.avahi.nssmdns4 = true;
   # services.avahi.nssmdns6 = true;
   security.sudo.enable = true;
-  system.stateVersion =
-    config.hostSpec.sysStateVersion; # Did you read the comment?
+  system.stateVersion = config.hostSpec.sysStateVersion; # Did you read the comment?
 
 }
