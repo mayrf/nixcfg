@@ -1,79 +1,32 @@
+{ config, pkgs, lib, ... }:
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-with lib;
-let
-  cfg = config.features.cli.ai;
-  # opencode-latest = pkgs.unstable.opencode.overrideAttrs (oldAttrs: rec {
-  #   version = "0.3.130";
-  #   src = pkgs.fetchFromGitHub {
-  #     owner = "sst";
-  #     repo = "opencode";
-  #     tag = "v${version}";
-  #     hash = "sha256-/FWvHekyAM9U5WLptAr2YbcMOZa/twjucSUnlqfu1Y4="; # You'll need to update this hash
-  #     # hash = "";
-  #   };
-  #   tui = oldAttrs.tui.overrideAttrs (tuiOldAttrs: {
-  #     vendorHash =
-  #       "sha256-qsOL6gsZwEm7YcYO/zoyJAnVmciCjPYqPavV77psybU="; # or vendorHash = "";
+  features.impermanence.directories = [
+    ".config/fabric"
+    ".local/share/oterm"
+    ".cache/huggingface"
+    ".config/opencode"
+    ".local/share/opencode"
+    ".local/state/opencode"
+    ".config/claude"
+    ".claude"
+  ];
 
-  #     # vendorHash = "";
-  #   });
+  features.impermanence.directories_cache = [ ".claude/Nextcloud" ];
 
-  #   node_modules = oldAttrs.node_modules.overrideAttrs (node_modulesOldAttrs: {
+  home.activation.createClaudeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -f "${config.xdg.configHome}/claude/config.json" ]; then
+      mkdir -p "${config.xdg.configHome}/claude"
+      echo '{}' > "${config.xdg.configHome}/claude/config.json"
+    fi
+  '';
 
-  #     # outputHash =
-  #     #   ""; # or vendorHash = "";
-  #     outputHash =
-  #       "sha256-oZa8O0iK5uSJjl6fOdnjqjIuG//ihrj4six3FUdfob8="; # or vendorHash = "";
-  #   });
-  # });
-in
-{
-  options.features.cli.ai.enable = mkEnableOption "enable ai cli programs";
+  home.file.".claude.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/claude/config.json";
 
-  config = mkIf cfg.enable {
-
-    features.impermanence.directories = [
-      ".config/fabric"
-      ".local/share/oterm"
-      ".cache/huggingface"
-      ".config/opencode"
-      ".local/share/opencode"
-      ".local/state/opencode"
-      # ".cache/opencode"
-      ".config/claude"
-      ".claude"
-    ];
-
-    features.impermanence.directories_cache = [ ".claude/Nextcloud" ];
-
-    # home.file.".claude".source =
-    #   config.lib.file.mkOutOfStoreSymlink "${config.xdg.dataHome}/claude/data";
-    # home.file.".claude.json".source =
-    #   config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/claude/config.json";
-    home.activation.createClaudeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      if [ ! -f "${config.xdg.configHome}/claude/config.json" ]; then
-        mkdir -p "${config.xdg.configHome}/claude"
-        echo '{}' > "${config.xdg.configHome}/claude/config.json"
-      fi
-    '';
-
-    home.file.".claude.json".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/claude/config.json";
-
-    home.packages = with pkgs; [
-      unstable.opencode
-      # opencode-latest
-      # stable.oterm
-      fabric-ai
-      # stable.aider-chat
-      aider-chat
-      unstable.codex
-      # claude-code
-    ];
-  };
+  home.packages = with pkgs; [
+    unstable.opencode
+    fabric-ai
+    aider-chat
+    unstable.codex
+  ];
 }

@@ -1,428 +1,341 @@
+{ config, lib, inputs, pkgs, hostSpec, ... }:
 {
-  config,
-  lib,
-  inputs,
-  pkgs,
-  hostSpec,
-  ...
-}:
-with lib;
-let
-  cfg = config.features.desktop.hyprland;
-in
-{
-  options.features.desktop.hyprland.enable = mkEnableOption "hyprland config";
+  xdg.portal.enable = true;
+  xdg.portal.config.common.default = "*";
 
-  config = mkIf cfg.enable {
-
-    xdg.portal.enable = true;
-    xdg.portal.config.common.default = "*";
-
-    fontProfiles = {
-      enable = true;
-      monospace = {
-        family = "FiraCode Nerd Font";
-        package = pkgs.unstable.nerd-fonts.fira-code;
-      };
-      regular = {
-        family = "Fira Sans";
-        package = pkgs.fira;
-      };
+  fontProfiles = {
+    enable = true;
+    monospace = {
+      family = "FiraCode Nerd Font";
+      package = pkgs.unstable.nerd-fonts.fira-code;
     };
-    programs = {
-      fish.loginShellInit = ''
-        if test (tty) = "/dev/tty1"
-          exec start-hyprland &> /dev/null
-        end
-      '';
-      zsh.loginExtra = ''
-        if [ "$(tty)" = "/dev/tty1" ]; then
-          exec start-hyprland &> /dev/null
-        fi
-      '';
-      zsh.profileExtra = ''
-        if [ "$(tty)" = "/dev/tty1" ]; then
-          exec start-hyprland &> /dev/null
-        fi
-      '';
+    regular = {
+      family = "Fira Sans";
+      package = pkgs.fira;
     };
-
-    xdg.configFile."xkb/rules/evdev".text = ''
-      ! option = symbols
-        hungarian_letters:huletters    = +hungarian_letters(huletters)
-      ! include %S/evdev
+  };
+  programs = {
+    fish.loginShellInit = ''
+      if test (tty) = "/dev/tty1"
+        exec start-hyprland &> /dev/null
+      end
     '';
-    xdg.configFile."xkb/symbols/hungarian_letters".text = ''
-      xkb_symbols "huletters" {
-          //ä on alt+a
-          key <AC01> { [     a,   A, adiaeresis,  Adiaeresis      ]   };
-          //á on alt+q
-          key <AD01> { [     q,   Q, aacute,      Aacute          ]   };
+    zsh.loginExtra = ''
+      if [ "$(tty)" = "/dev/tty1" ]; then
+        exec start-hyprland &> /dev/null
+      fi
+    '';
+    zsh.profileExtra = ''
+      if [ "$(tty)" = "/dev/tty1" ]; then
+        exec start-hyprland &> /dev/null
+      fi
+    '';
+  };
 
-          //ü on alt+u
-          key <AD07> { [     u,   U, udiaeresis,  Udiaeresis      ]   };
-          //ü on alt+j
-          key <AC07> { [     j,   J, udoubleacute,  Udoubleacute      ]   };
-          //ú on alt+y
-          key <AD06> { [     y,   Y, uacute,      Uacute          ]   };
+  xdg.configFile."xkb/rules/evdev".text = ''
+    ! option = symbols
+      hungarian_letters:huletters    = +hungarian_letters(huletters)
+    ! include %S/evdev
+  '';
+  xdg.configFile."xkb/symbols/hungarian_letters".text = ''
+    xkb_symbols "huletters" {
+        //ä on alt+a
+        key <AC01> { [     a,   A, adiaeresis,  Adiaeresis      ]   };
+        //á on alt+q
+        key <AD01> { [     q,   Q, aacute,      Aacute          ]   };
 
-          //ö on alt+o
-          key <AD09> { [     o,   O, odiaeresis,  Odiaeresis      ]   };
-          //ő on alt+p
-          key <AD10> { [     p,   P, odoubleacute,  Odoubleacute      ]   };
-          //ó on alt+l
-          key <AC09> { [     l,   L, oacute,      Oacute      ]   };
+        //ü on alt+u
+        key <AD07> { [     u,   U, udiaeresis,  Udiaeresis      ]   };
+        //ü on alt+j
+        key <AC07> { [     j,   J, udoubleacute,  Udoubleacute      ]   };
+        //ú on alt+y
+        key <AD06> { [     y,   Y, uacute,      Uacute          ]   };
+
+        //ö on alt+o
+        key <AD09> { [     o,   O, odiaeresis,  Odiaeresis      ]   };
+        //ő on alt+p
+        key <AD10> { [     p,   P, odoubleacute,  Odoubleacute      ]   };
+        //ó on alt+l
+        key <AC09> { [     l,   L, oacute,      Oacute      ]   };
 
 
-          // make right alt altGr
-          include "level3(ralt_switch)"
-      };  '';
-    home.packages = with pkgs; [
-      (pkgs.writeShellScriptBin "restart_hyprlock" ''
-        hyprctl --instance 0 'keyword misc:allow_session_lock_restore 1'
-        hyprctl --instance 0 'dispatch exec hyprlock'
-      '')
-      hyprland-qt-support
-      hyprland-qtutils
-      cliphist
-      hyprpicker
-      brightnessctl
-      xhost
+        // make right alt altGr
+        include "level3(ralt_switch)"
+    };  '';
+  home.packages = with pkgs; [
+    (pkgs.writeShellScriptBin "restart_hyprlock" ''
+      hyprctl --instance 0 'keyword misc:allow_session_lock_restore 1'
+      hyprctl --instance 0 'dispatch exec hyprlock'
+    '')
+    hyprland-qt-support
+    hyprland-qtutils
+    cliphist
+    hyprpicker
+    brightnessctl
+    xhost
+  ];
+  programs.hyprlock.enable = true;
+  services.hypridle.enable = true;
+  services.hyprsunset.enable = true;
+  services.hypridle.settings = {
+    general = {
+      lock_cmd = "pidof hyprlock || hyprlock";
+      before_sleep_cmd = "loginctl lock-session";
+      after_sleep_cmd = "hyprctl dispatch dpms on";
+    };
+    listener = [
+      {
+        timeout = 150;
+        on-timeout = "brightnessctl -s set 10";
+        on-resume = "brightnessctl -r";
+      }
+      {
+        timeout = 600;
+        on-timeout = "loginctl lock-session";
+      }
+      {
+        timeout = 180;
+        on-timeout = "hyprctl dispatch dpms off";
+        on-resume = "hyprctl dispatch dpms on && brightnessctl -r";
+      }
+      {
+        timeout = 14400;
+        on-timeout = "systemctl suspend";
+      }
     ];
-    programs.hyprlock.enable = true; # new line
-    services.hypridle.enable = true;
-    services.hyprsunset.enable = true;
-    services.hypridle.settings = {
-      general = {
-        lock_cmd = "pidof hyprlock || hyprlock"; # avoid starting multiple hyprlock instances.
-        before_sleep_cmd = "loginctl lock-session"; # lock before suspend.
-        after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+  };
+
+  wayland.windowManager.hyprland =
+    let
+      workspaces = (map toString (lib.range 0 9)) ++ (map (n: "F${toString n}") (lib.range 1 12));
+      directions = rec {
+        left = "l";
+        right = "r";
+        up = "u";
+        down = "d";
+        h = left;
+        l = right;
+        k = up;
+        j = down;
       };
-      listener = [
-        {
-          timeout = 150; # 2.5min.
-          on-timeout = "brightnessctl -s set 10"; # set monitor backlight to minimum, avoid 0 on OLED monitor.
-          on-resume = "brightnessctl -r"; # monitor backlight restore.
-        }
-        {
-          # timeout = 900;
-          # timeout = 90;
-          # on-timeout = "hyprlock";
-          timeout = 600; # 10min
-          on-timeout = "loginctl lock-session"; # lock screen when timeout has passed
-        }
-        {
-          # timeout = 900; # 15min
-          timeout = 180; # 3min
-          on-timeout = "hyprctl dispatch dpms off"; # screen off when timeout has passed
-          on-resume = "hyprctl dispatch dpms on && brightnessctl -r"; # screen on when activity is detected after timeout has fired.
-        }
-        {
-          # timeout = 1800; # 30min
-          # timeout = 7200; # 120min
-          timeout = 14400; # 240min
-          on-timeout = "systemctl suspend"; # suspend pc
-        }
-      ];
+    in
+    {
+      enable = true;
+
+      settings = {
+        ecosystem."no_update_news" = true;
+        bind = [
+          "SUPER,mouse:272,movewindow"
+          "SUPERSHIFT,q,killactive"
+          "SUPER,s,togglesplit"
+          "SUPER,f,fullscreen,1"
+          "SUPERSHIFT,f,fullscreen,0"
+          "SUPERSHIFT,space,togglefloating"
+          "SUPER,h,splitratio,-0.1"
+          "SUPER,minus,splitratio,-0.25"
+          "SUPERSHIFT,minus,splitratio,-0.3333333"
+          "SUPER,l,splitratio,0.1"
+          "SUPER,equal,splitratio,0.25"
+          "SUPERSHIFT,equal,splitratio,0.3333333"
+          "SUPER,g,togglegroup"
+          "SUPER,apostrophe,changegroupactive,f"
+          "SUPERSHIFT,apostrophe,changegroupactive,b"
+          "SUPER,u,togglespecialworkspace"
+          "SUPERSHIFT,u,movetoworkspace,special"
+          "SUPERSHIFT,Backspace,exec, wofi-shutdown "
+        ]
+        ++
+          (map (n: "SUPER,${n},workspace,name:${n}") workspaces)
+        ++
+          (map (n: "SUPERSHIFT,${n},movetoworkspacesilent,name:${n}") workspaces)
+        ++
+          [
+            "SUPER, Space, layoutmsg,swapwithmaster"
+            "SUPER, J, layoutmsg, cyclenext"
+            "SUPER, K, layoutmsg, cycleprev"
+          ]
+        ++
+          (lib.mapAttrsToList (key: direction: "SUPERSHIFT,${key},swapwindow,${direction}") directions)
+        ++
+          (lib.mapAttrsToList (key: direction: "SUPERCONTROL,${key},focusmonitor,${direction}") directions)
+        ++
+          (lib.mapAttrsToList (
+            key: direction: "SUPERCONTROLSHIFT,${key},movewindow,mon:${direction}"
+          ) directions)
+        ++
+          (lib.mapAttrsToList (
+            key: direction: "SUPERALT,${key},movecurrentworkspacetomonitor,${direction}"
+          ) directions);
+      };
+
+      extraConfig =
+        let
+          swaylock = "${config.programs.swaylock.package}/bin/swaylock";
+          playerctl = "${config.services.playerctld.package}/bin/playerctl";
+          playerctld = "${config.services.playerctld.package}/bin/playerctld";
+          wofi = "${config.programs.wofi.package}/bin/wofi";
+          grimblast = "${pkgs.grimblast}/bin/grimblast";
+          pactl = "${pkgs.pulseaudio}/bin/pactl";
+          gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
+          xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
+          terminal =
+            if hostSpec.hostName == "helium" then
+              "${pkgs.kitty}/bin/kitty"
+            else
+              "${pkgs.unstable.ghostty}/bin/ghostty";
+          terminal-exec = "${pkgs.unstable.ghostty}/bin/ghostty -e";
+          browser = "zen-beta";
+          brave = "${pkgs.brave}/bin/brave";
+          editor = "dotemacs";
+          vanilla_emacs = "${pkgs.emacs}/bin/emacsclient -s vanilla -c";
+          hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+        in
+        ''
+          exec-once=wl-paste --type text --watch cliphist store # Stores only text data
+          exec-once=wl-paste --type image --watch cliphist store # Stores only image data
+          exec-once=${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1
+          exec-once = hypridle
+        ''
+        + ''
+          animations {
+            enabled=false
+          }
+
+          decoration {
+            blur {
+              ignore_opacity=true
+              new_optimizations=true
+              passes=3
+              size=5
+            }
+            active_opacity=1.000000
+            fullscreen_opacity=1.000000
+            inactive_opacity=0.840000
+          }
+
+          general {
+            border_size=1
+            col.active_border=rgb(88a4d3)
+            col.inactive_border=rgb(9d8b70)
+            gaps_in=1
+            gaps_out=1
+            layout=master
+          }
+
+          group {
+            groupbar {
+              col.active=rgb(88a4d3)
+              col.inactive=rgb(9d8b70)
+              text_color=rgb(cabcb1)
+            }
+            col.border_active=rgb(88a4d3)
+            col.border_inactive=rgb(9d8b70)
+            col.border_locked_active=rgb(6eb958)
+          }
+
+          input {
+            kb_layout=us
+            kb_options=hungarian_letters:huletters
+            kb_variant=altgr-intl
+            repeat_delay=250
+            repeat_rate=50
+          }
+
+          misc {
+            enable_swallow=true
+            swallow_regex=^(com.mitchellh.ghostty)$
+
+            background_color=rgb(231e18)
+            focus_on_activate=true
+          }
+        ''
+        + lib.strings.optionalString config.programs.swaylock.enable ''
+          bind=,XF86Launch5,exec,${swaylock} -S
+          bind=,XF86Launch4,exec,${swaylock} -S
+          bind=SUPER,backspace,exec,${swaylock} -S
+
+        ''
+        + lib.strings.optionalString config.services.playerctld.enable ''
+          # Media control
+          bind=,XF86AudioNext,exec,${playerctl} next
+          bind=,XF86AudioPrev,exec,${playerctl} previous
+          bind=,XF86AudioPlay,exec,${playerctl} play-pause
+          bind=,XF86AudioStop,exec,${playerctl} stop
+          bind=ALT,XF86AudioNext,exec,${playerctld} shift
+          bind=ALT,XF86AudioPrev,exec,${playerctld} unshift
+          bind=ALT,XF86AudioPlay,exec,systemctl --user restart playerctld
+        ''
+        + ''
+          # Program bindings
+          bind=SUPER,Return,exec,${terminal}
+          bind=SUPER,e,exec,${editor}
+          bind=SUPERSHIFT,e,exec,${vanilla_emacs}
+          bind=SUPER,w,exec,${browser}
+          bind=SUPERSHIFT,w,exec,${brave}
+          bind=SUPER,r,exec,${terminal-exec} yazi
+          bind=SUPERSHIFT,N,exec,${terminal-exec} sudo nmtui
+          bind=SUPERSHIFT, R, exec,${hyprctl} reload
+          # Brightness control
+          bind=,XF86MonBrightnessUp,exec,brightnessctl set 5%+
+          bind=,XF86MonBrightnessDown,exec,brightnessctl set 5%-
+          # Volume
+          bind=,XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%
+          bind=,XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%
+          bind=,XF86AudioMute,exec,${pactl} set-sink-mute @DEFAULT_SINK@ toggle
+          bind=SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle
+          bind=,XF86AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle
+          # Screenshotting
+          bind=,Print,exec,${grimblast} --notify copy output
+          bind=SHIFT,Print,exec,${grimblast} --notify copy active
+          bind=CONTROL,Print,exec,${grimblast} --notify copy screen
+          bind=SUPER,Print,exec,${grimblast} --notify copy window
+          bind=ALT,Print,exec,${grimblast} --freeze --notify copy area
+          bind=SUPERSHIFT,p,exec,${grimblast} --freeze --notify copy area
+        ''
+        + lib.strings.optionalString config.programs.wofi.enable ''
+          bind=SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%
+          bind=SUPER,d,exec,${wofi} -S drun
+          bind=SUPERSHIFT,v,exec, wofi-vpn
+          bind=SUPERSHIFT,d,exec,${wofi} -S drun
+          bind=SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy
+        ''
+        + ''
+          # Passthrough mode
+          bind=SUPER,P,submap,passthrough
+          submap=passthrough
+          bind=SUPER,P,submap,reset
+          submap=reset
+
+          workspace = special:scratch_term, gapsout:50
+          windowrule = workspace special:scratch_term, center on, float on, size (monitor_w*0.9) (monitor_h*0.9), match:title ^(scratch_term)$
+          bind = SUPER,T,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term exists"; else ghostty --title=scratch_term; fi
+          bind = SUPER,T,togglespecialworkspace,scratch_term
+
+          workspace = special:scratch_emacs, gapsout:50
+          windowrule = workspace special:scratch_term, center on, float on, size (monitor_w*0.9) (monitor_h*0.9), match:title ^(scratch_emacs)$
+          bind = SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else dotemacs -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
+          bind = SUPER,B,togglespecialworkspace,scratch_emacs
+
+          bind = SUPER_SHIFT, C, exec, dotemacs-org-capture
+          windowrule = float on, center on, size (monitor_w*0.9) (monitor_h*0.9), stay_focused on, match:title ^(org-capture)$
+        '';
     };
 
-    wayland.windowManager.hyprland =
-      let
-        workspaces = (map toString (lib.range 0 9)) ++ (map (n: "F${toString n}") (lib.range 1 12));
-        # Map keys to hyprland directions
-        directions = rec {
-          left = "l";
-          right = "r";
-          up = "u";
-          down = "d";
-          h = left;
-          l = right;
-          k = up;
-          j = down;
-        };
-      in
-      {
-        # package =
-        #   inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-        # portalPackage =
-        #   inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-        enable = true;
-
-        settings = {
-          ecosystem."no_update_news" = true;
-          bind = [
-            "SUPER,mouse:272,movewindow"
-            # "SUPER,mouse:273,resizewindow"
-
-            "SUPERSHIFT,q,killactive"
-
-            "SUPER,s,togglesplit"
-            "SUPER,f,fullscreen,1"
-            "SUPERSHIFT,f,fullscreen,0"
-            "SUPERSHIFT,space,togglefloating"
-
-            "SUPER,h,splitratio,-0.1"
-            "SUPER,minus,splitratio,-0.25"
-            "SUPERSHIFT,minus,splitratio,-0.3333333"
-
-            "SUPER,l,splitratio,0.1"
-            "SUPER,equal,splitratio,0.25"
-            "SUPERSHIFT,equal,splitratio,0.3333333"
-
-            "SUPER,g,togglegroup"
-            "SUPER,apostrophe,changegroupactive,f"
-            "SUPERSHIFT,apostrophe,changegroupactive,b"
-
-            "SUPER,u,togglespecialworkspace"
-            "SUPERSHIFT,u,movetoworkspace,special"
-
-            "SUPERSHIFT,Backspace,exec, wofi-shutdown "
-          ]
-          ++
-            # Change workspace
-            (map (n: "SUPER,${n},workspace,name:${n}") workspaces)
-          ++
-            # Move window to workspace
-            (map (n: "SUPERSHIFT,${n},movetoworkspacesilent,name:${n}") workspaces)
-          ++
-            # Move focus
-            # (lib.mapAttrsToList (key: direction:
-            #   "SUPER,${key},movefocus,${direction}"
-            # ) directions) ++
-            [
-              "SUPER, Space, layoutmsg,swapwithmaster"
-              "SUPER, J, layoutmsg, cyclenext"
-              "SUPER, K, layoutmsg, cycleprev"
-            ]
-          ++
-            # Swap windows
-            (lib.mapAttrsToList (key: direction: "SUPERSHIFT,${key},swapwindow,${direction}") directions)
-          ++
-            # Move monitor focus
-            (lib.mapAttrsToList (key: direction: "SUPERCONTROL,${key},focusmonitor,${direction}") directions)
-          ++
-            # Move window to other monitor
-            (lib.mapAttrsToList (
-              key: direction: "SUPERCONTROLSHIFT,${key},movewindow,mon:${direction}"
-            ) directions)
-          ++
-            # Move workspace to other monitor
-            (lib.mapAttrsToList (
-              key: direction: "SUPERALT,${key},movecurrentworkspacetomonitor,${direction}"
-            ) directions);
-        };
-
-        # This is order sensitive, so it has to come here.
-        extraConfig =
-          let
-            swaylock = "${config.programs.swaylock.package}/bin/swaylock";
-            playerctl = "${config.services.playerctld.package}/bin/playerctl";
-            playerctld = "${config.services.playerctld.package}/bin/playerctld";
-            # makoctl = "${config.services.mako.package}/bin/makoctl";
-            wofi = "${config.programs.wofi.package}/bin/wofi";
-            # pass-wofi = "${pkgs.pass-wofi.override {
-            # pass = config.programs.password-store.package;
-            # }}/bin/pass-wofi";
-
-            grimblast = "${pkgs.grimblast}/bin/grimblast";
-            pactl = "${pkgs.pulseaudio}/bin/pactl";
-
-            gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
-            xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
-            defaultApp = type: "${gtk-launch} $(${xdg-mime} query default ${type})";
-
-            # terminal = config.home.sessionVariables.TERMINAL;
-            # browser = defaultApp "x-scheme-handler/https";
-            # editor = defaultApp "text/plain";
-            # terminal = "${pkgs.kitty}/bin/kitty";
-            # terminal =  "${pkgs.unstable.ghostty}/bin/ghostty";
-
-            terminal =
-              if hostSpec.hostName == "helium" then
-                "${pkgs.kitty}/bin/kitty"
-              else
-                "${pkgs.unstable.ghostty}/bin/ghostty";
-            terminal-exec = "${pkgs.unstable.ghostty}/bin/ghostty -e";
-            # browser = "${pkgs.stable.librewolf}/bin/librewolf";
-            # browser = "${inputs.zen-browser.homeModules.beta}/bin/zen";
-            browser = "zen-beta";
-            filemanager = "${pkgs.yazi}/bin/yazi";
-
-            brave = "${pkgs.brave}/bin/brave";
-            editor = "dotemacs";
-            vanilla_emacs = "${pkgs.emacs}/bin/emacsclient -s vanilla -c";
-            hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-            #   exec=${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill
-            # '' + ''
-          in
-          ''
-            exec-once=wl-paste --type text --watch cliphist store # Stores only text data
-            exec-once=wl-paste --type image --watch cliphist store # Stores only image data
-            exec-once=${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1
-            exec-once = hypridle
-          ''
-          + ''
-            animations {
-              enabled=false
-            }
-
-            decoration {
-              blur {
-                ignore_opacity=true
-                new_optimizations=true
-                passes=3
-                size=5
-              }
-              active_opacity=1.000000
-              # col.shadow=rgba(231e1899)
-              fullscreen_opacity=1.000000
-              inactive_opacity=0.840000
-            }
-
-            general {
-              border_size=1
-              col.active_border=rgb(88a4d3)
-              col.inactive_border=rgb(9d8b70)
-              gaps_in=1
-              gaps_out=1
-              layout=master
-              # layout=dwindle
-            }
-
-            group {
-              groupbar {
-                col.active=rgb(88a4d3)
-                col.inactive=rgb(9d8b70)
-                text_color=rgb(cabcb1)
-              }
-              col.border_active=rgb(88a4d3)
-              col.border_inactive=rgb(9d8b70)
-              col.border_locked_active=rgb(6eb958)
-            }
-
-            input {
-              kb_layout=us
-              kb_options=hungarian_letters:huletters
-              kb_variant=altgr-intl
-              repeat_delay=250
-              repeat_rate=50
-            }
-
-            misc {
-              enable_swallow=true
-              swallow_regex=^(com.mitchellh.ghostty)$
-
-              background_color=rgb(231e18)
-              focus_on_activate=true
-            }
-          ''
-          + lib.strings.optionalString config.programs.swaylock.enable ''
-            bind=,XF86Launch5,exec,${swaylock} -S
-            bind=,XF86Launch4,exec,${swaylock} -S
-            bind=SUPER,backspace,exec,${swaylock} -S
-
-          ''
-          + lib.strings.optionalString config.services.playerctld.enable ''
-            # Media control
-            bind=,XF86AudioNext,exec,${playerctl} next
-            bind=,XF86AudioPrev,exec,${playerctl} previous
-            bind=,XF86AudioPlay,exec,${playerctl} play-pause
-            bind=,XF86AudioStop,exec,${playerctl} stop
-            bind=ALT,XF86AudioNext,exec,${playerctld} shift
-            bind=ALT,XF86AudioPrev,exec,${playerctld} unshift
-            bind=ALT,XF86AudioPlay,exec,systemctl --user restart playerctld
-          ''
-          + ''
-            # Program bindings
-            bind=SUPER,Return,exec,${terminal}
-            bind=SUPER,e,exec,${editor}
-            bind=SUPERSHIFT,e,exec,${vanilla_emacs}
-            bind=SUPER,w,exec,${browser}
-            # bind=SUPER,l,exec,hyprlock
-            bind=SUPERSHIFT,w,exec,${brave}
-            # bind=SUPER,r,exec,${terminal-exec} "zsh -c -i 'y'"
-            bind=SUPER,r,exec,${terminal-exec} yazi
-            bind=SUPERSHIFT,N,exec,${terminal-exec} sudo nmtui
-            bind=SUPERSHIFT, R, exec,${hyprctl} reload
-            # Brightness control (only works if the system has lightd)
-            bind=,XF86MonBrightnessUp,exec,brightnessctl set 5%+
-            bind=,XF86MonBrightnessDown,exec,brightnessctl set 5%-
-            # Volume
-            bind=,XF86AudioRaiseVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ +5%
-            bind=,XF86AudioLowerVolume,exec,${pactl} set-sink-volume @DEFAULT_SINK@ -5%
-            bind=,XF86AudioMute,exec,${pactl} set-sink-mute @DEFAULT_SINK@ toggle
-            bind=SHIFT,XF86AudioMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle
-            bind=,XF86AudioMicMute,exec,${pactl} set-source-mute @DEFAULT_SOURCE@ toggle
-            # Screenshotting
-            bind=,Print,exec,${grimblast} --notify copy output
-            bind=SHIFT,Print,exec,${grimblast} --notify copy active
-            bind=CONTROL,Print,exec,${grimblast} --notify copy screen
-            bind=SUPER,Print,exec,${grimblast} --notify copy window
-            bind=ALT,Print,exec,${grimblast} --freeze --notify copy area
-            bind=SUPERSHIFT,p,exec,${grimblast} --freeze --notify copy area
-          ''
-          + lib.strings.optionalString config.programs.wofi.enable ''
-            bind=SUPER,x,exec,${wofi} -S drun -x 10 -y 10 -W 25% -H 60%
-            bind=SUPER,d,exec,${wofi} -S drun
-            bind=SUPERSHIFT,v,exec, wofi-vpn
-            bind=SUPERSHIFT,d,exec,${wofi} -S drun
-            bind=SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy
-          ''
-          + ''
-            # Passthrough mode (e.g. for VNC)
-            bind=SUPER,P,submap,passthrough
-            submap=passthrough
-            bind=SUPER,P,submap,reset
-            submap=reset
-
-            # Terminal popup with ghostty
-
-            # Special workspace with custom gaps
-            workspace = special:scratch_term, gapsout:50
-
-            # Window rules for sizing and positioning
-            windowrule = workspace special:scratch_term, center on, float on, size (monitor_w*0.9) (monitor_h*0.9), match:title ^(scratch_term)$
-
-            # Keybinds
-            bind = SUPER,T,exec,if hyprctl clients | grep scratch_term; then echo "scratch_term exists"; else ghostty --title=scratch_term; fi
-            bind = SUPER,T,togglespecialworkspace,scratch_term
-
-            # Emacs popup
-
-            workspace = special:scratch_emacs, gapsout:50
-            windowrule = workspace special:scratch_term, center on, float on, size (monitor_w*0.9) (monitor_h*0.9), match:title ^(scratch_emacs)$
-
-            # bind = SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else emacsclient -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
-            bind = SUPER,B,exec,if hyprctl clients | grep scratch_emacs; then echo "scratch_emacs respawn not needed"; else dotemacs -c --frame-parameters='(quote (name . "scratch_emacs"))'; fi
-            bind = SUPER,B,togglespecialworkspace,scratch_emacs
-
-
-            # Keybinding (adjust to your preference, e.g., SUPER+SHIFT+C)
-            bind = SUPER_SHIFT, C, exec, dotemacs-org-capture
-            # Window rules for org-capture frame
-            windowrule = float on, center on, size (monitor_w*0.9) (monitor_h*0.9), stay_focused on, match:title ^(org-capture)$
-
-          '';
-      };
-
-    # Stolen from https://github.com/alebastr/sway-systemd/commit/0fdb2c4b10beb6079acd6073c5b3014bd58d3b74
-    systemd.user.targets.hyprland-session-shutdown = {
-      Unit = {
-        Description = "Shutdown running Hyprland session";
-        DefaultDependencies = "no";
-        StopWhenUnneeded = "true";
-
-        Conflicts = [
-          "graphical-session.target"
-          "graphical-session-pre.target"
-          "hyprland-session.target"
-        ];
-        After = [
-          "graphical-session.target"
-          "graphical-session-pre.target"
-          "hyprland-session.target"
-        ];
-      };
+  systemd.user.targets.hyprland-session-shutdown = {
+    Unit = {
+      Description = "Shutdown running Hyprland session";
+      DefaultDependencies = "no";
+      StopWhenUnneeded = "true";
+      Conflicts = [
+        "graphical-session.target"
+        "graphical-session-pre.target"
+        "hyprland-session.target"
+      ];
+      After = [
+        "graphical-session.target"
+        "graphical-session-pre.target"
+        "hyprland-session.target"
+      ];
     };
   };
 }

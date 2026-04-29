@@ -1,89 +1,60 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  outputs,
-  ...
-}:
+{ config, inputs, pkgs, ... }:
 
 {
   imports = [
     ../common
-    ../features
-    ../features/cli
-    ../features/desktop
-    ../features/terminal
-    ../features/editor
+    ../features/general/impermanence.nix
+    ../features/general/ensure-secrets-repo.nix
+    ../features/general/ensure-private-config-repo.nix
+    ../features/general/ensure-config-repo.nix
+    ../features/cli/zsh.nix
+    ../features/cli/fzf.nix
+    ../features/cli/ai.nix
+    ../features/cli/media.nix
+    ../features/cli/development.nix
+    ../features/cli/k8s.nix
+    ../features/cli/leetcode.nix
+    ../features/cli/yazi.nix
+    ../features/cli/scripts
+    ../features/cli/lf
+    ../features/cli/git
+    ../features/cli/syncthing.nix
+    ../features/cli/sops.nix
+    ../features/editor/emacs
+    ../features/editor/nvim.nix
+    ../features/editor/vscode.nix
+    ../features/editor/zed.nix
+    ../features/desktop/fonts.nix
+    ../features/desktop/wayland.nix
+    ../features/desktop/waybar.nix
+    ../features/desktop/hyprland.nix
+    ../features/desktop/gammastep.nix
+    ../features/desktop/mako.nix
+    ../features/desktop/wofi.nix
+    ../features/desktop/nextcloud-client.nix
+    ../features/desktop/virtualisation.nix
+    ../features/desktop/postman.nix
+    ../features/desktop/librewolf.nix
+    ../features/desktop/gpg.nix
+    ../features/desktop/zathura.nix
+    ../features/desktop/learning.nix
+    ../features/desktop/media.nix
+    ../features/desktop/social.nix
+    ../features/desktop/productivity.nix
+    ../features/desktop/zen-browser.nix
+    ../features/terminal/alacritty.nix
+    ../features/terminal/foot.nix
+    ../features/terminal/ghostty.nix
     inputs.dotfiles-private.outputs.homeManagerModules
     "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
-  features = {
-    ensure-secrets-repo.enable = true;
-    ensure-private-config-repo.enable = true;
-    ensure-config-repo.enable = true;
-    impermanence.enable = true;
-    impermanence.directories_cache = [
-      ".local/share/docker"
-    ];
-    # podman.enable = true;
-    cli = {
-      zsh.enable = true;
-      fzf.enable = true;
-      ai.enable = true;
-      media.enable = true;
-      development.enable = true;
-      k8s.enable = true;
-      leetcode.enable = true;
-      yazi.enable = true;
-      scripts.enable = true;
-      lf.enable = true;
-      git.enable = true;
-      syncthing.enable = true;
-      # If this is not activated, I get a weird error: This is probably because something tries to access sops while it is not configured. This error should be avoided.
-      # Failed assertions:
-      # - mayrf profile: No key source configured for sops. Either set services.openssh.enable or set sops.age.keyFile or sops.gnupg.home or sops.gnupg.qubes-split-gpg.enable
-      sops.enable = true;
-    };
-    editor = {
-      nvim.enable = true;
-      emacs.enable = true;
-      vscode.enable = true;
-      zed.enable = true;
-    };
-    desktop = {
-      wayland.enable = true;
-      # email.enable = true;
-      waybar.enable = true;
-      hyprland.enable = true;
-      gammastep.enable = true;
-      mako.enable = true;
-      wofi.enable = true;
-      nextcloud-client.enable = true;
-      # opencloud-client.enable = true;
-      virtualisation.enable = true;
-      postman.enable = true;
-      librewolf.enable = true;
-      gpg.enable = true;
-      zathura.enable = true;
-      learning.enable = true;
-      media.enable = true;
-      social.enable = true;
-      productivity.enable = true;
-      zen-browser.enable = true;
-    };
-    terminal = {
-      alacritty.enable = true;
-      foot.enable = true;
-      ghostty.enable = true;
-    };
-    private = {
-      ssh.enable = true;
-      personal.enable = true;
-    };
-  };
+
+  features.impermanence.enable = true;
+  features.impermanence.directories_cache = [
+    ".local/share/docker"
+  ];
 
   wayland.windowManager.hyprland = {
     settings = {
@@ -116,9 +87,9 @@
       ];
     };
   };
+
   home.packages = with pkgs; [
     urbit
-    # Productivity
     exercism
     vimgolf
     img2pdf
@@ -127,11 +98,13 @@
     rustdesk-flutter
     anydesk
     stable.teams-for-linux
-
   ];
 
   features.impermanence.directories = [
     ".cursor"
     ".config/Cursor"
   ];
+
+  features.private.ssh.enable = true;
+  features.private.personal.enable = true;
 }

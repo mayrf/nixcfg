@@ -12,7 +12,6 @@ in {
     "d /var/lib/immich/appdata 0755 root root -"
     "d /var/lib/immich/appdata/model-cache 0755 root root -"
   ];
-  features.docker.enable = true;
   virtualisation.oci-containers = {
     containers = {
 

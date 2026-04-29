@@ -7,11 +7,16 @@ let
   };
 in
 {
+  flake.modules.homeManager.yttrium = {
+    imports = [ ../../../home/mayrf/yttrium.nix ];
+  };
+
   flake.modules.nixos.yttrium =
     { config, ... }:
     {
       imports = [
         self.modules.nixos.base
+        self.modules.nixos.common
         self.modules.nixos.impermanence
         self.modules.nixos.commonModules
         self.modules.nixos.emacs
@@ -32,6 +37,9 @@ in
       ];
       persistence.enable = true;
       persistence.user = config.preferences.user.name;
+      home-manager.users.${config.hostSpec.username}.imports = [
+        self.modules.homeManager.yttrium
+      ];
     };
 
   flake.nixosConfigurations.yttrium = inputs.nixpkgs.lib.nixosSystem {

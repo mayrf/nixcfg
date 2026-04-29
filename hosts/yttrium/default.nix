@@ -9,10 +9,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../common
-    ../common/users
-    ../features
-    ../features/desktop
     ./immich-ml-server.nix
     inputs.dotfiles-private.outputs.nixosModules
     (import ./disko.nix { device = "/dev/nvme0n1"; })

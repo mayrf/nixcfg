@@ -3,67 +3,49 @@
 {
   imports = [
     ../common
-    ../features
-    ../features/cli
-    ../features/desktop
-    ../features/terminal
-    ../features/editor
+    ../features/general/impermanence.nix
+    ../features/general/ensure-secrets-repo.nix
+    ../features/general/ensure-private-config-repo.nix
+    ../features/general/ensure-config-repo.nix
+    ../features/cli/zsh.nix
+    ../features/cli/fzf.nix
+    ../features/cli/development.nix
+    ../features/cli/k8s.nix
+    ../features/cli/scripts
+    ../features/cli/yazi.nix
+    ../features/cli/lf
+    ../features/cli/git
+    ../features/cli/sops.nix
+    ../features/cli/syncthing.nix
+    ../features/editor/nvim.nix
+    ../features/editor/emacs
+    ../features/editor/vscode.nix
+    ../features/desktop/fonts.nix
+    ../features/desktop/wayland.nix
+    ../features/desktop/waybar.nix
+    ../features/desktop/hyprland.nix
+    ../features/desktop/gammastep.nix
+    ../features/desktop/mako.nix
+    ../features/desktop/wofi.nix
+    ../features/desktop/nextcloud-client.nix
+    ../features/desktop/opencloud-client.nix
+    ../features/desktop/virtualisation.nix
+    ../features/desktop/postman.nix
+    ../features/desktop/librewolf.nix
+    ../features/desktop/gpg.nix
+    ../features/desktop/zathura.nix
+    ../features/desktop/learning.nix
+    ../features/desktop/media.nix
+    ../features/desktop/social.nix
+    ../features/desktop/productivity.nix
+    ../features/desktop/zen-browser.nix
+    ../features/terminal/alacritty.nix
+    ../features/terminal/ghostty.nix
     inputs.dotfiles-private.outputs.homeManagerModules
     "${inputs.dotfiles-private}/home/desktop-apps.nix"
   ];
 
-  features = {
-    ensure-secrets-repo.enable = true;
-    ensure-private-config-repo.enable = true;
-    ensure-config-repo.enable = true;
-    impermanence.enable = true;
-    cli = {
-      zsh.enable = true;
-      fzf.enable = true;
-      # ai.enable = true;
-      development.enable = true;
-      k8s.enable = true;
-      scripts.enable = true;
-      yazi.enable = true;
-      lf.enable = true;
-      git.enable = true;
-      # If this is not activated, I get a weird error: This is probably because something tries to access sops while it is not configured. This error should be avoided.
-      # Failed assertions:
-      # - mayrf profile: No key source configured for sops. Either set services.openssh.enable or set sops.age.keyFile or sops.gnupg.home or sops.gnupg.qubes-split-gpg.enable
-      sops.enable = true;
-      syncthing.enable = true;
-    };
-    desktop = {
-      wayland.enable = true;
-      waybar.enable = true;
-      hyprland.enable = true;
-      gammastep.enable = true;
-      mako.enable = true;
-      wofi.enable = true;
-      nextcloud-client.enable = true;
-      opencloud-client.enable = true;
-      virtualisation.enable = true;
-      postman.enable = true;
-      librewolf.enable = true;
-      gpg.enable = true;
-      zathura.enable = true;
-      learning.enable = true;
-      media.enable = true;
-      social.enable = true;
-      productivity.enable = true;
-      zen-browser.enable = true;
-    };
-    terminal = {
-      alacritty.enable = true;
-      ghostty.enable = true;
-    };
-    editor = {
-      nvim.enable = true;
-      emacs.enable = true;
-      vscode.enable = true;
-    };
-    private = { ssh.enable = true; };
-  };
+  features.impermanence.enable = true;
 
   colorscheme = inputs.nix-colors.colorschemes.woodland;
 
@@ -81,4 +63,6 @@
       ];
     };
   };
+
+  features.private.ssh.enable = true;
 }

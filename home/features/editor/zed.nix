@@ -1,33 +1,16 @@
-{ config, pkgs, lib, ... }:
-with lib;
-let cfg = config.features.editor.zed;
-in {
-  options.features.editor.zed.enable = mkEnableOption "my zed user config";
-  config = mkIf cfg.enable {
-    features.impermanence.directories = [
-      # ".config/Code"
-      ".local/share/zed"
-      ".config/zed"
-    ];
-    # programs.nix-ld.enable = true;
-    programs.zed-editor = {
-      enable = true;
-      # package = pkgs.stable.zed-editor-fhs;
-      package = pkgs.stable.zed-editor-fhs;
-      extensions = [ "nix" "toml" "rust" ];
-      userSettings = {
-        # theme = {
-        #   mode = "system";
-        #   dark = "One Dark";
-        #   light = "One Light";
-        # };
-        hour_format = "hour24";
-        vim_mode = true;
-      };
+{ config, pkgs, ... }:
+{
+  features.impermanence.directories = [
+    ".local/share/zed"
+    ".config/zed"
+  ];
+  programs.zed-editor = {
+    enable = true;
+    package = pkgs.stable.zed-editor-fhs;
+    extensions = [ "nix" "toml" "rust" ];
+    userSettings = {
+      hour_format = "hour24";
+      vim_mode = true;
     };
-    # home.packages = [
-    #   pkgs.zed-editor.fhsWithPackages
-    #   (pkgs: with pkgs; [ openssl zlib ])
-    # ];
   };
 }

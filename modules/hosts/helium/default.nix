@@ -12,11 +12,16 @@ let
   };
 in
 {
+  flake.modules.homeManager.helium = {
+    imports = [ ../../../home/mayrf/helium.nix ];
+  };
+
   flake.modules.nixos.helium =
     { config, pkgs, ... }:
     {
       imports = [
         self.modules.nixos.base
+        self.modules.nixos.common
         self.modules.nixos.impermanence
         self.modules.nixos.commonModules
         self.modules.nixos.sops
@@ -32,6 +37,9 @@ in
       ];
       persistence.enable = true;
       persistence.user = config.preferences.user.name;
+      home-manager.users.${config.hostSpec.username}.imports = [
+        self.modules.homeManager.helium
+      ];
 
       # VPN (wireguard) — configFile comes from sops secret
       sops.secrets."wireguard/x220_conf" = { };

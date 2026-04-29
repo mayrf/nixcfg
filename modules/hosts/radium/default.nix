@@ -7,11 +7,16 @@ let
   };
 in
 {
+  flake.modules.homeManager.radium = {
+    imports = [ ../../../home/mayrf/radium.nix ];
+  };
+
   flake.modules.nixos.radium =
-    { ... }:
+    { config, ... }:
     {
       imports = [
         self.modules.nixos.base
+        self.modules.nixos.common
         self.modules.nixos.impermanence
         self.modules.nixos.commonModules
         self.modules.nixos.emacs
@@ -19,6 +24,9 @@ in
         self.modules.nixos.sops
         self.modules.nixos.docker
         ../../../hosts/radium
+      ];
+      home-manager.users.${config.hostSpec.username}.imports = [
+        self.modules.homeManager.radium
       ];
     };
 
