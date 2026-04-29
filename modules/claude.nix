@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.nixosModules.claude =
+  flake.modules.nixos.claude =
     { pkgs, ... }:
     {
       nixpkgs.overlays = [ inputs.claude-code.overlays.default ];

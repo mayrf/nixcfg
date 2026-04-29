@@ -1,4 +1,9 @@
-{ pkgs, config, inputs, ... }:
+{
+  pkgs,
+  config,
+  inputs,
+  ...
+}:
 
 {
 
@@ -16,22 +21,11 @@
   ];
 
   features = {
-    flatpak.enable = true;
-    kanata.enable = true;
-    pipewire.enable = true;
-    sops.enable = true;
-    theming.enable = true;
-    printing.enable = true;
-    docker.enable = true;
-    laptop.enable = true;
-    bluetooth.enable = true;
-    impermanence.enable = true;
     private = {
       common.enable = true;
       vpn.enable = true;
     };
   };
-
 
   hostSpec = {
     isMinimal = false;
@@ -41,12 +35,5 @@
     isImpermanent = true;
   };
 
-  sops.secrets."wireguard/x220_conf" = { };
-  features.vpn = {
-    enable = true;
-    configFile = config.sops.secrets."wireguard/x220_conf".path;
-  };
-
-  system.stateVersion =
-    config.hostSpec.sysStateVersion; # Did you read the comment?
+  system.stateVersion = config.hostSpec.sysStateVersion; # Did you read the comment?
 }

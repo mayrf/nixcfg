@@ -27,18 +27,6 @@
   };
 
   features = {
-    flatpak.enable = true;
-    kanata.enable = true;
-    pipewire.enable = true;
-    sops.enable = true;
-    theming.enable = true;
-    printing.enable = true;
-    bluetooth.enable = true;
-    docker.enable = true;
-    open-webui.enable = true;
-    virtualisation.enable = true;
-    gaming.enable = true;
-    winapps.enable = true;
     private = {
       common.enable = true;
       vpn.enable = true;

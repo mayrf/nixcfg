@@ -1,0 +1,83 @@
+{ ... }:
+{
+  flake.modules.nixos.kanata =
+    { pkgs, ... }:
+    {
+      boot.kernelModules = [ "uinput" ];
+      hardware.uinput.enable = true;
+      services.udev.extraRules = ''
+        KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+      '';
+      users.groups.uinput = { };
+      systemd.services.kanata-internalKeyboard.serviceConfig = {
+        SupplementaryGroups = [
+          "input"
+          "uinput"
+        ];
+      };
+      services.kanata = {
+        enable = true;
+        package = pkgs.unstable.kanata;
+        keyboards = {
+          internalKeyboard = {
+            devices = [
+              "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+              "/dev/input/by-path/pci-0000:0f:00.3-usb-0:1.3:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:0f:00.3-usb-0:1.2:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:02:00.0-usb-0:2.3:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:0f:00.3-usb-0:3.3:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:0f:00.3-usb-0:4.3:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:02:00.0-usb-0:5.3:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.3:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:0f:00.3-usbv2-0:1.2:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:0f:00.3-usbv2-0:1.3:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:02:00.3-usbv2-0:6.2:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.2:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:02:00.0-usb-0:6.3:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:02:00.0-usbv2-0:6.2:1.0-event-kbd"
+              "/dev/input/by-path/pci-0000:02:00.0-usbv2-0:6.3:1.0-event-kbd"
+            ];
+            extraDefCfg = "process-unmapped-keys yes";
+            config = ''
+              (defsrc
+                a s d f
+                j k l ;
+                w o
+                caps
+              )
+              (defvar
+                tap-time 200
+                hold-time 200
+              )
+              (defalias
+                a-mod (tap-hold $tap-time $hold-time a lmet)
+                s-mod (tap-hold $tap-time $hold-time s lalt)
+                w-mod (tap-hold $tap-time $hold-time w ralt)
+                d-mod (tap-hold $tap-time $hold-time d lctl)
+                f-mod (tap-hold $tap-time $hold-time f lsft)
+                j-mod (tap-hold $tap-time $hold-time j rsft)
+                k-mod (tap-hold $tap-time $hold-time k rctl)
+                l-mod (tap-hold $tap-time $hold-time l ralt)
+                o-mod (tap-hold $tap-time $hold-time o lalt)
+                ;-mod (tap-hold $tap-time $hold-time ; rmet)
+                escarrow (tap-hold 200 200 esc (layer-while-held nav))
+              )
+
+              (deflayer base
+                @a-mod @s-mod @d-mod @f-mod
+                @j-mod @k-mod @l-mod @;-mod
+                @w-mod @o-mod
+                @escarrow
+              )
+              (deflayermap (nav)
+                k up
+                h left
+                j down
+                l right
+              )
+            '';
+          };
+        };
+      };
+    };
+}

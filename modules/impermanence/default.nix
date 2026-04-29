@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.nixosModules.extra_impermanence =
+  flake.modules.nixos.impermanence =
     {
       lib,
       config,

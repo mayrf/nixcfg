@@ -1,4 +1,9 @@
-{ inputs, self, ... }:
+{
+  inputs,
+  self,
+  lib,
+  ...
+}:
 {
   flake.modules.nixos.emacs =
     {
@@ -16,5 +21,19 @@
     { pkgs, ... }:
     {
       home.packages = [ pkgs.dig ];
+      programs.emacs = {
+        enable = true;
+        package = lib.mkForce (
+          (pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (epkgs: [
+            epkgs.vterm
+            epkgs.emacsql
+            epkgs.pdf-tools
+            epkgs.org
+            epkgs.treesit-grammars.with-all-grammars
+            epkgs.jinx
+          ])
+        );
+
+      };
     };
 }

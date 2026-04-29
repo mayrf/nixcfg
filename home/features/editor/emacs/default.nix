@@ -44,10 +44,10 @@ in
       package = emacs;
     };
 
-    programs.emacs = {
-      enable = true;
-      # package = emacs;
-    };
+    # programs.emacs = {
+    #   enable = true;
+    #   # package = emacs;
+    # };
 
     home.activation =
       let
