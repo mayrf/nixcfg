@@ -11,24 +11,24 @@ in
     { inputs, pkgs, ... }:
     {
       imports = [
-        ../../../home/features/general/impermanence.nix
-        ../../../home/features/general/ensure-secrets-repo.nix
-        ../../../home/features/general/ensure-private-config-repo.nix
-        ../../../home/features/general/ensure-config-repo.nix
-        ../../../home/features/cli/zsh.nix
-        ../../../home/features/cli/fzf.nix
-        ../../../home/features/cli/ai.nix
-        ../../../home/features/cli/development.nix
-        ../../../home/features/cli/k8s.nix
-        ../../../home/features/cli/lf
-        ../../../home/features/cli/git
-        ../../../home/features/cli/scripts
-        ../../../home/features/cli/sops.nix
-        ../../../home/features/cli/yazi.nix
-        ../../../home/features/cli/syncthing.nix
-        ../../../home/features/editor/emacs
-        ../../../home/features/editor/nvim.nix
-        ../../../home/features/editor/zed.nix
+        ../../_home/general/impermanence.nix
+        ../../_home/general/ensure-secrets-repo.nix
+        ../../_home/general/ensure-private-config-repo.nix
+        ../../_home/general/ensure-config-repo.nix
+        ../../_home/cli/zsh.nix
+        ../../_home/cli/fzf.nix
+        ../../_home/cli/ai.nix
+        ../../_home/cli/development.nix
+        ../../_home/cli/k8s.nix
+        ../../_home/cli/lf
+        ../../_home/cli/git
+        ../../_home/cli/scripts
+        ../../_home/cli/sops.nix
+        ../../_home/cli/yazi.nix
+        ../../_home/cli/syncthing.nix
+        ../../_home/editor/emacs
+        ../../_home/editor/nvim.nix
+        ../../_home/editor/zed.nix
         inputs.dotfiles-private.outputs.homeManagerModules
       ];
 
