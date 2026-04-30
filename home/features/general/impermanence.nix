@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hostSpec, inputs, ... }:
+{ config, pkgs, lib, host, inputs, ... }:
 with lib;
 let cfg = config.features.impermanence;
 in {
@@ -112,19 +112,19 @@ in {
 
     systemd.user.tmpfiles.rules = [
       "d  /persist/cache 0755 root root -"
-      "d  /persist/cache/home 0755 ${hostSpec.username} users -"
-      "d  /persist/cache/home/${hostSpec.username} 0755 ${hostSpec.username} users -"
+      "d  /persist/cache/home 0755 ${host.username} users -"
+      "d  /persist/cache/home/${host.username} 0755 ${host.username} users -"
     ];
 
-    # home.persistence."${hostSpec.persistDir}/cache/home/${hostSpec.username}" =
-    home.persistence."${hostSpec.persistDir}/cache" = {
+    # home.persistence."${host.persistDir}/cache/home/${host.username}" =
+    home.persistence."${host.persistDir}/cache" = {
       # hideMounts = true;
       # allowOther = true;
       directories = [ ] ++ cfg.directories_cache;
     };
 
-    # home.persistence."${hostSpec.persistDir}/system/home/${hostSpec.username}" =
-    home.persistence."${hostSpec.persistDir}/system" = {
+    # home.persistence."${host.persistDir}/system/home/${host.username}" =
+    home.persistence."${host.persistDir}/system" = {
       # allowOther = true;
       directories = [ ] ++ cfg.directories;
       files = [ ".screenrc" ] ++ cfg.files;

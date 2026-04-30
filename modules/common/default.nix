@@ -3,7 +3,7 @@
   flake.modules.nixos.common =
     { config, pkgs, outputs, lib, ... }:
     let
-      username = config.hostSpec.username;
+      username = config.host.username;
       ifTheyExist = groups:
         builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
       pubKeys = lib.filesystem.listFilesRecursive ../common/keys;
@@ -12,7 +12,7 @@
     {
       imports = [
         inputs.home-manager.nixosModules.home-manager
-        ../host-spec.nix
+        ../_host-spec.nix
       ];
 
       # nixos-cli
@@ -43,7 +43,6 @@
         };
       };
       networking.networkmanager.enable = true;
-      networking.hostName = config.hostSpec.hostName;
       time.timeZone = "Europe/Berlin";
       i18n.defaultLocale = "en_US.UTF-8";
       i18n.extraLocales = [ "de_DE.UTF-8/UTF-8" ];
@@ -165,14 +164,14 @@
           ])
         ];
       }
-      // lib.optionalAttrs (config.hostSpec.isMinimal) {
+      // lib.optionalAttrs (config.host.isMinimal) {
         password = "nixos";
       }
       // lib.optionalAttrs useSops {
         hashedPasswordFile =
           config.sops.secrets."${username}/hashedPassword".path;
       }
-      // lib.optionalAttrs (!config.hostSpec.isMinimal && !useSops) {
+      // lib.optionalAttrs (!config.host.isMinimal && !useSops) {
         initialPassword = "changeme";
       };
 
@@ -202,12 +201,16 @@
         extraSpecialArgs = {
           inherit inputs outputs;
           inherit (inputs.dotfiles-private) private;
-          hostSpec = config.hostSpec;
+          host = config.host // { hostName = config.networking.hostName; };
         };
       };
       home-manager.users.root =
-        lib.optionalAttrs (!config.hostSpec.isMinimal) {
-          home.stateVersion = config.hostSpec.sysStateVersion;
+        lib.optionalAttrs (!config.host.isMinimal) {
+          home.stateVersion = config.system.stateVersion;
         };
+      home-manager.users.${username} = {
+        home.stateVersion = config.system.stateVersion;
+        imports = [ ./_home.nix ];
+      };
     };
 }

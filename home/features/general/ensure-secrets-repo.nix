@@ -1,8 +1,8 @@
-{ pkgs, config, hostSpec, ... }:
+{ pkgs, config, host, ... }:
 let
   path = "${config.xdg.configHome}/nix-secrets";
   source = "git@codeberg.org:mayrf/nix-secrets.git";
-  user = hostSpec.username;
+  user = host.username;
 in {
   features.impermanence.directories = [ ".config/nix-secrets" ];
   systemd.user.tmpfiles.rules =

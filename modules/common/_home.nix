@@ -1,10 +1,9 @@
-{ inputs, lib, pkgs, config, outputs, hostSpec, ... }:
+{ inputs, lib, pkgs, config, outputs, host, ... }:
 let inherit (inputs.nix-colors) colorSchemes;
 in {
   imports = [
     inputs.nix-colors.homeManagerModule
-    ../../modules/host-spec.nix
-    ./mime-apps.nix
+    ./_mime-apps.nix
   ];
 
   services = {
@@ -14,18 +13,15 @@ in {
     };
   };
 
-
   programs.ssh.includes = [ "~/.ssh/config.local" ];
 
   home = {
-    username = hostSpec.username;
-    homeDirectory = lib.mkDefault "/home/${hostSpec.username}";
-    stateVersion = hostSpec.sysStateVersion; # Did you read the comment?
+    username = host.username;
+    homeDirectory = lib.mkDefault "/home/${host.username}";
     sessionPath = [ "$HOME/.local/bin" ];
   };
 
   features.impermanence.directories = [
-
     ".ssh"
     ".gnupg"
     ".local/share/keyrings"
@@ -54,14 +50,10 @@ in {
     registry = {
       "mytemplates" = {
         from = {
-          # type = "path";
-          # path = "~/.config/nixcfg";
-          # id = "nixpkgs";
           id = "mytemplates";
           type = "indirect";
         };
         to = {
-          # path = "/home/mayrf/.config/nixcfg";
           path = "${config.xdg.configHome}/nixcfg";
           type = "path";
         };
@@ -83,5 +75,4 @@ in {
     dataHome = "${config.home.homeDirectory}/.local/share";
     stateHome = "${config.home.homeDirectory}/.local/state";
   };
-
 }

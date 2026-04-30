@@ -4,9 +4,9 @@
     { config, lib, ... }:
     let
       secretsPath = builtins.toString inputs.nix-secrets;
-      user = config.hostSpec.username;
+      user = config.host.username;
       ageKey =
-        if config.hostSpec.isImpermanent then
+        if config.host.isImpermanent then
           "/persist/system/home/${user}/.ssh/id_ed25519"
         else
           "/home/${user}/.ssh/id_ed25519";

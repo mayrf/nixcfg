@@ -1,8 +1,8 @@
-{ pkgs, config, hostSpec, ... }:
+{ pkgs, config, host, ... }:
 let
   path = "${config.xdg.configHome}/dotfiles-private";
   source = "git@codeberg.org:mayrf/dotfiles-private.git";
-  user = hostSpec.username;
+  user = host.username;
 in {
   features.impermanence.directories = [ ".config/dotfiles-private" ];
   systemd.user.tmpfiles.rules =

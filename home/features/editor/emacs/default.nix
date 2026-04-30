@@ -3,7 +3,7 @@
   pkgs,
   lib,
   private,
-  hostSpec,
+  host,
   ...
 }:
 let
@@ -36,7 +36,7 @@ in
 
   home.activation =
     let
-      source = "${hostSpec.flakeDir}/home/features/editor/emacs/vanilla";
+      source = "${host.flakeDir}/home/features/editor/emacs/vanilla";
       target = "${config.xdg.configHome}/emacs";
     in
     {
@@ -70,7 +70,7 @@ in
         fi
 
         if [ ! -e "$DOOM" ]; then
-          ln -s ${hostSpec.flakeDir}/home/features/editor/emacs/doom $DOOM
+          ln -s ${host.flakeDir}/home/features/editor/emacs/doom $DOOM
         fi
       '';
     };

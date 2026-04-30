@@ -1,4 +1,4 @@
-{ config, lib, inputs, pkgs, hostSpec, ... }:
+{ config, lib, inputs, pkgs, host, ... }:
 {
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
@@ -179,7 +179,7 @@
           gtk-launch = "${pkgs.gtk3}/bin/gtk-launch";
           xdg-mime = "${pkgs.xdg-utils}/bin/xdg-mime";
           terminal =
-            if hostSpec.hostName == "helium" then
+            if host.hostName == "helium" then
               "${pkgs.kitty}/bin/kitty"
             else
               "${pkgs.unstable.ghostty}/bin/ghostty";

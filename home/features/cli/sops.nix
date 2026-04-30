@@ -1,10 +1,10 @@
-{ config, inputs, hostSpec, ... }:
+{ config, inputs, host, ... }:
 let
   secretsPath = builtins.toString inputs.nix-secrets;
-  ageKey = if hostSpec.isImpermanent then
-    "/persist/system/home/${hostSpec.username}/.ssh/id_ed25519"
+  ageKey = if host.isImpermanent then
+    "/persist/system/home/${host.username}/.ssh/id_ed25519"
   else
-    "/home/${hostSpec.username}/.ssh/id_ed25519";
+    "/home/${host.username}/.ssh/id_ed25519";
 in {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
   features.impermanence.directories = [ ".config/sops" ];

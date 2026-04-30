@@ -1,4 +1,4 @@
-{ config, pkgs, hostSpec, ... }:
+{ config, pkgs, host, ... }:
 {
   home.packages = [
     pkgs.stable.protonmail-bridge

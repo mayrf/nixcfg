@@ -7,7 +7,7 @@
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ./hardware-configuration-additional.nix
+    ./_hardware-configuration-additional.nix
   ];
 
   boot.initrd.availableKernelModules =

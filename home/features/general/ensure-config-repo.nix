@@ -1,8 +1,8 @@
-{ pkgs, config, hostSpec, ... }:
+{ pkgs, config, host, ... }:
 let
   path = "${config.xdg.configHome}/nixcfg";
   source = "git@github.com:mayrf/nixcfg.git";
-  user = hostSpec.username;
+  user = host.username;
 in {
   features.impermanence.directories = [ ".config/nixcfg" ];
   systemd.user.tmpfiles.rules =

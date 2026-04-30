@@ -1,12 +1,12 @@
-{ config, hostSpec, pkgs, ... }:
+{ config, host, pkgs, ... }:
 {
   features.impermanence.files = [ ".zsh_history" ];
   features.impermanence.directories = [ ".local/share/direnv" ".config/zsh" ];
 
   home.sessionVariables = {
     FONTS = "$HOME/.local/share/fonts";
-    NH_FLAKE = "${hostSpec.flakeDir}";
-    FLAKE = "${hostSpec.flakeDir}";
+    NH_FLAKE = "${host.flakeDir}";
+    FLAKE = "${host.flakeDir}";
   };
   home.packages = with pkgs; [ nh nix-output-monitor nvd ];
   programs.starship = {
@@ -65,7 +65,7 @@
   };
   home.shellAliases = {
     vimtutor = "nvim -u NORC -c 'Tutor'";
-    rbs = "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName}";
+    rbs = "sudo nixos-rebuild switch --flake $FLAKE#${host.hostName}";
     generate-envrc-flake =
       ''if [ ! -f .envrc ]; then echo "use flake" > .envrc; fi'';
     generate-python-flake =
@@ -73,7 +73,7 @@
     ls = "eza";
     ps = "procs";
     rbs-no-c =
-      "sudo nixos-rebuild switch --flake $FLAKE#${hostSpec.hostName} --option build-use-substitutes false";
+      "sudo nixos-rebuild switch --flake $FLAKE#${host.hostName} --option build-use-substitutes false";
     nfu = "nix flake update --flake $FLAKE --commit-lock-file";
     optimize = ''
       nix-env --list-generations

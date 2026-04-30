@@ -71,7 +71,7 @@
             ]
             ++ cfg.files;
 
-            users.${config.hostSpec.username} = {
+            users.${config.host.username} = {
               directories = [
                 ".local/share/Steam"
                 ".steam"
@@ -112,7 +112,7 @@
 
         systemd.tmpfiles.rules = [
           "d  /persist/cache 0755 root root -"
-          "d  /persist/cache/home 0755 ${config.hostSpec.username} users -"
+          "d  /persist/cache/home 0755 ${config.host.username} users -"
         ];
       };
     };

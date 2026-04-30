@@ -3,18 +3,18 @@
   imports = lib.flatten [
     (map myLib.relativeToRoot [
       "modules/host-spec.nix"
-      "hosts/common/users/"
-      "hosts/features/impermanence.nix"
     ])
   ];
 
-  hostSpec = {
+  host = {
     isMinimal = lib.mkForce true;
     username = "mayrf";
     persistDir = "/persist";
     isImpermanent = true;
     # isImpermanent = false;
   };
+  networking.hostName = "installer";
+  system.stateVersion = "26.05";
 
   features.impermanence.enable = true;
 
@@ -48,12 +48,12 @@
   programs.ssh = {
     extraConfig = ''
       Host *
-        IdentityFile /persist/system/home/${config.hostSpec.username}/.ssh/id_ed25519
+        IdentityFile /persist/system/home/${config.host.username}/.ssh/id_ed25519
         IdentitiesOnly yes
     '';
   };
 
-  system.stateVersion = config.hostSpec.sysStateVersion;
+  system.stateVersion = "26.05";
 } // (if device != null then {
   fileSystems."/boot".options =
     [ "umask=0077" ]; # Removes permissions and security warnings.
