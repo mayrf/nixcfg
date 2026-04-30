@@ -1,5 +1,123 @@
 { inputs, self, ... }:
 {
+  flake.modules.homeManager.commonHome =
+    { inputs, lib, pkgs, config, outputs, host, ... }:
+    let inherit (inputs.nix-colors) colorSchemes;
+    in
+    {
+      imports = [
+        inputs.nix-colors.homeManagerModule
+      ];
+
+      services = {
+        gpg-agent = {
+          enable = true;
+          pinentry.package = pkgs.pinentry-qt;
+        };
+      };
+
+      programs.ssh.includes = [ "~/.ssh/config.local" ];
+
+      home = {
+        username = host.username;
+        homeDirectory = lib.mkDefault "/home/${host.username}";
+        sessionPath = [ "$HOME/.local/bin" ];
+      };
+
+      features.impermanence.directories = [
+        ".ssh"
+        ".gnupg"
+        ".local/share/keyrings"
+        "Downloads"
+        "Documents"
+        "playground"
+        "code"
+        "cloud"
+        ".local/share/fonts"
+      ];
+
+      home.file = {
+        ".local/bin" = {
+          source = ../common/scripts;
+          recursive = true;
+        };
+      };
+
+      nix = {
+        settings = {
+          warn-dirty = false;
+          keep-outputs = true;
+          experimental-features = [ "nix-command" "flakes" ];
+        };
+
+        registry = {
+          "mytemplates" = {
+            from = {
+              id = "mytemplates";
+              type = "indirect";
+            };
+            to = {
+              path = "${config.xdg.configHome}/nixcfg";
+              type = "path";
+            };
+          };
+        };
+      };
+      systemd.user.startServices = "sd-switch";
+
+      programs = { home-manager.enable = true; };
+
+      home.file.".colorscheme".text = config.colorscheme.slug;
+
+      fonts.fontconfig.enable = true;
+
+      xdg = {
+        enable = true;
+        configHome = "${config.home.homeDirectory}/.config";
+        cacheHome = "${config.home.homeDirectory}/.cache";
+        dataHome = "${config.home.homeDirectory}/.local/share";
+        stateHome = "${config.home.homeDirectory}/.local/state";
+      };
+
+      xdg.mimeApps.defaultApplications = {
+        "application/pdf" = "org.pwmt.zathura.desktop";
+        "video/x-msvideo" = "vlc.desktop";
+        "x-scheme-handler/postman" = "Postman.desktop";
+        "x-scheme-handler/msteams" = "teams.desktop";
+        "x-scheme-handler/http" = "librewolf.desktop";
+        "x-scheme-handler/https" = "librewolf.desktop";
+        "x-scheme-handler/mailto" = "userapp-Thunderbird-08TXD2.desktop";
+        "message/rfc822" = "userapp-Thunderbird-08TXD2.desktop";
+        "x-scheme-handler/mid" = "userapp-Thunderbird-08TXD2.desktop";
+        "application/vnd.oasis.opendocument.text" = "writer.desktop";
+        "application/vnd.oasis.opendocument.spreadsheet" = "calc.desktop";
+        "text/csv" = "calc.desktop";
+        "application/vnd.oasis.opendocument.base" = "base.desktop";
+        "application/msword" = "writer.desktop";
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
+          "writer.desktop";
+        "image/jpeg" = "sxiv.desktop";
+        "image/png" = "sxiv.desktop";
+        "image/gif" = "sxiv.desktop";
+        "text/plain" = "emacsclient.desktop";
+        "text/markdown" = "emacsclient.desktop";
+        "text/x-markdown" = "emacsclient.desktop";
+        "text/yaml" = "emacsclient.desktop";
+        "text/x-yaml" = "emacsclient.desktop";
+        "application/x-yaml" = "emacsclient.desktop";
+        "text/x-config" = "emacsclient.desktop";
+        "text/x-ini" = "emacsclient.desktop";
+        "text/x-python" = "emacsclient.desktop";
+        "text/x-shellscript" = "emacsclient.desktop";
+        "text/x-script" = "emacsclient.desktop";
+        "application/x-shellscript" = "emacsclient.desktop";
+        "application/json" = "emacsclient.desktop";
+        "text/json" = "emacsclient.desktop";
+        "text/xml" = "emacsclient.desktop";
+        "application/xml" = "emacsclient.desktop";
+      };
+    };
+
   flake.modules.nixos.common =
     { config, pkgs, outputs, lib, ... }:
     let
@@ -12,7 +130,13 @@
     {
       imports = [
         inputs.home-manager.nixosModules.home-manager
-        ../_host-spec.nix
+        inputs.sops-nix.nixosModules.sops
+        inputs.nixos-wsl.nixosModules.wsl
+        inputs.stylix.nixosModules.stylix
+        inputs.disko.nixosModules.default
+        inputs.impermanence.nixosModules.impermanence
+        inputs.nixos-cli.nixosModules.nixos-cli
+        self.modules.nixos.hostSpec
       ];
 
       # nixos-cli
@@ -210,7 +334,7 @@
         };
       home-manager.users.${username} = {
         home.stateVersion = config.system.stateVersion;
-        imports = [ ./_home.nix ];
+        imports = [ self.modules.homeManager.commonHome ];
       };
     };
 }

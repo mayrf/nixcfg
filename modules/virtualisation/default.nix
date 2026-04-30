@@ -1,5 +1,19 @@
 { ... }:
 {
+  flake.modules.homeManager.virtualisation =
+    { pkgs, ... }:
+    {
+      home.packages = [
+        pkgs.distrobox
+      ];
+      dconf.settings = {
+        "org/virt-manager/virt-manager/connections" = {
+          autoconnect = [ "qemu:///system" ];
+          uris = [ "qemu:///system" ];
+        };
+      };
+    };
+
   flake.modules.nixos.virtualisation =
     { ... }:
     {

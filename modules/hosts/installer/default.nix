@@ -7,7 +7,7 @@
     { config, lib, pkgs, ... }:
     {
       imports = [
-        ../../_host-spec.nix
+        self.modules.nixos.hostSpec
       ];
 
       host = {

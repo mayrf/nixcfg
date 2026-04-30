@@ -11,48 +11,48 @@ in
     { config, inputs, pkgs, ... }:
     {
       imports = [
-        ../../_home/general/impermanence.nix
-        ../../_home/general/ensure-secrets-repo.nix
-        ../../_home/general/ensure-private-config-repo.nix
-        ../../_home/general/ensure-config-repo.nix
-        ../../_home/cli/zsh.nix
-        ../../_home/cli/fzf.nix
-        ../../_home/cli/ai.nix
-        ../../_home/cli/media.nix
-        ../../_home/cli/development.nix
-        ../../_home/cli/k8s.nix
-        ../../_home/cli/leetcode.nix
-        ../../_home/cli/yazi.nix
-        ../../_home/cli/scripts
-        ../../_home/cli/lf
-        ../../_home/cli/git
-        ../../_home/cli/syncthing.nix
-        ../../_home/cli/sops.nix
-        ../../_home/editor/emacs
-        ../../_home/editor/nvim.nix
-        ../../_home/editor/vscode.nix
-        ../../_home/editor/zed.nix
-        ../../_home/desktop/fonts.nix
-        ../../_home/desktop/wayland.nix
-        ../../_home/desktop/waybar.nix
-        ../../_home/desktop/hyprland.nix
-        ../../_home/desktop/gammastep.nix
-        ../../_home/desktop/mako.nix
-        ../../_home/desktop/wofi.nix
-        ../../_home/desktop/nextcloud-client.nix
-        ../../_home/desktop/virtualisation.nix
-        ../../_home/desktop/postman.nix
-        ../../_home/desktop/librewolf.nix
-        ../../_home/desktop/gpg.nix
-        ../../_home/desktop/zathura.nix
-        ../../_home/desktop/learning.nix
-        ../../_home/desktop/media.nix
-        ../../_home/desktop/social.nix
-        ../../_home/desktop/productivity.nix
-        ../../_home/desktop/zen-browser.nix
-        ../../_home/terminal/alacritty.nix
-        ../../_home/terminal/foot.nix
-        ../../_home/terminal/ghostty.nix
+        inputs.self.modules.homeManager.hmImpermanence
+        inputs.self.modules.homeManager.ensureSecretsRepo
+        inputs.self.modules.homeManager.ensurePrivateConfigRepo
+        inputs.self.modules.homeManager.ensureConfigRepo
+        inputs.self.modules.homeManager.zsh
+        inputs.self.modules.homeManager.fzf
+        inputs.self.modules.homeManager.ai
+        inputs.self.modules.homeManager.cliMedia
+        inputs.self.modules.homeManager.development
+        inputs.self.modules.homeManager.k8s
+        inputs.self.modules.homeManager.leetcode
+        inputs.self.modules.homeManager.yazi
+        inputs.self.modules.homeManager.scripts
+        inputs.self.modules.homeManager.lf
+        inputs.self.modules.homeManager.git
+        inputs.self.modules.homeManager.syncthing
+        inputs.self.modules.homeManager.hmSops
+        inputs.self.modules.homeManager.emacs
+        inputs.self.modules.homeManager.nvim
+        inputs.self.modules.homeManager.vscode
+        inputs.self.modules.homeManager.zed
+        inputs.self.modules.homeManager.fonts
+        inputs.self.modules.homeManager.wayland
+        inputs.self.modules.homeManager.waybar
+        inputs.self.modules.homeManager.hyprland
+        inputs.self.modules.homeManager.gammastep
+        inputs.self.modules.homeManager.mako
+        inputs.self.modules.homeManager.wofi
+        inputs.self.modules.homeManager.nextcloudClient
+        inputs.self.modules.homeManager.virtualisation
+        inputs.self.modules.homeManager.postman
+        inputs.self.modules.homeManager.librewolf
+        inputs.self.modules.homeManager.gpg
+        inputs.self.modules.homeManager.zathura
+        inputs.self.modules.homeManager.learning
+        inputs.self.modules.homeManager.desktopMedia
+        inputs.self.modules.homeManager.social
+        inputs.self.modules.homeManager.productivity
+        inputs.self.modules.homeManager.zenBrowser
+        inputs.self.modules.homeManager.alacritty
+        inputs.self.modules.homeManager.foot
+        inputs.self.modules.homeManager.ghostty
         inputs.dotfiles-private.outputs.homeManagerModules
         "${inputs.dotfiles-private}/home/desktop-apps.nix"
       ];
@@ -121,7 +121,6 @@ in
         self.modules.nixos.base
         self.modules.nixos.common
         self.modules.nixos.impermanence
-        self.modules.nixos.commonModules
         self.modules.nixos.emacs
         self.modules.nixos.claude
         self.modules.nixos.sops
