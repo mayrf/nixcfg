@@ -1,4 +1,4 @@
-{ buildGoModule, fetchFromGitHub, lib, pkgs }:
+{ buildGoModule, fetchFromGitHub, lib }:
 
 buildGoModule (finalAttrs: {
   pname = "argocd-lovely-plugin";
