@@ -15,7 +15,7 @@
       environment.systemPackages = with pkgs; [
         mangohud
         protonup-ng
-        lutris
+        # lutris
         heroic
         wine
       ];

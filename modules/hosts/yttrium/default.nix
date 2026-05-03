@@ -8,7 +8,12 @@ let
 in
 {
   flake.modules.homeManager.yttrium =
-    { config, inputs, pkgs, ... }:
+    {
+      config,
+      inputs,
+      pkgs,
+      ...
+    }:
     {
       imports = [
         inputs.self.modules.homeManager.hmImpermanence
@@ -108,6 +113,7 @@ in
         rustdesk-flutter
         anydesk
         stable.teams-for-linux
+        zoom-us
       ];
 
       features.private.ssh.enable = true;
@@ -159,8 +165,14 @@ in
       persistence.user = config.preferences.user.name;
       persistence.directories = [
         "/var/lib/private/open-webui"
-        { directory = "/var/lib/private"; mode = "u=rwx,g=,o="; }
-        { directory = "/var/lib/private/ollama"; mode = "0700"; }
+        {
+          directory = "/var/lib/private";
+          mode = "u=rwx,g=,o=";
+        }
+        {
+          directory = "/var/lib/private/ollama";
+          mode = "0700";
+        }
       ];
 
       services.ollama = {
