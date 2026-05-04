@@ -4,7 +4,7 @@
     { config, ... }:
     {
       home.sessionPath = [
-        "$HOME/.config/nixcfg/home/features/cli/scripts/bin"
+        "$HOME/.config/nixcfg/modules/scripts/bin"
       ];
     };
 }

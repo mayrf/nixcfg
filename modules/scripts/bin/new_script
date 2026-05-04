@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Configuration
-SCRIPTS_DIR="$HOME/.config/nixcfg/home/features/cli/scripts/bin"
+SCRIPTS_DIR="$HOME/.config/nixcfg/modules/scripts/bin"
 
 # Colors for output
 RED='\033[0;31m'
