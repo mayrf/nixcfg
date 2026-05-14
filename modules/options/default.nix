@@ -71,5 +71,16 @@
           default = "mayrf";
         };
       };
+
+      options.work = {
+        gitForgeHost = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+        };
+        gitUser = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+        };
+      };
     };
 }

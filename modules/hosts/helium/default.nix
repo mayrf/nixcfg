@@ -3,7 +3,6 @@ let
   specialArgs = {
     outputs = inputs.self.outputs;
     inherit inputs;
-    inherit (inputs.dotfiles-private) private;
   };
 in
 {
@@ -49,8 +48,6 @@ in
         inputs.self.modules.homeManager.zenBrowser
         inputs.self.modules.homeManager.alacritty
         inputs.self.modules.homeManager.ghostty
-        inputs.dotfiles-private.outputs.homeManagerModules
-        "${inputs.dotfiles-private}/home/desktop-apps.nix"
       ];
 
       colorscheme = inputs.nix-colors.colorschemes.woodland;
@@ -70,7 +67,6 @@ in
         ];
       };
 
-      features.private.ssh.enable = true;
     };
 
   flake.modules.nixos.helium =
@@ -91,7 +87,7 @@ in
         self.modules.nixos.theming
         ./_hardware-configuration.nix
         ./_distributed-builds.nix
-        inputs.dotfiles-private.outputs.nixosModules
+        inputs.dotfiles-private.modules.nixos.helium
         inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x220
         (import ./_disko.nix { device = "/dev/sda"; })
       ];
@@ -103,11 +99,6 @@ in
       };
       networking.hostName = "helium";
       system.stateVersion = "26.05"; # Did you read the comment?
-
-      features.private = {
-        common.enable = true;
-        vpn.enable = true;
-      };
 
       persistence.enable = true;
       persistence.user = config.preferences.user.name;

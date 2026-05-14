@@ -17,6 +17,7 @@
   flake.modules.homeManager.emacs =
     {
       config,
+      osConfig,
       pkgs,
       lib,
       private,
@@ -44,7 +45,7 @@
         ".config/dotemacs"
       ];
 
-      stylix.targets.emacs.enable = false;
+      # stylix.targets.emacs.enable = false;
       imports = [
         inputs.dotemacs.homeConfigurations.x86_64-linux.dotemacs
       ];
@@ -167,16 +168,16 @@
       sops.secrets."emacs/authinfo" = { };
 
       xdg.configFile."emacs/.env".text = ''
-        WORK_GITFORGE_HOST=${private.work.gitForgeHost}
+        WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
         EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
       '';
       xdg.configFile."dotemacs/.env".text = ''
-        WORK_GITFORGE_HOST=${private.work.gitForgeHost}
+        WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
         EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
       '';
       programs.git.settings = {
-        gitlab.${private.work.gitForgeHost}.user = "${private.work.gitUser}";
-        gitlab."${private.work.gitForgeHost}/api/v4".user = "${private.work.gitUser}";
+        gitlab.${osConfig.work.gitForgeHost}.user = "${osConfig.work.gitUser}";
+        gitlab."${osConfig.work.gitForgeHost}/api/v4".user = "${osConfig.work.gitUser}";
       };
 
       home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];

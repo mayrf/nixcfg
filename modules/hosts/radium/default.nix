@@ -3,7 +3,6 @@ let
   specialArgs = {
     outputs = inputs.self.outputs;
     inherit inputs;
-    inherit (inputs.dotfiles-private) private;
   };
 in
 {
@@ -29,7 +28,6 @@ in
         inputs.self.modules.homeManager.emacs
         inputs.self.modules.homeManager.nvim
         inputs.self.modules.homeManager.zed
-        inputs.dotfiles-private.outputs.homeManagerModules
       ];
 
       colorscheme = inputs.nix-colors.colorschemes.woodland;
@@ -41,7 +39,6 @@ in
         camunda-modeler
       ];
 
-      features.private.work.enable = true;
     };
 
   flake.modules.nixos.radium =
@@ -56,18 +53,13 @@ in
         self.modules.nixos.sops
         self.modules.nixos.docker
         ./_hardware-configuration.nix
-        inputs.dotfiles-private.outputs.nixosModules
+        inputs.dotfiles-private.modules.nixos.radium
       ];
 
       host = {
         username = "mayrf";
       };
       networking.hostName = "radium";
-
-      features.private = {
-        workProxies.enable = true;
-        work.enable = true;
-      };
 
       programs.nix-ld.enable = true;
       programs.nix-ld.libraries = with pkgs; [

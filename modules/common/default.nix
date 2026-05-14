@@ -1,8 +1,17 @@
 { inputs, self, ... }:
 {
   flake.modules.homeManager.commonHome =
-    { inputs, lib, pkgs, config, outputs, host, ... }:
-    let inherit (inputs.nix-colors) colorSchemes;
+    {
+      inputs,
+      lib,
+      pkgs,
+      config,
+      outputs,
+      host,
+      ...
+    }:
+    let
+      inherit (inputs.nix-colors) colorSchemes;
     in
     {
       imports = [
@@ -47,7 +56,10 @@
         settings = {
           warn-dirty = false;
           keep-outputs = true;
-          experimental-features = [ "nix-command" "flakes" ];
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
         };
 
         registry = {
@@ -65,7 +77,9 @@
       };
       systemd.user.startServices = "sd-switch";
 
-      programs = { home-manager.enable = true; };
+      programs = {
+        home-manager.enable = true;
+      };
 
       home.file.".colorscheme".text = config.colorscheme.slug;
 
@@ -94,8 +108,7 @@
         "text/csv" = "calc.desktop";
         "application/vnd.oasis.opendocument.base" = "base.desktop";
         "application/msword" = "writer.desktop";
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
-          "writer.desktop";
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "writer.desktop";
         "image/jpeg" = "sxiv.desktop";
         "image/png" = "sxiv.desktop";
         "image/gif" = "sxiv.desktop";
@@ -119,11 +132,16 @@
     };
 
   flake.modules.nixos.common =
-    { config, pkgs, outputs, lib, ... }:
+    {
+      config,
+      pkgs,
+      outputs,
+      lib,
+      ...
+    }:
     let
       username = config.host.username;
-      ifTheyExist = groups:
-        builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+      ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
       pubKeys = lib.filesystem.listFilesRecursive ../common/keys;
       useSops = config.sops.secrets ? "${username}/hashedPassword";
     in
@@ -149,9 +167,15 @@
       nix = {
         nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
         settings = {
-          experimental-features = [ "nix-command" "flakes" ];
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
           keep-outputs = true;
-          trusted-users = [ "root" "${username}" ];
+          trusted-users = [
+            "root"
+            "${username}"
+          ];
           substituters = [
             "https://watersucks.cachix.org"
             "https://hyprland.cachix.org"
@@ -277,14 +301,25 @@
         description = "${username}";
         shell = pkgs.zsh;
         packages = [ pkgs.home-manager ];
-        openssh.authorizedKeys.keys =
-          lib.lists.forEach pubKeys (key: builtins.readFile key);
+        openssh.authorizedKeys.keys = lib.lists.forEach pubKeys (key: builtins.readFile key);
         extraGroups = lib.flatten [
           "wheel"
           (ifTheyExist [
-            "flatpak" "docker" "input" "kvm" "qemu-libvirtd" "plugdev"
-            "audio" "video" "git" "networkmanager" "network"
-            "scanner" "lp" "libvirtd" "deluge"
+            "flatpak"
+            "docker"
+            "input"
+            "kvm"
+            "qemu-libvirtd"
+            "plugdev"
+            "audio"
+            "video"
+            "git"
+            "networkmanager"
+            "network"
+            "scanner"
+            "lp"
+            "libvirtd"
+            "deluge"
           ])
         ];
       }
@@ -292,8 +327,7 @@
         password = "nixos";
       }
       // lib.optionalAttrs useSops {
-        hashedPasswordFile =
-          config.sops.secrets."${username}/hashedPassword".path;
+        hashedPasswordFile = config.sops.secrets."${username}/hashedPassword".path;
       }
       // lib.optionalAttrs (!config.host.isMinimal && !useSops) {
         initialPassword = "changeme";
@@ -311,11 +345,9 @@
 
       # Root user
       users.users.root = {
-        hashedPasswordFile =
-          config.users.users.${username}.hashedPasswordFile;
+        hashedPasswordFile = config.users.users.${username}.hashedPasswordFile;
         password = lib.mkForce config.users.users.${username}.password;
-        openssh.authorizedKeys.keys =
-          config.users.users.${username}.openssh.authorizedKeys.keys;
+        openssh.authorizedKeys.keys = config.users.users.${username}.openssh.authorizedKeys.keys;
       };
 
       # Home Manager wiring (common config for all users)
@@ -324,14 +356,14 @@
         useUserPackages = true;
         extraSpecialArgs = {
           inherit inputs outputs;
-          inherit (inputs.dotfiles-private) private;
-          host = config.host // { hostName = config.networking.hostName; };
+          host = config.host // {
+            hostName = config.networking.hostName;
+          };
         };
       };
-      home-manager.users.root =
-        lib.optionalAttrs (!config.host.isMinimal) {
-          home.stateVersion = config.system.stateVersion;
-        };
+      home-manager.users.root = lib.optionalAttrs (!config.host.isMinimal) {
+        home.stateVersion = config.system.stateVersion;
+      };
       home-manager.users.${username} = {
         home.stateVersion = config.system.stateVersion;
         imports = [ self.modules.homeManager.commonHome ];

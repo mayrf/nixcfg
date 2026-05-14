@@ -3,7 +3,6 @@ let
   specialArgs = {
     outputs = inputs.self.outputs;
     inherit inputs;
-    inherit (inputs.dotfiles-private) private;
   };
 in
 {
@@ -58,8 +57,6 @@ in
         inputs.self.modules.homeManager.alacritty
         inputs.self.modules.homeManager.foot
         inputs.self.modules.homeManager.ghostty
-        inputs.dotfiles-private.outputs.homeManagerModules
-        "${inputs.dotfiles-private}/home/desktop-apps.nix"
       ];
 
       colorscheme = inputs.nix-colors.colorschemes.woodland;
@@ -116,8 +113,6 @@ in
         zoom-us
       ];
 
-      features.private.ssh.enable = true;
-      features.private.personal.enable = true;
     };
 
   flake.modules.nixos.yttrium =
@@ -143,7 +138,7 @@ in
         self.modules.nixos.winapps
         ./_hardware-configuration.nix
         ./_immich-ml-server.nix
-        inputs.dotfiles-private.outputs.nixosModules
+        inputs.dotfiles-private.modules.nixos.yttrium
         (import ./_disko.nix { device = "/dev/nvme0n1"; })
       ];
 
@@ -154,12 +149,6 @@ in
       };
       networking.hostName = "yttrium";
       system.stateVersion = "26.05"; # Did you read the comment?
-
-      features.private = {
-        common.enable = true;
-        vpn.enable = true;
-        mount-data.enable = true;
-      };
 
       persistence.enable = true;
       persistence.user = config.preferences.user.name;
