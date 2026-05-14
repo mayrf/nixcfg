@@ -15,7 +15,6 @@ in
     }:
     {
       imports = [
-        inputs.self.modules.homeManager.hmImpermanence
         inputs.self.modules.homeManager.ensureSecretsRepo
         inputs.self.modules.homeManager.ensurePrivateConfigRepo
         inputs.self.modules.homeManager.ensureConfigRepo
@@ -140,6 +139,9 @@ in
         ./_immich-ml-server.nix
         inputs.dotfiles-private.modules.nixos.yttrium
         (import ./_disko.nix { device = "/dev/nvme0n1"; })
+      ];
+      home-manager.sharedModules = [
+        self.modules.homeManager.hmImpermanence
       ];
 
       host = {

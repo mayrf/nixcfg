@@ -50,7 +50,7 @@
         enable = true;
       };
       python.enable = true;
-      ts = {
+      typescript = {
         enable = true;
         format = {
           enable = true;

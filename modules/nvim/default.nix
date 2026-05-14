@@ -6,7 +6,7 @@
       imports = [ inputs.nixvim.homeModules.nixvim ];
       home.packages = with pkgs;
         [
-          outputs.packages.${pkgs.stdenv.system}.my-neovim
+          outputs.packages.${pkgs.stdenv.hostPlatform.system}.my-neovim
         ];
     };
 }

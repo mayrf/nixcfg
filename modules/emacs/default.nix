@@ -45,7 +45,7 @@
         ".config/dotemacs"
       ];
 
-      # stylix.targets.emacs.enable = false;
+      stylix.targets.emacs.enable = lib.mkIf (osConfig.stylix.enable or false) false;
       imports = [
         inputs.dotemacs.homeConfigurations.x86_64-linux.dotemacs
       ];
