@@ -105,36 +105,61 @@
       };
 
       home.packages = with pkgs; [
-        dig
+        # vanilla fonts:
         dejavu_fonts
         liberation_ttf
+
+        # Doom emacs dependencies
         lldb
         git
         (ripgrep.override { withPCRE2 = true; })
-        gnutls
+        gnutls # for TLS connectivity
         coreutils
-        fd
-        imagemagick
+        fd # faster projectile indexing
+        imagemagick # for image-dired    sqlite
         gcc
-        zstd
+        zstd # for undo-fu-session/undo-tree compression
         notmuch
+
+        # shell mode
         shfmt
         shellcheck
         bash-language-server
+
+        # web mode
         html-tidy
+
+        # docker mode
         dockfmt
-        editorconfig-core-c
+
+        # :tools editorconfig
+        editorconfig-core-c # per-project style config
+
+        #misc/unknown
         stylelint
+        # vimPlugins.copilot-vim
+
         unstable.nerd-fonts.im-writing
         unstable.nerd-fonts.jetbrains-mono
         unstable.nerd-fonts.symbols-only
+
+        # for markdown-preview-eww
         rubyPackages.redcarpet
         yaml-language-server
+
+        # nix
         nixd
-        eslint
-        prettier
-        typescript-language-server
+
+        # typescript
+        nodePackages_latest.eslint
+        nodePackages_latest.prettier
+        # prettier-plugin-go-template
+        nodePackages_latest.typescript-language-server
+
+        # language tools
         languagetool
+
+        # other dependencies
         hunspell
         hunspellDicts.de_AT
         hunspellDicts.de_DE
@@ -142,6 +167,8 @@
         hunspellDicts.en_US
         hunspellDicts.es_ES
         hunspellDicts.en_GB-ize
+
+        # python
         stable.poetry
         pyright
         ruff
@@ -152,16 +179,29 @@
         python313Packages.pylama
         python313Packages.jupyter
         vscode-langservers-extracted
+
         xclip
         poppler-utils
+
+        # go
         gopls
         go
+
+        # just
         just
+        # just-lsp
+
+        #fonts
         unstable.nerd-fonts.im-writing
         unstable.nerd-fonts.jetbrains-mono
         unstable.nerd-fonts.fira-code
         unstable.nerd-fonts.caskaydia-cove
         unstable.nerd-fonts.geist-mono
+
+        # ai
+        # aider-chat
+
+        #org mode
         mermaid-cli
       ];
 

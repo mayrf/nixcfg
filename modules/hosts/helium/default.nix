@@ -10,7 +10,6 @@ in
     { inputs, ... }:
     {
       imports = [
-        inputs.self.modules.homeManager.hmImpermanence
         inputs.self.modules.homeManager.ensureSecretsRepo
         inputs.self.modules.homeManager.ensurePrivateConfigRepo
         inputs.self.modules.homeManager.ensureConfigRepo
@@ -90,6 +89,10 @@ in
         inputs.dotfiles-private.modules.nixos.helium
         inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x220
         (import ./_disko.nix { device = "/dev/sda"; })
+      ];
+
+      home-manager.sharedModules = [
+        self.modules.homeManager.hmImpermanence
       ];
 
       host = {
