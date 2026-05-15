@@ -151,10 +151,10 @@
         nixd
 
         # typescript
-        nodePackages_latest.eslint
-        nodePackages_latest.prettier
+        eslint
+        prettier
         # prettier-plugin-go-template
-        nodePackages_latest.typescript-language-server
+        typescript-language-server
 
         # language tools
         languagetool
