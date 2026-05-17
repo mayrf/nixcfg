@@ -37,7 +37,6 @@ in
         inputs.self.modules.homeManager.zed
         inputs.self.modules.homeManager.fonts
         inputs.self.modules.homeManager.wayland
-        inputs.self.modules.homeManager.waybar
         inputs.self.modules.homeManager.hyprland
         inputs.self.modules.homeManager.gammastep
         inputs.self.modules.homeManager.mako
@@ -56,6 +55,7 @@ in
         inputs.self.modules.homeManager.alacritty
         inputs.self.modules.homeManager.foot
         inputs.self.modules.homeManager.ghostty
+        # self.homeManager.noctalia
       ];
 
       colorscheme = inputs.nix-colors.colorschemes.woodland;

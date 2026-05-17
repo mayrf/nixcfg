@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 {
   flake.modules.homeManager.hyprland =
     {
@@ -10,7 +10,6 @@
       ...
     }:
     {
-
       xdg.portal.enable = true;
       xdg.portal.config.common.default = "*";
 
@@ -121,7 +120,6 @@
           }
         ];
       };
-
       wayland.windowManager.hyprland =
         let
           workspaces = (map toString (lib.range 0 9)) ++ (map (n: "F${toString n}") (lib.range 1 12));
@@ -138,21 +136,22 @@
           };
         in
         {
-          # package =
-          #   inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-          # portalPackage =
-          #   inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+          package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+          portalPackage =
+            inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+          configType = "hyprlang";
           enable = true;
 
           settings = {
             ecosystem."no_update_news" = true;
+            exec-once = (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.myNoctalia);
             bind = [
               "SUPER,mouse:272,movewindow"
               # "SUPER,mouse:273,resizewindow"
 
               "SUPERSHIFT,q,killactive"
 
-              "SUPER,s,togglesplit"
+              # "SUPER,s,togglesplit"
               "SUPER,f,fullscreen,1"
               "SUPERSHIFT,f,fullscreen,0"
               "SUPERSHIFT,space,togglefloating"
@@ -262,25 +261,43 @@
                 enabled=false
               }
 
+              # decoration {
+              #   blur {
+              #     ignore_opacity=true
+              #     new_optimizations=true
+              #     passes=3
+              #     size=5
+              #   }
+              #   active_opacity=1.000000
+              #   # col.shadow=rgba(231e1899)
+              #   fullscreen_opacity=1.000000
+              #   inactive_opacity=0.840000
+              # }
               decoration {
-                blur {
-                  ignore_opacity=true
-                  new_optimizations=true
-                  passes=3
-                  size=5
+                rounding = 20
+                rounding_power = 2
+
+                shadow {
+                  enabled = true
+                  range = 4
+                  render_power = 3
+                  color = rgba(1a1a1aee)
                 }
-                active_opacity=1.000000
-                # col.shadow=rgba(231e1899)
-                fullscreen_opacity=1.000000
-                inactive_opacity=0.840000
+
+                blur {
+                  enabled = true
+                  size = 3
+                  passes = 2
+                  vibrancy = 0.1696
+                }
               }
 
               general {
                 border_size=1
                 col.active_border=rgb(88a4d3)
                 col.inactive_border=rgb(9d8b70)
-                gaps_in=1
-                gaps_out=1
+                gaps_in=5
+                gaps_out=10
                 layout=master
                 # layout=dwindle
               }

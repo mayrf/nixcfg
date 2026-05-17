@@ -76,6 +76,7 @@
     import-tree.url = "github:vic/import-tree";
     claude-code.url = "github:sadjow/claude-code-nix";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
   };
 

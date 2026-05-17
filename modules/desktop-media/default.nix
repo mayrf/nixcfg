@@ -16,7 +16,7 @@
       ];
 
       home.packages = with pkgs; [
-        minitube
+        # minitube
         mpv
         deluge
         freetube
