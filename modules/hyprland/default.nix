@@ -85,41 +85,41 @@
         xhost
       ];
       programs.hyprlock.enable = true; # new line
-      services.hypridle.enable = true;
-      services.hyprsunset.enable = true;
-      services.hypridle.settings = {
-        general = {
-          lock_cmd = "pidof hyprlock || hyprlock"; # avoid starting multiple hyprlock instances.
-          before_sleep_cmd = "loginctl lock-session"; # lock before suspend.
-          after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
-        };
-        listener = [
-          {
-            timeout = 150; # 2.5min.
-            on-timeout = "brightnessctl -s set 10"; # set monitor backlight to minimum, avoid 0 on OLED monitor.
-            on-resume = "brightnessctl -r"; # monitor backlight restore.
-          }
-          {
-            # timeout = 900;
-            # timeout = 90;
-            # on-timeout = "hyprlock";
-            timeout = 600; # 10min
-            on-timeout = "loginctl lock-session"; # lock screen when timeout has passed
-          }
-          {
-            # timeout = 900; # 15min
-            timeout = 180; # 3min
-            on-timeout = "hyprctl dispatch dpms off"; # screen off when timeout has passed
-            on-resume = "hyprctl dispatch dpms on && brightnessctl -r"; # screen on when activity is detected after timeout has fired.
-          }
-          {
-            # timeout = 1800; # 30min
-            # timeout = 7200; # 120min
-            timeout = 14400; # 240min
-            on-timeout = "systemctl suspend"; # suspend pc
-          }
-        ];
-      };
+      # services.hypridle.enable = true;
+      # services.hyprsunset.enable = true;
+      # services.hypridle.settings = {
+      #   general = {
+      #     lock_cmd = "pidof hyprlock || hyprlock"; # avoid starting multiple hyprlock instances.
+      #     before_sleep_cmd = "loginctl lock-session"; # lock before suspend.
+      #     after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+      #   };
+      #   listener = [
+      #     {
+      #       timeout = 150; # 2.5min.
+      #       on-timeout = "brightnessctl -s set 10"; # set monitor backlight to minimum, avoid 0 on OLED monitor.
+      #       on-resume = "brightnessctl -r"; # monitor backlight restore.
+      #     }
+      #     {
+      #       # timeout = 900;
+      #       # timeout = 90;
+      #       # on-timeout = "hyprlock";
+      #       timeout = 600; # 10min
+      #       on-timeout = "loginctl lock-session"; # lock screen when timeout has passed
+      #     }
+      #     {
+      #       # timeout = 900; # 15min
+      #       timeout = 180; # 3min
+      #       on-timeout = "hyprctl dispatch dpms off"; # screen off when timeout has passed
+      #       on-resume = "hyprctl dispatch dpms on && brightnessctl -r"; # screen on when activity is detected after timeout has fired.
+      #     }
+      #     {
+      #       # timeout = 1800; # 30min
+      #       # timeout = 7200; # 120min
+      #       timeout = 14400; # 240min
+      #       on-timeout = "systemctl suspend"; # suspend pc
+      #     }
+      #   ];
+      # };
       wayland.windowManager.hyprland =
         let
           workspaces = (map toString (lib.range 0 9)) ++ (map (n: "F${toString n}") (lib.range 1 12));
@@ -156,13 +156,13 @@
               "SUPERSHIFT,f,fullscreen,0"
               "SUPERSHIFT,space,togglefloating"
 
-              "SUPER,h,layoutmsg,splitratio,-0.1"
-              "SUPER,minus,layoutmsg,splitratio,-0.25"
-              "SUPERSHIFT,minus,layoutmsg,splitratio,-0.3333333"
+              "SUPER,h,layoutmsg,mfact -0.1"
+              "SUPER,minus,layoutmsg,mfact -0.25"
+              "SUPERSHIFT,minus,layoutmsg,mfact -0.3333333"
 
-              "SUPER,l,layoutmsg,splitratio,0.1"
-              "SUPER,equal,layoutmsg,splitratio,0.25"
-              "SUPERSHIFT,equal,layoutmsg,splitratio,0.3333333"
+              "SUPER,l,layoutmsg,mfact 0.1"
+              "SUPER,equal,layoutmsg,mfact 0.25"
+              "SUPERSHIFT,equal,layoutmsg,mfact 0.3333333"
 
               "SUPER,g,togglegroup"
               "SUPER,apostrophe,changegroupactive,f"
