@@ -15,47 +15,45 @@ in
     }:
     {
       imports = [
-        inputs.self.modules.homeManager.ensureSecretsRepo
-        inputs.self.modules.homeManager.ensurePrivateConfigRepo
-        inputs.self.modules.homeManager.ensureConfigRepo
-        inputs.self.modules.homeManager.zsh
-        inputs.self.modules.homeManager.fzf
-        inputs.self.modules.homeManager.ai
-        inputs.self.modules.homeManager.cliMedia
-        inputs.self.modules.homeManager.development
-        inputs.self.modules.homeManager.k8s
-        inputs.self.modules.homeManager.leetcode
-        inputs.self.modules.homeManager.yazi
-        inputs.self.modules.homeManager.scripts
-        inputs.self.modules.homeManager.lf
-        inputs.self.modules.homeManager.git
-        inputs.self.modules.homeManager.syncthing
-        inputs.self.modules.homeManager.hmSops
-        inputs.self.modules.homeManager.emacs
-        inputs.self.modules.homeManager.nvim
-        inputs.self.modules.homeManager.vscode
-        inputs.self.modules.homeManager.zed
-        inputs.self.modules.homeManager.fonts
-        inputs.self.modules.homeManager.wayland
-        inputs.self.modules.homeManager.hyprland
-        inputs.self.modules.homeManager.gammastep
-        inputs.self.modules.homeManager.mako
-        inputs.self.modules.homeManager.wofi
-        inputs.self.modules.homeManager.nextcloudClient
-        inputs.self.modules.homeManager.virtualisation
-        inputs.self.modules.homeManager.postman
-        inputs.self.modules.homeManager.librewolf
-        inputs.self.modules.homeManager.gpg
-        inputs.self.modules.homeManager.zathura
-        inputs.self.modules.homeManager.learning
-        inputs.self.modules.homeManager.desktopMedia
-        inputs.self.modules.homeManager.social
-        inputs.self.modules.homeManager.productivity
-        inputs.self.modules.homeManager.zenBrowser
-        inputs.self.modules.homeManager.alacritty
-        inputs.self.modules.homeManager.foot
-        inputs.self.modules.homeManager.ghostty
-        # self.homeManager.noctalia
+        self.modules.homeManager.ensureSecretsRepo
+        self.modules.homeManager.ensurePrivateConfigRepo
+        self.modules.homeManager.ensureConfigRepo
+        self.modules.homeManager.zsh
+        self.modules.homeManager.fzf
+        self.modules.homeManager.ai
+        self.modules.homeManager.cliMedia
+        self.modules.homeManager.development
+        self.modules.homeManager.k8s
+        self.modules.homeManager.leetcode
+        self.modules.homeManager.yazi
+        self.modules.homeManager.scripts
+        self.modules.homeManager.lf
+        self.modules.homeManager.git
+        self.modules.homeManager.syncthing
+        self.modules.homeManager.hmSops
+        self.modules.homeManager.emacs
+        self.modules.homeManager.nvim
+        self.modules.homeManager.vscode
+        self.modules.homeManager.zed
+        self.modules.homeManager.fonts
+        self.modules.homeManager.hyprland
+        self.modules.homeManager.gammastep
+        self.modules.homeManager.wofi
+        self.modules.homeManager.nextcloudClient
+        self.modules.homeManager.virtualisation
+        self.modules.homeManager.postman
+        self.modules.homeManager.librewolf
+        self.modules.homeManager.gpg
+        self.modules.homeManager.zathura
+        self.modules.homeManager.learning
+        self.modules.homeManager.desktopMedia
+        self.modules.homeManager.social
+        self.modules.homeManager.productivity
+        self.modules.homeManager.zenBrowser
+        self.modules.homeManager.alacritty
+        self.modules.homeManager.foot
+        self.modules.homeManager.ghostty
+        inputs.dotfiles-private.modules.homeManager.yttrium
       ];
 
       colorscheme = inputs.nix-colors.colorschemes.woodland;
@@ -120,6 +118,7 @@ in
       imports = [
         self.modules.nixos.base
         self.modules.nixos.common
+        self.modules.nixos.general
         self.modules.nixos.impermanence
         self.modules.nixos.emacs
         self.modules.nixos.claude
@@ -140,8 +139,9 @@ in
         inputs.dotfiles-private.modules.nixos.yttrium
         (import ./_disko.nix { device = "/dev/nvme0n1"; })
       ];
-      home-manager.sharedModules = [
+      home-manager.users.${config.host.username}.imports = [
         self.modules.homeManager.hmImpermanence
+        self.modules.homeManager.yttrium
       ];
 
       host = {
@@ -180,26 +180,10 @@ in
         pkgs.pavucontrol
       ];
 
-      hardware.sane = {
-        enable = true;
-        brscan4 = {
-          enable = true;
-          netDevices = {
-            office1 = {
-              ip = "192.168.0.109";
-              model = "MFC-L2800DW";
-            };
-          };
-        };
-      };
-
       services.avahi.enable = true;
       services.avahi.nssmdns4 = true;
       security.sudo.enable = true;
 
-      home-manager.users.${config.host.username}.imports = [
-        self.modules.homeManager.yttrium
-      ];
     };
 
   flake.nixosConfigurations.yttrium = inputs.nixpkgs.lib.nixosSystem {

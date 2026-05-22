@@ -84,12 +84,12 @@
 
       home.shellAliases = {
         vimtutor = "nvim -u NORC -c 'Tutor'";
-        rbs = "sudo nixos-rebuild switch --flake $FLAKE#${host.hostName}";
+        rbs = "nixos-rebuild switch --flake $FLAKE#${host.hostName} --sudo ";
         generate-envrc-flake = ''if [ ! -f .envrc ]; then echo "use flake" > .envrc; fi'';
         generate-python-flake = "nix flake init --template github:pyproject-nix/pyproject.nix#requirements-txt";
         ls = "eza";
         ps = "procs";
-        rbs-no-c = "sudo nixos-rebuild switch --flake $FLAKE#${host.hostName} --option build-use-substitutes false";
+        rbs-no-c = "nixos-rebuild switch --flake $FLAKE#${host.hostName} --option build-use-substitutes false --sudo";
         nfu = "nix flake update --flake $FLAKE --commit-lock-file";
         optimize = ''
           nix-env --list-generations

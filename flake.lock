@@ -185,11 +185,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778828173,
-        "narHash": "sha256-ZSM16DoBCslg3Hpy6AgBZ9jdFUxLWojh2pIxhJU3t1A=",
+        "lastModified": 1779491424,
+        "narHash": "sha256-YACn3e9k0H+qLzUfybm9Ih1hwnkcFXLRl7molsv20Yc=",
         "ref": "refs/heads/master",
-        "rev": "d0bb85a9332f8fbc10568045226fff309115df84",
-        "revCount": 30,
+        "rev": "4cfed5935bbe813087a5fd540e5bbdd34c7dc7e4",
+        "revCount": 33,
         "type": "git",
         "url": "ssh://git@codeberg.org/mayrf/dotfiles-private.git"
       },
@@ -1104,14 +1104,34 @@
         "type": "github"
       }
     },
+    "nix-index-database": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778999127,
+        "narHash": "sha256-V5GquqJvAqwFTcpN6hxKSQAtwuJFRUEHmyNKbeaTQDg=",
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "rev": "f680e0d3c1dbefe298c423691662e238496890f2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
     "nix-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1773219341,
-        "narHash": "sha256-WgXryT4GI7kEmi6ksCBxnZtC2VZg/q1COaHA2dKFvUc=",
+        "lastModified": 1779397714,
+        "narHash": "sha256-kWlKHH9j6xyMuSeT/x8/o0+yD9CO2LNzuPGUd/q9u3c=",
         "ref": "refs/heads/master",
-        "rev": "d2764270d0a807c181edea02963df3f209a90377",
-        "revCount": 34,
+        "rev": "dbeee4fbac7f585c545aa97345c4337b5f0ac842",
+        "revCount": 35,
         "type": "git",
         "url": "ssh://git@codeberg.org/mayrf/nix-secrets.git"
       },
@@ -1584,6 +1604,7 @@
         "impermanence": "impermanence",
         "import-tree": "import-tree_2",
         "nix-colors": "nix-colors",
+        "nix-index-database": "nix-index-database",
         "nix-secrets": "nix-secrets",
         "nixos-cli": "nixos-cli",
         "nixos-hardware": "nixos-hardware",

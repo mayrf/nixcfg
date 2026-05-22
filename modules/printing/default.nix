@@ -15,5 +15,18 @@
         pkgs.brgenml1cupswrapper
       ];
       environment.systemPackages = [ pkgs.system-config-printer ];
+
+      hardware.sane = {
+        enable = true;
+        brscan4 = {
+          enable = true;
+          netDevices = {
+            office1 = {
+              ip = "192.168.0.109";
+              model = "MFC-L2800DW";
+            };
+          };
+        };
+      };
     };
 }

@@ -141,9 +141,6 @@
     }:
     let
       username = config.host.username;
-      ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
-      pubKeys = lib.filesystem.listFilesRecursive ../common/keys;
-      useSops = config.sops.secrets ? "${username}/hashedPassword";
     in
     {
       imports = [
@@ -157,21 +154,11 @@
         self.modules.nixos.hostSpec
       ];
 
-      # nixos-cli
-      programs.nixos-cli = {
-        enable = true;
-        settings.option.min_score = 2;
-      };
-
       # Nix settings
       nix = {
-        nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+        # nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
         settings = {
-          experimental-features = [
-            "nix-command"
-            "flakes"
-          ];
-          keep-outputs = true;
+          # keep-outputs = true;
           trusted-users = [
             "root"
             "${username}"
@@ -287,50 +274,6 @@
           outputs.overlays.unstable-packages
           inputs.emacs-overlay.overlay
         ];
-        config = {
-          allowUnfree = true;
-          allowUnfreePredicate = (_: true);
-        };
-      };
-
-      # User
-      users.mutableUsers = !useSops;
-      users.users.${username} = {
-        home = "/home/${username}";
-        isNormalUser = true;
-        description = "${username}";
-        shell = pkgs.zsh;
-        packages = [ pkgs.home-manager ];
-        openssh.authorizedKeys.keys = lib.lists.forEach pubKeys (key: builtins.readFile key);
-        extraGroups = lib.flatten [
-          "wheel"
-          (ifTheyExist [
-            "flatpak"
-            "docker"
-            "input"
-            "kvm"
-            "qemu-libvirtd"
-            "plugdev"
-            "audio"
-            "video"
-            "git"
-            "networkmanager"
-            "network"
-            "scanner"
-            "lp"
-            "libvirtd"
-            "deluge"
-          ])
-        ];
-      }
-      // lib.optionalAttrs (config.host.isMinimal) {
-        password = "nixos";
-      }
-      // lib.optionalAttrs useSops {
-        hashedPasswordFile = config.sops.secrets."${username}/hashedPassword".path;
-      }
-      // lib.optionalAttrs (!config.host.isMinimal && !useSops) {
-        initialPassword = "changeme";
       };
 
       systemd.tmpfiles.rules =

@@ -10,24 +10,25 @@ in
     { inputs, pkgs, ... }:
     {
       imports = [
-        inputs.self.modules.homeManager.hmImpermanence
-        inputs.self.modules.homeManager.ensureSecretsRepo
-        inputs.self.modules.homeManager.ensurePrivateConfigRepo
-        inputs.self.modules.homeManager.ensureConfigRepo
-        inputs.self.modules.homeManager.zsh
-        inputs.self.modules.homeManager.fzf
-        inputs.self.modules.homeManager.ai
-        inputs.self.modules.homeManager.development
-        inputs.self.modules.homeManager.k8s
-        inputs.self.modules.homeManager.lf
-        inputs.self.modules.homeManager.git
-        inputs.self.modules.homeManager.scripts
-        inputs.self.modules.homeManager.hmSops
-        inputs.self.modules.homeManager.yazi
-        inputs.self.modules.homeManager.syncthing
-        inputs.self.modules.homeManager.emacs
-        inputs.self.modules.homeManager.nvim
-        inputs.self.modules.homeManager.zed
+        self.modules.homeManager.hmImpermanence
+        self.modules.homeManager.ensureSecretsRepo
+        self.modules.homeManager.ensurePrivateConfigRepo
+        self.modules.homeManager.ensureConfigRepo
+        self.modules.homeManager.zsh
+        self.modules.homeManager.fzf
+        self.modules.homeManager.ai
+        self.modules.homeManager.development
+        self.modules.homeManager.k8s
+        self.modules.homeManager.lf
+        self.modules.homeManager.git
+        self.modules.homeManager.scripts
+        self.modules.homeManager.hmSops
+        self.modules.homeManager.yazi
+        self.modules.homeManager.syncthing
+        self.modules.homeManager.emacs
+        self.modules.homeManager.nvim
+        self.modules.homeManager.zed
+        inputs.dotfiles-private.modules.homeManager.radium
       ];
 
       colorscheme = inputs.nix-colors.colorschemes.woodland;
@@ -42,10 +43,16 @@ in
     };
 
   flake.modules.nixos.radium =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       imports = [
         self.modules.nixos.base
+        self.modules.nixos.general
         self.modules.nixos.common
         self.modules.nixos.impermanence
         self.modules.nixos.emacs
