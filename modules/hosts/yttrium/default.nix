@@ -56,8 +56,6 @@ in
         inputs.dotfiles-private.modules.homeManager.yttrium
       ];
 
-      colorscheme = inputs.nix-colors.colorschemes.woodland;
-
       features.impermanence.enable = true;
       features.impermanence.directories_cache = [
         ".local/share/docker"

@@ -31,8 +31,6 @@ in
         inputs.dotfiles-private.modules.homeManager.radium
       ];
 
-      colorscheme = inputs.nix-colors.colorschemes.woodland;
-
       home.packages = with pkgs; [
         mariadb
         grafana-alloy

@@ -52,8 +52,6 @@ in
         inputs.dotfiles-private.modules.homeManager.radium
       ];
 
-      colorscheme = inputs.nix-colors.colorschemes.woodland;
-
       features.impermanence.enable = true;
 
       wayland.windowManager.hyprland.settings = {

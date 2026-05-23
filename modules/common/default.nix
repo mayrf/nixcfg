@@ -10,13 +10,7 @@
       host,
       ...
     }:
-    let
-      inherit (inputs.nix-colors) colorSchemes;
-    in
     {
-      imports = [
-        inputs.nix-colors.homeManagerModule
-      ];
 
       services = {
         gpg-agent = {
@@ -80,8 +74,6 @@
       programs = {
         home-manager.enable = true;
       };
-
-      home.file.".colorscheme".text = config.colorscheme.slug;
 
       fonts.fontconfig.enable = true;
 
@@ -147,7 +139,6 @@
         inputs.home-manager.nixosModules.home-manager
         inputs.sops-nix.nixosModules.sops
         inputs.nixos-wsl.nixosModules.wsl
-        inputs.stylix.nixosModules.stylix
         inputs.disko.nixosModules.default
         inputs.impermanence.nixosModules.impermanence
         inputs.nixos-cli.nixosModules.nixos-cli

@@ -8,14 +8,6 @@
     # home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    stylix.url = "github:danth/stylix";
-    # stylix.url = "github:nix-community/stylix/release-25.11";
-    stylix.inputs.nixpkgs.follows = "nixpkgs";
-
-    nixvim.url = "github:nix-community/nixvim";
-    # nixvim.url = "github:nix-community/nixvim/nixos-25.11";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
-
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -27,7 +19,6 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     nixos-cli.url = "github:nix-community/nixos-cli";
-    nix-colors.url = "github:misterio77/nix-colors";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
