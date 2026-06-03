@@ -148,7 +148,7 @@ in
         isImpermanent = true;
       };
       networking.hostName = "yttrium";
-      system.stateVersion = "26.05"; # Did you read the comment?
+      system.stateVersion = "26.11"; # Did you read the comment?
 
       persistence.enable = true;
       persistence.user = config.preferences.user.name;

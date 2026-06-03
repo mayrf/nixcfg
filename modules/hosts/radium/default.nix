@@ -36,8 +36,12 @@ in
         grafana-alloy
         firefox
         camunda-modeler
+        uv
       ];
 
+      home.shellAliases = {
+        cme = "uvx confluence-markdown-exporter";
+      };
     };
 
   flake.modules.nixos.radium =
@@ -85,15 +89,6 @@ in
           ExecStart = "${pkgs.openssh}/bin/ssh -N -D 1080 hollama";
           Restart = "on-failure";
           RestartSec = "5s";
-        };
-      };
-
-      services.dnsmasq = {
-        enable = true;
-        settings = {
-          address = [ "/accounts.hobex.io/217.196.147.21" ];
-          listen-address = "127.0.0.1";
-          bind-interfaces = true;
         };
       };
 

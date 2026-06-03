@@ -9,6 +9,7 @@
   (xref-search-program 'ripgrep)                  ;; Use a faster grep implementation for regexp search inside files 
   (column-number-mode t)                          ;; Display the column number in the mode line.
   (global-visual-line-mode 1)                     ;; Wraps lines
+  (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
   
   :hook                                           ;; Add hooks to enable specific features in certain modes.
   (prog-mode . display-line-numbers-mode)         ;; Enable line numbers in programming modes.
@@ -16,13 +17,13 @@
 
 (use-package helpful
   :bind (("C-h v" . #'helpful-variable)
-	 ("C-h f" . #'helpful-callable)
-	 ("C-h k" . #'helpful-key)
-	 ("C-h x" . #'helpful-command)
-	 ("C-h F" . #'helpful-function)
+	     ("C-h f" . #'helpful-callable)
+	     ("C-h k" . #'helpful-key)
+	     ("C-h x" . #'helpful-command)
+	     ("C-h F" . #'helpful-function)
          ("C-c C-d" . #'helpful-at-point))
   )
-  
+
 
 (use-package jinx
   :custom
@@ -31,10 +32,10 @@
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 
-(use-package evil
-  :config
-  (evil-mode 1)
-  )
+;; (use-package evil
+;;   :config
+;;   (evil-mode 1)
+;;   )
 
 (use-package vertico
   :bind
@@ -83,7 +84,7 @@
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-)
+  )
 
 (use-package embark-consult
   :ensure t ; only need to install it, embark loads it after consult if found

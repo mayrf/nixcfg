@@ -4,7 +4,12 @@
   # No secrets, no private repos, no home-manager.
   # Deploy one of these to a machine, then switch to the full config.
   flake.modules.nixos.installer =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       imports = [
         self.modules.nixos.hostSpec
@@ -20,7 +25,7 @@
       };
 
       networking.hostName = lib.mkDefault "installer";
-      system.stateVersion = "26.05";
+      system.stateVersion = "26.11";
 
       boot.initrd.systemd.enable = false;
 
@@ -48,7 +53,10 @@
       ];
 
       nix.settings = {
-        experimental-features = [ "nix-command" "flakes" ];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
         warn-dirty = false;
       };
 
