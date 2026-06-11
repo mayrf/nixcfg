@@ -9,7 +9,6 @@
   (xref-search-program 'ripgrep)                  ;; Use a faster grep implementation for regexp search inside files 
   (column-number-mode t)                          ;; Display the column number in the mode line.
   (global-visual-line-mode 1)                     ;; Wraps lines
-  (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
   
   :hook                                           ;; Add hooks to enable specific features in certain modes.
   (prog-mode . display-line-numbers-mode)         ;; Enable line numbers in programming modes.
@@ -17,13 +16,13 @@
 
 (use-package helpful
   :bind (("C-h v" . #'helpful-variable)
-	     ("C-h f" . #'helpful-callable)
-	     ("C-h k" . #'helpful-key)
-	     ("C-h x" . #'helpful-command)
-	     ("C-h F" . #'helpful-function)
+	 ("C-h f" . #'helpful-callable)
+	 ("C-h k" . #'helpful-key)
+	 ("C-h x" . #'helpful-command)
+	 ("C-h F" . #'helpful-function)
          ("C-c C-d" . #'helpful-at-point))
   )
-
+  
 
 (use-package jinx
   :custom
@@ -32,10 +31,10 @@
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 
-;; (use-package evil
-;;   :config
-;;   (evil-mode 1)
-;;   )
+;;(use-package evil
+;;  :config
+;;  (evil-mode 1)
+;;  )
 
 (use-package vertico
   :bind
@@ -58,6 +57,38 @@
   :custom
   (completion-styles '(orderless basic))
   )
+
+
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+
+(use-package eat
+  :config
+  (add-hook 'eshell-load-hook #'eat-eshell-mode)
+  )
+
+(require 'bookmark)
+
+;; Ensure bookmarks are loaded before checking/mutating
+(bookmark-maybe-load-default-file)
+
+(defun my-add-bookmark-if-missing (name location)
+  "Add a bookmark NAME for LOCATION unless it already exists."
+  (unless (bookmark-get-bookmark name t)  ; t = no-error
+    (bookmark-set name nil)               ; creates bookmark at point *or* given location
+    ;; overwrite the default location
+    (bookmark-store name
+                    `((filename . ,location))
+                    nil)))
+
+;; Example predefined bookmarks:
+(my-add-bookmark-if-missing "shared" "~/Documents/org/shared/")
+(my-add-bookmark-if-missing "work" "~/Documents/org/work/")
+(my-add-bookmark-if-missing "init.el" "~/.config/nixcfg/modules/emacs/config/init.el")
+(my-add-bookmark-if-missing "private" "~/Documents/org/private/")
+
+;; Save modified bookmark list automatically
+(bookmark-save)
 
 
 ;; (use-package yasnippet-snippets)
@@ -84,15 +115,49 @@
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-  )
+)
 
 (use-package embark-consult
   :ensure t ; only need to install it, embark loads it after consult if found
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+(use-package org
+  :ensure nil
+  :custom
+  (org-directory "~/Documents/org")
+  (org-agenda-files `(,(expand-file-name "private/todo.org" org-directory)))
+  (org-refile-targets ())
+  :bind
+  ("C-c A" . org-agenda)
+  )
+
+
+
+(use-package org-cliplink
+  :after org
+  :commands org-cliplink
+  :bind
+  (:map org-mode-map
+        ("C-c l c" . org-cliplink)))
+
+(defun my/markdown-to-org-region (start end)
+  "Convert Markdown formatted text in region (START, END) to Org.
+
+This command requires that pandoc (man page `pandoc(1)') be
+installed."
+  (interactive "r")
+  (shell-command-on-region
+   start end
+   "pandoc -f markdown -t org --wrap=preserve" t t))
+
+(use-package direnv
+ :config
+ (direnv-mode))
+
+
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
+  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.

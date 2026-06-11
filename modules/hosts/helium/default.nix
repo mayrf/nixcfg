@@ -49,7 +49,7 @@ in
         self.modules.homeManager.zenBrowser
         self.modules.homeManager.alacritty
         self.modules.homeManager.ghostty
-        inputs.dotfiles-private.modules.homeManager.radium
+        inputs.dotfiles-private.modules.homeManager.helium
       ];
 
       features.impermanence.enable = true;
