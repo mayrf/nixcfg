@@ -27,12 +27,19 @@
     {
       features.impermanence.directories = [
         ".config/calibre"
+
         ".thunderbird"
+
         ".local/share/gnucash"
+        ".cache/gnucash"
+
         ".config/keepassxc"
         ".cache/keepassxc"
+
         ".config/libreoffice"
+
         ".wine"
+
         ".config/immich"
       ];
 
