@@ -2,8 +2,15 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq use-package-always-ensure t)
 
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+
+
+
 (use-package emacs
   :ensure nil
+  :init
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 100)
   :custom
   (visible-bell t)
   (xref-search-program 'ripgrep)                  ;; Use a faster grep implementation for regexp search inside files 
@@ -36,6 +43,8 @@
 ;;  (evil-mode 1)
 ;;  )
 
+(use-package avy)
+
 (use-package vertico
   :bind
   ( :map vertico-map
@@ -62,10 +71,10 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
-(use-package eat
-  :config
-  (add-hook 'eshell-load-hook #'eat-eshell-mode)
-  )
+;; (use-package eat
+;;   :config
+;;   (add-hook 'eshell-load-hook #'eat-eshell-mode)
+;;   )
 
 (require 'bookmark)
 
@@ -155,16 +164,25 @@ installed."
  :config
  (direnv-mode))
 
+(use-package embark
+  :bind
+  (("C-." . embark-act)	 ;; pick some comfortable binding
+   ("C-;" . embark-dwim) ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'(use-package embark)
+  )
+;; ;; UI
+;; (set-fringe-mode 10)
+;; (add-to-list 'custom-theme-load-path
+;;              (expand-file-name "themes/" user-emacs-directory))
 
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; (use-package doom-themes
+;;   :demand t
+;;   :config
+;;   (load-theme 'compline t))
+
+;; (defun my/set-theme (variant)
+;;   (mapc #'disable-theme custom-enabled-themes)
+;;   (if (string= variant "dark")
+;;       (load-theme 'compline t)
+;;     (load-theme 'lauds t)))
+

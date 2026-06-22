@@ -103,6 +103,7 @@ in
         persistDir = "/persist";
         isImpermanent = true;
       };
+
       networking.hostName = "helium";
       system.stateVersion = "26.11"; # Did you read the comment?
 

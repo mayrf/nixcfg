@@ -6,7 +6,8 @@
     { pkgs, ... }:
     {
       packages.myNoctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
-        inherit pkgs; # THIS PART IS VERY IMPORTAINT, I FORGOT IT IN THE VIDEO!!!
+        inherit pkgs; 
+
         # nix run nixpkgs#noctalia-shell ipc call state all > $FLAKE/modules/features/noctalia/noctalia.json
         settings = (builtins.fromJSON (builtins.readFile ./noctalia.json)).settings;
       };
