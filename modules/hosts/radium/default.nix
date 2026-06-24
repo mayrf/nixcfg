@@ -26,6 +26,7 @@ in
         self.modules.homeManager.yazi
         self.modules.homeManager.syncthing
         self.modules.homeManager.emacs
+        self.modules.homeManager.emacs-vanilla
         self.modules.homeManager.nvim
         self.modules.homeManager.zed
         inputs.dotfiles-private.modules.homeManager.radium
@@ -37,6 +38,8 @@ in
         firefox
         camunda-modeler
         uv
+        ollama
+        gh
       ];
 
       home.shellAliases = {

@@ -32,6 +32,7 @@ in
         self.modules.homeManager.syncthing
         self.modules.homeManager.hmSops
         self.modules.homeManager.emacs
+        self.modules.homeManager.emacs-vanilla
         self.modules.homeManager.nvim
         self.modules.homeManager.vscode
         self.modules.homeManager.zed

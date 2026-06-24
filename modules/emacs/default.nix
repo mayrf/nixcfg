@@ -14,6 +14,21 @@
     {
       # emacs HM configuration is applied per-host via flake.modules.homeManager.emacs
     };
+
+  flake.modules.homeManager.emacs-vanilla =
+    {
+      config,
+      osConfig,
+      pkgs,
+      lib,
+      private,
+      host,
+      ...
+    }:
+    {
+      home.packages = [ pkgs.claude-agent-acp ];
+
+    };
   flake.modules.homeManager.emacs =
     {
       config,

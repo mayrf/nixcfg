@@ -1,4 +1,5 @@
 ;; -*- lexical-binding: t; -*-
+(require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq use-package-always-ensure t)
 
@@ -21,6 +22,7 @@
   (prog-mode . display-line-numbers-mode)         ;; Enable line numbers in programming modes.
   )
 
+
 (use-package helpful
   :bind (("C-h v" . #'helpful-variable)
          ("C-h f" . #'helpful-callable)
@@ -29,7 +31,7 @@
          ("C-h F" . #'helpful-function)
          ("C-c C-d" . #'helpful-at-point))
   )
-  
+
 
 (use-package jinx
   :custom
@@ -45,8 +47,10 @@
   )
 
 (use-package magit
-  :bind ("C-x g" . magit-status)
+  :bind (("C-x g" . magit-status)
+	 ("C-x C-g" . magit-status))
   )
+
 
 
 
@@ -129,7 +133,7 @@
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-)
+  )
 
 (use-package embark-consult
   :ensure t ; only need to install it, embark loads it after consult if found
@@ -154,7 +158,20 @@
   (org-roam-db-autosync-mode)
   )
 
-(use-package corfu)
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-cycle t)
+  :init
+
+  ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
+  ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
+  ;; variable `global-corfu-modes' to exclude certain modes.
+  (global-corfu-mode)
+  )
+
+
+(use-package agent-shell)
 
 
 (use-package org-cliplink
@@ -175,8 +192,8 @@ installed."
    "pandoc -f markdown -t org --wrap=preserve" t t))
 
 (use-package direnv
- :config
- (direnv-mode))
+  :config
+  (direnv-mode))
 
 (use-package embark
   :bind
@@ -184,19 +201,26 @@ installed."
    ("C-;" . embark-dwim) ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'(use-package embark)
   )
-;; ;; UI
-;; (set-fringe-mode 10)
-;; (add-to-list 'custom-theme-load-path
-;;              (expand-file-name "themes/" user-emacs-directory))
 
-;; (use-package doom-themes
-;;   :demand t
-;;   :config
-;;   (load-theme 'compline t))
+(setq custom-file "~/.config/nixcfg/modules/emacs/config/custom.el")
+(load custom-file)
 
-;; (defun my/set-theme (variant)
-;;   (mapc #'disable-theme custom-enabled-themes)
-;;   (if (string= variant "dark")
-;;       (load-theme 'compline t)
-;;     (load-theme 'lauds t)))
 
+(use-package ellama
+  :ensure t
+  :bind ("C-c e" . ellama)
+  ;; send last message in chat buffer with C-c C-c
+  :hook (org-ctrl-c-ctrl-c-hook . ellama-chat-send-last-message)
+  :init (setopt ellama-auto-scroll t)
+  (require 'llm-ollama)
+  (setopt ellama-provider
+          (make-llm-ollama
+           :chat-model "qwen3.6:latest"
+	   :host (or (getenv "OLLAMA_HOST") "localhost")
+	   :port 80
+           :embedding-model "nomic-embed-text"))
+  :config
+  ;; show ellama context in header line in all buffers
+  (ellama-context-header-line-global-mode +1)
+  ;; show ellama session id in header line in all buffers
+  (ellama-session-header-line-global-mode +1))

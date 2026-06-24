@@ -30,6 +30,7 @@ in
         self.modules.homeManager.syncthing
         self.modules.homeManager.nvim
         self.modules.homeManager.emacs
+        self.modules.homeManager.emacs-vanilla
         self.modules.homeManager.vscode
         self.modules.homeManager.fonts
         self.modules.homeManager.hyprland
