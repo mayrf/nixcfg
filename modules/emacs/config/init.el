@@ -23,10 +23,10 @@
 
 (use-package helpful
   :bind (("C-h v" . #'helpful-variable)
-	 ("C-h f" . #'helpful-callable)
-	 ("C-h k" . #'helpful-key)
-	 ("C-h x" . #'helpful-command)
-	 ("C-h F" . #'helpful-function)
+         ("C-h f" . #'helpful-callable)
+         ("C-h k" . #'helpful-key)
+         ("C-h x" . #'helpful-command)
+         ("C-h F" . #'helpful-function)
          ("C-c C-d" . #'helpful-at-point))
   )
   
@@ -38,12 +38,17 @@
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 
-;;(use-package evil
-;;  :config
-;;  (evil-mode 1)
-;;  )
+(use-package avy
+  :bind (("M-j" . avy-goto-char-timer)
+         :map isearch-mode-map
+         ("M-j" . avy-isearch))
+  )
 
-(use-package avy)
+(use-package magit
+  :bind ("C-x g" . magit-status)
+  )
+
+
 
 (use-package vertico
   :bind
@@ -107,9 +112,9 @@
 ;;   (yas-expand-snippet-on-input nil)
 ;;   :config
 ;;   (setq yas-snippet-dirs
-;; 	`("~/.config/dotemacs/snippets"                 ;; personal snippets
+;;      `("~/.config/dotemacs/snippets"                 ;; personal snippets
 ;;          ,(expand-file-name "yasnippet-snippets/snippets" elpaca-repos-directory) ;; Add collection https://github.com/AndreaCrotti/yasnippet-snippets
-;; 	  ;; "~/.config/dotemacs/var/elpaca/repos/yasnippet-snippets/snippets"
+;;        ;; "~/.config/dotemacs/var/elpaca/repos/yasnippet-snippets/snippets"
 ;;           ))
 
 ;;   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
@@ -141,6 +146,15 @@
   ("C-c A" . org-agenda)
   )
 
+(use-package org-roam
+  :after org
+  :custom
+  (org-roam-directory (expand-file-name "shared/roam" org-directory))
+  :config
+  (org-roam-db-autosync-mode)
+  )
+
+(use-package corfu)
 
 
 (use-package org-cliplink
