@@ -90,14 +90,13 @@
 ;; Ensure bookmarks are loaded before checking/mutating
 (bookmark-maybe-load-default-file)
 
-(defun my-add-bookmark-if-missing (name location)
-  "Add a bookmark NAME for LOCATION unless it already exists."
-  (unless (bookmark-get-bookmark name t)  ; t = no-error
-    (bookmark-set name nil)               ; creates bookmark at point *or* given location
-    ;; overwrite the default location
-    (bookmark-store name
-                    `((filename . ,location))
-                    nil)))
+(defun my-add-bookmark-if-missing (name filename)
+  "Create bookmark NAME for FILENAME if it doesn't already exist."
+  (unless (bookmark-get-bookmark name t)
+    (bookmark-store
+     name
+     `((filename . ,(expand-file-name filename)))
+     nil)))
 
 ;; Example predefined bookmarks:
 (my-add-bookmark-if-missing "shared" "~/Documents/org/shared/")
@@ -146,6 +145,8 @@
   (org-directory "~/Documents/org")
   (org-agenda-files `(,(expand-file-name "private/todo.org" org-directory)))
   (org-refile-targets ())
+  :hook
+  (org-mode . org-indent-mode)
   :bind
   ("C-c A" . org-agenda)
   )

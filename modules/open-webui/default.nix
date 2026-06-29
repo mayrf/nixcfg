@@ -5,7 +5,7 @@
     {
       services.open-webui = {
         enable = true;
-        package = pkgs.stable.open-webui;
+        package = pkgs.open-webui;
         stateDir = "/var/lib/open-webui";
         port = 8080;
         environment = {

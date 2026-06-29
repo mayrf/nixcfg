@@ -22,9 +22,6 @@
       systemd.settings.Manager = {
         DefaultLimitNOFILE = "1048576";
       };
-      systemd.user.extraConfig = ''
-        DefaultLimitNOFILE=1048576
-      '';
       programs.gamemode.enable = true;
       environment.sessionVariables = {
         STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
