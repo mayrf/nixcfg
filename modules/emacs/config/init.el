@@ -14,12 +14,12 @@
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 100)
   :custom
   (visible-bell t)
-  (xref-search-program 'ripgrep)                  ;; Use a faster grep implementation for regexp search inside files 
-  (column-number-mode t)                          ;; Display the column number in the mode line.
-  (global-visual-line-mode 1)                     ;; Wraps lines
-  
-  :hook                                           ;; Add hooks to enable specific features in certain modes.
-  (prog-mode . display-line-numbers-mode)         ;; Enable line numbers in programming modes.
+  (xref-search-program 'ripgrep) ;; Use a faster grep implementation for regexp search inside files 
+  (column-number-mode t) ;; Display the column number in the mode line.
+  (global-visual-line-mode 1) ;; Wraps lines
+
+  :hook	;; Add hooks to enable specific features in certain modes.
+  (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
   )
 
 
@@ -49,6 +49,15 @@
 (use-package magit
   :bind (("C-x g" . magit-status)
 	 ("C-x C-g" . magit-status))
+  :config
+  (defun my/magit-soft-reset-head~1 ()
+    "Soft reset current git repo to HEAD~1."
+    (interactive)
+    (magit-reset-soft "HEAD~1"))
+  (transient-append-suffix 'magit-fetch "-p"
+    '("-t" "Fetch all tags" ("-t" "--tags")))
+  (transient-append-suffix 'magit-pull "-r"
+    '("-a" "Autostash" "--autostash"))
   )
 
 
@@ -141,14 +150,18 @@
 
 (use-package org
   :ensure nil
-  :custom
-  (org-directory "~/Documents/org")
-  (org-agenda-files `(,(expand-file-name "private/todo.org" org-directory)))
-  (org-refile-targets ())
+  :init
+  (setq org-directory "~/Documents/org")
   :hook
   (org-mode . org-indent-mode)
   :bind
   ("C-c A" . org-agenda)
+  :config
+  (setq org-agenda-files
+        (seq-filter #'file-exists-p
+                    (list (expand-file-name "private/todo.org" org-directory)
+                          (expand-file-name "work/tasks.org" org-directory))))
+  (setq org-refile-targets ())
   )
 
 (use-package org-roam
