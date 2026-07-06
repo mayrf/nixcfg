@@ -6,7 +6,8 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 
-
+(add-to-list 'auto-mode-alist '("\\.pdf\\'" . doc-view-mode))
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (use-package emacs
   :ensure nil
@@ -32,6 +33,8 @@
          ("C-c C-d" . #'helpful-at-point))
   )
 
+(global-set-key (kbd "<f5>") #'project-recompile)
+(global-set-key (kbd "S-<f5>") #'project-compile)
 
 (use-package jinx
   :custom
@@ -168,6 +171,14 @@
   :after org
   :custom
   (org-roam-directory (expand-file-name "shared/roam" org-directory))
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
   :config
   (org-roam-db-autosync-mode)
   )
@@ -219,6 +230,8 @@ installed."
 (setq custom-file "~/.config/nixcfg/modules/emacs/config/custom.el")
 (load custom-file)
 
+(use-package nix-ts-mode
+  :mode "\\.nix\\'")
 
 (use-package ellama
   :ensure t
@@ -238,3 +251,7 @@ installed."
   (ellama-context-header-line-global-mode +1)
   ;; show ellama session id in header line in all buffers
   (ellama-session-header-line-global-mode +1))
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+(add-to-list 'major-mode-remap-alist
+             '(c-or-c++-mode . c-or-c++-ts-mode))

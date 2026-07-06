@@ -26,8 +26,15 @@
       ...
     }:
     {
-      home.packages = [ pkgs.claude-agent-acp ];
-
+      home.packages = with pkgs; [
+	# agent-shell
+	claude-agent-acp
+	# doc-view-mode
+	mupdf
+	# elfeed yt
+	mpv
+	yt-dlp-light
+      ];
     };
   flake.modules.homeManager.emacs =
     {

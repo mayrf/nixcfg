@@ -214,7 +214,7 @@
 
               terminal =
                 if host.hostName == "helium" then
-                  "${pkgs.kitty}/bin/kitty"
+                  "${pkgs.alacritty}/bin/alacritty"
                 else
                   "${pkgs.unstable.ghostty}/bin/ghostty";
               terminal-exec = "${pkgs.unstable.ghostty}/bin/ghostty -e";
