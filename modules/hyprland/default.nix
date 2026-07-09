@@ -224,7 +224,7 @@
               filemanager = "${pkgs.yazi}/bin/yazi";
 
               brave = "${pkgs.brave}/bin/brave";
-              editor = "dotemacs";
+              editor = "vanemacs";
               vanilla_emacs = "${pkgs.emacs}/bin/emacsclient -s vanilla -c";
               hyprctl = "${pkgs.hyprland}/bin/hyprctl";
               #   exec=${pkgs.swaybg}/bin/swaybg -i ${config.wallpaper} --mode fill

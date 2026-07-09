@@ -1,16 +1,27 @@
-;; -*- lexical-binding: t; -*-
+; -*- lexical-binding: t; -*-
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq use-package-always-ensure t)
 
-(tool-bar-mode 0)
-(menu-bar-mode 0)
+
+(use-package no-littering
+  :init
+  (let ((dir (no-littering-expand-var-file-name "lock-files/")))
+    (make-directory dir t)
+    (setq lock-file-name-transforms `((".*" ,dir t))))
+  )
 
 (add-to-list 'auto-mode-alist '("\\.pdf\\'" . doc-view-mode))
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (add-hook 'prog-mode-hook 'electric-pair-mode)
 
+(require 'server)
+(setq server-name "emacs")
+(add-hook 'after-init-hook
+          (lambda ()
+            (unless (server-running-p)
+              (server-start))))
 
 (use-package emacs
   :ensure nil
@@ -21,7 +32,8 @@
   (xref-search-program 'ripgrep) ;; Use a faster grep implementation for regexp search inside files 
   (column-number-mode t) ;; Display the column number in the mode line.
   (global-visual-line-mode 1) ;; Wraps lines
-
+  :config
+  (recentf-mode)
   :hook	;; Add hooks to enable specific features in certain modes.
   (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
   )
@@ -38,6 +50,15 @@
 
 (global-set-key (kbd "<f5>") #'project-recompile)
 (global-set-key (kbd "S-<f5>") #'project-compile)
+
+(defun my/compile-from-parent-dir ()
+  "Run `compile' with default-directory set to the parent dir of the current file."
+  (interactive)
+  (let ((default-directory
+         (if buffer-file-name
+             (file-name-directory buffer-file-name)
+           default-directory)))
+    (call-interactively #'compile)))
 
 (use-package jinx
   :custom
@@ -122,7 +143,13 @@
 ;; Save modified bookmark list automatically
 (bookmark-save)
 
-
+(use-package yasnippet
+  :config
+  (setq yas-snippet-dirs
+	`("~/.config/dotemacs/snippets"	;; personal
+	  )
+	)
+  )
 ;; (use-package yasnippet-snippets)
 ;; (use-package yasnippet 
 ;;   :after yasnippet-snippets
@@ -167,10 +194,23 @@
 
   :config
   (setq org-agenda-files
+        (append (seq-filter #'file-exists-p
+			    (list (expand-file-name "private/todo.org" org-directory)
+				  (expand-file-name "work/tasks.org" org-directory)))
+		(if (file-directory-p "~/Documents/org/work/jira")
+		    (directory-files "~/Documents/org/work/jira" t ".org")
+		  '()
+		  )
+		)
+	)
+
+
+  (setq org-refile-files
         (seq-filter #'file-exists-p
-                    (list (expand-file-name "private/todo.org" org-directory)
-                          (expand-file-name "work/tasks.org" org-directory))))
-  (setq org-refile-targets ())
+		    (list (expand-file-name "private/someday.org" org-directory)
+			  (expand-file-name "work/someday.org" org-directory))))
+  (setq org-refile-targets `((nil :maxlevel . 9)
+			     (org-refile-files :maxlevel . 3)))
   )
 
 (use-package org-roam
@@ -238,6 +278,11 @@ installed."
 
 (use-package nix-ts-mode
   :mode "\\.nix\\'")
+
+(use-package org-jira
+  :config
+  (setq org-jira-working-dir (expand-file-name "work/jira" org-directory))
+  (setq jiralib-url (getenv "JIRA_URL")))
 
 (use-package ellama
   :ensure t

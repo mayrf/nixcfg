@@ -2,8 +2,13 @@
   inputs,
   self,
   lib,
+  pkgs,
   ...
 }:
+let
+  client-or-server = ''emacsclient --socket-name=emacs --create-frame --alternate-editor="emacs --init-directory=~/.config/nixcfg/modules/emacs/config" "$@"'';
+  
+in
 {
   flake.modules.nixos.emacs =
     {
@@ -25,8 +30,25 @@
       host,
       ...
     }:
+    let
+      emacs = (
+        (pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages (epkgs: [
+          epkgs.vterm
+          epkgs.emacsql
+          epkgs.pdf-tools
+          epkgs.org
+          epkgs.treesit-grammars.with-all-grammars
+          epkgs.jinx
+        ])
+      );
+    in
     {
       home.packages = with pkgs; [
+	"${emacs}"
+	(pkgs.writeShellScriptBin "vanemacs" ''
+          ${client-or-server}
+	'')
+	
 	# agent-shell
 	claude-agent-acp
 	# doc-view-mode
@@ -34,6 +56,8 @@
 	# elfeed yt
 	mpv
 	yt-dlp-light
+
+	
       ];
     };
   flake.modules.homeManager.emacs =
@@ -46,85 +70,19 @@
       host,
       ...
     }:
-    let
-      emacs = (
-        (pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages (epkgs: [
-          epkgs.vterm
-          epkgs.emacsql
-          epkgs.pdf-tools
-          epkgs.org
-          epkgs.treesit-grammars.with-all-grammars
-          epkgs.jinx
-        ])
-      );
-      repoUrl = "https://github.com/doomemacs/doomemacs";
-      emacsBinPath = "${emacs}/bin";
-      socketDir = "%t/emacs";
-    in
     {
       features.impermanence.directories = [
         ".config/emacs-doom"
         ".config/dotemacs"
       ];
 
-      imports = [
-        inputs.dotemacs.homeConfigurations.x86_64-linux.dotemacs
-      ];
-
+  
       home.file."${config.xdg.configHome}/enchant".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Documents/org/shared/.config/enchant";
 
-      services.emacs = {
-        enable = true;
-        package = emacs;
-      };
-
-      home.activation =
-        let
-          source = "${host.flakeDir}/modules/emacs/vanilla";
-          target = "${config.xdg.configHome}/emacs";
-        in
-        {
-          emacsActivationAction = ''
-                 link_repo() {
-            rm -r ${target}
-                   ln -sf ${source} ${target}
-                 }
-                 if [ ! -d "${target}" ] || [ -z "$(ls "${target}")" ]; then
-                     link_repo
-                 elif [ ! -L "${target}" ]; then
-                     TEMP_DIR=$(mktemp -d)
-                     mv ${target}/{.,}* $TEMP_DIR
-                     link_repo
-                     mv $TEMP_DIR/{.,}* ${target}
-                     rm -r $TEMP_DIR
-                 fi
-          '';
-          doomEmacsActivationAction = ''
-            check_dir() {
-                local dir="$1"
-                [ ! -d "$dir" ] || [ -z "$(ls "$dir")" ]
-            }
-
-            DOOM_EMACS_DIR="${config.xdg.configHome}/emacs-doom"
-            DOOM="${config.xdg.configHome}/doom"
-
-            if check_dir "$DOOM_EMACS_DIR"; then
-                rm -rf $DOOM_EMACS_DIR/*
-                ${pkgs.git}/bin/git clone --depth=1 --single-branch "${repoUrl}" $DOOM_EMACS_DIR
-            fi
-
-            if [ ! -e "$DOOM" ]; then
-              ln -s ${host.flakeDir}/modules/emacs/doom $DOOM
-            fi
-          '';
-        };
-      home.sessionVariables = {
-        EMACS_DIR = "${config.xdg.configHome}/emacs";
-        DOOM = "${config.xdg.configHome}/doom";
-        DOOMDIR = "${config.xdg.configHome}/doom";
-      };
-
+  
+          
+  
       home.packages = with pkgs; [
         # vanilla fonts:
         dejavu_fonts
@@ -232,24 +190,11 @@
         WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
         EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
       '';
-      xdg.configFile."dotemacs/.env".text = ''
-        WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
-        EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
-      '';
       programs.git.settings = {
         gitlab.${osConfig.work.gitForgeHost}.user = "${osConfig.work.gitUser}";
         gitlab."${osConfig.work.gitForgeHost}/api/v4".user = "${osConfig.work.gitUser}";
       };
 
       home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
-
-      home.shellAliases = {
-        "emacs" = "${emacs}/bin/emacs";
-        "doom-emacs" = "${emacs}/bin/emacs --init-directory ${config.xdg.configHome}/emacs-doom &";
       };
-      # programs.emacs = {
-      #   enable = true;
-      #   package = lib.mkForce emacs;
-      # };
-    };
 }

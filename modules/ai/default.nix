@@ -1,7 +1,12 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.modules.homeManager.ai =
-    { config, pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     {
       features.impermanence.directories = [
         ".config/fabric"
@@ -28,6 +33,7 @@
 
       home.packages = with pkgs; [
         unstable.opencode
+        # inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.default
         fabric-ai
         aider-chat
         unstable.codex

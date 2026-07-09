@@ -59,14 +59,9 @@
     };
     nvf.url = "github:notashelf/nvf";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
-
-    # set path to your cloned posimacs repo, which is a nix flake
-    dotemacs = {
-      url = "path:/home/mayrf/.config/dotemacs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     import-tree.url = "github:vic/import-tree";
     claude-code.url = "github:sadjow/claude-code-nix";
+    opencode.url = "github:anomalyco/opencode";
     flake-parts.url = "github:hercules-ci/flake-parts";
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
     nix-index-database.url = "github:nix-community/nix-index-database";

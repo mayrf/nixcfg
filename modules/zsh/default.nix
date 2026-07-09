@@ -47,7 +47,6 @@
           size = 100000;
         };
         initContent = ''
-          source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
           eval "$(direnv hook zsh)"
 
           # functions
