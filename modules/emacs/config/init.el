@@ -9,6 +9,9 @@
 (add-to-list 'auto-mode-alist '("\\.pdf\\'" . doc-view-mode))
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
+(add-hook 'prog-mode-hook 'electric-pair-mode)
+
+
 (use-package emacs
   :ensure nil
   :init
@@ -158,7 +161,10 @@
   :hook
   (org-mode . org-indent-mode)
   :bind
-  ("C-c A" . org-agenda)
+  ("C-c l" . org-store-link)
+  ("C-c a" . org-agenda)
+  ("C-c c" . org-capture)
+
   :config
   (setq org-agenda-files
         (seq-filter #'file-exists-p
