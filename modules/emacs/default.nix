@@ -49,15 +49,13 @@ in
           ${client-or-server}
 	'')
 	
-	# agent-shell
-	claude-agent-acp
-	# doc-view-mode
-	mupdf
-	# elfeed yt
-	mpv
-	yt-dlp-light
 
+	claude-agent-acp # agent-shell
 	
+	mupdf # doc-view-mode
+	mpv # elfeed yt
+	yt-dlp-light
+	clang-tools # clangd (c-lsp)
       ];
     };
   flake.modules.homeManager.emacs =

@@ -6,6 +6,7 @@
 
 (use-package no-littering
   :init
+  (no-littering-theme-backups)
   (let ((dir (no-littering-expand-var-file-name "lock-files/")))
     (make-directory dir t)
     (setq lock-file-name-transforms `((".*" ,dir t))))
@@ -150,20 +151,6 @@
 	  )
 	)
   )
-;; (use-package yasnippet-snippets)
-;; (use-package yasnippet 
-;;   :after yasnippet-snippets
-;;   :custom
-;;   (yas-expand-snippet-on-input nil)
-;;   :config
-;;   (setq yas-snippet-dirs
-;;      `("~/.config/dotemacs/snippets"                 ;; personal snippets
-;;          ,(expand-file-name "yasnippet-snippets/snippets" elpaca-repos-directory) ;; Add collection https://github.com/AndreaCrotti/yasnippet-snippets
-;;        ;; "~/.config/dotemacs/var/elpaca/repos/yasnippet-snippets/snippets"
-;;           ))
-
-;;   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
-;;   )
 
 
 (use-package embark
@@ -181,53 +168,9 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package org
-  :ensure nil
-  :init
-  (setq org-directory "~/Documents/org")
-  :hook
-  (org-mode . org-indent-mode)
-  :bind
-  ("C-c l" . org-store-link)
-  ("C-c a" . org-agenda)
-  ("C-c c" . org-capture)
-
-  :config
-  (setq org-agenda-files
-        (append (seq-filter #'file-exists-p
-			    (list (expand-file-name "private/todo.org" org-directory)
-				  (expand-file-name "work/tasks.org" org-directory)))
-		(if (file-directory-p "~/Documents/org/work/jira")
-		    (directory-files "~/Documents/org/work/jira" t ".org")
-		  '()
-		  )
-		)
-	)
 
 
-  (setq org-refile-files
-        (seq-filter #'file-exists-p
-		    (list (expand-file-name "private/someday.org" org-directory)
-			  (expand-file-name "work/someday.org" org-directory))))
-  (setq org-refile-targets `((nil :maxlevel . 9)
-			     (org-refile-files :maxlevel . 3)))
-  )
-
-(use-package org-roam
-  :after org
-  :custom
-  (org-roam-directory (expand-file-name "shared/roam" org-directory))
-  (org-roam-completion-everywhere t)
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
-  :config
-  (org-roam-db-autosync-mode)
-  )
+(load (expand-file-name "lisp/setup-org" user-emacs-directory))
 
 (use-package corfu
   :custom
@@ -241,26 +184,17 @@
   (global-corfu-mode)
   )
 
+(use-package cape
+  ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
+  ;; Press C-c p ? to for help.
+  :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
+
+  :init
+  (add-hook 'completion-at-point-functions #'cape-file)
+  )
+
 
 (use-package agent-shell)
-
-
-(use-package org-cliplink
-  :after org
-  :commands org-cliplink
-  :bind
-  (:map org-mode-map
-        ("C-c l c" . org-cliplink)))
-
-(defun my/markdown-to-org-region (start end)
-  "Convert Markdown formatted text in region (START, END) to Org.
-
-This command requires that pandoc (man page `pandoc(1)') be
-installed."
-  (interactive "r")
-  (shell-command-on-region
-   start end
-   "pandoc -f markdown -t org --wrap=preserve" t t))
 
 (use-package direnv
   :config
@@ -279,10 +213,8 @@ installed."
 (use-package nix-ts-mode
   :mode "\\.nix\\'")
 
-(use-package org-jira
-  :config
-  (setq org-jira-working-dir (expand-file-name "work/jira" org-directory))
-  (setq jiralib-url (getenv "JIRA_URL")))
+
+
 
 (use-package ellama
   :ensure t
@@ -302,7 +234,10 @@ installed."
   (ellama-context-header-line-global-mode +1)
   ;; show ellama session id in header line in all buffers
   (ellama-session-header-line-global-mode +1))
+
 (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
 (add-to-list 'major-mode-remap-alist
              '(c-or-c++-mode . c-or-c++-ts-mode))
+(add-hook 'c-ts-mode-hook 'eglot-ensure)
+
