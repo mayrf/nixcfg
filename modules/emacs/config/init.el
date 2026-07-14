@@ -39,6 +39,36 @@
   (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
   )
 
+(use-package ef-themes
+  :init
+  (ef-themes-take-over-modus-themes-mode 1)
+  :bind
+  (("<f7>" . modus-themes-rotate)
+   ("C-<f7>" . modus-themes-select)
+   ("M-<f7>" . modus-themes-load-random))
+  :config
+
+  ;; Finally, load your theme of choice (or a random one with
+  ;; `modus-themes-load-random', `modus-themes-load-random-dark',
+  ;; `modus-themes-load-random-light').
+  (modus-themes-load-theme 'ef-maris-dark))
+
+
+
+(use-package popper
+  :bind (("C-`"   . popper-toggle)
+         ("C-M-`" . popper-toggle-type))
+         ("M-`"   . popper-cycle)
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+	  "\\*Warnings\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          help-mode
+          compilation-mode))
+  (popper-mode +1)
+  (popper-echo-mode +1))                ; For echo area hints
 
 (use-package helpful
   :bind (("C-h v" . #'helpful-variable)
