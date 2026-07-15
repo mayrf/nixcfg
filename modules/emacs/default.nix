@@ -51,11 +51,18 @@ in
 	
 
 	claude-agent-acp # agent-shell
-	
+	clang-tools # clangd (c-lsp)	
 	mupdf # doc-view-mode
 	mpv # elfeed yt
-	yt-dlp-light
-	clang-tools # clangd (c-lsp)
+	(pkgs.yt-dlp.overrideAttrs (_: {
+	  version = "2026.07.04";
+	  src = pkgs.fetchFromGitHub {
+            owner = "yt-dlp";
+            repo = "yt-dlp";
+            tag = "2026.07.04";
+            hash = "sha256-+oHcVylLXFJTRR6jXF6IXvgntXJz0tRdtnwTruRPkoc=";
+	  };
+	}))
       ];
     };
   flake.modules.homeManager.emacs =
@@ -188,6 +195,7 @@ in
         WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
         EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
       '';
+
       programs.git.settings = {
         gitlab.${osConfig.work.gitForgeHost}.user = "${osConfig.work.gitUser}";
         gitlab."${osConfig.work.gitForgeHost}/api/v4".user = "${osConfig.work.gitUser}";
