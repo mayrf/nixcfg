@@ -35,6 +35,7 @@
   (global-visual-line-mode 1) ;; Wraps lines
   :config
   (recentf-mode)
+  (which-key-mode)
   :hook	;; Add hooks to enable specific features in certain modes.
   (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
   )
@@ -135,7 +136,12 @@
   :init
   (marginalia-mode))
 
-(use-package consult)
+(use-package consult
+  :bind
+  (
+   ("C-x b" . consult-buffer)
+   )
+  )
 (use-package prescient)
 
 (use-package orderless
@@ -270,4 +276,10 @@
 (add-to-list 'major-mode-remap-alist
              '(c-or-c++-mode . c-or-c++-ts-mode))
 (add-hook 'c-ts-mode-hook 'eglot-ensure)
+(add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
+(add-hook 'ruby-ts-mode 'eglot-ensure)
 
+(use-package web-mode
+  :mode
+  ("\\.erb\\'" . web-mode)
+  )

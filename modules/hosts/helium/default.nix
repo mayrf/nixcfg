@@ -76,6 +76,7 @@ in
       imports = [
         self.modules.nixos.base
         self.modules.nixos.general
+        self.modules.nixos.desktop
         self.modules.nixos.common
         self.modules.nixos.impermanence
         self.modules.nixos.sops

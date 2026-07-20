@@ -33,7 +33,6 @@
   )
 
 (use-package org-roam
-  :after org
   :custom
   (org-roam-directory (expand-file-name "shared/roam" org-directory))
   (org-roam-completion-everywhere t)
@@ -44,6 +43,8 @@
          ("C-c n c" . org-roam-capture)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
+  :bind-keymap
+  ("C-c n d" . org-roam-dailies-map)
   :config
   (org-roam-db-autosync-mode)
   )

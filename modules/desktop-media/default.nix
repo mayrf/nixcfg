@@ -16,14 +16,12 @@
       ];
 
       home.packages = with pkgs; [
-        # minitube
         mpv
         deluge
         freetube
         tor-browser
         vlc
         brave
-        firefox
         nautilus
         sushi
       ];

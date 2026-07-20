@@ -118,6 +118,7 @@ in
         self.modules.nixos.base
         self.modules.nixos.common
         self.modules.nixos.general
+        self.modules.nixos.desktop
         self.modules.nixos.impermanence
         self.modules.nixos.emacs
         self.modules.nixos.claude

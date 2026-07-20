@@ -29,13 +29,13 @@ in
         self.modules.homeManager.emacs-vanilla
         self.modules.homeManager.nvim
         self.modules.homeManager.zed
+        self.modules.homeManager.firefox
         inputs.dotfiles-private.modules.homeManager.radium
       ];
 
       home.packages = with pkgs; [
         mariadb
         grafana-alloy
-        firefox
         camunda-modeler
         uv
         ollama
