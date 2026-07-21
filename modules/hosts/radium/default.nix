@@ -71,6 +71,7 @@ in
       host = {
         username = "mayrf";
       };
+      work.enabled = true;
       networking.hostName = "radium";
 
       programs.nix-ld.enable = true;

@@ -32,7 +32,7 @@
         profiles.${osConfig.host.username} = {
           search = {
             # default = "brave";
-            default = "DuckDuckGo";
+            default = "ddg";
 
 
             force = true;

@@ -73,6 +73,11 @@
       };
 
       options.work = {
+	enabled = lib.mkOption {
+	  type = lib.types.bool;
+	  default = false;
+	  description = "Whether this host is a work machine";
+	};
         gitForgeHost = lib.mkOption {
           type = lib.types.str;
           default = "";

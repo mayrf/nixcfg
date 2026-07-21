@@ -30,6 +30,7 @@
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 100)
   :custom
   (visible-bell t)
+  (repeat-mode t)
   (xref-search-program 'ripgrep) ;; Use a faster grep implementation for regexp search inside files 
   (column-number-mode t) ;; Display the column number in the mode line.
   (global-visual-line-mode 1) ;; Wraps lines
@@ -117,6 +118,24 @@
     '("-t" "Fetch all tags" ("-t" "--tags")))
   (transient-append-suffix 'magit-pull "-r"
     '("-a" "Autostash" "--autostash"))
+  )
+
+(use-package load-env-vars
+  :config
+  (load-env-vars (file-name-concat (getenv "XDG_CONFIG_HOME") "emacs/.env")))
+(when (getenv "WORK_GITFORGE_HOST")
+  (use-package forge
+    ;; :after magit
+    :config
+    (setq auth-sources `(,(getenv "EMACS_AUTHINFO_PATH"))
+	  work-gitforge-host (getenv "WORK_GITFORGE_HOST"))
+    (add-to-list 'forge-alist `( ,work-gitforge-host ; GITHOST
+			         ,(concat work-gitforge-host "/api/v4") ; APIHOST
+			         ;; ,work-gitforge-host ; APIHOST
+			         ,work-gitforge-host ; WEBHOST and INSTANCE-ID
+			         forge-gitlab-repository) ; CLASS
+	         )
+    )
   )
 
 
@@ -236,6 +255,12 @@
   :config
   (direnv-mode))
 
+;; (org-excalidraw
+;;  :vc (:url "https://github.com/4honor/org-excalidraw"
+;; 	   :branch "main"))
+
+
+
 (use-package embark
   :bind
   (("C-." . embark-act)	 ;; pick some comfortable binding
@@ -249,6 +274,21 @@
 (use-package nix-ts-mode
   :mode "\\.nix\\'")
 
+
+
+(load (expand-file-name "lisp/kcl-ts-mode.el" user-emacs-directory))
+(load (expand-file-name "lisp/org-excalidraw.el" user-emacs-directory))
+(add-to-list 'treesit-language-source-alist
+               '(kcl "https://github.com/kcl-lang/tree-sitter-kcl"))
+
+;;  Install all treesitter grammars defined in treesit-install-language-grammar
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (mapc (lambda (lang)
+                    (unless (treesit-language-available-p lang)
+                      (treesit-install-language-grammar lang)))
+                  (mapcar #'car treesit-language-source-alist))))
 
 
 
@@ -283,3 +323,10 @@
   :mode
   ("\\.erb\\'" . web-mode)
   )
+
+(defun kcl-run-current-file ()
+  "Run \"kcl run\" in the directory of the current buffer's file."
+  (interactive)
+  (let ((default-directory (file-name-directory (or (buffer-file-name)
+                                                      (error "Buffer is not visiting a file")))))
+    (compile "kcl run")))

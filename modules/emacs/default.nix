@@ -64,6 +64,14 @@ in
 	  };
 	}))
       ];
+      home.file."org".source = config.lib.file.mkOutOfStoreSymlink (if osConfig.work.enabled then "${config.home.homeDirectory}/Documents/org/work" else "${config.home.homeDirectory}/Documents/org/private");
+
+
+      home.activation.roamSymlinks = lib.hm.dag.entryAfter ["writeBoundary"] ''
+	ln -sfn ${config.home.homeDirectory}/Documents/org/shared/org ${config.home.homeDirectory}/org/shared
+        mkdir -p ${config.home.homeDirectory}/org/roam
+	ln -sfn ${config.home.homeDirectory}/Documents/org/shared/roam ${config.home.homeDirectory}/org/roam/shared 
+      '';
     };
   flake.modules.homeManager.emacs =
     {

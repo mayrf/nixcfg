@@ -3,7 +3,7 @@
 (use-package org
   :ensure nil
   :init
-  (setq org-directory "~/Documents/org")
+  (setq org-directory "~/org")
   :hook
   (org-mode . org-indent-mode)
   :bind
@@ -14,10 +14,10 @@
   :config
   (setq org-agenda-files
         (append (seq-filter #'file-exists-p
-			    (list (expand-file-name "private/todo.org" org-directory)
-				  (expand-file-name "work/tasks.org" org-directory)))
-		(if (file-directory-p "~/Documents/org/work/jira")
-		    (directory-files "~/Documents/org/work/jira" t ".org")
+			    (list (expand-file-name "todo.org" org-directory)
+				  ))
+		(if (file-directory-p "~/org/jira")
+		    (directory-files "~/org/jira" t ".org")
 		  '()
 		  )
 		)
@@ -26,15 +26,14 @@
 
   (setq org-refile-files
         (seq-filter #'file-exists-p
-		    (list (expand-file-name "private/someday.org" org-directory)
-			  (expand-file-name "work/someday.org" org-directory))))
+		    (list (expand-file-name "work/someday.org" org-directory))))
   (setq org-refile-targets `((nil :maxlevel . 9)
 			     (org-refile-files :maxlevel . 3)))
   )
 
 (use-package org-roam
   :custom
-  (org-roam-directory (expand-file-name "shared/roam" org-directory))
+  (org-roam-directory (expand-file-name "roam" org-directory))
   (org-roam-completion-everywhere t)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
@@ -71,7 +70,7 @@ installed."
 (when (getenv "JIRA_URL")
   (use-package org-jira
     :config
-    (setq org-jira-working-dir (expand-file-name "work/jira" org-directory))
+    (setq org-jira-working-dir (expand-file-name "jira" org-directory))
     (setq jiralib-url (getenv "JIRA_URL"))))
 
 (provide 'setup-org)
