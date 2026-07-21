@@ -41,11 +41,33 @@
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
          ;; Dailies
+	 :map org-roam-dailies-map
+	 ("Y" . org-roam-dailies-capture-yesterday)
+         ("T" . org-roam-dailies-capture-tomorrow)
          ("C-c n j" . org-roam-dailies-capture-today))
   :bind-keymap
   ("C-c n d" . org-roam-dailies-map)
   :config
+  (require 'org-roam-dailies)
   (org-roam-db-autosync-mode)
+
+  (defun my/org-roam-dailies-timestamp-if-today ()
+    "Return an HH:MM stamp, but only if the capture target date is today."
+    (let ((target (or org-overriding-default-time (current-time))))
+      (if (equal (format-time-string "%Y-%m-%d" target)
+		 (format-time-string "%Y-%m-%d" (current-time)))
+          (format-time-string "[%H:%M] ")
+	"")))
+
+  (setq org-roam-dailies-capture-templates
+	`(("d" "default" entry
+           "* %(my/org-roam-dailies-timestamp-if-today)%?"
+           :target (file+head
+                    "%<%Y-%m-%d>.org"
+                    ,(format "%%[%s]"
+                             (expand-file-name "templates/daily-head.org"
+                                               org-roam-directory))))))
+  
   )
 
 (use-package org-cliplink
