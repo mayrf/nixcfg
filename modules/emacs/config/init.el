@@ -12,7 +12,6 @@
     (setq lock-file-name-transforms `((".*" ,dir t))))
   )
 
-(add-to-list 'auto-mode-alist '("\\.pdf\\'" . doc-view-mode))
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (add-hook 'prog-mode-hook 'electric-pair-mode)
@@ -80,6 +79,9 @@
          ("C-h F" . #'helpful-function)
          ("C-c C-d" . #'helpful-at-point))
   )
+
+(use-package dired-preview)
+
 
 (global-set-key (kbd "<f5>") #'project-recompile)
 (global-set-key (kbd "S-<f5>") #'project-compile)
@@ -191,6 +193,7 @@
      nil)))
 
 ;; Example predefined bookmarks:
+(my-add-bookmark-if-missing "org" "~/org/")
 (my-add-bookmark-if-missing "shared" "~/Documents/org/shared/")
 (my-add-bookmark-if-missing "work" "~/Documents/org/work/")
 (my-add-bookmark-if-missing "init.el" "~/.config/nixcfg/modules/emacs/config/init.el")
@@ -246,7 +249,7 @@
 
   :init
   (add-hook 'completion-at-point-functions #'cape-file)
-  )
+)
 
 
 (use-package agent-shell)
@@ -330,3 +333,12 @@
   (let ((default-directory (file-name-directory (or (buffer-file-name)
                                                       (error "Buffer is not visiting a file")))))
     (compile "kcl run")))
+
+(use-package pdf-tools
+  :ensure nil
+  :magic ("%PDF" . pdf-view-mode)
+  ;; :init
+  ;; (pdf-loader-install)
+  ;; :config
+  ;; (pdf-tools-install :no-query)
+  )
