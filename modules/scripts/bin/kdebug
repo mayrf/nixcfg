@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# kdebug - spin up an ephemeral netshoot pod for network debugging
+#
+# Usage:
+#   kdebug.sh                                    # shell, default namespace
+#   kdebug.sh -n cattle-system                   # shell in a namespace
+#   kdebug.sh curl -vk https://host/ping          # run a one-off command
+#   kdebug.sh --node worker-3 curl -vk https://host/ping
+#   kdebug.sh -n cattle-system --node worker-3 bash
+#
+# Install:
+#   chmod +x kdebug.sh
+#   sudo mv kdebug.sh /usr/local/bin/kdebug
+
+set -euo pipefail
+
+NS=""
+NODE=""
+IMAGE="nicolaka/netshoot"
+POD_NAME="netshoot-$$"
+ARGS=()
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [-n|--namespace NS] [--node NODE] [--image IMAGE] [-- CMD...]
+
+  -n, --namespace NS   Namespace to run the pod in
+      --node NODE      Pin the pod to a specific node (nodeName, no toleration added)
+      --image IMAGE    Override the debug image (default: nicolaka/netshoot)
+  -h, --help           Show this help
+
+If no command is given, drops into an interactive bash shell in the pod.
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -n|--namespace) NS="$2"; shift 2 ;;
+    --node)         NODE="$2"; shift 2 ;;
+    --image)        IMAGE="$2"; shift 2 ;;
+    -h|--help)      usage; exit 0 ;;
+    --)             shift; ARGS+=("$@"); break ;;
+    *)              ARGS+=("$1"); shift ;;
+  esac
+done
+
+KUBECTL_ARGS=(run "$POD_NAME" --rm -it --restart=Never --image="$IMAGE")
+
+[[ -n "$NS" ]] && KUBECTL_ARGS+=(-n "$NS")
+
+if [[ -n "$NODE" ]]; then
+  KUBECTL_ARGS+=(--overrides="{\"spec\":{\"nodeName\":\"$NODE\"}}")
+fi
+
+if [[ ${#ARGS[@]} -eq 0 ]]; then
+  exec kubectl "${KUBECTL_ARGS[@]}" -- bash
+else
+  exec kubectl "${KUBECTL_ARGS[@]}" -- "${ARGS[@]}"
+fi

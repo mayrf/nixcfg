@@ -33,6 +33,8 @@
   (xref-search-program 'ripgrep) ;; Use a faster grep implementation for regexp search inside files 
   (column-number-mode t) ;; Display the column number in the mode line.
   (global-visual-line-mode 1) ;; Wraps lines
+  (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
+  (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
   :config
   (recentf-mode)
   (which-key-mode)

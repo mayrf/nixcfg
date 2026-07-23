@@ -87,6 +87,41 @@ installed."
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
 
+
+(defun my/clipboard-markdown-to-org ()
+  "Convert Markdown text from clipboard and insert as Org-mode at point."
+  (interactive)
+  (let ((md-text (current-kill 0)))
+    (if (string-empty-p md-text)
+        (message "Clipboard is empty.")
+      (let ((org-text
+             (with-temp-buffer
+               (insert md-text)
+               (shell-command-on-region
+                (point-min) (point-max)
+                "pandoc -f markdown -t org"
+                t t nil)
+               (buffer-string))))
+        (insert org-text)
+        (message "Markdown from clipboard inserted as Org.")))))
+
+(defun my/clipboard-org-to-markdown ()
+  "Convert Org-mode text from clipboard and put Markdown back into clipboard."
+  (interactive)
+  (let ((org-text (current-kill 0)))
+    (if (string-empty-p org-text)
+        (message "Clipboard is empty.")
+      (let ((md-text
+             (with-temp-buffer
+               (insert org-text)
+               (shell-command-on-region
+                (point-min) (point-max)
+                "pandoc -f org -t markdown"
+                t t nil)
+               (buffer-string))))
+        (kill-new md-text)
+        (message "Org converted to Markdown and copied to clipboard.")))))
+
 (use-package org-noter)
 
 (when (getenv "JIRA_URL")
