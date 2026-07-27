@@ -33,7 +33,7 @@
 
 (use-package org-roam
   :custom
-  (org-roam-directory (expand-file-name "roam" org-directory))
+  (org-roam-directory (expand-file-name "notes" org-directory))
   (org-roam-completion-everywhere t)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
@@ -69,6 +69,8 @@
                                                org-roam-directory))))))
   
   )
+
+(use-package org-roam-ui)
 
 (use-package org-cliplink
   :after org
@@ -129,5 +131,25 @@ installed."
     :config
     (setq org-jira-working-dir (expand-file-name "jira" org-directory))
     (setq jiralib-url (getenv "JIRA_URL"))))
+
+(use-package denote-roam
+  :vc (:url "https://github.com/BardofSprites/denote-roam"
+       :rev newest)
+  :after (denote org-roam)
+  :bind
+  ("C-c n i" . denote-roam-insert-or-create-node)  ; node insert
+  ("C-c n o" . denote-roam-find-or-create-node)    ; node open
+  :custom
+  ;; default is nil to include denote-journal entries in org-roam database
+  (denote-roam-include-journal nil)
+  (denote-roam-directory "~/org/notes")
+  :config
+  (denote-roam-mode t))
+
+(use-package denote
+  :custom (denote-directory "~/org/notes")
+  :hook
+  (dired-mode . denote-dired-mode)
+  )
 
 (provide 'setup-org)
