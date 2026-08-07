@@ -88,6 +88,7 @@ in
         self.modules.nixos.pipewire
         self.modules.nixos.printing
         self.modules.nixos.theming
+	self.modules.nixos.claude
         ./_hardware-configuration.nix
         ./_distributed-builds.nix
         inputs.dotfiles-private.modules.nixos.helium

@@ -48,6 +48,7 @@
         };
         initContent = ''
           eval "$(direnv hook zsh)"
+	  bindkey -e
 
           # functions
           function y() {

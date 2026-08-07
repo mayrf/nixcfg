@@ -5,7 +5,6 @@
     {
       features.impermanence.directories = [
         ".librewolf"
-        ".mozilla"
         ".cache/librewolf"
       ];
       programs.librewolf.enable = true;

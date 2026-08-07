@@ -329,6 +329,12 @@
   ("\\.erb\\'" . web-mode)
   )
 
+;; (use-package just-mode
+;;   :config
+;;   (just-ts-mode-install-grammar))
+
+(use-package justl)
+
 (defun kcl-run-current-file ()
   "Run \"kcl run\" in the directory of the current buffer's file."
   (interactive)
