@@ -35,8 +35,20 @@
   (global-visual-line-mode 1) ;; Wraps lines
   (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
   (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
+  (frame-resize-pixelwise t)
+  (window-resize-pixelwise t)
+  (save-interprogram-paste-before-kill t)
+  (pixel-scroll-mode t)
+  (savehist-mode t)
+  (save-place-mode t)
+  (recentf-mode t)
+  (delete-selection-mode t)
+  (editorconfig-mode t)
+  (indent-tabs-mode nil)
+  (imenu-auto-rescan t)
+  (which-key-mode t)
+  
   :config
-  (recentf-mode)
   (which-key-mode)
   :hook	;; Add hooks to enable specific features in certain modes.
   (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
