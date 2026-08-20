@@ -26,9 +26,9 @@
 
   (setq org-refile-files
         (seq-filter #'file-exists-p
-		    (list (expand-file-name "work/someday.org" org-directory))))
+		    (list (expand-file-name "todo.org" org-directory))))
   (setq org-refile-targets `((nil :maxlevel . 9)
-			     (org-refile-files :maxlevel . 3)))
+			     (,org-refile-files :maxlevel . 3)))
   )
 
 (use-package org-roam
@@ -151,5 +151,10 @@ installed."
   :hook
   (dired-mode . denote-dired-mode)
   )
+
+(use-package org-transclusion
+  :bind (("S-<f12>" . org-transclusion-add)
+         ("C-c t m" . org-transclusion-transient-menu)
+         ("C-n t t") . org-transclusion-mode))
 
 (provide 'setup-org)
