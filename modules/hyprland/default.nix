@@ -220,7 +220,7 @@
               terminal-exec = "${pkgs.unstable.ghostty}/bin/ghostty -e";
               # browser = "${pkgs.stable.librewolf}/bin/librewolf";
               # browser = "${inputs.zen-browser.homeModules.beta}/bin/zen";
-              browser = "zen-beta";
+              browser = lib.getExe pkgs.firefox;
               filemanager = "${pkgs.yazi}/bin/yazi";
 
               brave = "${pkgs.brave}/bin/brave";
