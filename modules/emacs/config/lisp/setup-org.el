@@ -28,7 +28,7 @@
         (seq-filter #'file-exists-p
 		    (list (expand-file-name "todo.org" org-directory))))
   (setq org-refile-targets `((nil :maxlevel . 9)
-			     (,org-refile-files :maxlevel . 3)))
+			     (,org-refile-files :maxlevel . 1)))
   )
 
 (use-package org-roam

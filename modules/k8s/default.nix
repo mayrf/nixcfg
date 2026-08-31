@@ -22,12 +22,8 @@
         kcl
         kubernetes-helm
         argocd
-        kargo
-        stable.argocd-autopilot
-        minikube
         kind
         kustomize
-        stable.rubyPackages_3_4.rails
       ];
     };
 }
