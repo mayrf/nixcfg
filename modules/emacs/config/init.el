@@ -222,6 +222,7 @@
 	`("~/.config/dotemacs/snippets"	;; personal
 	  )
 	)
+  (yas-global-mode 1)
   )
 
 

@@ -23,14 +23,14 @@ rebuild-update: update && rebuild
 
 update-nix-secrets:
   (cd {{SOPS_DIR}} && git fetch && git rebase) || true
-  nix flake lock --update-input nix-secrets
+  nix flake update nix-secrets
 
 commit-and-push-nix-secrets:
   (cd {{SOPS_DIR}} && git add {{SOPS_FILE}} && git commit -m "Update secrets" && git push)  
-  nix flake lock --update-input nix-secrets
+  nix flake update nix-secrets
 
 
-sops SSH_KEY_PATH:
+sops SSH_KEY_PATH="~/.ssh/id_ed25519":
   (cd {{SOPS_DIR}} && git fetch && git rebase) || true
   echo "Editing {{SOPS_FILE}}"
   nix-shell -p sops --run "SOPS_AGE_KEY=$(nix-shell -p ssh-to-age --run 'cat {{SSH_KEY_PATH}} | ssh-to-age -private-key') ./scripts/sops_with_age_key.sh {{SOPS_FILE}} $(cat {{SSH_KEY_PATH}} | ssh-to-age -private-key)"
