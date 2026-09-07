@@ -46,7 +46,7 @@
         minio-client
         pandoc
         texlab
-        texlive.combined.scheme-full
+        texliveFull
         zola
         hugo
         yaml-language-server

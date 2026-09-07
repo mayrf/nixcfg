@@ -4,6 +4,8 @@
   :ensure nil
   :init
   (setq org-directory "~/org")
+  :custom
+  (org-agenda-start-with-log-mode t)
   :hook
   (org-mode . org-indent-mode)
   :bind
@@ -20,13 +22,21 @@
 		    (directory-files "~/org/jira" t ".org")
 		  '()
 		  )
+                (if (file-directory-p "~/org/calendar/")
+		    (directory-files "~/org/calendar/" t ".org")
+		  '()
+		  )
 		)
 	)
-
-
+  
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (setq org-log-done 'time)
+  (setq org-agenda-log-mode-items '(closed state))
   (setq org-refile-files
         (seq-filter #'file-exists-p
-		    (list (expand-file-name "todo.org" org-directory))))
+		    (list (expand-file-name "todo.org" org-directory)
+                          (expand-file-name "someday.org" org-directory))))
   (setq org-refile-targets `((nil :maxlevel . 9)
 			     (,org-refile-files :maxlevel . 1)))
   )

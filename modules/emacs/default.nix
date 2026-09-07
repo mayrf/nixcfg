@@ -68,10 +68,18 @@ in
 
 
       home.activation.roamSymlinks = lib.hm.dag.entryAfter ["writeBoundary"] ''
-	ln -sfn ${config.home.homeDirectory}/Documents/org/shared/org ${config.home.homeDirectory}/org/shared
-        mkdir -p ${config.home.homeDirectory}/org/roam
-	ln -sfn ${config.home.homeDirectory}/Documents/org/shared/roam ${config.home.homeDirectory}/org/roam/shared 
+        ln -sfn ${config.home.homeDirectory}/Documents/org/shared/org ${config.home.homeDirectory}/org/shared
+        mkdir -p ${config.home.homeDirectory}/org/notes
+        ln -sfn ${config.home.homeDirectory}/Documents/org/shared/notes ${config.home.homeDirectory}/org/roam/notes
       '';
+      sops.secrets."emacs/authinfo" = { };
+
+
+      xdg.configFile."emacs/.env".text = ''
+        EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
+      '' + (if osConfig.work.gitForgeHost != null then ''
+        WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
+      '' else "");
     };
   flake.modules.homeManager.emacs =
     {
@@ -196,13 +204,6 @@ in
         #org mode
         mermaid-cli
       ];
-
-      sops.secrets."emacs/authinfo" = { };
-
-      xdg.configFile."emacs/.env".text = ''
-        WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
-        EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
-      '';
 
       programs.git.settings = {
         gitlab.${osConfig.work.gitForgeHost}.user = "${osConfig.work.gitUser}";

@@ -11,7 +11,7 @@
           "--bind 'ctrl-/:toggle-preview'"
         ];
         defaultCommand = "fd --type f --exclude .git --follow --hidden";
-        changeDirWidgetCommand = "fd --type d --exclude .git --follow --hidden";
+        changeDirWidget.command = "fd --type d --exclude .git --follow --hidden";
       };
     };
 }

@@ -292,6 +292,9 @@
 (use-package nix-ts-mode
   :mode "\\.nix\\'")
 
+(let ((private-file "~/.config/dotfiles-private/config/emacs/private.el"))
+  (when (file-exists-p private-file))
+    (load private-file))
 
 
 (load (expand-file-name "lisp/kcl-ts-mode.el" user-emacs-directory))
@@ -342,9 +345,15 @@
   ("\\.erb\\'" . web-mode)
   )
 
-;; (use-package just-mode
-;;   :config
-;;   (just-ts-mode-install-grammar))
+
+(use-package load-env-vars
+  :demand t
+  :init
+  (load-env-vars (file-name-concat startup--xdg-config-home-emacs ".env")))
+
+(setq auth-sources `(,(getenv "EMACS_AUTHINFO_PATH"))
+      work-gitforge-host (getenv "WORK_GITFORGE_HOST"))
+
 
 (use-package justl)
 

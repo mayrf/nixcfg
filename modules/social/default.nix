@@ -4,6 +4,6 @@
     { config, pkgs, ... }:
     {
       features.impermanence.directories = [ ".config/Signal" ];
-      home.packages = with pkgs; [ signal-desktop hexchat ];
+      home.packages = with pkgs; [ signal-desktop  ];
     };
 }

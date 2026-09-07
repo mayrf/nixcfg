@@ -11,14 +11,17 @@
  '(agent-shell-user-message-expand-by-default t)
  '(auto-save-visited-mode t)
  '(dired-preview-delay 0.0)
+ '(org-modules
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info
+             ol-irc ol-mhe ol-rmail ol-w3m))
  '(package-selected-packages
    '(agent-shell avy cape corfu denote-roam direnv dirvish eat ef-themes
-		 ellama embark-consult evil forge helpful jinx
-		 just-mode justl load-env-vars magit marginalia
-		 nix-ts-mode no-littering orderless org-cliplink
-		 org-jira org-noter org-roam org-roam-ui pdf-tools
-		 popper popper-mode prescient vertico vterm web-mode
-		 yasnippet-snippets))
+                 ellama embark-consult evil forge helpful jinx
+                 just-mode justl load-env-vars magit marginalia
+                 nix-ts-mode no-littering orderless org-cliplink
+                 org-jira org-noter org-roam org-roam-ui pdf-tools
+                 popper popper-mode prescient vertico vterm web-mode
+                 yasnippet-snippets))
  '(package-vc-selected-packages
    '((denote-roam :url "https://github.com/BardofSprites/denote-roam"))))
 (custom-set-faces
