@@ -33,7 +33,6 @@ in
         self.modules.homeManager.emacs-vanilla
         self.modules.homeManager.vscode
         self.modules.homeManager.fonts
-        self.modules.homeManager.hyprland
         self.modules.homeManager.gammastep
         self.modules.homeManager.wofi
         self.modules.homeManager.nextcloudClient
@@ -55,19 +54,6 @@ in
 
       features.impermanence.enable = true;
 
-      wayland.windowManager.hyprland.settings = {
-        monitor = [ "LVDS-1,1366x768@60,0x0,1" ];
-        workspace = [
-          "1, monitor:LVDS-1, default:true"
-          "2, monitor:LVDS-1"
-          "3, monitor:LVDS-1"
-          "4, monitor:LVDS-1"
-          "5, monitor:LVDS-1"
-          "6, monitor:LVDS-1"
-          "7, monitor:LVDS-1"
-        ];
-      };
-
     };
 
   flake.modules.nixos.helium =
@@ -77,7 +63,7 @@ in
         self.modules.nixos.base
         self.modules.nixos.general
         self.modules.nixos.desktop
-        self.modules.nixos.niri
+        self.modules.nixos.mango
         self.modules.nixos.common
         self.modules.nixos.impermanence
         self.modules.nixos.sops
