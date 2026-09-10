@@ -4,6 +4,7 @@
   :ensure nil
   :init
   (setq org-directory "~/org")
+  (setq org-dailies-directory "~/org/notes/shared/daily")
   :custom
   (org-agenda-start-with-log-mode t)
   :hook
@@ -26,6 +27,7 @@
 		    (directory-files "~/org/calendar/" t ".org")
 		  '()
 		  )
+                (directory-files org-dailies-directory t ".org")
 		)
 	)
   
@@ -45,6 +47,7 @@
   :custom
   (org-roam-directory (expand-file-name "notes" org-directory))
   (org-roam-completion-everywhere t)
+  (org-roam-dailies-directory org-dailies-directory)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
@@ -75,7 +78,7 @@
            :target (file+head
                     "%<%Y-%m-%d>.org"
                     ,(format "%%[%s]"
-                             (expand-file-name "templates/daily-head.org"
+                             (expand-file-name "shared/templates/daily-head.org"
                                                org-roam-directory))))))
   
   )
