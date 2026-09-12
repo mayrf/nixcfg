@@ -210,7 +210,7 @@
 (my-add-bookmark-if-missing "org" "~/org/")
 (my-add-bookmark-if-missing "shared" "~/Documents/org/shared/")
 (my-add-bookmark-if-missing "work" "~/Documents/org/work/")
-(my-add-bookmark-if-missing "init.el" "~/.config/nixcfg/modules/emacs/config/init.el")
+(my-add-bookmark-if-missing "init.el" "~/.config/nixcfg/modules/features/apps/emacs/config/init.el")
 (my-add-bookmark-if-missing "private" "~/Documents/org/private/")
 
 ;; Save modified bookmark list automatically
@@ -337,8 +337,13 @@
 (add-to-list 'major-mode-remap-alist
              '(c-or-c++-mode . c-or-c++-ts-mode))
 (add-hook 'c-ts-mode-hook 'eglot-ensure)
+
 (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
 (add-hook 'ruby-ts-mode 'eglot-ensure)
+
+(add-hook 'nix-ts-modes 'eglot-ensure)
+
+(use-package format-all)
 
 (use-package web-mode
   :mode
