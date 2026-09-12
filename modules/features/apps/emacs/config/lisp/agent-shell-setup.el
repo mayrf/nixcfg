@@ -10,19 +10,6 @@
 (use-package agent-shell
   :demand t
   :config
-  ;; run
-  ;; npx mcp-remote https://gitlab.mcp.ai.vienna.hobex.io/mcp --enable-proxy
-  ;; npx mcp-remote https://atlassian.mcp.ai.vienna.hobex.io/mcp --enable-proxy
-  ;; to register
-  (setq agent-shell-mcp-servers
-        '(((name . "atlassian")
-           (type . "stdio")
-           (command . "npx")
-           (args . ["-y" "mcp-remote" "https://ai.vienna.hobex.io/atlassian_mcp/mcp" "--enable-proxy"]))
-          ((name . "gitlab")
-           (type . "stdio")
-           (command . "npx")
-           (args . ["-y" "mcp-remote" "https://ai.vienna.hobex.io/gitlab_mcp/mcp" "--enable-proxy"]))))
   (defun my/agent-shell-git-main-root ()
     "Root of the main worktree, even when called from inside a linked worktree."
     (let ((common-dir (string-trim

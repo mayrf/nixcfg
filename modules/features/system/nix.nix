@@ -34,6 +34,7 @@
         # Nix tooling
         nil
         nixd
+        alejandra
         statix
         nix-inspect
       ];

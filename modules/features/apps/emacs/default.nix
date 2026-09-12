@@ -54,16 +54,9 @@ in
 	clang-tools # clangd (c-lsp)	
 	mupdf # doc-view-mode
 	mpv # elfeed yt
-	(pkgs.yt-dlp.overrideAttrs (_: {
-	  version = "2026.07.04";
-	  src = pkgs.fetchFromGitHub {
-            owner = "yt-dlp";
-            repo = "yt-dlp";
-            tag = "2026.07.04";
-            hash = "sha256-+oHcVylLXFJTRR6jXF6IXvgntXJz0tRdtnwTruRPkoc=";
-	  };
-	}))
-        ccusage
+        yt-dlp
+        ccusage # show claude code usage limits
+        rassumfrassum # Connect an LSP client to multiple LSP Servers
       ];
       home.file."org".source = config.lib.file.mkOutOfStoreSymlink (if osConfig.work.enabled then "${config.home.homeDirectory}/Documents/org/work" else "${config.home.homeDirectory}/Documents/org/private");
 

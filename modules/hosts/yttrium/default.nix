@@ -24,10 +24,7 @@ in
         self.modules.homeManager.cliMedia
         self.modules.homeManager.development
         self.modules.homeManager.k8s
-        self.modules.homeManager.leetcode
-        self.modules.homeManager.yazi
         self.modules.homeManager.scripts
-        self.modules.homeManager.lf
         self.modules.homeManager.git
         self.modules.homeManager.syncthing
         self.modules.homeManager.hmSops
@@ -38,11 +35,9 @@ in
         self.modules.homeManager.zed
         self.modules.homeManager.fonts
         self.modules.homeManager.hyprland
-        self.modules.homeManager.gammastep
         self.modules.homeManager.wofi
         self.modules.homeManager.nextcloudClient
         self.modules.homeManager.virtualisation
-        self.modules.homeManager.postman
         self.modules.homeManager.librewolf
         self.modules.homeManager.gpg
         self.modules.homeManager.zathura
@@ -51,8 +46,6 @@ in
         self.modules.homeManager.social
         self.modules.homeManager.productivity
         self.modules.homeManager.zenBrowser
-        self.modules.homeManager.alacritty
-        self.modules.homeManager.foot
         self.modules.homeManager.ghostty
         inputs.dotfiles-private.modules.homeManager.yttrium
       ];
@@ -97,12 +90,6 @@ in
       };
 
       home.packages = with pkgs; [
-        urbit
-        exercism
-        vimgolf
-        img2pdf
-        gparted
-        code-cursor
         rustdesk-flutter
         anydesk
         stable.teams-for-linux
@@ -131,9 +118,9 @@ in
         self.modules.nixos.open-webui
         self.modules.nixos.pipewire
         self.modules.nixos.printing
+        self.modules.nixos.mango-minimal        
         self.modules.nixos.theming
         self.modules.nixos.virtualisation
-        self.modules.nixos.winapps
         ./_hardware-configuration.nix
         ./_immich-ml-server.nix
         inputs.dotfiles-private.modules.nixos.yttrium
@@ -150,7 +137,7 @@ in
         isImpermanent = true;
       };
       networking.hostName = "yttrium";
-      system.stateVersion = "26.11"; # Did you read the comment?
+      system.stateVersion = "26.11";
 
       persistence.enable = true;
       persistence.user = config.preferences.user.name;
