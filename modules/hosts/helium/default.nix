@@ -64,6 +64,7 @@ in
         self.modules.nixos.general
         self.modules.nixos.desktop
         self.modules.nixos.mango
+        self.modules.nixos.noctalia
         self.modules.nixos.common
         self.modules.nixos.impermanence
         self.modules.nixos.sops

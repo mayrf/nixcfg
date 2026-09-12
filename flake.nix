@@ -42,16 +42,15 @@
     impermanence.url = "github:nix-community/impermanence";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-
-    winapps = {
-      url = "github:winapps-org/winapps";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       # IMPORTANT: we're using "libgbm" and is only available in unstable so ensure
       # to have it up-to-date or simply don't specify the nixpkgs input
       # inputs.nixpkgs.follows = "nixpkgs";
+    };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      # inputs.nixpkgs.follows = "nixpkgs"; # this line is optional, prevents downloading two versions of nixpkgs but disables cache
     };
     nur = {
       url = "github:nix-community/NUR";
