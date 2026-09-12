@@ -12,6 +12,9 @@
  '(agent-shell-user-message-expand-by-default t)
  '(auto-save-visited-mode t)
  '(dired-preview-delay 0.0)
+ '(org-modules
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info
+             ol-irc ol-mhe ol-rmail ol-w3m))
  '(package-selected-packages
    '(agent-shell agent-shell-hq avy cape corfu denote-roam direnv dirvish
                  eat ef-themes ellama embark-consult evil forge
