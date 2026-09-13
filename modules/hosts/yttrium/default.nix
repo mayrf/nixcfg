@@ -118,7 +118,6 @@ in
         self.modules.nixos.open-webui
         self.modules.nixos.pipewire
         self.modules.nixos.printing
-        self.modules.nixos.mango-minimal        
         self.modules.nixos.theming
         self.modules.nixos.virtualisation
         ./_hardware-configuration.nix

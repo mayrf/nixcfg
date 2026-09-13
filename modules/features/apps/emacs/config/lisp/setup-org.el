@@ -5,6 +5,8 @@
   :init
   (setq org-directory "~/org")
   (setq org-dailies-directory "~/org/notes/shared/daily")
+  (setq org-task-file "~/org/todo.org")
+  (setq org-inbox-file "~/org/inbox.org")
   :custom
   (org-agenda-start-with-log-mode t)
   :hook
@@ -41,7 +43,62 @@
                           (expand-file-name "someday.org" org-directory))))
   (setq org-refile-targets `((nil :maxlevel . 9)
 			     (,org-refile-files :maxlevel . 1)))
+  (setq org-capture-templates
+        '(
+          ("i" "inbox" entry
+         (file+headline org-inbox-file "Tasks")
+         "* TODO %?")
+          ("T" "Todo today" entry
+         (file+headline org-task-file "TASKS")
+         "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")))   
   )
+
+(use-package org-super-agenda
+  :ensure t
+  :after org          ; <── this is the key sequencing directive
+  :custom
+  (org-super-agenda-groups
+   '(;; ── Overdue – always at the top ──────────────────────────────────────
+     (:name "⚠ Overdue"
+      :and (:scheduled past :not (:todo "DONE"))
+      :face (:foreground "red"))
+
+     ;; ── Today's time-blocked items ────────────────────────────────────────
+     (:name "Today"
+      :time-grid t
+      :todo "NEXT"
+      :date today
+      :order 1)
+
+     ;; ── High-priority items that aren't already shown above ───────────────
+     (:name "Important"
+      :priority "A"
+      :order 2)
+
+     ;; ── Active projects (tasks with children still in-flight) ─────────────
+     (:name "Projects"
+      :children todo
+      :order 3)
+
+     ;; ── Habits ────────────────────────────────────────────────────────────
+     (:name "Habits"
+      :habit t
+      :order 4)
+
+     ;; ── Waiting on someone else ───────────────────────────────────────────
+     (:name "Waiting"
+      :todo "WAITING"
+      :order 8)
+
+     ;; ── Backlog / someday ─────────────────────────────────────────────────
+     (:name "Someday"
+      :todo ("SOMEDAY" "MAYBE")
+      :order 9)
+
+     ;; ── Anything else lands here (default :order 99) ──────────────────────
+     ))
+  :config
+  (org-super-agenda-mode))  
 
 (use-package org-roam
   :custom
