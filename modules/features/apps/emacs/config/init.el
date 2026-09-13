@@ -285,9 +285,6 @@
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'(use-package embark)
   )
 
-(setq custom-file "~/.config/nixcfg/modules/emacs/config/custom.el")
-(load custom-file)
-
 (use-package nix-ts-mode
   :mode "\\.nix\\'")
 

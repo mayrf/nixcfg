@@ -26,6 +26,8 @@
 
   )
 
+(use-package posframe)
+
 (use-package agent-shell-hq
   :vc (:url "https://github.com/sreenivasvrao/agent-shell-hq" :rev :newest)
   :after (agent-shell posframe)
