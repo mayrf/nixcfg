@@ -58,7 +58,7 @@
         stable.ardour
         onlyoffice-desktopeditors
         temurin-jre-bin-21
-        libreoffice-qt6-fresh
+        libreoffice-qt-stable
         keepassxc
         legcord
         stable.ipscan
