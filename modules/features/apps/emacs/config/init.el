@@ -293,9 +293,9 @@
     (load private-file))
 
 
-(load (expand-file-name "lisp/kcl-ts-mode.el" user-emacs-directory))
+;; (load (expand-file-name "lisp/kcl-ts-mode.el" user-emacs-directory))
 (load (expand-file-name "lisp/agent-shell-setup.el" user-emacs-directory))
-(load (expand-file-name "lisp/org-excalidraw.el" user-emacs-directory))
+;; (load (expand-file-name "lisp/org-excalidraw.el" user-emacs-directory))
 (add-to-list 'treesit-language-source-alist
                '(kcl "https://github.com/kcl-lang/tree-sitter-kcl"))
 

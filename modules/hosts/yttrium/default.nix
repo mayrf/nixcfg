@@ -32,9 +32,7 @@ in
         self.modules.homeManager.emacs-vanilla
         self.modules.homeManager.nvim
         self.modules.homeManager.vscode
-        self.modules.homeManager.zed
         self.modules.homeManager.fonts
-        self.modules.homeManager.hyprland
         self.modules.homeManager.wofi
         self.modules.homeManager.nextcloudClient
         self.modules.homeManager.virtualisation
