@@ -45,6 +45,36 @@
     imports = [
       self.inputs.mangowm.hmModules.mango
     ];
+          xdg.configFile."xkb/rules/evdev".text = ''
+        ! option = symbols
+          hungarian_letters:huletters    = +hungarian_letters(huletters)
+        ! include %S/evdev
+      '';
+      xdg.configFile."xkb/symbols/hungarian_letters".text = ''
+        xkb_symbols "huletters" {
+            //ä on alt+a
+            key <AC01> { [     a,   A, adiaeresis,  Adiaeresis      ]   };
+            //á on alt+q
+            key <AD01> { [     q,   Q, aacute,      Aacute          ]   };
+
+            //ü on alt+u
+            key <AD07> { [     u,   U, udiaeresis,  Udiaeresis      ]   };
+            //ü on alt+j
+            key <AC07> { [     j,   J, udoubleacute,  Udoubleacute      ]   };
+            //ú on alt+y
+            key <AD06> { [     y,   Y, uacute,      Uacute          ]   };
+
+            //ö on alt+o
+            key <AD09> { [     o,   O, odiaeresis,  Odiaeresis      ]   };
+            //ő on alt+p
+            key <AD10> { [     p,   P, odoubleacute,  Odoubleacute      ]   };
+            //ó on alt+l
+            key <AC09> { [     l,   L, oacute,      Oacute      ]   };
+
+
+            // make right alt altGr
+            include "level3(ralt_switch)"
+        };  '';
     wayland.windowManager.mango = let
       mod = "SUPER";
       terminal = "${pkgs.alacritty}/bin/alacritty";
@@ -63,6 +93,8 @@
       '';
       extraConfig = "source-optional=~/.config/mango/optional.conf";
       settings = {
+        xkb_rules_layout = "us";
+        xkb_rules_options = "hungarian_letters:huletters";
         bind =
           [
             # Session
