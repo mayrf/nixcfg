@@ -201,8 +201,7 @@
       security.sudo.wheelNeedsPassword = false;
       security.rtkit.enable = true;
 
-      # Kernel
-      boot.kernelPackages = pkgs.unstable.linuxPackages_zen;
+
 
       # Environment
       environment.variables = {

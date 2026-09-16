@@ -33,7 +33,6 @@ in
         self.modules.homeManager.emacs-vanilla
         self.modules.homeManager.vscode
         self.modules.homeManager.fonts
-        self.modules.homeManager.gammastep
         self.modules.homeManager.wofi
         self.modules.homeManager.nextcloudClient
         self.modules.homeManager.opencloudClient
@@ -64,7 +63,6 @@ in
         self.modules.nixos.general
         self.modules.nixos.desktop
         self.modules.nixos.mango
-        self.modules.nixos.noctalia
         self.modules.nixos.common
         self.modules.nixos.impermanence
         self.modules.nixos.sops
