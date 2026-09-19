@@ -1,1 +1,8 @@
 var/
+*
+!.gitignore
+!init.el
+!early-init.el
+!custom.el
+!lisp/
+!snippets/
