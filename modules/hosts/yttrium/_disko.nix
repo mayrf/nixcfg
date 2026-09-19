@@ -1,4 +1,4 @@
-{ device ? throw "Set this to your disk device, e.g. /dev/sda", ... }: {
+{device ? throw "Set this to your disk device, e.g. /dev/sda", ...}: {
   disko.devices = {
     disk.main = {
       inherit device;
@@ -19,7 +19,7 @@
               type = "filesystem";
               format = "vfat";
               mountpoint = "/boot";
-              mountOptions = [ "umask=077" ];
+              mountOptions = ["umask=077"];
             };
           };
           luks = {
@@ -27,7 +27,7 @@
             content = {
               type = "luks";
               name = "crypted";
-              extraOpenArgs = [ ];
+              extraOpenArgs = [];
               settings = {
                 # if you want to use the key for interactive login be sure there is no trailing newline
                 # for example use `echo -n "password" > /tmp/secret.key`
@@ -51,18 +51,18 @@
             size = "100%FREE";
             content = {
               type = "btrfs";
-              extraArgs = [ "-f" ];
+              extraArgs = ["-f"];
 
               subvolumes = {
-                "/root" = { mountpoint = "/"; };
+                "/root" = {mountpoint = "/";};
 
                 "/persist" = {
-                  mountOptions = [ "subvol=persist" "noatime" ];
+                  mountOptions = ["subvol=persist" "noatime"];
                   mountpoint = "/persist";
                 };
 
                 "/nix" = {
-                  mountOptions = [ "subvol=nix" "noatime" ];
+                  mountOptions = ["subvol=nix" "noatime"];
                   mountpoint = "/nix";
                 };
               };

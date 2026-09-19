@@ -1,12 +1,14 @@
-{ config, pkgs, ... }:
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   immichVersion = "v2.5.6";
 
-  immichRoot =
-    "/var/lib/immich"; # TODO: Tweak these to your desired storage locations
+  immichRoot = "/var/lib/immich"; # TODO: Tweak these to your desired storage locations
   immichAppdataRoot = "${immichRoot}/appdata";
 in {
-  persistence.cache.directories = [ "/var/lib/immich" ];
+  persistence.cache.directories = ["/var/lib/immich"];
   systemd.tmpfiles.rules = [
     "d /var/lib/immich 0755 root root -"
     "d /var/lib/immich/appdata 0755 root root -"
@@ -14,17 +16,15 @@ in {
   ];
   virtualisation.oci-containers = {
     containers = {
-
       immich-machine-learning = {
-        image =
-          "ghcr.io/immich-app/immich-machine-learning:${immichVersion}-rocm";
+        image = "ghcr.io/immich-app/immich-machine-learning:${immichVersion}-rocm";
 
-        ports = [ "3003:3003" ];
+        ports = ["3003:3003"];
         environment = {
           IMMICH_VERSION = immichVersion;
           HSA_OVERRIDE_GFX_VERSION = "10.3.0";
         };
-        volumes = [ "${immichAppdataRoot}/model-cache:/cache" ];
+        volumes = ["${immichAppdataRoot}/model-cache:/cache"];
         extraOptions = [
           "--group-add=video"
           "--device=/dev/dri:/dev/dri"
@@ -33,5 +33,5 @@ in {
       };
     };
   };
-  networking.firewall = { allowedTCPPorts = [ 3003 ]; };
+  networking.firewall = {allowedTCPPorts = [3003];};
 }

@@ -1,5 +1,8 @@
-{ buildGoModule, fetchFromGitHub, lib }:
-
+{
+  buildGoModule,
+  fetchFromGitHub,
+  lib,
+}:
 buildGoModule (finalAttrs: {
   pname = "argocd-lovely-plugin";
   version = "1.2.2";
@@ -11,11 +14,11 @@ buildGoModule (finalAttrs: {
     hash = "sha256-q5SeRG63YaWwM0uYhdt2gf/KQJ9qmczfEkoVpV35uFI=";
   };
   # + "/packages/tui";
-  subPackages = [ "cmd/argocd-lovely-plugin" ];
+  subPackages = ["cmd/argocd-lovely-plugin"];
 
   env.CGO_ENABLED = 0;
 
-  # nativeBuildInputs = [ 
+  # nativeBuildInputs = [
   #    pkgs.kustomize
   #    pkgs.helmfile
   #    pkgs.yq
@@ -30,6 +33,6 @@ buildGoModule (finalAttrs: {
     description = "A plugin to make Argo CD behave like we'd like.";
     homepage = "https://github.com/crumbhole/argocd-lovely-plugin";
     license = licenses.bsd3;
-    maintainers = [ maintainers.ehllie ];
+    maintainers = [maintainers.ehllie];
   };
 })

@@ -1,5 +1,8 @@
-{ buildGoModule, fetchFromGitHub, lib,}:
-
+{
+  buildGoModule,
+  fetchFromGitHub,
+  lib,
+}:
 buildGoModule (finalAttrs: {
   pname = "auger";
   version = "1.0.3";
@@ -17,6 +20,6 @@ buildGoModule (finalAttrs: {
     description = "Directly access data objects stored in etcd by Kubernetes.";
     homepage = "https://github.com/etcd-io/auger";
     license = licenses.mit;
-    maintainers = [ maintainers.ehllie ];
+    maintainers = [maintainers.ehllie];
   };
 })

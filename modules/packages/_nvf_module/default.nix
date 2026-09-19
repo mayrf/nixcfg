@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   config.vim = {
     theme = {
       enable = true;
@@ -18,7 +17,7 @@
     telescope.extensions = [
       {
         name = "fzf";
-        packages = [ pkgs.vimPlugins.telescope-fzf-native-nvim ];
+        packages = [pkgs.vimPlugins.telescope-fzf-native-nvim];
         setup = {
           fzf = {
             fuzzy = true;
@@ -54,7 +53,7 @@
         enable = true;
         format = {
           enable = true;
-          type = [ "prettier" ];
+          type = ["prettier"];
         };
       };
       ruby.enable = true;
