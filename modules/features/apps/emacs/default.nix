@@ -4,207 +4,208 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   client-or-server = ''emacsclient --socket-name=emacs --create-frame --alternate-editor="emacs --init-directory=~/.config/nixcfg/modules/features/apps/emacs/config" "$@"'';
-  
-in
-{
-  flake.modules.nixos.emacs =
-    {
-      lib,
-      config,
-      ...
-    }:
-    {
-      # emacs HM configuration is applied per-host via flake.modules.homeManager.emacs
-    };
+in {
+  flake.modules.nixos.emacs = {
+    lib,
+    config,
+    ...
+  }: {
+    # emacs HM configuration is applied per-host via flake.modules.homeManager.emacs
+  };
 
-  flake.modules.homeManager.emacs-vanilla =
-    {
-      config,
-      osConfig,
-      pkgs,
-      lib,
-      private,
-      host,
-      ...
-    }:
-    let
-      emacs = (
-        (pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages (epkgs: [
-          epkgs.vterm
-          epkgs.emacsql
-          epkgs.pdf-tools
-          epkgs.org
-          epkgs.treesit-grammars.with-all-grammars
-          epkgs.jinx
-          epkgs.mu4e
-        ])
-      );
-    in
-    {
-      home.packages = with pkgs; [
-	"${emacs}"
-	(pkgs.writeShellScriptBin "vanemacs" ''
-          ${client-or-server}
-	'')
-	
-
-	claude-agent-acp # agent-shell
-	clang-tools # clangd (c-lsp)	
-	mupdf # doc-view-mode
-	mpv # elfeed yt
-        yt-dlp
-        ccusage # show claude code usage limits
-        rassumfrassum # Connect an LSP client to multiple LSP Servers
-      ];
-      home.file."org".source = config.lib.file.mkOutOfStoreSymlink (if osConfig.work.enabled then "${config.home.homeDirectory}/Documents/org/work" else "${config.home.homeDirectory}/Documents/org/private");
+  flake.modules.homeManager.emacs-vanilla = {
+    config,
+    osConfig,
+    pkgs,
+    lib,
+    private,
+    host,
+    ...
+  }: let
+    emacs = (
+      (pkgs.emacsPackagesFor pkgs.emacs-git).emacsWithPackages (epkgs: [
+        epkgs.vterm
+        epkgs.emacsql
+        epkgs.pdf-tools
+        epkgs.org
+        epkgs.treesit-grammars.with-all-grammars
+        epkgs.jinx
+        epkgs.mu4e
+      ])
+    );
+    emacsSourceDir = "${config.xdg.configHome}/nixcfg/modules/features/apps/emacs/config";
+  in {
+    # Symlink your entire emacs dir to ~/.config/emacs
+    xdg.configFile."emacs".source =
+      config.lib.file.mkOutOfStoreSymlink "${emacsSourceDir}";
+      # config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/nixcfg/modules/features/apps/emacs/config";
 
 
-      home.activation.roamSymlinks = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        ln -sfn ${config.home.homeDirectory}/Documents/org/shared/org ${config.home.homeDirectory}/org/shared
-        mkdir -p ${config.home.homeDirectory}/org/notes
-        ln -sfn ${config.home.homeDirectory}/Documents/org/shared/notes ${config.home.homeDirectory}/org/notes/shared
-      '';
-      sops.secrets."emacs/authinfo" = { };
+    home.packages = with pkgs; [
+      "${emacs}"
+      (pkgs.writeShellScriptBin "vanemacs" ''
+        ${client-or-server}
+      '')
 
+      claude-agent-acp # agent-shell
+      clang-tools # clangd (c-lsp)
+      mupdf # doc-view-mode
+      mpv # elfeed yt
+      yt-dlp
+      ccusage # show claude code usage limits
+      rassumfrassum # Connect an LSP client to multiple LSP Servers
+    ];
+    home.file."org".source = config.lib.file.mkOutOfStoreSymlink (
+      if osConfig.work.enabled
+      then "${config.home.homeDirectory}/Documents/org/work"
+      else "${config.home.homeDirectory}/Documents/org/private"
+    );
 
-      xdg.configFile."emacs/.env".text = ''
+    home.activation.roamSymlinks = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      ln -sfn ${config.home.homeDirectory}/Documents/org/shared/org ${config.home.homeDirectory}/org/shared
+      mkdir -p ${config.home.homeDirectory}/org/notes
+      ln -sfn ${config.home.homeDirectory}/Documents/org/shared/notes ${config.home.homeDirectory}/org/notes/shared
+    '';
+    sops.secrets."emacs/authinfo" = {};
+
+    # xdg.configFile."emacs/.env".text =
+    xdg.configFile."${emacsSourceDir}/.env".text =
+      ''
         EMACS_AUTHINFO_PATH=${config.sops.secrets."emacs/authinfo".path}
-      '' + (if osConfig.work.gitForgeHost != null then ''
-        WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
-      '' else "");
+      ''
+      + (
+        if osConfig.work.gitForgeHost != null
+        then ''
+          WORK_GITFORGE_HOST=${osConfig.work.gitForgeHost}
+        ''
+        else ""
+      );
+  };
+  flake.modules.homeManager.emacs = {
+    config,
+    osConfig,
+    pkgs,
+    lib,
+    private,
+    host,
+    ...
+  }: {
+    features.impermanence.directories = [
+      ".config/emacs-doom"
+      ".config/dotemacs"
+    ];
+
+    home.file."${config.xdg.configHome}/enchant".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Documents/org/shared/.config/enchant";
+
+    home.packages = with pkgs; [
+      # vanilla fonts:
+      dejavu_fonts
+      liberation_ttf
+
+      # Doom emacs dependencies
+      lldb
+      git
+      (ripgrep.override {withPCRE2 = true;})
+      gnutls # for TLS connectivity
+      coreutils
+      fd # faster projectile indexing
+      imagemagick # for image-dired    sqlite
+      gcc
+      zstd # for undo-fu-session/undo-tree compression
+      notmuch
+
+      # shell mode
+      shfmt
+      shellcheck
+      bash-language-server
+
+      # web mode
+      html-tidy
+
+      # docker mode
+      dockfmt
+
+      # :tools editorconfig
+      editorconfig-core-c # per-project style config
+
+      #misc/unknown
+      stylelint
+      # vimPlugins.copilot-vim
+
+      unstable.nerd-fonts.im-writing
+      unstable.nerd-fonts.jetbrains-mono
+      unstable.nerd-fonts.symbols-only
+
+      # for markdown-preview-eww
+      rubyPackages.redcarpet
+      yaml-language-server
+
+      # nix
+      nixd
+
+      # typescript
+      eslint
+      prettier
+      # prettier-plugin-go-template
+      typescript-language-server
+
+      # language tools
+      languagetool
+
+      # other dependencies
+      hunspell
+      hunspellDicts.de_AT
+      hunspellDicts.de_DE
+      hunspellDicts.hu_HU
+      hunspellDicts.en_US
+      hunspellDicts.es_ES
+      hunspellDicts.en_GB-ize
+
+      # python
+      stable.poetry
+      pyright
+      ruff
+      python313Packages.debugpy
+      python313Packages.isort
+      python313Packages.pylint
+      python313Packages.yapf
+      python313Packages.pylama
+      python313Packages.jupyter
+      vscode-langservers-extracted
+
+      xclip
+      poppler-utils
+
+      # go
+      gopls
+      go
+
+      # just
+      just
+      # just-lsp
+
+      #fonts
+      unstable.nerd-fonts.im-writing
+      unstable.nerd-fonts.jetbrains-mono
+      unstable.nerd-fonts.fira-code
+      unstable.nerd-fonts.caskaydia-cove
+      unstable.nerd-fonts.geist-mono
+
+      # ai
+      # aider-chat
+
+      #org mode
+      mermaid-cli
+    ];
+
+    programs.git.settings = {
+      gitlab.${osConfig.work.gitForgeHost}.user = "${osConfig.work.gitUser}";
+      gitlab."${osConfig.work.gitForgeHost}/api/v4".user = "${osConfig.work.gitUser}";
     };
-  flake.modules.homeManager.emacs =
-    {
-      config,
-      osConfig,
-      pkgs,
-      lib,
-      private,
-      host,
-      ...
-    }:
-    {
-      features.impermanence.directories = [
-        ".config/emacs-doom"
-        ".config/dotemacs"
-      ];
 
-  
-      home.file."${config.xdg.configHome}/enchant".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Documents/org/shared/.config/enchant";
-
-  
-          
-  
-      home.packages = with pkgs; [
-        # vanilla fonts:
-        dejavu_fonts
-        liberation_ttf
-
-        # Doom emacs dependencies
-        lldb
-        git
-        (ripgrep.override { withPCRE2 = true; })
-        gnutls # for TLS connectivity
-        coreutils
-        fd # faster projectile indexing
-        imagemagick # for image-dired    sqlite
-        gcc
-        zstd # for undo-fu-session/undo-tree compression
-        notmuch
-
-        # shell mode
-        shfmt
-        shellcheck
-        bash-language-server
-
-        # web mode
-        html-tidy
-
-        # docker mode
-        dockfmt
-
-        # :tools editorconfig
-        editorconfig-core-c # per-project style config
-
-        #misc/unknown
-        stylelint
-        # vimPlugins.copilot-vim
-
-        unstable.nerd-fonts.im-writing
-        unstable.nerd-fonts.jetbrains-mono
-        unstable.nerd-fonts.symbols-only
-
-        # for markdown-preview-eww
-        rubyPackages.redcarpet
-        yaml-language-server
-
-        # nix
-        nixd
-
-        # typescript
-        eslint
-        prettier
-        # prettier-plugin-go-template
-        typescript-language-server
-
-        # language tools
-        languagetool
-
-        # other dependencies
-        hunspell
-        hunspellDicts.de_AT
-        hunspellDicts.de_DE
-        hunspellDicts.hu_HU
-        hunspellDicts.en_US
-        hunspellDicts.es_ES
-        hunspellDicts.en_GB-ize
-
-        # python
-        stable.poetry
-        pyright
-        ruff
-        python313Packages.debugpy
-        python313Packages.isort
-        python313Packages.pylint
-        python313Packages.yapf
-        python313Packages.pylama
-        python313Packages.jupyter
-        vscode-langservers-extracted
-
-        xclip
-        poppler-utils
-
-        # go
-        gopls
-        go
-
-        # just
-        just
-        # just-lsp
-
-        #fonts
-        unstable.nerd-fonts.im-writing
-        unstable.nerd-fonts.jetbrains-mono
-        unstable.nerd-fonts.fira-code
-        unstable.nerd-fonts.caskaydia-cove
-        unstable.nerd-fonts.geist-mono
-
-        # ai
-        # aider-chat
-
-        #org mode
-        mermaid-cli
-      ];
-
-      programs.git.settings = {
-        gitlab.${osConfig.work.gitForgeHost}.user = "${osConfig.work.gitUser}";
-        gitlab."${osConfig.work.gitForgeHost}/api/v4".user = "${osConfig.work.gitUser}";
-      };
-
-      home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ];
-      };
+    home.sessionPath = ["$XDG_CONFIG_HOME/emacs/bin"];
+  };
 }

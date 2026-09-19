@@ -100,6 +100,7 @@
         "text/csv" = "calc.desktop";
         "application/vnd.oasis.opendocument.base" = "base.desktop";
         "application/msword" = "writer.desktop";
+        "x-scheme-handler/unknown" = "emacsclient.desktop";
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "writer.desktop";
         "image/jpeg" = "sxiv.desktop";
         "image/png" = "sxiv.desktop";

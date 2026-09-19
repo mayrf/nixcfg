@@ -22,7 +22,10 @@
     #   mangoPackage
     # ];
     home-manager.users.${config.host.username} = {
-      imports = [self.modules.homeManager.mango];
+      imports = [
+        self.modules.homeManager.mango
+        self.modules.homeManager.mango-screenshots
+      ];
     };
     services.greetd = {
       enable = true;
@@ -45,36 +48,36 @@
     imports = [
       self.inputs.mangowm.hmModules.mango
     ];
-          xdg.configFile."xkb/rules/evdev".text = ''
-        ! option = symbols
-          hungarian_letters:huletters    = +hungarian_letters(huletters)
-        ! include %S/evdev
-      '';
-      xdg.configFile."xkb/symbols/hungarian_letters".text = ''
-        xkb_symbols "huletters" {
-            //ä on alt+a
-            key <AC01> { [     a,   A, adiaeresis,  Adiaeresis      ]   };
-            //á on alt+q
-            key <AD01> { [     q,   Q, aacute,      Aacute          ]   };
+    xdg.configFile."xkb/rules/evdev".text = ''
+      ! option = symbols
+        hungarian_letters:huletters    = +hungarian_letters(huletters)
+      ! include %S/evdev
+    '';
+    xdg.configFile."xkb/symbols/hungarian_letters".text = ''
+      xkb_symbols "huletters" {
+          //ä on alt+a
+          key <AC01> { [     a,   A, adiaeresis,  Adiaeresis      ]   };
+          //á on alt+q
+          key <AD01> { [     q,   Q, aacute,      Aacute          ]   };
 
-            //ü on alt+u
-            key <AD07> { [     u,   U, udiaeresis,  Udiaeresis      ]   };
-            //ü on alt+j
-            key <AC07> { [     j,   J, udoubleacute,  Udoubleacute      ]   };
-            //ú on alt+y
-            key <AD06> { [     y,   Y, uacute,      Uacute          ]   };
+          //ü on alt+u
+          key <AD07> { [     u,   U, udiaeresis,  Udiaeresis      ]   };
+          //ü on alt+j
+          key <AC07> { [     j,   J, udoubleacute,  Udoubleacute      ]   };
+          //ú on alt+y
+          key <AD06> { [     y,   Y, uacute,      Uacute          ]   };
 
-            //ö on alt+o
-            key <AD09> { [     o,   O, odiaeresis,  Odiaeresis      ]   };
-            //ő on alt+p
-            key <AD10> { [     p,   P, odoubleacute,  Odoubleacute      ]   };
-            //ó on alt+l
-            key <AC09> { [     l,   L, oacute,      Oacute      ]   };
+          //ö on alt+o
+          key <AD09> { [     o,   O, odiaeresis,  Odiaeresis      ]   };
+          //ő on alt+p
+          key <AD10> { [     p,   P, odoubleacute,  Odoubleacute      ]   };
+          //ó on alt+l
+          key <AC09> { [     l,   L, oacute,      Oacute      ]   };
 
 
-            // make right alt altGr
-            include "level3(ralt_switch)"
-        };  '';
+          // make right alt altGr
+          include "level3(ralt_switch)"
+      };  '';
     wayland.windowManager.mango = let
       mod = "SUPER";
       terminal = "${pkgs.alacritty}/bin/alacritty";
@@ -95,6 +98,9 @@
       settings = {
         xkb_rules_layout = "us";
         xkb_rules_options = "hungarian_letters:huletters";
+        repeat_delay = 250;
+        repeat_rate = 50;
+        circle_layout = "tile,scroller";
         bind =
           [
             # Session
@@ -106,6 +112,8 @@
             "${mod},f,togglemaximizescreen"
             "${mod}+SHIFT,f,togglefullscreen"
             "${mod}+SHIFT,space,togglefloating"
+
+            "${mod},n,switch_layout"
 
             # Master layout resizing
             "${mod},j,focusdir,down"
@@ -142,6 +150,87 @@
       };
     };
   };
+
+  flake.modules.homeManager.mango-screenshots =
+    # mango-screenshots.nix
+    #
+    # Home Manager module that sets up screenshotting for mangowm, based on:
+    # https://mangowm.github.io/docs/screenshot
+    #
+    # Import this into your Home Manager config, e.g. in flake.nix / home.nix:
+    #   imports = [ ./mango-screenshots.nix ];
+    #
+    # Requires wayland.windowManager.mango.enable = true; to already be set
+    # elsewhere in your config.
+    {pkgs, ...}: let
+      printKey = "S";
+    in {
+      features.impermanence.directories = ["./Pictures"];
+      # ---- Tools -----------------------------------------------------------
+      home.packages = with pkgs; [
+        grim # capture the screen/region to a file
+        slurp # interactive region selection for grim
+        wl-clipboard # provides wl-copy
+        satty # annotate screenshots
+        wayfreeze # freeze the screen before capture
+        jq # used to parse mmsg JSON output
+      ];
+
+      # ---- Screenshots directory --------------------------------------------
+      home.file."Pictures/Screenshots/.keep".text = "";
+
+      # ---- All-in-one screenshot script --------------------------------------
+      home.file.".config/mango/scripts/screenshot/screenshot.sh" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          set -euo pipefail
+          mkdir -p "$HOME/Pictures/Screenshots"
+          filepath="$HOME/Pictures/Screenshots/$(date +%Y%m%d%H%M%S).png"
+
+          case "''${1:-fullscreen}" in
+            region)
+              g=$(slurp -d); [ -z "$g" ] && exit 1
+              grim -g "$g" "$filepath"
+              wl-copy < "$filepath" ;;            
+            window)
+              g=$(mmsg get focusing-client | jq -r '"\(.x),\(.y) \(.width)x\(.height)"')
+              [ -z "$g" ] && exit 1
+              grim -g "$g" "$filepath" ;;
+            freeze)
+              p=$(mktemp -u).fifo; mkfifo "$p"
+              wayfreeze --after-freeze-timeout 100 --after-freeze-cmd "echo > $p" & wp=$!
+              read -r < "$p"; grim "$filepath"
+              kill "$wp" 2>/dev/null; rm -f "$p" ;;
+            freeze-region)
+              p=$(mktemp -u).fifo; mkfifo "$p"
+              wayfreeze --after-freeze-timeout 100 --after-freeze-cmd "echo > $p" & wp=$!
+              read -r < "$p"; g=$(slurp -d)
+              if [ -z "$g" ]; then kill "$wp" 2>/dev/null; rm -f "$p"; exit 1; fi
+              grim -g "$g" "$filepath"
+              wl-copy < "$filepath"
+              kill "$wp" 2>/dev/null; rm -f "$p" ;;
+            annotate)
+              grim "$filepath"; satty --filename "$filepath" --output-filename "$filepath" --actions-on-enter save-to-file --early-exit ;;
+            clipboard)
+              f=$(mktemp -t screenshot-XXXXXX.png)
+              grim "$f" && wl-copy < "$f" && rm -f "$f" ;;
+            *) grim "$filepath" ;;
+          esac
+        '';
+      };
+
+      # ---- Keybinds -----------------------------------------------------------
+      wayland.windowManager.mango.settings.bind = [
+        "SUPER,${printKey},spawn,$HOME/.config/mango/scripts/screenshot/screenshot.sh fullscreen"
+        "SUPER+SHIFT,${printKey},spawn,$HOME/.config/mango/scripts/screenshot/screenshot.sh region"
+        "SUPER+CTRL,${printKey},spawn,$HOME/.config/mango/scripts/screenshot/screenshot.sh window"
+        "SUPER+ALT,${printKey},spawn,$HOME/.config/mango/scripts/screenshot/screenshot.sh freeze"
+        "SUPER+CTRL+SHIFT,${printKey},spawn,$HOME/.config/mango/scripts/screenshot/screenshot.sh freeze-region"
+        "SUPER+ALT+SHIFT,${printKey},spawn,$HOME/.config/mango/scripts/screenshot/screenshot.sh annotate"
+        "SUPER+ALT+SHIFT+CTRL,${printKey},spawn,$HOME/.config/mango/scripts/screenshot/screenshot.sh clipboard"
+      ];
+    };
 
   flake.wrappers.mangowc = {
     wlib,

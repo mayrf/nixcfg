@@ -338,7 +338,7 @@
 (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
 (add-hook 'ruby-ts-mode 'eglot-ensure)
 
-(add-hook 'nix-ts-modes 'eglot-ensure)
+(add-hook 'nix-ts-mode 'eglot-ensure)
 
 (use-package format-all)
 
