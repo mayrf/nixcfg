@@ -1,91 +1,88 @@
-{ ... }:
-{
-  flake.modules.nixos.base =
-    { lib, ... }:
-    {
-      options.persistence = {
-        enable = lib.mkEnableOption "enable persistence";
+{...}: {
+  flake.modules.nixos.base = {lib, ...}: {
+    options.persistence = {
+      enable = lib.mkEnableOption "enable persistence";
 
-        nukeRoot.enable = lib.mkEnableOption "Destroy /root on every boot";
+      nukeRoot.enable = lib.mkEnableOption "Destroy /root on every boot";
 
-        volumeGroup = lib.mkOption {
-          default = "root_vg";
-          description = ''
-            Btrfs volume group name
-          '';
-        };
-
-        user = lib.mkOption {
-          default = "username";
-          description = ''
-            Main user
-          '';
-        };
-
-        directories = lib.mkOption {
-          default = [ ];
-          description = ''
-            directories to persist
-          '';
-        };
-
-        files = lib.mkOption {
-          default = [ ];
-          description = ''
-            files to persist
-          '';
-        };
-
-        data.directories = lib.mkOption {
-          default = [ ];
-          description = ''
-            directories to persist
-          '';
-        };
-
-        data.files = lib.mkOption {
-          default = [ ];
-          description = ''
-            files to persist
-          '';
-        };
-
-        cache.directories = lib.mkOption {
-          default = [ ];
-          description = ''
-            directories to persist
-          '';
-        };
-
-        cache.files = lib.mkOption {
-          default = [ ];
-          description = ''
-            files to persist
-          '';
-        };
+      volumeGroup = lib.mkOption {
+        default = "root_vg";
+        description = ''
+          Btrfs volume group name
+        '';
       };
 
-      options.preferences = {
-        user.name = lib.mkOption {
-          type = lib.types.str;
-          default = "mayrf";
-        };
+      user = lib.mkOption {
+        default = "username";
+        description = ''
+          Main user
+        '';
       };
 
-      options.work = {
-	enabled = lib.mkOption {
-	  type = lib.types.bool;
-	  default = false;
-	  description = "Whether this host is a work machine";
-	};
-        gitForgeHost = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-        };
-        gitUser = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-        };
+      directories = lib.mkOption {
+        default = [];
+        description = ''
+          directories to persist
+        '';
+      };
+
+      files = lib.mkOption {
+        default = [];
+        description = ''
+          files to persist
+        '';
+      };
+
+      data.directories = lib.mkOption {
+        default = [];
+        description = ''
+          directories to persist
+        '';
+      };
+
+      data.files = lib.mkOption {
+        default = [];
+        description = ''
+          files to persist
+        '';
+      };
+
+      cache.directories = lib.mkOption {
+        default = [];
+        description = ''
+          directories to persist
+        '';
+      };
+
+      cache.files = lib.mkOption {
+        default = [];
+        description = ''
+          files to persist
+        '';
       };
     };
+
+    options.preferences = {
+      user.name = lib.mkOption {
+        type = lib.types.str;
+        default = "mayrf";
+      };
+    };
+
+    options.work = {
+      enabled = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Whether this host is a work machine";
+      };
+      gitForgeHost = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+      gitUser = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+    };
+  };
 }

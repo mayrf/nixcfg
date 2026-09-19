@@ -1,17 +1,14 @@
-{ ... }:
-{
-  flake.modules.homeManager.fzf =
-    { ... }:
-    {
-      programs.fzf = {
-        enable = true;
-        enableZshIntegration = true;
-        defaultOptions = [
-          "--preview='bat --color=always -n {}'"
-          "--bind 'ctrl-/:toggle-preview'"
-        ];
-        defaultCommand = "fd --type f --exclude .git --follow --hidden";
-        changeDirWidget.command = "fd --type d --exclude .git --follow --hidden";
-      };
+{...}: {
+  flake.modules.homeManager.fzf = {...}: {
+    programs.fzf = {
+      enable = true;
+      enableZshIntegration = true;
+      defaultOptions = [
+        "--preview='bat --color=always -n {}'"
+        "--bind 'ctrl-/:toggle-preview'"
+      ];
+      defaultCommand = "fd --type f --exclude .git --follow --hidden";
+      changeDirWidget.command = "fd --type d --exclude .git --follow --hidden";
     };
+  };
 }

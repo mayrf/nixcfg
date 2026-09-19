@@ -1,10 +1,10 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   systemd.services = {
     wsl-vpnkit-auto = {
       enable = true;
       description = "wsl-vpnkit";
 
-      path = [ pkgs.iputils ];
+      path = [pkgs.iputils];
       script = ''
         has_internet () {
         ping -q -w 1 -c 1 8.8.8.8 >/dev/null
@@ -39,7 +39,7 @@
         done
       '';
 
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
     };
 
     wsl-vpnkit = {

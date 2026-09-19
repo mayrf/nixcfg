@@ -1,15 +1,19 @@
-{ ... }:
-{
-  flake.modules.homeManager.hmImpermanence =
-    { config, pkgs, lib, host, inputs, ... }:
-    with lib;
-    let cfg = config.features.impermanence;
-    in
-    {
+{...}: {
+  flake.modules.homeManager.hmImpermanence = {
+    config,
+    pkgs,
+    lib,
+    host,
+    inputs,
+    ...
+  }:
+    with lib; let
+      cfg = config.features.impermanence;
+    in {
       options.features.impermanence = {
         enable = mkEnableOption "my impermanence config";
         directories = mkOption {
-          default = [ ];
+          default = [];
           example = [
             "Downloads"
             "Music"
@@ -34,7 +38,7 @@
 
         directories_cache = mkOption {
           type = with types; listOf str;
-          default = [ ];
+          default = [];
           example = [
             "Downloads"
             "Music"
@@ -59,8 +63,8 @@
 
         files = mkOption {
           type = with types; listOf str;
-          default = [ ];
-          example = [ ".screenrc" ];
+          default = [];
+          example = [".screenrc"];
           description = ''
             A list of files in your home directory you want to
             link to persistent storage.
@@ -68,7 +72,6 @@
         };
       };
       config = mkIf cfg.enable {
-
         systemd.user.tmpfiles.rules = [
           "d  /persist/cache 0755 root root -"
           "d  /persist/cache/home 0755 ${host.username} users -"
@@ -76,12 +79,12 @@
         ];
 
         home.persistence."${host.persistDir}/cache" = {
-          directories = [ ] ++ cfg.directories_cache;
+          directories = [] ++ cfg.directories_cache;
         };
 
         home.persistence."${host.persistDir}/system" = {
-          directories = [ ] ++ cfg.directories;
-          files = [ ".screenrc" ] ++ cfg.files;
+          directories = [] ++ cfg.directories;
+          files = [".screenrc"] ++ cfg.files;
         };
       };
     };

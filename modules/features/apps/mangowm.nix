@@ -192,7 +192,7 @@
             region)
               g=$(slurp -d); [ -z "$g" ] && exit 1
               grim -g "$g" "$filepath"
-              wl-copy < "$filepath" ;;            
+              wl-copy < "$filepath" ;;
             window)
               g=$(mmsg get focusing-client | jq -r '"\(.x),\(.y) \(.width)x\(.height)"')
               [ -z "$g" ] && exit 1

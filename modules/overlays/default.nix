@@ -1,9 +1,8 @@
-{ inputs, ... }:
-{
+{inputs, ...}: {
   flake.overlays = {
     additions = final: _prev: {
-      auger = final.callPackage ../packages/_auger { };
-      argocd-lovely-plugin = final.callPackage ../packages/_argocd-lovely-plugin { };
+      auger = final.callPackage ../packages/_auger {};
+      argocd-lovely-plugin = final.callPackage ../packages/_argocd-lovely-plugin {};
     };
 
     stable-packages = final: _prev: {

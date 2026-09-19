@@ -40,8 +40,7 @@ in {
     # Symlink your entire emacs dir to ~/.config/emacs
     xdg.configFile."emacs".source =
       config.lib.file.mkOutOfStoreSymlink "${emacsSourceDir}";
-      # config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/nixcfg/modules/features/apps/emacs/config";
-
+    # config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/nixcfg/modules/features/apps/emacs/config";
 
     home.packages = with pkgs; [
       "${emacs}"

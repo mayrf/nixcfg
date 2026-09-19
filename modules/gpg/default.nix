@@ -1,8 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.gpg =
-    { ... }:
-    {
-      programs.gpg = { enable = true; };
-    };
+{...}: {
+  flake.modules.homeManager.gpg = {...}: {
+    programs.gpg = {enable = true;};
+  };
 }

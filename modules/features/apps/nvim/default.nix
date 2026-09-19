@@ -1,17 +1,14 @@
-{ inputs, ... }:
-{
-  flake.modules.homeManager.nvim =
-    {
-      config,
-      pkgs,
-      lib,
-      outputs,
-      inputs,
-      ...
-    }:
-    {
-      home.packages = with pkgs; [
-        outputs.packages.${pkgs.stdenv.hostPlatform.system}.my-neovim
-      ];
-    };
+{inputs, ...}: {
+  flake.modules.homeManager.nvim = {
+    config,
+    pkgs,
+    lib,
+    outputs,
+    inputs,
+    ...
+  }: {
+    home.packages = with pkgs; [
+      outputs.packages.${pkgs.stdenv.hostPlatform.system}.my-neovim
+    ];
+  };
 }
