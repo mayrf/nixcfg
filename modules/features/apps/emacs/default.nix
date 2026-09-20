@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  client-or-server = ''emacsclient --socket-name=emacs --create-frame --alternate-editor="emacs --init-directory=~/.config/nixcfg/modules/features/apps/emacs/config" "$@"'';
+  client-or-server = ''emacsclient --socket-name=emacs --create-frame --alternate-editor="emacs --init-directory=~/.config/emacs" "$@"'';
 in {
   flake.modules.nixos.emacs = {
     lib,
