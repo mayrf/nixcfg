@@ -38,7 +38,7 @@
   (frame-resize-pixelwise t)
   (window-resize-pixelwise t)
   (save-interprogram-paste-before-kill t)
-  (pixel-scroll-mode t)
+  ;; (pixel-scroll-mode t)
   (savehist-mode t)
   (save-place-mode t)
   (recentf-mode t)
@@ -50,9 +50,11 @@
   
   :config
   (which-key-mode)
+  (load-theme 'newcomers-presets)
   :hook	;; Add hooks to enable specific features in certain modes.
   (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
   )
+
 
 (use-package ef-themes
   :init
@@ -68,7 +70,7 @@
   ;; `modus-themes-load-random-light').
   (modus-themes-load-theme 'ef-maris-dark))
 
-
+(use-package elisp-demos)
 
 (use-package popper
   :bind (("C-`"   . popper-toggle)

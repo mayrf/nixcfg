@@ -9,6 +9,7 @@
   (setq org-inbox-file "~/org/inbox.org")
   :custom
   (org-agenda-start-with-log-mode t)
+  (org-log-into-drawer t)
   :hook
   (org-mode . org-indent-mode)
   :bind

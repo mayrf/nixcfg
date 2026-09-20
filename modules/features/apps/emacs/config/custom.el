@@ -17,13 +17,14 @@
              ol-irc ol-mhe ol-rmail ol-w3m))
  '(package-selected-packages
    '(agent-shell agent-shell-hq avy cape corfu denote-roam direnv dirvish
-                 eat ef-themes ellama embark embark-consult evil forge
-                 format-all helpful jinx just-mode justl knockknock
-                 load-env-vars magit marginalia nix-ts-mode
-                 no-littering orderless org-cliplink org-jira
-                 org-noter org-roam org-roam-ui org-super-agenda
-                 pdf-tools popper popper-mode posframe prescient
-                 vertico vterm web-mode yasnippet yasnippet-snippets))
+                 eat ef-themes elisp-demos ellama embark
+                 embark-consult evil forge format-all helpful jinx
+                 just-mode justl knockknock load-env-vars magit
+                 marginalia nix-ts-mode no-littering orderless
+                 org-cliplink org-jira org-noter org-roam org-roam-ui
+                 org-super-agenda pdf-tools popper popper-mode
+                 posframe prescient vertico vterm web-mode yasnippet
+                 yasnippet-snippets))
  '(package-vc-selected-packages
    '((agent-shell-desktop :url
                           "https://github.com/timfel/agent-shell-desktop.el")
