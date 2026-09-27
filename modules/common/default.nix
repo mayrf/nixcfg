@@ -90,8 +90,8 @@
       "video/x-msvideo" = "vlc.desktop";
       "x-scheme-handler/postman" = "Postman.desktop";
       "x-scheme-handler/msteams" = "teams.desktop";
-      "x-scheme-handler/http" = "librewolf.desktop";
-      "x-scheme-handler/https" = "librewolf.desktop";
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
       "x-scheme-handler/mailto" = "userapp-Thunderbird-08TXD2.desktop";
       "message/rfc822" = "userapp-Thunderbird-08TXD2.desktop";
       "x-scheme-handler/mid" = "userapp-Thunderbird-08TXD2.desktop";
@@ -202,7 +202,7 @@
     # Environment
     environment.variables = {
       TERMINAL = "ghostty";
-      BROWSER = "librewolf";
+      BROWSER = "firefox";
       EDITOR = "nvim";
       VISUAL = "nvim";
     };

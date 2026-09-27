@@ -47,7 +47,7 @@
   (indent-tabs-mode nil)
   (imenu-auto-rescan t)
   (which-key-mode t)
-  
+  (global-auto-revert-mode 1)
   :config
   (which-key-mode)
   (load-theme 'newcomers-presets)

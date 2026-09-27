@@ -7,8 +7,11 @@
 ;;    agent-shell-desktop-mode is guaranteed active before we ever call
 ;;    desktop-read below. This avoids the "empty invisible buffer" bug
 ;;    caused by desktop-read running before the mode handler is registered.
+
 (use-package agent-shell
   :demand t
+  :init
+  (setenv "CLAUDE_CONFIG_DIR" (expand-file-name "~/.config/claude"))
   :config
   (defun my/agent-shell-git-main-root ()
     "Root of the main worktree, even when called from inside a linked worktree."
