@@ -55,6 +55,12 @@
   (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
   )
 
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                vterm-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 (use-package ef-themes
   :init
@@ -245,7 +251,9 @@
 
 
 
+
 (load (expand-file-name "lisp/setup-org" user-emacs-directory))
+(load (expand-file-name "lisp/setup-programming" user-emacs-directory))
 
 (use-package corfu
   :custom

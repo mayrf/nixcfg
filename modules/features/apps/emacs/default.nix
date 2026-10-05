@@ -41,7 +41,10 @@ in {
     xdg.configFile."emacs".source =
       config.lib.file.mkOutOfStoreSymlink "${emacsSourceDir}";
     # config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/nixcfg/modules/features/apps/emacs/config";
-
+    # services.emacs = {
+    #   enable = true;
+    #   extraOptions = [ "--init-directory" "~/.config/emacs" ];
+    # };
     home.packages = with pkgs; [
       "${emacs}"
       (pkgs.writeShellScriptBin "vanemacs" ''

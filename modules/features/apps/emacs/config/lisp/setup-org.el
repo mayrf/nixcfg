@@ -18,6 +18,7 @@
   ("C-c c" . org-capture)
 
   :config
+  (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))   
   (setq org-agenda-files
         (append (seq-filter #'file-exists-p
 			    (list (expand-file-name "todo.org" org-directory)
@@ -33,7 +34,10 @@
                 (directory-files org-dailies-directory t ".org")
 		)
 	)
-  
+  ;; If idle for more than 15 minutes, resolve the things by asking what to do
+  ;; with the clock time
+  (setq org-clock-idle-time 15)
+  (setq org-clock-persist)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
   (setq org-log-done 'time)
@@ -54,47 +58,67 @@
          "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")))   
   )
 
+(use-package org-clock
+  :ensure nil   ; part of Org, not a separate package
+  :after org
+  :bind (("C-c o i" . org-clock-in-last)
+         ("C-c o o" . org-clock-out)
+         ("C-c o g" . org-clock-goto))
+  :custom
+  (org-clock-persist 'history)
+  (org-clock-out-remove-zero-time-clocks t)
+  :config
+  (org-clock-persistence-insinuate))
+
+(use-package olivetti
+ :custom
+ (olivetti-body-width 120)
+ 
+ :hook
+ (org-mode . olivetti-mode))
+
+
 (use-package org-super-agenda
   :ensure t
-  :after org          ; <── this is the key sequencing directive
+  :after org                ; <── this is the key sequencing directive
   :custom
   (org-super-agenda-groups
    '(;; ── Overdue – always at the top ──────────────────────────────────────
      (:name "⚠ Overdue"
-      :and (:scheduled past :not (:todo "DONE"))
-      :face (:foreground "red"))
+            :and (:scheduled past :not (:todo "DONE"))
+            :face (:foreground "red"))
 
      ;; ── Today's time-blocked items ────────────────────────────────────────
      (:name "Today"
-      :time-grid t
-      :todo "NEXT"
-      :date today
-      :order 1)
+            :time-grid t
+            :todo "NEXT"
+            :date today
+            :order 1)
 
      ;; ── High-priority items that aren't already shown above ───────────────
      (:name "Important"
-      :priority "A"
-      :order 2)
+            :priority "A"
+            :order 2)
 
      ;; ── Active projects (tasks with children still in-flight) ─────────────
      (:name "Projects"
-      :children todo
-      :order 3)
+            :children todo
+            :order 3)
 
      ;; ── Habits ────────────────────────────────────────────────────────────
      (:name "Habits"
-      :habit t
-      :order 4)
+            :habit t
+            :order 4)
 
      ;; ── Waiting on someone else ───────────────────────────────────────────
      (:name "Waiting"
-      :todo "WAITING"
-      :order 8)
+            :todo "WAITING"
+            :order 8)
 
      ;; ── Backlog / someday ─────────────────────────────────────────────────
      (:name "Someday"
-      :todo ("SOMEDAY" "MAYBE")
-      :order 9)
+            :todo ("SOMEDAY" "MAYBE")
+            :order 9)
 
      ;; ── Anything else lands here (default :order 99) ──────────────────────
      ))

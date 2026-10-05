@@ -828,11 +828,11 @@
     "nix-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1788870651,
-        "narHash": "sha256-jEXXkFAMIe30398FcjKhcBil8khXiXraIAIuQSBpGUg=",
+        "lastModified": 1791071689,
+        "narHash": "sha256-nO5K0f+qOFZeFHWPTFgp3/IDCUNaRh5e9ZvBV4CW/hI=",
         "ref": "refs/heads/master",
-        "rev": "f7d96a821a772890efd047619dd1993cb604b505",
-        "revCount": 42,
+        "rev": "1f19e34a80d990a053c09dca537b51971aa034d8",
+        "revCount": 45,
         "type": "git",
         "url": "ssh://git@codeberg.org/mayrf/nix-secrets.git"
       },

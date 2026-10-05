@@ -55,6 +55,8 @@
     '';
     xdg.configFile."xkb/symbols/hungarian_letters".text = ''
       xkb_symbols "huletters" {
+          // ß on alt+s
+          key <AC02> { [ s, S, ssharp, ssharp ] };
           //ä on alt+a
           key <AC01> { [     a,   A, adiaeresis,  Adiaeresis      ]   };
           //á on alt+q
@@ -97,6 +99,7 @@
       extraConfig = "source-optional=~/.config/mango/optional.conf";
       settings = {
         xkb_rules_layout = "us";
+        # xkb_rules_variant = "intl";
         xkb_rules_options = "hungarian_letters:huletters";
         repeat_delay = 250;
         repeat_rate = 50;
@@ -105,20 +108,22 @@
           [
             # Session
             "${mod}+SHIFT,q,killclient"
-            "${mod},m,quit"
+            # "${mod},,quit"
             "${mod},r,reload_config"
 
             # Layouts
-            "${mod},f,togglemaximizescreen"
-            "${mod}+SHIFT,f,togglefullscreen"
+            "${mod},m,togglemaximizescreen"
+            "${mod}+SHIFT,m,togglefullscreen"
             "${mod}+SHIFT,space,togglefloating"
 
-            "${mod},n,switch_layout"
+            "${mod},|,switch_layout"
 
             # Master layout resizing
-            "${mod},j,focusdir,down"
-            "${mod},k,focusdir,up"
-
+            "${mod},f,focusdir,right"
+            "${mod},b,focusdir,left"
+            "${mod},p,focusdir,up"
+            "${mod},n,focusdir,down"
+            
             # Scratchpad terminal
             "${mod},T,spawn,${terminal} --title=scratch_term"
             "${mod},T,toggle_scratchpad"

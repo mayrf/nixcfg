@@ -203,8 +203,8 @@
     environment.variables = {
       TERMINAL = "ghostty";
       BROWSER = "firefox";
-      EDITOR = "nvim";
-      VISUAL = "nvim";
+      EDITOR = "vanemacs";
+      VISUAL = "vanemacs";
     };
     environment.pathsToLink = ["/share/zsh"];
 
