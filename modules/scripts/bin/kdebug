@@ -17,7 +17,7 @@ set -euo pipefail
 
 NS=""
 NODE=""
-IMAGE="nicolaka/netshoot"
+IMAGE="nicolaka/netshoot:v0.16"
 POD_NAME="netshoot-$$"
 ARGS=()
 
@@ -31,6 +31,12 @@ Usage: $(basename "$0") [-n|--namespace NS] [--node NODE] [--image IMAGE] [-- CM
   -h, --help           Show this help
 
 If no command is given, drops into an interactive bash shell in the pod.
+
+Note: the pod is run under the 'restricted' Pod Security Standard
+(non-root, no privilege escalation, all capabilities dropped, seccomp
+RuntimeDefault). Tools that need raw sockets or NET_ADMIN (tcpdump,
+ping in some configurations) may not work unless your namespace's
+PodSecurity level permits more, or you add specific capabilities back.
 EOF
 }
 
@@ -45,13 +51,48 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-KUBECTL_ARGS=(run "$POD_NAME" --rm -it --restart=Never --image="$IMAGE")
+# Build the nodeName fragment (empty if --node wasn't given)
+NODE_NAME_JSON=""
+if [[ -n "$NODE" ]]; then
+  NODE_NAME_JSON="\"nodeName\": \"${NODE}\","
+fi
+
+# kubectl run names the generated container the same as the pod, so this
+# container securityContext strategically merges onto it by name.
+OVERRIDES=$(cat <<JSON
+{
+  "apiVersion": "v1",
+  "spec": {
+    ${NODE_NAME_JSON}
+    "securityContext": {
+      "runAsNonRoot": true,
+      "runAsUser": 65534,
+      "seccompProfile": {
+        "type": "RuntimeDefault"
+      }
+    },
+    "containers": [
+      {
+        "name": "${POD_NAME}",
+        "image": "${IMAGE}",
+        "stdin": true,
+        "tty": true,
+        "securityContext": {
+          "allowPrivilegeEscalation": false,
+          "capabilities": {
+            "drop": ["ALL"]
+          }
+        }
+      }
+    ]
+  }
+}
+JSON
+)
+
+KUBECTL_ARGS=(run "$POD_NAME" --rm -it --restart=Never --image="$IMAGE" --overrides="$OVERRIDES")
 
 [[ -n "$NS" ]] && KUBECTL_ARGS+=(-n "$NS")
-
-if [[ -n "$NODE" ]]; then
-  KUBECTL_ARGS+=(--overrides="{\"spec\":{\"nodeName\":\"$NODE\"}}")
-fi
 
 if [[ ${#ARGS[@]} -eq 0 ]]; then
   exec kubectl "${KUBECTL_ARGS[@]}" -- bash

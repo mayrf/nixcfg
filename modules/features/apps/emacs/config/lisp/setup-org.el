@@ -10,6 +10,7 @@
   :custom
   (org-agenda-start-with-log-mode t)
   (org-log-into-drawer t)
+  (org-src-preserve-indentation t)
   :hook
   (org-mode . org-indent-mode)
   :bind
@@ -18,7 +19,13 @@
   ("C-c c" . org-capture)
 
   :config
+
   (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))   
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)))   
+  (add-to-list 'org-src-lang-modes '("yaml" . yaml-ts))
   (setq org-agenda-files
         (append (seq-filter #'file-exists-p
 			    (list (expand-file-name "todo.org" org-directory)
@@ -51,11 +58,32 @@
   (setq org-capture-templates
         '(
           ("i" "inbox" entry
-         (file+headline org-inbox-file "Tasks")
-         "* TODO %?")
+           (file+headline org-inbox-file "Tasks")
+           "* TODO %?")
           ("T" "Todo today" entry
-         (file+headline org-task-file "TASKS")
-         "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")))   
+           (file+headline org-task-file "TASKS")
+           "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")))
+  (setq org-agenda-custom-commands
+        '(("p" "Planning"
+           (
+            ;; (tags-todo "+@planning"
+            ;;            ((org-agenda-overriding-header "Planning Tasks")))
+            ;; (tags-todo "-{.*}"
+            ;;            ((org-agenda-overriding-header "Untagged Tasks")))
+            (todo "" (
+                      (org-agenda-files (append
+                                         '("~/Documents/org/work/inbox.org"
+                                           "~/Documents/org/work/projects.org"
+                                           "~/Documents/org/work/someday.org"
+                                           "~/Documents/org/work/projects-tobesorted.org"
+                                           )
+                                         (directory-files org-dailies-directory t ".org")))
+                      ;; (org-agenda-files '("~/Documents/org/work/projects.org"))
+                      (org-agenda-overriding-header "Unprocessed Inbox Items")))))))
+  ;; (setq org-agenda-custom-commands
+  ;;     '(("i" "Inbox"
+  ;;        ((todo "" ((org-agenda-files '("~/Documents/org/work/projects.org"))
+  ;;                     (org-agenda-overriding-header "Unprocessed Inbox Items")))))))
   )
 
 (use-package org-clock
@@ -174,8 +202,10 @@
   (:map org-mode-map
         ("C-c l c" . org-cliplink)))
 
-(defun my/markdown-to-org-region (start end)
-  "Convert Markdown formatted text in region (START, END) to Org.
+(use-package olivetti
+  )
+
+(defun my/markdown-to-org-region (start end)  "Convert Markdown formatted text in region (START, END) to Org.
 
 This command requires that pandoc (man page `pandoc(1)') be
 installed."

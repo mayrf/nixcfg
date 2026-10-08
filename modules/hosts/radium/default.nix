@@ -44,6 +44,8 @@ in {
       uv
       ollama
       gh
+      glab
+      glab-tui
     ];
 
     home.shellAliases = {

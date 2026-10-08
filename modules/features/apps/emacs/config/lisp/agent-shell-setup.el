@@ -21,7 +21,7 @@
       (unless (string-empty-p common-dir)
         (file-name-directory (directory-file-name common-dir)))))
 
-  (advice-add 'agent-shell-new-worktree-shell :around
+  (advic-add 'agent-shell-new-worktree-shell :around
               (lambda (orig-fn &rest args)
                 (let ((default-directory (or (my/agent-shell-git-main-root)
                                              default-directory)))

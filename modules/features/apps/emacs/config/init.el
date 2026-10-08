@@ -76,7 +76,10 @@
   ;; `modus-themes-load-random-light').
   (modus-themes-load-theme 'ef-maris-dark))
 
-(use-package elisp-demos)
+(use-package elisp-demos
+  :config
+  (advice-add 'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
+  (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 (use-package popper
   :bind (("C-`"   . popper-toggle)
@@ -183,8 +186,14 @@
   :bind
   (
    ("C-x b" . consult-buffer)
+   ("C-c s r" . my/roam-ripgrep)
    )
+  :config
+  (defun my/roam-ripgrep ()
+    (interactive)
+    (consult-ripgrep "~/org/notes"))
   )
+
 (use-package prescient)
 
 (use-package orderless
@@ -303,9 +312,9 @@
     (load private-file))
 
 
-;; (load (expand-file-name "lisp/kcl-ts-mode.el" user-emacs-directory))
+(load (expand-file-name "lisp/kcl-ts-mode.el" user-emacs-directory))
+
 (load (expand-file-name "lisp/agent-shell-setup.el" user-emacs-directory))
-;; (load (expand-file-name "lisp/org-excalidraw.el" user-emacs-directory))
 (add-to-list 'treesit-language-source-alist
                '(kcl "https://github.com/kcl-lang/tree-sitter-kcl"))
 
@@ -384,3 +393,8 @@
   ;; :config
   ;; (pdf-tools-install :no-query)
   )
+
+(use-package lab
+  :config
+  (setq lab-host (concat "https://" (getenv "WORK_GITFORGE_HOST"))))
+
