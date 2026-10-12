@@ -1,4 +1,4 @@
-; -*- lexical-binding: t; -*-
+                                        ; -*- lexical-binding: t; -*-
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq use-package-always-ensure t)
@@ -30,7 +30,7 @@
   :custom
   (visible-bell t)
   (repeat-mode t)
-  (xref-search-program 'ripgrep) ;; Use a faster grep implementation for regexp search inside files 
+  (xref-search-program 'ripgrep) ;; Use a faster grep implementation for regexp search inside files
   (column-number-mode t) ;; Display the column number in the mode line.
   (global-visual-line-mode 1) ;; Wraps lines
   (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
@@ -84,7 +84,7 @@
 (use-package popper
   :bind (("C-`"   . popper-toggle)
          ("C-M-`" . popper-toggle-type))
-         ("M-`"   . popper-cycle)
+  ("M-`"   . popper-cycle)
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
@@ -175,7 +175,7 @@
   :custom
   (vertico-cycle t)
   (vertico-count 20)
-  :init 
+  :init
   (vertico-mode))
 
 (use-package marginalia
@@ -283,7 +283,7 @@
 
   :init
   (add-hook 'completion-at-point-functions #'cape-file)
-)
+  )
 
 
 
@@ -309,14 +309,14 @@
 
 (let ((private-file "~/.config/dotfiles-private/config/emacs/private.el"))
   (when (file-exists-p private-file))
-    (load private-file))
+  (load private-file))
 
 
-(load (expand-file-name "lisp/kcl-ts-mode.el" user-emacs-directory))
+;; (load (expand-file-name "lisp/kcl-ts-mode.el" user-emacs-directory))
 
 (load (expand-file-name "lisp/agent-shell-setup.el" user-emacs-directory))
 (add-to-list 'treesit-language-source-alist
-               '(kcl "https://github.com/kcl-lang/tree-sitter-kcl"))
+             '(kcl "https://github.com/kcl-lang/tree-sitter-kcl"))
 
 ;;  Install all treesitter grammars defined in treesit-install-language-grammar
 
@@ -382,7 +382,7 @@
   "Run \"kcl run\" in the directory of the current buffer's file."
   (interactive)
   (let ((default-directory (file-name-directory (or (buffer-file-name)
-                                                      (error "Buffer is not visiting a file")))))
+                                                    (error "Buffer is not visiting a file")))))
     (compile "kcl run")))
 
 (use-package pdf-tools
@@ -393,8 +393,21 @@
   ;; :config
   ;; (pdf-tools-install :no-query)
   )
+(require 'vterm)
+(use-package vterm-toggle
+  :after vterm
+  :config
+  (setq vterm-toggle-scope 'project)
+  (setq vterm-toggle-cd-auto-create-buffer t)
+  (setq vterm-toggle-fullscreen-p nil)
+
+  :bind ((:map global-map
+               ("C-c t" . vterm-toggle)
+               ("C-c C-t" . vterm-toggle-cd))
+         (:map vterm-mode-map
+               ("C-c t" . vterm-toggle)
+               ("C-c C-t" . vterm-toggle-insert-cd))))
 
 (use-package lab
   :config
   (setq lab-host (concat "https://" (getenv "WORK_GITFORGE_HOST"))))
-

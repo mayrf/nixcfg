@@ -71,6 +71,10 @@
               h left
               j down
               l right
+              p up
+              b left
+              n down
+              f right
             )
           '';
         };

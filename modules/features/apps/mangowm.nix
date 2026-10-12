@@ -7,24 +7,18 @@
     pkgs,
     config,
     ...
-  }: let
-    mangoPackage = self.packages.${pkgs.stdenv.hostPlatform.system}.mangowc;
-  in {
-    # imports = [ inputs.mangowm.nixosModules.mango ];
+  }: {
     imports = [
       self.modules.nixos.noctalia
     ];
-    # programs.mango = {
-    #   enable = true;
-    #   package = mangoPackage;
-    # };
-    # environment.systemPackages = [
-    #   mangoPackage
-    # ];
+
     home-manager.users.${config.host.username} = {
       imports = [
         self.modules.homeManager.mango
         self.modules.homeManager.mango-screenshots
+        self.modules.homeManager.mango-voxtype
+        self.modules.homeManager.mango-normcap
+        # self.modules.homeManager.mango-handy
       ];
     };
     services.greetd = {
@@ -112,21 +106,21 @@
             "${mod},r,reload_config"
 
             # Layouts
-            "${mod},m,togglemaximizescreen"
-            "${mod}+SHIFT,m,togglefullscreen"
+            "${mod},f,togglemaximizescreen"
+            "${mod}+SHIFT,f,togglefullscreen"
             "${mod}+SHIFT,space,togglefloating"
 
-            "${mod},|,switch_layout"
+            "${mod},n,switch_layout"
 
             # Master layout resizing
-            "${mod},f,focusdir,right"
-            "${mod},b,focusdir,left"
-            "${mod},p,focusdir,up"
-            "${mod},n,focusdir,down"
-            
+            "${mod},l,focusdir,right"
+            "${mod},h,focusdir,left"
+            "${mod},k,focusdir,up"
+            "${mod},j,focusdir,down"
+
             # Scratchpad terminal
-            "${mod},T,spawn,${terminal} --title=scratch_term"
-            "${mod},T,toggle_scratchpad"
+            # "${mod},T,spawn,${terminal} --title=scratch_term"
+            # "${mod},T,toggle_scratchpad"
 
             # Scratchpad emacs
             # "${mod},B,spawn,dotemacs -c --frame-parameters='(quote (name . \"scratch_emacs\"))'"
@@ -141,6 +135,7 @@
             # "${mod}+SHIFT,e,spawn,emacsclient -s vanilla -c"
             "${mod},w,spawn,${browser}"
             "${mod}+SHIFT,w,spawn,${brave}"
+            "${mod},v,spawn,noctalia msg panel-toggle clipboard"            
             # "${mod},r,spawn,${terminal-exec} yazi"
             # "${mod}+SHIFT,n,spawn,${terminal-exec} sudo nmtui"
             # "${mod}+SHIFT,r,reload_config"
@@ -155,6 +150,66 @@
       };
     };
   };
+  flake.modules.homeManager.mango-voxtype = let
+    mod = "SUPER";
+  in
+    {pkgs, ...}: {
+      features.impermanence.directories = [
+        ".config/voxtype"
+        ".local/share/voxtype" # model downloads (assumed location, check after first run)
+      ];
+
+      home.packages = with pkgs; [
+        ((pkgs.voxtype.override {
+            onnxSupport = true;
+            vulkanSupport = true;
+          }).overrideAttrs (old: let
+            features = old.buildFeatures ++ ["cohere"];
+          in {
+            buildFeatures = features;
+            cargoBuildFeatures = features;
+            cargoCheckFeatures = features;
+          }))
+
+        # voxtype-vulkan    # see note 1
+        wtype # typing backend for Wayland
+        wl-clipboard
+      ];
+
+      wayland.windowManager.mango = {
+        # The daemon must be running for `voxtype record ...` to do anything
+        autostart_sh = ''
+          voxtype &
+        '';
+
+        settings = {
+          # Hold to talk: start on press, stop on release
+          bindc = [
+            "${mod}+ALT,v,spawn,voxtype record start"
+          ];
+          bindrc = [
+            "${mod}+ALT,v,spawn,voxtype record stop"
+          ];
+        };
+      };
+    };
+  flake.modules.homeManager.mango-normcap = let
+    mod = "SUPER";
+  in
+    {pkgs, ...}: {
+      features.impermanence.directories = [
+        # ".config/voxtype"
+      ];
+
+      home.packages = with pkgs; [
+        normcap
+        wl-clipboard
+      ];
+
+      wayland.windowManager.mango.settings.bindc = [
+        "${mod}+ALT,c,spawn,normcap"
+      ];
+    };
 
   flake.modules.homeManager.mango-screenshots =
     # mango-screenshots.nix

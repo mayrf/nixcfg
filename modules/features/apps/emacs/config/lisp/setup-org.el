@@ -84,6 +84,27 @@
   ;;     '(("i" "Inbox"
   ;;        ((todo "" ((org-agenda-files '("~/Documents/org/work/projects.org"))
   ;;                     (org-agenda-overriding-header "Unprocessed Inbox Items")))))))
+ ;;  (custom-set-faces
+ ;; '(org-level-1 ((t (:inherit outline-1 :height 1.25))))
+ ;; ;; '(org-level-2 ((t (:inherit outline-2 :height 1.0))))
+ ;; ;; '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
+ ;; ;; '(org-level-4 ((t (:inherit outline-4 :height 1))))
+ ;; ;; '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+ ;; '(org-document-title ((t (:height 2.0 :underline nil)))))
+
+
+;;   (defun my/org-heading-padding ()
+;;   (let ((bg (face-background 'default nil 'default)))
+;;     (dolist (spec '((org-level-1 . 12)
+;;                     (org-level-2 . 8)
+;;                     (org-level-3 . 5)
+;;                     (org-level-4 . 3)))
+;;       (set-face-attribute (car spec) nil
+;;                           :box `(:line-width (0 . ,(cdr spec)) :color ,bg)))))
+
+;; (add-hook 'org-mode-hook #'my/org-heading-padding)
+;; ;; re-apply when you switch themes
+;; (advice-add 'load-theme :after (lambda (&rest _) (my/org-heading-padding)))
   )
 
 (use-package org-clock

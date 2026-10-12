@@ -55,6 +55,7 @@ in {
     features.impermanence.directories = [
       ".cursor"
       ".config/Cursor"
+      ".config/gh"
     ];
 
     wayland.windowManager.hyprland.settings = {
@@ -92,6 +93,8 @@ in {
       anydesk
       stable.teams-for-linux
       zoom-us
+      gh
+      zed-editor
     ];
   };
 
@@ -129,6 +132,12 @@ in {
       self.modules.homeManager.hmImpermanence
       self.modules.homeManager.yttrium
     ];
+
+    services.tailscale.enable = true;
+    services.tailscale.openFirewall = true;
+    networking.firewall.trustedInterfaces = [ "tailscale0" ];
+    services.resolved.enable = true;
+    networking.networkmanager.dns = "systemd-resolved";
 
     host = {
       username = "mayrf";
