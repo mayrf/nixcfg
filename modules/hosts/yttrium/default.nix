@@ -135,8 +135,8 @@ in {
 
     services.tailscale.enable = true;
     services.tailscale.openFirewall = true;
-    networking.firewall.trustedInterfaces = [ "tailscale0" ];
-    services.resolved.enable = true;
+    networking.firewall.trustedInterfaces = ["tailscale0"];
+    # services.resolved.enable = true;
     networking.networkmanager.dns = "systemd-resolved";
 
     host = {
@@ -177,8 +177,23 @@ in {
     # Kernel
     boot.kernelPackages = pkgs.linuxPackages_zen;
 
-    services.avahi.enable = true;
-    services.avahi.nssmdns4 = true;
+    services.resolved = {
+      enable = true;
+      settings.Resolve = {
+        MulticastDNS = "yes"; # enable globally; per-link settings can override
+        LLMNR = "no"; # optional: LLMNR is legacy, mDNS replaces it
+      };
+    };
+
+    # make sure Avahi is NOT running, it would fight resolved for UDP 5353
+    services.avahi.enable = false;
+
+    # nss-resolve is wired up automatically when resolved is enabled,
+    # so getent/ping/ssh resolve host.local without extra NSS config.
+
+    networking.firewall.allowedUDPPorts = [5353];
+    # or only on the LAN interface:
+    # networking.firewall.interfaces."enp3s0".allowedUDPPorts = [ 5353 ];
     security.sudo.enable = true;
   };
 

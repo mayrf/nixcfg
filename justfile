@@ -36,9 +36,9 @@ sops SSH_KEY_PATH="~/.ssh/id_ed25519":
   nix-shell -p sops --run "SOPS_AGE_KEY=$(nix-shell -p ssh-to-age --run 'cat {{SSH_KEY_PATH}} | ssh-to-age -private-key') ./scripts/sops_with_age_key.sh {{SOPS_FILE}} $(cat {{SSH_KEY_PATH}} | ssh-to-age -private-key)"
 
 
-rekey:
+rekey SSH_KEY_PATH="~/.ssh/id_ed25519":
   cd {{SOPS_DIR}} && (\
-    sops updatekeys -y secrets/secrets.yaml && \
+    SOPS_AGE_KEY=$(nix-shell -p ssh-to-age --run 'cat {{SSH_KEY_PATH}} | ssh-to-age -private-key') sops updatekeys -y secrets/secrets.yaml && \
     (pre-commit run --all-files || true) && \
     git add -u && (git commit -m "chore: rekey" || true) && git push \
   )
