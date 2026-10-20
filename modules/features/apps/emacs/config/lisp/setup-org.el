@@ -44,7 +44,7 @@
   ;; If idle for more than 15 minutes, resolve the things by asking what to do
   ;; with the clock time
   (setq org-clock-idle-time 15)
-  (setq org-clock-persist)
+  (setq org-clock-persist t)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
   (setq org-log-done 'time)
@@ -127,52 +127,52 @@
  (org-mode . olivetti-mode))
 
 
-(use-package org-super-agenda
-  :ensure t
-  :after org                ; <── this is the key sequencing directive
-  :custom
-  (org-super-agenda-groups
-   '(;; ── Overdue – always at the top ──────────────────────────────────────
-     (:name "⚠ Overdue"
-            :and (:scheduled past :not (:todo "DONE"))
-            :face (:foreground "red"))
+;; (use-package org-super-agenda
+;;   :ensure t
+;;   :after org                ; <── this is the key sequencing directive
+;;   :custom
+;;   (org-super-agenda-groups
+;;    '(;; ── Overdue – always at the top ──────────────────────────────────────
+;;      (:name "⚠ Overdue"
+;;             :and (:scheduled past :not (:todo "DONE"))
+;;             :face (:foreground "red"))
 
-     ;; ── Today's time-blocked items ────────────────────────────────────────
-     (:name "Today"
-            :time-grid t
-            :todo "NEXT"
-            :date today
-            :order 1)
+;;      ;; ── Today's time-blocked items ────────────────────────────────────────
+;;      (:name "Today"
+;;             :time-grid t
+;;             :todo "NEXT"
+;;             :date today
+;;             :order 1)
 
-     ;; ── High-priority items that aren't already shown above ───────────────
-     (:name "Important"
-            :priority "A"
-            :order 2)
+;;      ;; ── High-priority items that aren't already shown above ───────────────
+;;      (:name "Important"
+;;             :priority "A"
+;;             :order 2)
 
-     ;; ── Active projects (tasks with children still in-flight) ─────────────
-     (:name "Projects"
-            :children todo
-            :order 3)
+;;      ;; ── Active projects (tasks with children still in-flight) ─────────────
+;;      (:name "Projects"
+;;             :children todo
+;;             :order 3)
 
-     ;; ── Habits ────────────────────────────────────────────────────────────
-     (:name "Habits"
-            :habit t
-            :order 4)
+;;      ;; ── Habits ────────────────────────────────────────────────────────────
+;;      (:name "Habits"
+;;             :habit t
+;;             :order 4)
 
-     ;; ── Waiting on someone else ───────────────────────────────────────────
-     (:name "Waiting"
-            :todo "WAITING"
-            :order 8)
+;;      ;; ── Waiting on someone else ───────────────────────────────────────────
+;;      (:name "Waiting"
+;;             :todo "WAITING"
+;;             :order 8)
 
-     ;; ── Backlog / someday ─────────────────────────────────────────────────
-     (:name "Someday"
-            :todo ("SOMEDAY" "MAYBE")
-            :order 9)
+;;      ;; ── Backlog / someday ─────────────────────────────────────────────────
+;;      (:name "Someday"
+;;             :todo ("SOMEDAY" "MAYBE")
+;;             :order 9)
 
-     ;; ── Anything else lands here (default :order 99) ──────────────────────
-     ))
-  :config
-  (org-super-agenda-mode))  
+;;      ;; ── Anything else lands here (default :order 99) ──────────────────────
+;;      ))
+;;   :config
+;;   (org-super-agenda-mode))  
 
 (use-package org-roam
   :custom
@@ -302,5 +302,11 @@ installed."
   :bind (("S-<f12>" . org-transclusion-add)
          ("C-c t m" . org-transclusion-transient-menu)
          ("C-n t t") . org-transclusion-mode))
+
+(use-package org-rich-yank
+  :ensure t
+  :demand t
+  :bind (:map org-mode-map
+              ("C-M-y" . org-rich-yank)))
 
 (provide 'setup-org)

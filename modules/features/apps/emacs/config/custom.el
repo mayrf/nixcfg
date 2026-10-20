@@ -22,9 +22,10 @@
                  just-mode justl knockknock lab load-env-vars magit
                  marginalia nerd-icons nix-ts-mode no-littering
                  olivetti orderless org-cliplink org-jira org-noter
-                 org-roam org-roam-ui org-super-agenda pdf-tools
-                 popper popper-mode posframe prescient vertico vterm
-                 vterm-toggle web-mode yasnippet yasnippet-snippets))
+                 org-rich-yank org-roam org-roam-ui org-super-agenda
+                 pdf-tools popper popper-mode posframe prescient
+                 vertico vterm vterm-toggle web-mode yasnippet
+                 yasnippet-snippets))
  '(package-vc-selected-packages
    '((agent-shell-desktop :url
                           "https://github.com/timfel/agent-shell-desktop.el")

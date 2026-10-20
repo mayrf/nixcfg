@@ -329,24 +329,7 @@
 
 
 
-(use-package ellama
-  :ensure t
-  :bind ("C-c e" . ellama)
-  ;; send last message in chat buffer with C-c C-c
-  :hook (org-ctrl-c-ctrl-c-hook . ellama-chat-send-last-message)
-  :init (setopt ellama-auto-scroll t)
-  (require 'llm-ollama)
-  (setopt ellama-provider
-          (make-llm-ollama
-           :chat-model "qwen3.6:latest"
-	   :host (or (getenv "OLLAMA_HOST") "localhost")
-	   :port 80
-           :embedding-model "nomic-embed-text"))
-  :config
-  ;; show ellama context in header line in all buffers
-  (ellama-context-header-line-global-mode +1)
-  ;; show ellama session id in header line in all buffers
-  (ellama-session-header-line-global-mode +1))
+
 
 (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
