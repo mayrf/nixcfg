@@ -2,7 +2,7 @@
   flake.modules.nixos.open-webui = {pkgs, ...}: {
     services.open-webui = {
       enable = true;
-      package = pkgs.open-webui;
+      package = pkgs.stable.open-webui;
       stateDir = "/var/lib/open-webui";
       port = 8080;
       environment = {

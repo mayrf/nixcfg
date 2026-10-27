@@ -43,7 +43,6 @@
       age
       statix
       nixfmt
-      minio-client
       pandoc
       texlab
       texliveFull

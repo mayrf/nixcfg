@@ -51,8 +51,8 @@
   :config
   (which-key-mode)
   (load-theme 'newcomers-presets)
-  :hook	;; Add hooks to enable specific features in certain modes.
-  (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
+  ;; :hook	;; Add hooks to enable specific features in certain modes.
+  ;; (prog-mode . display-line-numbers-mode) ;; Enable line numbers in programming modes.
   )
 
 ;; Disable line numbers for some modes

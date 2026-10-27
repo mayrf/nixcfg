@@ -95,6 +95,7 @@ in {
       zoom-us
       gh
       zed-editor
+      herdr
     ];
   };
 
