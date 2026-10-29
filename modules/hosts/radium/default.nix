@@ -46,6 +46,7 @@ in {
       gh
       glab
       glab-tui
+      herdr
     ];
 
     home.shellAliases = {
@@ -71,7 +72,8 @@ in {
       ./_hardware-configuration.nix
       inputs.dotfiles-private.modules.nixos.radium
     ];
-
+    wsl.useWindowsDriver = true;
+    hardware.graphics.enable = true;
     host = {
       username = "mayrf";
     };

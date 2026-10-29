@@ -335,12 +335,12 @@
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
 (add-to-list 'major-mode-remap-alist
              '(c-or-c++-mode . c-or-c++-ts-mode))
-(add-hook 'c-ts-mode-hook 'eglot-ensure)
+;; (add-hook 'c-ts-mode-hook 'eglot-ensure)
 
 (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
-(add-hook 'ruby-ts-mode 'eglot-ensure)
+(add-hook 'ruby-ts-mode-hook 'eglot-ensure)
 
-(add-hook 'nix-ts-mode 'eglot-ensure)
+(add-hook 'nix-ts-mode-hook 'eglot-ensure)
 
 (use-package format-all)
 
